@@ -125,7 +125,7 @@ export const PLATFORM_GUIDE: PageGuideContent = {
     {
       icon: "mdi:book-education-outline",
       color: "#6366f1",
-      title: "Learn with adaptive courses",
+      title: "Learn with courses",
       text: "Take courses that adjust to your level - articles, quizzes, coding, and videos with instant feedback.",
     },
     {
@@ -318,7 +318,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "adaptive-grid",
         title: "Browse your courses",
-        narration: "Every adaptive course lives here as a card. Click one to jump straight in - hovering quietly prefetches it so it opens instantly.",
+        narration: "Every course lives here as a card. Click one to jump straight in - hovering quietly prefetches it so it opens instantly.",
         placement: "top",
         icon: "mdi:view-grid-outline",
         color: "#ec4899",
@@ -331,13 +331,13 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
     ],
     headerTitle: "Learn with courses that adapt to you",
-    headerSubtitle: "Browse your adaptive courses, find the right level, and jump into practice that adjusts as you go.",
+    headerSubtitle: "Browse your courses, find the right level, and jump into practice that adjusts as you go.",
     features: [
       {
         icon: "mdi:book-education-outline",
         color: "#6366f1",
         title: "Browse your courses",
-        text: "Every adaptive course you're enrolled in shows up as a card with its module, submodule, article, quiz, coding, and video counts.",
+        text: "Every course you're enrolled in shows up as a card with its module, submodule, article, quiz, coding, and video counts.",
       },
       {
         icon: "mdi:rocket-launch-outline",
@@ -383,7 +383,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         targetId: "page-header",
         title: "Course Builder overview",
-        narration: "This is your adaptive course library. Everything you generate from a prompt lives here, and you can spin up a brand-new AI course with the Generate button in the header.",
+        narration: "This is your course library. Everything you generate from a prompt lives here, and you can spin up a brand-new AI course with the Generate button in the header.",
         placement: "bottom",
         icon: "mdi:robot-excited-outline",
         color: "#a78bfa",
@@ -433,7 +433,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       {
         icon: "mdi:auto-fix",
         color: "#a78bfa",
-        title: "Generate an adaptive course",
+        title: "Generate a course",
         text: "Describe a course in a prompt and the engine builds the full module tree with an adaptive quiz per submodule.",
       },
       {

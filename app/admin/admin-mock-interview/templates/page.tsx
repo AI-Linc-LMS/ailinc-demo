@@ -1104,7 +1104,7 @@ export default function AdminInterviewTemplatesPage() {
                     }}
                   >
                     {adaptiveCourses.length === 0 ? (
-                      <MenuItem disabled>No adaptive courses available</MenuItem>
+                      <MenuItem disabled>No courses available</MenuItem>
                     ) : (
                       adaptiveCourses.map((c) => (
                         <MenuItem key={c.id} value={c.id}>

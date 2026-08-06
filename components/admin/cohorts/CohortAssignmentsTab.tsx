@@ -29,7 +29,7 @@ const TYPE_META: Record<
   { label: string; icon: string; color: string; blurb: string }
 > = {
   adaptive_course: {
-    label: "Adaptive course", icon: "mdi:robot-outline", color: "#6366f1",
+    label: "Course", icon: "mdi:robot-outline", color: "#6366f1",
     blurb: "Enrols every active student in this batch, and anyone who joins later.",
   },
   live_series: {
@@ -38,7 +38,7 @@ const TYPE_META: Record<
   },
   classic_course: {
     label: "Classic course (legacy)", icon: "mdi:book-open-variant", color: "#0ea5e9",
-    blurb: "The older course format. Use an adaptive course for anything new.",
+    blurb: "The older course format. Use a course for anything new.",
   },
   assessment: {
     label: "Assessment", icon: "mdi:clipboard-text-outline", color: "#a855f7",
@@ -109,7 +109,7 @@ export function CohortAssignmentsTab({
       {artifacts.length === 0 && (
         <Box sx={{ p: 4, borderRadius: 4, textAlign: "center", border: "1px dashed var(--border-default)" }}>
           <Typography sx={{ color: "text.secondary" }}>
-            Nothing assigned yet - map an adaptive course, assessment, interview, live series or job to this cohort.
+            Nothing assigned yet - map a course, assessment, interview, live series or job to this cohort.
           </Typography>
         </Box>
       )}

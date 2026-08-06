@@ -205,7 +205,7 @@ export default function AdminDashboardPage() {
       icon: "mdi:school-outline",
       label: courseId
         ? "1 course selected"
-        : `${courses.length} adaptive ${courses.length === 1 ? "course" : "courses"}`,
+        : `${courses.length} ${courses.length === 1 ? "course" : "courses"}`,
     },
     ...(people?.cohorts?.length
       ? [{ icon: "mdi:account-group-outline", label: `${people.cohorts.length} cohorts` }]
@@ -310,7 +310,7 @@ export default function AdminDashboardPage() {
           </Alert>
         )}
 
-        <Box>
+        <Box data-tour-id="admin-pulse">
           <DeckSection title="Who is here" />
           <Box
             sx={{
@@ -325,12 +325,12 @@ export default function AdminDashboardPage() {
           </Box>
         </Box>
 
-        <Box>
+        <Box data-tour-id="admin-learning">
           <DeckSection title="What they are learning" />
           <LearningSection data={learning} loading={busy(learning)} />
         </Box>
 
-        <Box>
+        <Box data-tour-id="admin-engagement">
           <DeckSection
             title="How they are working"
             hint="Activity mix, study times and consistency, from scored adaptive work."
@@ -338,12 +338,12 @@ export default function AdminDashboardPage() {
           <EngagementSection data={engagement} loading={busy(engagement)} />
         </Box>
 
-        <Box>
+        <Box data-tour-id="admin-at-risk">
           <DeckSection title="Who needs help" />
           <AtRiskPanel atRisk={atRisk} loading={busy(atRisk)} />
         </Box>
 
-        <Box>
+        <Box data-tour-id="admin-people">
           <DeckSection
             title="Cohorts, support and instructors"
             hint="Tenant-wide. None of these have a course dimension, so the course filter does not apply."

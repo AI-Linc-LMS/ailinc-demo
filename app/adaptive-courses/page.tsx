@@ -46,7 +46,7 @@ export default function AdaptiveCourseListPage() {
         const list = await adaptiveCourseService.listCourses();
         if (!cancelled) setItems(list);
       } catch (e) {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load adaptive courses.");
+        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load courses.");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -103,7 +103,7 @@ export default function AdaptiveCourseListPage() {
       <PageShell>
         <Container sx={{ py: 8, textAlign: "center" }}>
           <Typography variant="h6" sx={{ fontWeight: 700 }}>
-            {"Adaptive Course isn't enabled for this organisation."}
+            {"Courses aren't enabled for this organisation."}
           </Typography>
           <Typography sx={{ color: "text.secondary", mt: 1 }}>
             {'Ask your administrator to switch on the "Adaptive Quiz" feature.'}
@@ -155,7 +155,7 @@ export default function AdaptiveCourseListPage() {
               <SearchFilterBar
                 search={query}
                 onSearchChange={setQuery}
-                searchPlaceholder="Search adaptive courses…"
+                searchPlaceholder="Search courses…"
                 rightSlot={
                   <Stack direction="row" spacing={1.5} alignItems="center">
                     <TextField
@@ -184,7 +184,7 @@ export default function AdaptiveCourseListPage() {
           {!loading && !error && items.length > 0 && visible.length === 0 && (
             <Box sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", bgcolor: "color-mix(in srgb, var(--card-bg) 60%, transparent)", border: "1px dashed color-mix(in srgb, var(--border-default) 90%, transparent)" }}>
               <Icon icon="mdi:magnify-close" width={44} style={{ color: "#a855f7" }} />
-              <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>No adaptive courses match your search.</Typography>
+              <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.05rem" }}>No courses match your search.</Typography>
               <Chip
                 label="Clear search & filters"
                 onClick={() => {
@@ -279,7 +279,7 @@ function AdaptiveCourseRow({
           {course.title}
         </Typography>
         <Typography sx={{ color: "var(--font-secondary)", fontSize: "0.82rem" }} noWrap>
-          {course.description || course.target_audience || "Adaptive course"}
+          {course.description || course.target_audience || "Course"}
         </Typography>
       </Box>
       <Stack direction="row" spacing={2.5} sx={{ flexShrink: 0, display: { xs: "none", md: "flex" } }}>
@@ -314,7 +314,7 @@ function EmptyState({ onBrowse }: { onBrowse: () => void }) {
     >
       <Icon icon="mdi:book-off-outline" width={48} style={{ color: "#a855f7" }} />
       <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
-        {"You're not enrolled in any adaptive course yet."}
+        {"You're not enrolled in any course yet."}
       </Typography>
       <Typography sx={{ color: "text.secondary", mt: 0.75, maxWidth: 520, mx: "auto", lineHeight: 1.5 }}>
         {"Browse the courses your organisation has opened for you to join - or check back once your instructor enrolls you."}

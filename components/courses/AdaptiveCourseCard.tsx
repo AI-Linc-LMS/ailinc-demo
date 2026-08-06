@@ -56,9 +56,10 @@ export function AdaptiveCourseCard({
         <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)", boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)" }}>
           <Icon icon="mdi:book-education-outline" width={22} />
         </Box>
-        <Box component="span" sx={{ px: 1, py: 0.3, borderRadius: 999, fontSize: "0.65rem", fontWeight: 800, letterSpacing: 0.4, textTransform: "uppercase", color: "#a855f7", bgcolor: "color-mix(in srgb, #a855f7 14%, transparent)" }}>
-          Adaptive
-        </Box>
+        {/* The "Adaptive" chip that used to sit here is gone. It existed to tell
+            adaptive cards apart from legacy ones on the shared /courses page. This
+            tenant has a single course product, so the chip was on every card and
+            distinguished nothing. */}
         {/* Still shown after purchase: "Paid" is a fact about how they got access, not a CTA. */}
         <PriceTag isPaid={course.is_paid} price={course.price} currency={course.currency} />
       </Box>

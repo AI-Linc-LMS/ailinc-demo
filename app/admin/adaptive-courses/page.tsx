@@ -62,7 +62,7 @@ export default function AdminAdaptiveCoursesPage() {
       setCourses(courseList);
       setJobs(jobList);
     } catch (e) {
-      setError(getAxiosErrorDetail(e, "Couldn't load adaptive courses."));
+      setError(getAxiosErrorDetail(e, "Couldn't load courses."));
     } finally {
       setLoading(false);
     }
@@ -429,12 +429,12 @@ export default function AdminAdaptiveCoursesPage() {
             >
               <Icon icon="mdi:robot-outline" width={48} style={{ color: "#a855f7" }} />
               <Typography sx={{ fontWeight: 800, mt: 1.5, fontSize: "1.1rem" }}>
-                No adaptive courses yet.
+                No courses yet.
               </Typography>
               <Typography sx={{ color: "text.secondary", mt: 0.75, maxWidth: 560, mx: "auto", lineHeight: 1.5 }}>
                 Click <strong>Build manually</strong> to start from an empty course and add each
                 module, topic and item by hand, pulling questions from the verified bank. Or click{" "}
-                <strong>Generate adaptive course</strong> - describe the course, and the engine builds the
+                <strong>Generate course</strong> - describe the course, and the engine builds the
                 module tree with an adaptive quiz per submodule.
               </Typography>
             </Box>
@@ -502,7 +502,7 @@ export default function AdminAdaptiveCoursesPage() {
 
       <ConfirmDialog
         open={pendingDelete !== null}
-        title="Delete adaptive course"
+        title="Delete course"
         message={
           pendingDelete
             ? `"${pendingDelete.title}" will be removed from the library. Learner attempts on its quizzes stay intact - only the course goes away.`

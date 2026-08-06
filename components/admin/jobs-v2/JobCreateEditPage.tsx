@@ -980,7 +980,7 @@ export function JobCreateEditPage({
                   Courses
                 </Typography>
                 <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
-                  If set, students enrolled in any of these adaptive courses also see this job
+                  If set, students enrolled in any of these courses also see this job
                 </Typography>
                 <Autocomplete
                   multiple
@@ -1003,7 +1003,7 @@ export function JobCreateEditPage({
                     </li>
                   )}
                   renderInput={(params) => (
-                    <TextField {...params} size="small" label="Select adaptive courses" sx={inputSx} />
+                    <TextField {...params} size="small" label="Select courses" sx={inputSx} />
                   )}
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (

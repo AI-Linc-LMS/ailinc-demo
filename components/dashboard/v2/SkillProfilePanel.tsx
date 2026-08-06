@@ -34,7 +34,7 @@ export function SkillProfilePanel({
           </Box>
           <Box>
             <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 0.6, color: "#7c3aed" }}>
-              ADAPTIVE{tier ? ` · ${tier}` : ""}
+              SKILL LEVEL{tier ? ` · ${tier}` : ""}
             </Typography>
             <Typography sx={{ fontWeight: 800, color: "#0f172a", fontSize: "0.95rem", lineHeight: 1.1 }}>Your Skill Profile</Typography>
           </Box>

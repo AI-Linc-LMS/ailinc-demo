@@ -272,7 +272,7 @@ function GenerateAdaptiveCourseInner() {
         <AdaptiveSectionShell>
           <AdaptiveSectionHero
             chapter="Generate · Adaptive"
-            title="Generate adaptive course"
+            title="Generate course"
             subtitle="Describe the course, or upload a curriculum CSV. Either way you get weeks, topics, and a quiz on every topic that gets harder or easier as the student answers."
             icon="mdi:auto-fix"
             accent="purple"
@@ -388,7 +388,7 @@ function GenerateAdaptiveCourseInner() {
                   }}
                 >
                   <Icon icon={submitting ? "mdi:loading" : "mdi:auto-fix"} width={18} className={submitting ? "spin" : ""} />
-                  {submitting ? "Starting…" : "Generate adaptive course"}
+                  {submitting ? "Starting…" : "Generate course"}
                 </ButtonBase>
               )}
               {mode === "csv" && plan && !planReady && (
