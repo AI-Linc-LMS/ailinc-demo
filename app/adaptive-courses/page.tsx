@@ -117,7 +117,7 @@ export default function AdaptiveCourseListPage() {
     <PageShell>
       <ModulePageHeader
         eyebrow="Learn"
-        title="Adaptive Courses"
+        title="Courses"
         description="AI-personalised courses that adapt to your level in real time - practice, get instant feedback, and level up."
         accent="purple"
         icon="mdi:book-education-outline"

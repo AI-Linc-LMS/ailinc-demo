@@ -274,7 +274,7 @@ export function BulkActionToolbar({
             <TextField
               select
               fullWidth
-              label="Adaptive courses"
+              label="Courses"
               value={pickedAdaptiveCourses}
               onChange={(e) => {
                 const v = e.target.value as unknown as number[];

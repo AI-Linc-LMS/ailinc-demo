@@ -43,16 +43,16 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#f59e0b",
   },
   {
-    targetId: "nav-adaptive-courses",
-    title: "Adaptive courses",
+    route: "/adaptive-courses",
+    title: "Courses",
     narration:
-      "Your courses live here. Each one is a week-by-week journey, and lessons can be re-rendered at four reading levels, from plain English to whitepaper — so the same material works whether you are new to it or revising it.",
+      "Your courses live here. Each one is a week-by-week journey that adapts to you, and lessons can be re-rendered at four reading levels, from plain English to whitepaper — so the same material works whether you are new to it or revising it.",
     placement: "right",
     icon: "mdi:book-education-outline",
     color: "#6366f1",
   },
   {
-    targetId: "nav-adaptive-courses",
+    route: "/adaptive-courses/201/journey",
     title: "Quizzes that actually adapt",
     narration:
       "Inside every topic is a quiz that steers. Answer well and the next question gets harder; miss one and it steps back. It keeps a confidence estimate per skill and stops as soon as it is sure of your level, rather than after a fixed number of questions.",
@@ -61,7 +61,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#a855f7",
   },
   {
-    targetId: "nav-adaptive-courses",
+    route: "/adaptive-courses/201/submodule/5009",
     title: "A real coding workspace",
     narration:
       "Coding problems run your code against real test cases, show you exactly which one failed and what it returned, and give layered hints — a nudge first, the actual mechanism only if you ask twice.",
@@ -70,7 +70,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#f97316",
   },
   {
-    targetId: "nav-assessments",
+    route: "/assessments",
     title: "Assessments",
     narration:
       "Formal papers, timed, and proctored when the institution needs them to be. Results break down by section so you can see which part of the syllabus let you down.",
@@ -79,7 +79,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#0ea5e9",
   },
   {
-    targetId: "nav-mock-interview",
+    route: "/mock-interview",
     title: "AI mock interviews",
     narration:
       "A voice conversation with an interviewer that follows up on your answers rather than reading from a list, and scores communication as well as correctness. The feedback tells you why, not just what.",
@@ -88,7 +88,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#ec4899",
   },
   {
-    targetId: "nav-jobs-v2",
+    route: "/jobs-v2",
     title: "Jobs",
     narration:
       "Roles curated for this institution's students, with eligibility already checked against your profile, so you are not applying into a wall.",
@@ -97,7 +97,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#10b981",
   },
   {
-    targetId: "nav-resume",
+    route: "/resume",
     title: "Resume builder",
     narration:
       "Builds from the profile and the work you have actually completed, then scores it against a job description so you can see what a screening tool would see.",
@@ -106,7 +106,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#14b8a6",
   },
   {
-    targetId: "nav-live-sessions",
+    route: "/live-sessions",
     title: "Live sessions",
     narration:
       "Scheduled classes with your cohort. Attendance is automatic, and recordings, transcripts and AI summaries attach themselves afterwards, so missing one is recoverable.",
@@ -115,7 +115,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#3b82f6",
   },
   {
-    targetId: "nav-community",
+    route: "/community",
     title: "Community",
     narration:
       "Ask your cohort. Questions can carry a points bounty, which is the mechanism that gets them answered instead of sitting unread.",
@@ -124,7 +124,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#8b5cf6",
   },
   {
-    targetId: "nav-tickets",
+    route: "/tickets",
     title: "Support",
     narration:
       "Raise anything from a broken video to a certificate spelling, and follow it through to resolution. It routes to your instructor or the administration automatically.",
@@ -133,6 +133,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#64748b",
   },
   {
+    route: "/user/scorecard",
     title: "The point of all of it",
     narration:
       "Everything you do feeds a scorecard: skills, consistency, assessment and interview performance, benchmarked against your cohort. That is the artefact an employer can actually read.",
@@ -140,6 +141,7 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#22c55e",
   },
   {
+    route: "/dashboard",
     title: "Explore freely",
     narration:
       "Every module is switched on and filled with data. Click anything. The question mark in any page header explains that page in detail, and the Guide button up top restarts this tour.",
@@ -157,8 +159,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#a78bfa",
   },
   {
-    targetId: "nav-instructor-students",
-    placement: "right",
+    route: "/instructor/students",
     title: "Who needs attention",
     narration:
       "Students are flagged with the rule that flagged them — under twenty-five percent progress, a week with no activity, two missed sessions. A red badge with no reason is not something you can act on.",
@@ -166,8 +167,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#ef4444",
   },
   {
-    targetId: "nav-instructor-cohorts",
-    placement: "right",
+    route: "/instructor/cohorts",
     title: "Your batches",
     narration:
       "Each cohort shows its own progress, average score and at-risk count, so you can see which group is struggling rather than only which individual is.",
@@ -175,8 +175,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#6366f1",
   },
   {
-    targetId: "nav-instructor-assessments",
-    placement: "right",
+    route: "/instructor/assessments",
     title: "Gradebook and submissions",
     narration:
       "Anything awaiting review surfaces here, including subjective answers the AI cannot score on its own.",
@@ -184,8 +183,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#f59e0b",
   },
   {
-    targetId: "nav-instructor-live-sessions",
-    placement: "right",
+    route: "/instructor/live-sessions",
     title: "Live sessions",
     narration:
       "Host from here, take attendance automatically, and let the recording and transcript attach themselves afterwards.",
@@ -193,6 +191,7 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#0ea5e9",
   },
   {
+    route: "/instructor/dashboard",
     title: "Nudge, do not chase",
     narration:
       "Message a whole batch, or nudge one student. It reaches their dashboard and their inbox, so following up does not mean a spreadsheet of email addresses.",
@@ -224,6 +223,7 @@ const ADMIN_TOUR: TourStep[] = [
     color: "#0ea5e9",
   },
   {
+    route: "/admin/dashboard",
     title: "Where they drop off",
     narration:
       "Activation and completion per course, with a week-by-week drop-off curve. That curve tells you which week of which course is losing people.",
@@ -231,8 +231,7 @@ const ADMIN_TOUR: TourStep[] = [
     color: "#f59e0b",
   },
   {
-    targetId: "nav-admin-manage-students",
-    placement: "right",
+    route: "/admin/manage-students",
     title: "People and support",
     narration:
       "Cohort fill, ticket volume and resolution time, and instructor feedback — suppressed below five responses, because averaging three opinions is not a rating.",
@@ -240,8 +239,7 @@ const ADMIN_TOUR: TourStep[] = [
     color: "#ec4899",
   },
   {
-    targetId: "nav-admin-branding",
-    placement: "right",
+    route: "/admin/branding",
     title: "It is your platform",
     narration:
       "Branding, timezone, integrations, roles and permissions. Everything a prospect sees carries your institution's name, not ours.",

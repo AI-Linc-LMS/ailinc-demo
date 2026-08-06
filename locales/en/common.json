@@ -32,10 +32,10 @@
     "certificateUploads": "Certificate uploads",
     "support": "My Tickets",
     "resume": "Resume",
-    "adaptiveCourses": "Adaptive Courses",
+    "adaptiveCourses": "Courses",
     "adminTickets": "Ticket Management",
-    "adaptiveQuizzes": "Adaptive Course",
-    "adminAdaptiveQuizzes": "Adaptive Course Builder"
+    "adaptiveQuizzes": "Courses",
+    "adminAdaptiveQuizzes": "Course Builder"
   },
   "navSection": {
     "learn": "Learn",
@@ -74,7 +74,7 @@
     "admin_mock_interview": "Configure and review AI mock interviews.",
     "admin_verify_content": "Review and approve AI-generated content.",
     "admin_assessment": "Create, schedule, and monitor every assessment.",
-    "admin_adaptive_quizzes": "Build adaptive, AI-personalised courses.",
+    "admin_adaptive_quizzes": "Build AI-personalised courses that adapt to each learner.",
     "admin_scorecard": "Track student performance and readiness scorecards.",
     "admin_certificates": "Upload and manage course completion certificates.",
     "admin_jobs_v2": "Post jobs and curate opportunities for students.",
@@ -1910,7 +1910,7 @@
       "emailLabel": "Email",
       "phoneLabel": "Phone (optional)",
       "coursesLabel": "Courses (optional)",
-      "adaptiveCoursesLabel": "Adaptive courses (optional)",
+      "adaptiveCoursesLabel": "Courses (optional)",
       "coursesOptionalHint": "Leave courses empty to only create the account at the client level.",
       "enrollingInto": "Enrolling into",
       "loadingCourses": "Loading courses…",

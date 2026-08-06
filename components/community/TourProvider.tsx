@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Box, Button, IconButton, Switch, Typography } from "@mui/material";
 import { IconWrapper } from "@/components/common/IconWrapper";
@@ -28,6 +29,15 @@ export interface TourStep {
   icon?: string;
   /** Optional color accent for icon + ring. */
   color?: string;
+  /**
+   * Navigate here before showing this step.
+   *
+   * A tour that only points at the sidebar can describe a module but never show
+   * it. With a route, the tour walks the product: it opens the page, waits for
+   * the step's target to actually exist, and then spotlights it. Steps without a
+   * route stay on whatever page is already open.
+   */
+  route?: string;
 }
 
 interface TourContextValue {
@@ -55,6 +65,8 @@ function hasSpeechSynthesis(): boolean {
 }
 
 export function TourProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [steps, setSteps] = useState<TourStep[]>([]);
   const [idx, setIdx] = useState(0);
   const [rect, setRect] = useState<DOMRect | null>(null);
@@ -129,6 +141,20 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     setRevealedChars(0);
   }, [cancelSpeech]);
 
+  /**
+   * Walk the product: navigate to a step's route before showing it.
+   *
+   * Kept separate from measuring so a route change and a re-measure cannot
+   * race — this effect only ever pushes, and the measure effect below polls
+   * until the target appears on whatever page ends up rendered.
+   */
+  useEffect(() => {
+    if (!isRunning) return;
+    const step = steps[idx];
+    if (!step?.route || step.route === pathname) return;
+    router.push(step.route);
+  }, [isRunning, idx, steps, pathname, router]);
+
   // Resolve the current target rect - re-measures on resize, scroll, and step change.
   useEffect(() => {
     if (!isRunning) return;
@@ -138,12 +164,20 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     let raf = 0;
+    // A step that navigates cannot measure its target immediately: the new page
+    // has not mounted yet. Retry for a couple of seconds, then fall back to the
+    // centred card rather than spotlighting nothing.
+    let attempts = 0;
+    const MAX_ATTEMPTS = 40;
+    let retry: ReturnType<typeof setTimeout> | null = null;
     const measure = () => {
       const el = document.querySelector<HTMLElement>(`[data-tour-id="${step.targetId}"]`);
       if (!el) {
         setRect(null);
+        if (attempts++ < MAX_ATTEMPTS) retry = setTimeout(measure, 50);
         return;
       }
+      attempts = 0;
       // Auto-scroll target into view if it's outside the viewport.
       const r = el.getBoundingClientRect();
       const offscreen = r.top < 0 || r.bottom > window.innerHeight - 80;
@@ -162,10 +196,11 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     window.addEventListener("scroll", onChange, true);
     return () => {
       cancelAnimationFrame(raf);
+      if (retry) clearTimeout(retry);
       window.removeEventListener("resize", onChange);
       window.removeEventListener("scroll", onChange, true);
     };
-  }, [isRunning, idx, steps]);
+  }, [isRunning, idx, steps, pathname]);
 
   // Speak the current step's narration. We try OpenAI TTS first (premium voice,
   // sounds like the ChatGPT mobile app), then fall back to the browser's

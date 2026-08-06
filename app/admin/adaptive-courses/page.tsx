@@ -194,7 +194,7 @@ export default function AdminAdaptiveCoursesPage() {
     <PageShell>
       <AssessmentSectionHero
         chapter="CONTENT"
-        title="Adaptive Course Builder"
+        title="Course Builder"
         subtitle="Generate a course from a brief, or build one by hand from the verified bank."
         accent="violet"
         icon=""

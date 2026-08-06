@@ -32,10 +32,16 @@ const regularNavigationItems: NavigationItem[] = [
     featureName: "dashboard",
   },
   {
+    // Points at the adaptive module and gated on ITS flag.
+    //
+    // This used to be /courses behind `course`, the legacy module. That flag is
+    // off for tenants where adaptive IS the course product, and this entry then
+    // vanished from the mobile nav entirely — leaving a phone user with no way
+    // to reach their courses at all while the desktop sidebar still showed them.
     label: "Courses",
-    path: "/courses",
+    path: "/adaptive-courses",
     icon: "mdi:book-open-variant",
-    featureName: "course",
+    featureName: "adaptive_quiz",
   },
   {
     label: "Assessments",
@@ -43,7 +49,6 @@ const regularNavigationItems: NavigationItem[] = [
     icon: "mdi:file-document-edit",
     featureName: "assessment",
   },
-  // Adaptive courses now live under the main Courses page - no separate nav entry.
   {
     label: "Jobs",
     path: "/jobs-v2",

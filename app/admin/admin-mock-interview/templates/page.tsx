@@ -1074,12 +1074,12 @@ export default function AdminInterviewTemplatesPage() {
                   </Select>
                 </FormControl>
                 <FormControl fullWidth size="small" sx={{ mt: 1.5 }}>
-                  <InputLabel>Adaptive courses</InputLabel>
+                  <InputLabel>Courses</InputLabel>
                   <Select
                     multiple
-                    label="Adaptive courses"
+                    label="Courses"
                     value={draft.adaptive_course_ids}
-                    input={<OutlinedInput label="Adaptive courses" />}
+                    input={<OutlinedInput label="Courses" />}
                     onChange={(e) => {
                       const value = e.target.value;
                       const ids = Array.isArray(value) ? (value as number[]) : [Number(value)];

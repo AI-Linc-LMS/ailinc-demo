@@ -977,7 +977,7 @@ export function JobCreateEditPage({
               </Box>
               <Box sx={{ mt: 2.5 }}>
                 <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 700, color: "var(--font-primary)" }}>
-                  Adaptive courses
+                  Courses
                 </Typography>
                 <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
                   If set, students enrolled in any of these adaptive courses also see this job

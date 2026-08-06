@@ -64,6 +64,8 @@ interface Seed {
   assigned?: DemoPerson;
   daysAgo: number;
   resolution?: string;
+  /** Was reopened at least once — the `reopened` filter selects on this. */
+  reopened?: boolean;
 }
 
 const SEEDS: Seed[] = [
@@ -123,6 +125,32 @@ const SEEDS: Seed[] = [
     by: STUDENTS[19],
     daysAgo: 2,
   },
+  // The signed-in student needs a ticket in EVERY status, or the status tabs on
+  // their own page look identical no matter which one is selected.
+  {
+    id: 4840,
+    category: "technical",
+    subject: "Coding editor loses my work when I switch language",
+    description:
+      "I had a working solution in Python, switched the dropdown to JavaScript to compare, and switching back gave me the empty template again.",
+    status: "OPEN",
+    by: STUDENT_PERSONA,
+    daysAgo: 0,
+  },
+  {
+    id: 4812,
+    category: "quiz",
+    subject: "Hint counter did not go down after I used one",
+    description:
+      "Spent a hint on the sliding-window quiz and it still showed 3 left afterwards. Not a problem, just looked wrong.",
+    status: "RESOLVED",
+    by: STUDENT_PERSONA,
+    assigned: INSTRUCTOR_PERSONA,
+    daysAgo: 9,
+    resolution:
+      "Good catch. The counter was reading the value from before the spend; it now updates in the same response that returns the hint.",
+    reopened: true,
+  },
 ];
 
 function toTicket(s: Seed) {
@@ -151,7 +179,7 @@ function toTicket(s: Seed) {
     assigned_by_user: s.assigned ? userMini(ADMIN_PERSONA) : null,
     assigned_at: s.assigned ? isoDaysAgo(s.daysAgo, 10, 0) : null,
     resolved_at: resolved ? isoDaysAgo(Math.max(0, s.daysAgo - 2), 16, 30) : null,
-    reopened_at: null,
+    reopened_at: s.reopened ? isoDaysAgo(Math.max(0, s.daysAgo - 4), 11, 0) : null,
     resolution_history: resolved && s.resolution
       ? [
           {
@@ -164,7 +192,16 @@ function toTicket(s: Seed) {
           },
         ]
       : [],
-    reopen_history: [],
+    reopen_history: s.reopened
+      ? [
+          {
+            details: "Happened again on a different quiz, reopening.",
+            attachments: [],
+            reopened_at: isoDaysAgo(Math.max(0, s.daysAgo - 4), 11, 0),
+            by: "user" as const,
+          },
+        ]
+      : [],
     created_at: isoDaysAgo(s.daysAgo, 9, 15),
     updated_at: isoDaysAgo(Math.max(0, s.daysAgo - 1), 11, 0),
   };
@@ -183,11 +220,42 @@ function mine() {
   return allTickets().filter((t) => t.raised_by?.id === STUDENT_PERSONA.id);
 }
 
-function page<T>(rows: T[], req: { query: URLSearchParams }) {
+type TicketRow = ReturnType<typeof toTicket>;
+
+/**
+ * Apply the filters the page sends.
+ *
+ * These were ignored, so every status tab rendered the same list — the page
+ * looked like it had stale data when it was really being handed the same
+ * unfiltered rows each time.
+ */
+function applyFilters(rows: TicketRow[], q: URLSearchParams): TicketRow[] {
+  const status = q.get("status");
+  const category = q.get("category");
+  const search = (q.get("search") ?? "").trim().toLowerCase();
+  const reopened = q.get("reopened");
+
+  return rows.filter((t) => {
+    if (status && t.status !== status) return false;
+    if (category && t.category !== category) return false;
+    if (reopened === "true" && !t.reopened_at) return false;
+    if (
+      search &&
+      !t.subject.toLowerCase().includes(search) &&
+      !t.description.toLowerCase().includes(search)
+    ) {
+      return false;
+    }
+    return true;
+  });
+}
+
+function page(rows: TicketRow[], req: { query: URLSearchParams }) {
+  const filtered = applyFilters(rows, req.query);
   const p = Number(req.query.get("page") ?? 1);
   const limit = Number(req.query.get("limit") ?? 20);
   const start = (p - 1) * limit;
-  return { count: rows.length, page: p, limit, results: rows.slice(start, start + limit) };
+  return { count: filtered.length, page: p, limit, results: filtered.slice(start, start + limit) };
 }
 
 defineRoutes(MODULE, {
@@ -195,12 +263,18 @@ defineRoutes(MODULE, {
   "GET /api/clients/:clientId/tickets/my/": (req) => page(mine(), req),
 
   /** Instructor queue is a bare array, not an envelope. Deliberately different. */
-  "GET /api/clients/:clientId/tickets/instructor/": () =>
-    allTickets().filter((t) => t.assigned_to_user?.id === INSTRUCTOR_PERSONA.id),
+  "GET /api/clients/:clientId/tickets/instructor/": (req) =>
+    applyFilters(
+      allTickets().filter((t) => t.assigned_to_user?.id === INSTRUCTOR_PERSONA.id),
+      req.query,
+    ),
 
   "GET /api/clients/:clientId/tickets/admin/": (req) => {
     const rows = allTickets();
     return {
+      // Counts are of the WHOLE queue, deliberately: they are the tab badges, so
+      // filtering them by the active tab would make every badge read its own
+      // count and the others zero.
       ...page(rows, req),
       open_count: rows.filter((t) => t.status === "OPEN").length,
       in_progress_count: rows.filter((t) => t.status === "IN_PROGRESS").length,

@@ -667,12 +667,12 @@ export function BulkEnrollmentDialog({
 
                 {adaptiveCourses.length > 0 && (
                   <FormControl fullWidth>
-                    <InputLabel>Adaptive courses</InputLabel>
+                    <InputLabel>Courses</InputLabel>
                     <Select
                       multiple
                       value={selectedAdaptiveCourseIds}
                       onChange={(e) => setSelectedAdaptiveCourseIds(e.target.value as number[])}
-                      label="Adaptive courses"
+                      label="Courses"
                       MenuProps={{
                         disablePortal: true,
                         PaperProps: { style: { maxHeight: 300 } },

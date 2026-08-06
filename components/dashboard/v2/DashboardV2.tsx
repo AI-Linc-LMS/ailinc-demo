@@ -52,7 +52,7 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
         </Box>
         <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", color: "#0f172a" }}>Start your adaptive journey</Typography>
         <Typography sx={{ color: "#64748b", mt: 1, mb: 2.5, maxWidth: 460, mx: "auto" }}>
-          You&apos;re not in an adaptive course yet. Adaptive courses adjust to your skill level as you learn - pick one to begin.
+          You&apos;re not in a course yet. Courses adjust to your skill level as you learn - pick one to begin.
         </Typography>
         <Button onClick={() => push("/adaptive-courses")} variant="contained" endIcon={<Icon icon="mdi:arrow-right" width={18} />}
           sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 3, py: 1.1, background: "linear-gradient(135deg,#7c3aed,#db2777)" }}>

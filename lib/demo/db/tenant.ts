@@ -25,7 +25,13 @@ import type { ClientInfo } from "@/lib/services/client.service";
 const ENABLED_FEATURES = [
   // Learner modules
   "dashboard",
-  "course",
+  // "course" is deliberately OFF.
+  //
+  // That flag is the LEGACY course module. This tenant is adaptive-native: the
+  // adaptive module is simply "Courses" here, so shipping both put two things
+  // called Courses in one sidebar pointing at different products. Switching the
+  // flag off is the product's own mechanism for this, so nothing is forked to
+  // achieve it.
   "adaptive_quiz",
   "assessment",
   "mock_interview",

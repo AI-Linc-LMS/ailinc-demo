@@ -293,8 +293,8 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
     tourSteps: [
       {
         targetId: "page-header",
-        title: "Adaptive Courses overview",
-        narration: "Welcome to your Adaptive Courses. These AI-personalised courses adjust to your level in real time, giving you instant feedback as you practice. Let me walk you through the page.",
+        title: "Courses overview",
+        narration: "Welcome to your courses. These AI-personalised courses adjust to your level in real time, giving you instant feedback as you practice. Let me walk you through the page.",
         placement: "bottom",
         icon: "mdi:book-education-outline",
         color: "#a78bfa",
@@ -382,7 +382,7 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
     tourSteps: [
       {
         targetId: "page-header",
-        title: "Adaptive Course Builder overview",
+        title: "Course Builder overview",
         narration: "This is your adaptive course library. Everything you generate from a prompt lives here, and you can spin up a brand-new AI course with the Generate button in the header.",
         placement: "bottom",
         icon: "mdi:robot-excited-outline",
@@ -422,12 +422,12 @@ export const PAGE_GUIDES: Record<string, PageGuideContent> = {
       },
       {
         title: "You're all set",
-        narration: "That's the Adaptive Course Builder. Describe a course, let the engine assemble it, then publish it to your learners when it's ready.",
+        narration: "That's the Course Builder. Describe a course, let the engine assemble it, then publish it to your learners when it's ready.",
         icon: "mdi:check-circle-outline",
         color: "#22c55e",
       },
     ],
-    headerTitle: "What you can do in the Adaptive Course Builder",
+    headerTitle: "What you can do in the Course Builder",
     headerSubtitle: "Generate AI-personalised courses from a prompt, then publish, organise, and track your whole library here.",
     features: [
       {
