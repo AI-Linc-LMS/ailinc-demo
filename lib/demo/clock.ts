@@ -9,7 +9,11 @@
  * All anchors round to start-of-day so a server render and the browser render
  * that hydrates it agree (they run at different instants, but almost always on
  * the same day). Only use `nowMs()` for values the UI is allowed to see change.
+ *
+ * Hours are TENANT wall-clock, not UTC — see `daysAgo`.
  */
+
+import { DEMO_TENANT } from "./config";
 
 /** Start of today, UTC. Stable across a session and across server/client. */
 export function todayStart(): Date {
@@ -24,15 +28,53 @@ export function nowMs(): number {
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** `days` before today (negative for the future), at the given hour/minute UTC. */
-export function daysAgo(days: number, hour = 9, minute = 0): Date {
-  const base = todayStart().getTime() - days * DAY_MS;
-  return new Date(base + hour * 3600_000 + minute * 60_000);
+/**
+ * Minutes the tenant zone runs ahead of UTC at the given instant.
+ *
+ * Derived through Intl rather than hard-coded, so it stays right for a tenant in
+ * a zone that observes DST. Asia/Kolkata does not, but the seed should not be the
+ * thing that breaks if the demo tenant ever moves.
+ */
+function tenantOffsetMinutes(at: Date): number {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: DEMO_TENANT.timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(at);
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  const asIfUtc = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"), get("second"));
+  return Math.round((asIfUtc - at.getTime() * 1) / 60_000);
 }
 
-/** `days` after today, at the given hour/minute UTC. */
+/**
+ * `days` before today (negative for the future), at the given hour/minute in the
+ * TENANT's zone.
+ *
+ * The hour used to be interpreted as UTC, which is not what any caller meant: a
+ * seed saying `hour: 18` means an evening class, and every one of them rendered
+ * at 11:30 PM for this Asia/Kolkata tenant because the page formats in the tenant
+ * zone. Converting here fixes all of them at once and matches what the call sites
+ * already read as.
+ */
+export function daysAgo(days: number, hour = 9, minute = 0): Date {
+  const base = todayStart().getTime() - days * DAY_MS;
+  const wallClock = base + hour * 3600_000 + minute * 60_000;
+  return new Date(wallClock - tenantOffsetMinutes(new Date(wallClock)) * 60_000);
+}
+
+/** `days` after today, at the given hour/minute in the tenant's zone. */
 export function daysAhead(days: number, hour = 9, minute = 0): Date {
   return daysAgo(-days, hour, minute);
+}
+
+/** `minutes` before now. For rows that must read as happening *right now*. */
+export function minutesAgo(minutes: number): Date {
+  return new Date(nowMs() - minutes * 60_000);
 }
 
 export function hoursAgo(hours: number): Date {
@@ -55,6 +97,21 @@ export function isoDaysAgo(days: number, hour = 9, minute = 0): string {
 
 export function isoDaysAhead(days: number, hour = 9, minute = 0): string {
   return iso(daysAhead(days, hour, minute));
+}
+
+/**
+ * Date-only variants, for fields the API declares as a DateField.
+ *
+ * Not interchangeable with the `iso*` pair. Callers slice these by character
+ * offset — the cohort card renders `start_date.slice(5)` to get "MM-DD" — so
+ * handing them a full timestamp printed "04-08T09:00:00.000Z" on the card.
+ */
+export function ymdDaysAgo(days: number): string {
+  return ymd(daysAgo(days));
+}
+
+export function ymdDaysAhead(days: number): string {
+  return ymd(daysAhead(days));
 }
 
 /** Inclusive list of `YYYY-MM-DD` for the last `count` days, oldest first. */

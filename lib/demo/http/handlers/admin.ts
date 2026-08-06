@@ -22,9 +22,10 @@ import {
   type DemoPerson,
 } from "../../db/people";
 import { COURSES } from "../../db/courses";
+import { overlay } from "../../db/overlay";
 import { DEMO_TENANT } from "../../config";
 import { clientInfo } from "../../db/tenant";
-import { iso, isoDaysAgo, isoDaysAhead, nowMs, ymd, daysAgo } from "../../clock";
+import { iso, isoDaysAgo, nowMs, ymd, ymdDaysAgo, ymdDaysAhead, daysAgo } from "../../clock";
 import { seededInt, seededPick, seededBool } from "../../random";
 
 const MODULE = "admin";
@@ -59,7 +60,7 @@ function resolveRange(key: string | null) {
   };
 }
 
-const SCOPE = { course_id: null, label: "All adaptive courses" };
+const SCOPE = { course_id: null, label: "All courses" };
 
 function deltaTile(value: number, previous: number, definition: string, extra: Record<string, number> = {}) {
   const diff = value - previous;
@@ -106,6 +107,240 @@ const COHORTS = [
   { id: 12, name: "Autumn 2026 — Interview Prep", status: "active", members: 22, capacity: 30 },
   { id: 13, name: "Spring 2026 — Full-Stack", status: "completed", members: 24, capacity: 30 },
 ];
+
+/**
+ * Everyone in the instructor directory, with the approval state each one is in.
+ *
+ * The teaching staff are approved; the two applicants and one rejection exist so
+ * an admin can actually work the queue — approve someone, reject someone, reopen
+ * a rejection — instead of looking at three tabs that all say the same thing.
+ */
+type InstructorDecision = { status: "approved" | "rejected" | "pending"; reason: string | null };
+
+/** Decisions the visitor made this session, keyed by profile id. */
+function instructorDecisions(): Record<string, InstructorDecision> {
+  return overlay.get<Record<string, InstructorDecision>>("instructors:decisions", {});
+}
+
+function decideInstructor(id: number, decision: InstructorDecision) {
+  overlay.update<Record<string, InstructorDecision>>("instructors:decisions", {}, (current) => ({
+    ...current,
+    [String(id)]: decision,
+  }));
+}
+
+function instructorDirectory() {
+  const approved = [INSTRUCTOR_PERSONA, ...FACULTY].map((p, i) => ({
+    person: p,
+    pending_status: "approved" as const,
+    daysAgo: 200 + i * 90,
+    reviewedDaysAgo: 195 + i * 90,
+    reason: null as string | null,
+  }));
+
+  // Applicants are not on the roster: they have signed up but nobody has let them
+  // in yet, so they own no courses and teach no cohorts.
+  const applicant = (id: number, fullName: string, email: string) => ({
+    id,
+    full_name: fullName,
+    email,
+    phone: `+91 ${seededInt(`appl:${id}:a`, 70000, 99999)}${seededInt(`appl:${id}:b`, 10000, 99999)}`,
+  });
+
+  const applicants = [
+    {
+      person: applicant(1201, "Nikhil Chatterjee", "nikhil.chatterjee@meridian.edu"),
+      pending_status: "pending" as const,
+      daysAgo: 4,
+      reviewedDaysAgo: null,
+      reason: null as string | null,
+    },
+    {
+      person: applicant(1202, "Sneha Balakrishnan", "sneha.balakrishnan@meridian.edu"),
+      pending_status: "pending" as const,
+      daysAgo: 9,
+      reviewedDaysAgo: null,
+      reason: null as string | null,
+    },
+    {
+      person: applicant(1203, "Arjun Sethi", "arjun.sethi@meridian.edu"),
+      pending_status: "rejected" as const,
+      daysAgo: 26,
+      reviewedDaysAgo: 21,
+      reason: "No verifiable teaching or industry references. Invited to reapply after a term of TA work.",
+    },
+  ];
+
+  const decisions = instructorDecisions();
+
+  return [...approved, ...applicants].map((r) => {
+    // A decision the visitor made this session wins over the seed, so approving
+    // someone actually moves them out of Pending and into Approved.
+    const decided = decisions[String(r.person.id)];
+    const status = decided?.status ?? r.pending_status;
+    const reason = decided ? decided.reason : r.reason;
+    const reviewedDaysAgo = decided ? 0 : r.reviewedDaysAgo;
+
+    return {
+    id: r.person.id,
+    email: r.person.email,
+    full_name: r.person.full_name,
+    phone_number: r.person.phone,
+    created_at: isoDaysAgo(r.daysAgo),
+    pending_status: status,
+    pending_reviewed_at: reviewedDaysAgo == null ? null : isoDaysAgo(reviewedDaysAgo),
+    pending_rejection_reason: reason,
+    assigned_courses:
+      status === "approved"
+        ? COURSES.filter((c) => c.instructor.id === r.person.id).map((c) => ({ id: c.id, title: c.title }))
+        : [],
+    // Null everywhere on purpose. There is no PDF in this repo to serve, and the
+    // table renders a dash for null — better than a CV link that 404s in front of
+    // a prospect.
+    instructor_cv_url: null,
+    };
+  });
+}
+
+/**
+ * Email jobs, shared by the list and the detail drawer.
+ *
+ * `total_emails` / `successful_count` / `failed_count` are the names the card
+ * reads; a job whose counts are absent renders a card with no numbers on it.
+ */
+interface EmailJobSeed {
+  taskId: string;
+  subject: string;
+  taskName: string;
+  // "sending" not "in_progress": the card prints the raw value with a CSS
+  // capitalize, so an underscored enum renders as "In_progress" on screen.
+  status: "completed" | "failed" | "sending";
+  daysAgo: number;
+  recipients: number;
+  failed: number;
+  assessmentId?: number;
+  assessmentTitle?: string;
+  body: string;
+}
+
+const EMAIL_JOBS: EmailJobSeed[] = [
+  {
+    taskId: "eml-9f21c4",
+    subject: "Your week 7 progress at Meridian",
+    taskName: "Weekly progress digest",
+    status: "completed",
+    daysAgo: 6,
+    recipients: 45,
+    failed: 0,
+    body: "A short summary of what you finished this week, what is still open, and the one thing worth picking up next.",
+  },
+  {
+    taskId: "eml-3b77ea",
+    subject: "Placement drive: Razorpay is on campus next Thursday",
+    taskName: "Placement announcement",
+    status: "completed",
+    daysAgo: 11,
+    recipients: 45,
+    failed: 0,
+    body: "Razorpay is hiring for Software Engineer I (Backend). Applications close Tuesday; the shortlist is announced the same evening.",
+  },
+  {
+    taskId: "eml-77a0d1",
+    subject: "Reminder: your capstone submission closes Friday",
+    taskName: "Deadline reminder",
+    status: "sending",
+    daysAgo: 0,
+    recipients: 28,
+    failed: 0,
+    body: "Submissions close at 6:00 PM on Friday. Late work is accepted for 48 hours at a 10% penalty.",
+  },
+  {
+    taskId: "eml-51c9b8",
+    subject: "Certificate ready: Full-Stack Web Development",
+    taskName: "Certificate issued",
+    status: "failed",
+    daysAgo: 19,
+    recipients: 24,
+    failed: 3,
+    body: "Your certificate is ready to download and share. The verification link stays live permanently.",
+  },
+];
+
+const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
+  {
+    taskId: "aeml-2d41f7",
+    subject: "Mid-Programme Assessment opens Monday 10:00 AM",
+    taskName: "Assessment invitation",
+    status: "completed",
+    daysAgo: 8,
+    recipients: 28,
+    failed: 0,
+    assessmentId: 901,
+    assessmentTitle: "Full-Stack Engineering — Mid-Programme Assessment",
+    body: "You have 90 minutes and one attempt. Run the device check before you start — it takes about a minute.",
+  },
+  {
+    taskId: "aeml-8c0e35",
+    subject: "Results published: Unit 2 Test",
+    taskName: "Result notification",
+    status: "completed",
+    daysAgo: 3,
+    recipients: 18,
+    failed: 0,
+    assessmentId: 903,
+    assessmentTitle: "Python for Data Science — Unit 2 Test",
+    body: "Your score and the per-question breakdown are on your assessment page.",
+  },
+  {
+    taskId: "aeml-4a6b19",
+    subject: "You have not started the Mid-Programme Assessment yet",
+    taskName: "Non-starter reminder",
+    status: "failed",
+    daysAgo: 5,
+    recipients: 6,
+    failed: 2,
+    assessmentId: 901,
+    assessmentTitle: "Full-Stack Engineering — Mid-Programme Assessment",
+    body: "The window closes Sunday at midnight. If something is blocking you, reply to this email.",
+  },
+];
+
+function emailJob(s: EmailJobSeed) {
+  return {
+    id: Number(s.taskId.replace(/\D/g, "").slice(0, 6)),
+    task_id: s.taskId,
+    task_name: s.taskName,
+    subject: s.subject,
+    status: s.status,
+    created_at: isoDaysAgo(s.daysAgo, 9, 0),
+    total_emails: s.recipients,
+    successful_count: s.recipients - s.failed,
+    failed_count: s.failed,
+    ...(s.assessmentId ? { assessment_id: s.assessmentId, assessment_title: s.assessmentTitle } : {}),
+  };
+}
+
+export function emailJobDetail(taskId: string) {
+  const s =
+    [...EMAIL_JOBS, ...ASSESSMENT_EMAIL_JOBS].find((j) => j.taskId === taskId) ?? EMAIL_JOBS[0];
+  const people = allStudents().slice(0, s.recipients);
+  const recipient = (p: DemoPerson) => ({ name: p.full_name, email: p.email });
+  // The failed ones come off the END of the list so they do not overlap the
+  // successful ones — a person appearing in both columns is a visible lie.
+  const failed = s.failed > 0 ? people.slice(-s.failed) : [];
+  const succeeded = people.slice(0, people.length - failed.length);
+
+  return {
+    ...emailJob(s),
+    emails: people.map(recipient),
+    email_body: s.body,
+    successful_emails: succeeded.map(recipient),
+    failed_emails: failed.map(recipient),
+    email_attachment_url: null,
+    email_attachment_name: null,
+    completed_at: s.status === "sending" ? null : isoDaysAgo(s.daysAgo, 9, 4),
+  };
+}
 
 const TICKET_CATEGORIES = [
   { label: "Content", value: 14 },
@@ -297,8 +532,8 @@ defineRoutes(MODULE, {
       cohort_id: c.id,
       name: c.name,
       status: c.status,
-      start_date: isoDaysAgo(120),
-      end_date: c.status === "completed" ? isoDaysAgo(40) : isoDaysAhead(90),
+      start_date: c.status === "completed" ? ymdDaysAgo(210) : ymdDaysAgo(120),
+      end_date: c.status === "completed" ? ymdDaysAgo(40) : ymdDaysAhead(90),
       members: c.members,
       active: Math.round(c.members * 0.74),
       completed: c.status === "completed" ? c.members : Math.round(c.members * 0.12),
@@ -464,27 +699,29 @@ defineRoutes(MODULE, {
       id: c.id,
       name: c.name,
       status: c.status,
-      start_date: isoDaysAgo(120),
-      end_date: c.status === "completed" ? isoDaysAgo(40) : isoDaysAhead(90),
+      start_date: c.status === "completed" ? ymdDaysAgo(210) : ymdDaysAgo(120),
+      end_date: c.status === "completed" ? ymdDaysAgo(40) : ymdDaysAhead(90),
       member_count: c.members,
       capacity: c.capacity,
       artifact_count: 1,
       created_at: isoDaysAgo(150),
     })),
 
-  "GET /admin-dashboard/api/clients/:clientId/instructors/": () =>
-    [INSTRUCTOR_PERSONA, ...FACULTY].map((p) => ({
-      id: p.id,
-      name: p.full_name,
-      email: p.email,
-      phone: p.phone,
-      profile_pic_url: p.profile_pic_url,
-      headline: p.headline,
-      is_active: true,
-      courses: COURSES.filter((c) => c.instructor.id === p.id).length,
-      students: seededInt(`istu:${p.id}`, 20, 80),
-      joined_at: isoDaysAgo(seededInt(`ij:${p.id}`, 200, 900)),
-    })),
+  /**
+   * The instructor directory, split by approval state.
+   *
+   * Two things were wrong here. The rows were named `name` / `phone` / `joined_at`
+   * where `InstructorRow` declares `full_name` / `phone_number` / `created_at`, so
+   * the table printed the email in the name column and dashes everywhere else. And
+   * the `status` query parameter was ignored, so Pending, Approved and Rejected
+   * each showed the same list — the same "stale data in every tab" the ticket page
+   * had.
+   */
+  "GET /admin-dashboard/api/clients/:clientId/instructors/": (req) => {
+    const status = req.query.get("status") ?? "pending";
+    const rows = instructorDirectory();
+    return status === "all" ? rows : rows.filter((r) => r.pending_status === status);
+  },
 
   "GET /instructor/api/admin/instructors/": () =>
     [INSTRUCTOR_PERSONA, ...FACULTY].map((p, i) => ({
@@ -501,7 +738,65 @@ defineRoutes(MODULE, {
       live_sessions: i === 0 ? [{ id: 501, title: "Live doubt-clearing: React rendering and effects" }] : [],
     })),
 
-  "GET /admin-dashboard/api/clients/:clientId/pending-instructors/": () => ({ results: [], count: 0 }),
+  /**
+   * The approval queue's actions. Without these the buttons were live but every
+   * click failed — worse than a disabled button, because the prospect tries it.
+   * Each writes to the overlay, so the row really does move tabs.
+   */
+  "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/approve/": (req) => {
+    const id = Number(req.params.profileId);
+    decideInstructor(id, { status: "approved", reason: null });
+    return {
+      detail: "Instructor approved.",
+      profile: instructorDirectory().find((r) => r.id === id),
+    };
+  },
+
+  "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/reject/": (req) => {
+    const id = Number(req.params.profileId);
+    const reason = String(req.body?.reason ?? "").trim() || null;
+    decideInstructor(id, { status: "rejected", reason });
+    return {
+      detail: "Instructor rejected.",
+      profile: instructorDirectory().find((r) => r.id === id),
+    };
+  },
+
+  "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/reopen/": (req) => {
+    const id = Number(req.params.profileId);
+    decideInstructor(id, { status: "pending", reason: null });
+    return {
+      detail: "Application reopened.",
+      profile: instructorDirectory().find((r) => r.id === id),
+    };
+  },
+
+  "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/assign-courses/": (req) => {
+    const ids = Array.isArray(req.body?.course_ids) ? (req.body.course_ids as number[]) : [];
+    return { detail: `Assigned ${ids.length} ${ids.length === 1 ? "course" : "courses"}.` };
+  },
+
+  "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/promote/": (req) => ({
+    detail: `Promoted to ${String(req.body?.new_role ?? "admin").replace(/_/g, " ")}.`,
+  }),
+
+  "POST /admin-dashboard/api/clients/:clientId/instructors/:profileId/remove/": () => ({
+    detail: "Instructor removed. They keep their account as a student.",
+  }),
+
+  /** `{ managed_courses, assigned_courses, all_scoped }` — the "view courses" dialog. */
+  "GET /admin-dashboard/api/clients/:clientId/instructors/:profileId/courses/": (req) => {
+    const id = Number(req.params.profileId);
+    const owned = COURSES.filter((c) => c.instructor.id === id).map((c) => ({ id: c.id, title: c.title }));
+    return {
+      managed_courses: owned,
+      assigned_courses: owned,
+      all_scoped: COURSES.map((c) => ({ id: c.id, title: c.title })),
+    };
+  },
+
+  "GET /admin-dashboard/api/clients/:clientId/pending-instructors/": () =>
+    instructorDirectory().filter((r) => r.pending_status === "pending"),
 
   // ── Assessments, jobs, emails, tickets ──────────────────────────────────
   "GET /admin-dashboard/api/clients/:clientId/assessments/": () => [
@@ -512,8 +807,34 @@ defineRoutes(MODULE, {
   ],
 
   "GET /admin-dashboard/api/clients/:clientId/assessment-company-catalog/": () => ({ results: [], count: 0 }),
-  "GET /admin-dashboard/api/clients/:clientId/assessment-email-jobs/list": () => ({ results: [], count: 0 }),
-  "GET /admin-dashboard/api/clients/:clientId/email-jobs/": () => ({ results: [], count: 0 }),
+
+  /**
+   * Sent mail, for both tabs of /admin/emails.
+   *
+   * These returned empty, so the module read as "nothing has ever been sent here"
+   * — which for a communications tool is indistinguishable from it not working.
+   * The spread is deliberate: a completed send, one still going out, and one that
+   * partly failed, because the failure card is the interesting one.
+   */
+  "GET /admin-dashboard/api/clients/:clientId/email-jobs/": () => EMAIL_JOBS.map(emailJob),
+
+  "GET /admin-dashboard/api/clients/:clientId/assessment-email-jobs/list": () =>
+    ASSESSMENT_EMAIL_JOBS.map(emailJob),
+
+  "GET /admin-dashboard/api/clients/:clientId/assessment-email-jobs/:taskId": (req) =>
+    emailJobDetail(String(req.params.taskId)),
+
+  "POST /admin-dashboard/api/clients/:clientId/assessment-email-jobs/:taskId/retry/": (req) => ({
+    task_id: String(req.params.taskId),
+    status: "queued",
+    message: "Retrying the failed recipients.",
+  }),
+
+  "POST /admin-dashboard/api/clients/:clientId/email-resend-jobs/:taskId/": (req) => ({
+    task_id: String(req.params.taskId),
+    status: "queued",
+    message: "Resend queued.",
+  }),
 
   /**
    * The admin mock-interview list is `{ interviews, pagination, filters_applied }`,

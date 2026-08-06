@@ -13,6 +13,7 @@
  */
 
 import { defineRoutes } from "../router";
+import { emailJobDetail } from "./admin";
 import { notFound } from "../types";
 import { COURSES, courseById, topicsOf } from "../../db/courses";
 import {
@@ -23,7 +24,7 @@ import {
   type DemoPerson,
 } from "../../db/people";
 import { companyLogoFor } from "../../db/avatar";
-import { iso, isoDaysAgo, isoDaysAhead, nowMs, ymd, daysAgo } from "../../clock";
+import { iso, isoDaysAgo, isoDaysAhead, nowMs, ymd, ymdDaysAgo, ymdDaysAhead, daysAgo } from "../../clock";
 import { seededInt, seededPick } from "../../random";
 
 const MODULE = "details";
@@ -55,8 +56,8 @@ defineRoutes(MODULE, {
       name: c.name,
       description: `${c.name} runs the ${c.courseIds.map((id) => courseById(id)?.title).join(" and ")} track.`,
       status: c.status,
-      start_date: isoDaysAgo(120),
-      end_date: c.status === "completed" ? isoDaysAgo(40) : isoDaysAhead(90),
+      start_date: c.status === "completed" ? ymdDaysAgo(210) : ymdDaysAgo(120),
+      end_date: c.status === "completed" ? ymdDaysAgo(40) : ymdDaysAhead(90),
       capacity: c.capacity,
       member_count: members.length,
       created_at: isoDaysAgo(150),
@@ -449,27 +450,17 @@ defineRoutes(MODULE, {
     };
   },
 
-  // ── Email job detail ────────────────────────────────────────────────────
-  "GET /admin-dashboard/api/clients/:clientId/email-jobs/:jobId/": (req) => ({
-    id: Number(req.params.jobId),
-    subject: "Your week 7 progress at Meridian",
-    status: "completed",
-    created_at: isoDaysAgo(6, 9, 0),
-    completed_at: isoDaysAgo(6, 9, 4),
-    total_recipients: 45,
-    sent: 45,
-    failed: 0,
-    opened: 31,
-    clicked: 12,
-    recipients: STUDENTS.slice(0, 12).map((p, i) => ({
-      id: 8300 + i,
-      email: p.email,
-      name: p.full_name,
-      status: "sent",
-      opened: i % 3 !== 0,
-      sent_at: isoDaysAgo(6, 9, 2),
-    })),
-  }),
+  /**
+   * Email job detail.
+   *
+   * Delegates to the same seed the list uses. It previously invented its own
+   * fields (`total_recipients`, `sent`, `recipients`) where `EmailJobDetail`
+   * declares `emails` / `successful_emails` / `failed_emails`, so the drawer
+   * opened onto a job with no recipients and no counts — and it was one fixed
+   * job regardless of which card you clicked.
+   */
+  "GET /admin-dashboard/api/clients/:clientId/email-jobs/:jobId/": (req) =>
+    emailJobDetail(String(req.params.jobId)),
 
   // ── Certificate config for a course ─────────────────────────────────────
   "GET /admin-dashboard/api/clients/:clientId/courses/:courseId/view-course-details/": (req) => {

@@ -15,7 +15,7 @@ import { defineRoutes } from "../router";
 import { INSTRUCTOR_PERSONA, FACULTY } from "../../db/people";
 import { COURSES } from "../../db/courses";
 import { overlay } from "../../db/overlay";
-import { iso, isoDaysAgo, isoDaysAhead, nowMs, ymd, daysAgo, todayStart } from "../../clock";
+import { iso, isoDaysAgo, isoDaysAhead, minutesAgo, nowMs, ymd, daysAgo, todayStart } from "../../clock";
 import { seededInt } from "../../random";
 
 const MODULE = "live-sessions";
@@ -126,7 +126,15 @@ const SESSIONS: DemoSession[] = [
   },
 ];
 
+/** How long the session marked `live` has been running when a visitor arrives. */
+const LIVE_STARTED_MINUTES_AGO = 22;
+
 function sessionTime(s: DemoSession): string {
+  // The live one is anchored to NOW, not to a fixed hour. A prospect opening the
+  // demo at 10am would otherwise see a card badged LIVE next to a 6pm start time,
+  // and any page that derives "is it live?" from the clock would disagree with
+  // the badge outright.
+  if (s.live) return iso(minutesAgo(LIVE_STARTED_MINUTES_AGO));
   return s.dayOffset >= 0
     ? isoDaysAhead(s.dayOffset, s.hour, s.minute)
     : isoDaysAgo(Math.abs(s.dayOffset), s.hour, s.minute);
@@ -162,7 +170,10 @@ function toApi(s: DemoSession) {
     zoom_recording_url: past ? `/live-sessions?session=${s.id}&recording=1` : null,
     zoom_meeting_ended_at: past ? sessionTime(s) : null,
     meeting_status: state,
-    time_remaining_minutes: state === "live" ? 24 : 0,
+    // Derived, not a literal: the countdown has to agree with the start time and
+    // the duration on the same card.
+    time_remaining_minutes:
+      state === "live" ? Math.max(0, s.durationMinutes - LIVE_STARTED_MINUTES_AGO) : 0,
     my_attendance: past ? { attended: Boolean(s.attended), duration_seconds: s.attended ? s.durationMinutes * 60 - 180 : 0 } : null,
     zoom_ai_summary: s.summary ?? null,
     zoom_transcript_synced_at: past ? sessionTime(s) : null,
