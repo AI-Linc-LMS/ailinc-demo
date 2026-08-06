@@ -44,12 +44,31 @@ export interface DemoCourse {
   instructor: DemoPerson;
   /** Whether the signed-in student persona is enrolled. */
   enrolled: boolean;
-  /** Overall completion for the enrolled student, 0-100. */
+  /**
+   * Overall completion for the enrolled student, 0-100.
+   *
+   * DERIVED from the topics below, never hand-set. When it was a literal, the
+   * journey board reported "62% complete" beside "9 / 21 steps done" — 43% —
+   * because the two came from different places. Computing it from the topics
+   * means the course card, the readiness ring, the progress bar and the step
+   * count are all the same number by construction.
+   */
   completion: number;
   /** Accent used for the generated card art. */
   accent: [string, string];
   modules: DemoModule[];
-  /** Days from today until the current week's work is due. Null = self-paced. */
+  /**
+   * Days from today until the current week's work is due. Null = self-paced.
+   *
+   * Null on every course, deliberately. The journey board runs unlocked
+   * (`contentLocked: false`), whose banner reads "no due dates, no late
+   * penalties" — so a dashboard card promising "Due Aug 10 - 4 days left" for
+   * the same course contradicted it two clicks away. Meridian is a self-paced
+   * institution; deadlines are worth demonstrating on the admin side, where an
+   * administrator sets them, rather than faked on the learner side.
+   *
+   * The field stays because the shape is real and an admin-side demo may set it.
+   */
   dueInDays: number | null;
   certificateThreshold: number;
   enrolledCount: number;
@@ -100,7 +119,10 @@ function courseModule(title: string, summary: string, topics: DemoTopic[]): Demo
   return { id: moduleSeq++, title, summary, topics };
 }
 
-export const COURSES: readonly DemoCourse[] = [
+/** A course as authored: everything except the completion we compute from it. */
+type CourseSeed = Omit<DemoCourse, "completion">;
+
+const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 201,
     title: "Full-Stack Web Development",
@@ -116,9 +138,8 @@ export const COURSES: readonly DemoCourse[] = [
     tags: ["React", "Node.js", "PostgreSQL", "TypeScript", "REST"],
     instructor: INSTRUCTOR_PERSONA,
     enrolled: true,
-    completion: 62,
     accent: ["#6366f1", "#a855f7"],
-    dueInDays: 3,
+    dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 412,
     rating: 4.7,
@@ -191,9 +212,8 @@ export const COURSES: readonly DemoCourse[] = [
     tags: ["Python", "pandas", "scikit-learn", "Statistics", "Visualisation"],
     instructor: FACULTY[0],
     enrolled: true,
-    completion: 38,
     accent: ["#0ea5e9", "#22d3ee"],
-    dueInDays: 6,
+    dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 358,
     rating: 4.8,
@@ -254,7 +274,6 @@ export const COURSES: readonly DemoCourse[] = [
     tags: ["Algorithms", "Problem Solving", "Interviews", "Complexity"],
     instructor: INSTRUCTOR_PERSONA,
     enrolled: true,
-    completion: 21,
     accent: ["#f43f5e", "#f97316"],
     dueInDays: null,
     certificateThreshold: 75,
@@ -323,7 +342,6 @@ export const COURSES: readonly DemoCourse[] = [
     tags: ["AWS", "Docker", "CI/CD", "Terraform", "Observability"],
     instructor: FACULTY[1],
     enrolled: false,
-    completion: 0,
     accent: ["#f59e0b", "#f43f5e"],
     dueInDays: null,
     certificateThreshold: 70,
@@ -362,7 +380,6 @@ export const COURSES: readonly DemoCourse[] = [
     tags: ["SQL", "PostgreSQL", "Data Modelling", "Performance"],
     instructor: FACULTY[2],
     enrolled: false,
-    completion: 0,
     accent: ["#10b981", "#0ea5e9"],
     dueInDays: null,
     certificateThreshold: 65,
@@ -387,6 +404,24 @@ export const COURSES: readonly DemoCourse[] = [
     ],
   },
 ];
+
+/**
+ * Mean progress across a course's topics.
+ *
+ * A plain average over topics (rather than weighting by item count) is what the
+ * step counter on the journey board also counts, so the headline percentage and
+ * "N of M steps" move together.
+ */
+function deriveCompletion(course: CourseSeed): number {
+  const topics = course.modules.flatMap((m) => m.topics);
+  if (topics.length === 0) return 0;
+  return Math.round(topics.reduce((sum, t) => sum + t.progress, 0) / topics.length);
+}
+
+export const COURSES: readonly DemoCourse[] = COURSE_SEEDS.map((course) => ({
+  ...course,
+  completion: deriveCompletion(course),
+}));
 
 export function courseById(id: number): DemoCourse | undefined {
   return COURSES.find((c) => c.id === id);

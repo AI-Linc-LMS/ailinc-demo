@@ -36,14 +36,20 @@ const profileKey = (id: number) => `profile:${id}`;
 function profilePayload(person: DemoPerson) {
   const seeded = profileFor(person);
   const edits = overlay.get<Record<string, unknown>>(profileKey(person.id), {});
-  const merged = { ...seeded, ...edits };
+  // Spread order matters: the visitor's edits win over the seed, but the
+  // identity fields below are re-derived afterwards so an edit cannot desync
+  // the two spellings of the same value (`username` vs `user_name`).
+  const merged: Record<string, unknown> = { ...seeded, ...edits };
+
+  const str = (key: string, fallback: string): string =>
+    typeof merged[key] === "string" && merged[key] ? (merged[key] as string) : fallback;
 
   return {
     ...merged,
     id: person.id,
-    user_name: (merged as any).username ?? person.user_name,
-    phone: (merged as any).phone_number ?? person.phone,
-    profile_pic_url: (merged as any).profile_picture ?? person.profile_pic_url,
+    user_name: str("username", person.user_name),
+    phone: str("phone_number", person.phone),
+    profile_pic_url: str("profile_picture", person.profile_pic_url),
     role: person.role,
     is_profile_active: true,
   };

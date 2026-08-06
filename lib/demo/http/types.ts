@@ -13,7 +13,15 @@ export interface DemoRequest {
   /** Values captured from `:name` segments of the matched route pattern. */
   params: Record<string, string>;
   query: URLSearchParams;
-  /** Parsed JSON body, or the raw FormData for uploads. */
+  /**
+   * Parsed JSON body, or the raw FormData for uploads.
+   *
+   * `any` rather than `unknown`: handlers read request fields directly
+   * (`req.body?.email`), which is the whole ergonomic point of this layer, and
+   * `unknown` would force a cast in every one of them. The request body is
+   * genuinely untyped at this boundary — it is whatever the caller sent.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: any;
   headers: Record<string, string>;
   /** Claims from the demo access token, or null when signed out. */
@@ -42,7 +50,11 @@ export class DemoHttpError extends Error {
     readonly status: number,
     readonly body: unknown = { detail: "Demo error" },
   ) {
-    super(typeof body === "object" && body && "detail" in body ? String((body as any).detail) : `HTTP ${status}`);
+    super(
+      typeof body === "object" && body !== null && "detail" in body
+        ? String((body as { detail: unknown }).detail)
+        : `HTTP ${status}`,
+    );
     this.name = "DemoHttpError";
   }
 }

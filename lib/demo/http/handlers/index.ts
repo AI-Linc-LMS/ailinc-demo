@@ -11,6 +11,7 @@ import "./adaptive-courses";
 import "./client";
 import "./courses";
 import "./dashboard";
+import "./journey";
 
 /** Imported for its side effects only; nothing to export. */
 export {};
