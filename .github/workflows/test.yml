@@ -47,3 +47,13 @@ jobs:
       - run: npm run typecheck
 
       - run: npm test
+
+      # Build on a FRESH CHECKOUT, which is the only thing that catches a file
+      # that exists on a developer's disk but was never committed. That is
+      # exactly how the icon bundle broke a deploy: .gitignore silently excluded
+      # lib/demo/icons/, `git add -A` reported nothing, and every local build
+      # passed because the file was sitting there untracked.
+      #
+      # Netlify runs the same two commands. Failing here means failing before
+      # the live demo does, which is the whole point.
+      - run: npm run build
