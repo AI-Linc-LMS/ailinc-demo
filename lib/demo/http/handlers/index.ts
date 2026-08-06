@@ -13,6 +13,7 @@ import "./content";
 import "./courses";
 import "./dashboard";
 import "./journey";
+import "./quiz";
 
 /** Imported for its side effects only; nothing to export. */
 export {};
