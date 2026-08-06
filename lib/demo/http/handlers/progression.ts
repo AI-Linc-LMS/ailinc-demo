@@ -11,7 +11,7 @@
 
 import { defineRoutes } from "../router";
 import { STUDENT_PERSONA, rankedLearners } from "../../db/people";
-import { activeDates, leaderboardRows, myRank } from "../../db/learner";
+import { activeDates, leaderboardRows } from "../../db/learner";
 import { overlay } from "../../db/overlay";
 import { currentMonth, daysInMonth, iso, isoDaysAgo, nowMs, todayStart, ymd, daysAgo } from "../../clock";
 import { seededInt } from "../../random";
