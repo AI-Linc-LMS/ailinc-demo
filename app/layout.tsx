@@ -29,6 +29,7 @@ import { PointsPrimer } from "@/components/common/PointsPrimer";
 import { TourProvider } from "@/components/community/TourProvider";
 import { config } from "@/lib/config";
 import { themeToCssBlock } from "@/lib/theme/themeToCssBlock";
+import { OfflineAssets } from "@/components/demo/OfflineAssets";
 
 /* ✅ Metadata (SEO) */
 export async function generateMetadata(): Promise<Metadata> {
@@ -96,18 +97,18 @@ export default async function RootLayout({
         <link rel="icon" href={favicon} />
         <link rel="shortcut icon" href={favicon} />
         <link rel="apple-touch-icon" href={favicon} />
-        <link
-          rel="preconnect"
-          href="https://api.fontshare.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap"
-        />
+        {/* DEMO REPO ONLY: Satoshi is self-hosted from /public/fonts rather than
+            pulled from api.fontshare.com. This demo has to render identically on
+            conference wifi, a hotel network, or no network at all, and a webfont
+            that arrives late is the most visible way for a prototype to look
+            unfinished. Regenerate with `npm run build:fonts`. */}
+        <link rel="stylesheet" href="/fonts/satoshi.css" />
       </head>
 
       <body className={`antialiased`} suppressHydrationWarning>
+        {/* DEMO REPO ONLY: registers the bundled Iconify sets before first paint,
+            so no icon is ever fetched from api.iconify.design. */}
+        <OfflineAssets />
         <AuthProvider>
           <ErrorBoundary>
             <I18nProvider clientId={client?.id}>

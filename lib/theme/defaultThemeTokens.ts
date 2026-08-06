@@ -66,8 +66,13 @@ export const DEFAULT_THEME_FLAT: Record<string, string> = {
   accentIndigoDark: "#4f46e5",
   surfaceIndigoLight: "#eef2ff",
   chartArticles: "#234256",
-  fontImportUrl:
-    "https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap",
+  // DEMO REPO ONLY: empty, not the Fontshare URL upstream uses.
+  //
+  // ClientFontLink injects a <link> for whatever this resolves to, and the
+  // tenant's own empty value still fell back to this default. Satoshi is
+  // self-hosted from /public/fonts (see app/layout.tsx), so the demo needs no
+  // font CDN and renders identically with no network at all.
+  fontImportUrl: "",
   fontFamilySans:
     '"Satoshi","Satoshi Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
 };

@@ -89,9 +89,15 @@ export const DEMO_PERSONAS: readonly DemoPersona[] = [
 export const DEMO_STORAGE_KEY = "ailinc-demo-state-v1";
 
 /**
- * Simulated network latency, in milliseconds. A fake backend that answers in 0ms
- * feels wrong — skeletons never paint, and the app looks like it is rendering
- * hardcoded HTML. A small delay makes the prototype read as a real system while
- * still being faster than production.
+ * Simulated network latency, in milliseconds.
+ *
+ * Zero. An earlier version added 90-260ms so loading skeletons would paint and
+ * the app would "feel like a real system" — which was the wrong goal. The demo's
+ * job is to make the product feel fast, and a prospect clicking through modules
+ * should never wait on latency we invented. Instant navigation is itself part of
+ * what is being sold.
+ *
+ * Left configurable because a future recorded walkthrough might want the
+ * skeleton states visible on purpose.
  */
-export const DEMO_LATENCY_MS = { min: 90, max: 260 } as const;
+export const DEMO_LATENCY_MS = { min: 0, max: 0 } as const;

@@ -17,7 +17,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "check:lockfile": "node scripts/check-lockfile-platforms.mjs"
+    "check:lockfile": "node scripts/check-lockfile-platforms.mjs",
+    "build:icons": "node scripts/build-icon-bundle.mjs",
+    "build:fonts": "node scripts/fetch-fonts.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",
@@ -89,6 +91,8 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@iconify-json/logos": "^1.2.12",
+    "@iconify-json/mdi": "^1.2.3",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.1",

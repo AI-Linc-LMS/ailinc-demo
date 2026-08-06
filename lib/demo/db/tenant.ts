@@ -70,6 +70,11 @@ const ENABLED_FEATURES = [
  * login copy are actually tenant-controlled.
  */
 const THEME_SETTINGS: Record<string, string> = {
+  // Empty on purpose. `ClientFontLink` injects a <link> for whatever this holds,
+  // and the platform default points at api.fontshare.com. Satoshi is served from
+  // /public/fonts instead, so the demo needs no font CDN and renders identically
+  // with the network unplugged.
+  fontImportUrl: "",
   loginHeroSlogan: "Learn with intent. Graduate job-ready.",
   loginHeroSloganFontSize: "30px",
   loginHeroSloganFontWeight: "600",

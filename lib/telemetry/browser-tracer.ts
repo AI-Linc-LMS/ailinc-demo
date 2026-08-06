@@ -6,6 +6,7 @@
  */
 
 import { config } from "@/lib/config";
+import { DEMO_MODE } from "@/lib/demo/config";
 
 const OTEL_DEBUG = process.env.NEXT_PUBLIC_OTEL_DEBUG === "true";
 
@@ -88,6 +89,15 @@ async function sendFailureAlert(payload: FailureAlertPayload): Promise<void> {
 
 export async function initBrowserTracer() {
   if (typeof window === "undefined") return;
+
+  // DEMO REPO ONLY: bail before the dynamic imports below.
+  //
+  // There is no backend to correlate traces with, and the exporter would post
+  // spans to an OTLP collector that is not running. Returning here also keeps
+  // the entire OpenTelemetry SDK out of the page: it is several hundred KB of
+  // JavaScript pulled in on first load, which is exactly the kind of cost a
+  // prototype sold on how fast it feels should not be paying.
+  if (DEMO_MODE) return;
 
   const { WebTracerProvider } = await import(
     "@opentelemetry/sdk-trace-web"

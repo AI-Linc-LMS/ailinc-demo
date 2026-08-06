@@ -18,6 +18,24 @@ npm run dev          # → http://localhost:3000
 
 No `.env`, no backend, no database. It runs offline.
 
+### Genuinely offline, genuinely instant
+
+The demo makes **no network requests at all** once the page has loaded. Not to a backend,
+not to a CDN. Verified by blocking every non-local host in the browser and confirming the
+app still renders with the correct typeface, every icon, and full content.
+
+| Was | Now |
+|---|---|
+| API calls to the LMS backend | Served in-browser by the demo adapter |
+| Satoshi from `api.fontshare.com` | Self-hosted in `public/fonts` (`npm run build:fonts`) |
+| Icons from `api.iconify.design` | 656 icons bundled locally (`npm run build:icons`) |
+| OpenTelemetry span export | Disabled in demo mode, and its SDK never loads |
+| 90-260ms simulated latency | Zero. Navigation is instant |
+
+That matters because this gets shown on conference wifi and in hotel meeting rooms. A
+webfont that arrives late, or icons that pop in one by one, is the most visible way for a
+prototype to look unfinished.
+
 ---
 
 ## Signing in

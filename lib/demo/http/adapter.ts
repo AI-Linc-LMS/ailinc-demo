@@ -48,10 +48,17 @@ function recordMiss(method: string, path: string): void {
   }
 }
 
-/** Small, jittered delay so skeletons and spinners actually paint. */
-function simulateLatency(path: string): Promise<void> {
+/**
+ * Optional artificial delay. Zero by default (see DEMO_LATENCY_MS).
+ *
+ * At zero this returns synchronously rather than scheduling a 0ms timer: a
+ * setTimeout still costs a macrotask per request, and a page that fans out a
+ * dozen calls would pay a dozen extra frames for nothing.
+ */
+function simulateLatency(path: string): Promise<void> | null {
   const { min, max } = DEMO_LATENCY_MS;
-  // Seeded off the path so a given endpoint feels consistent run to run, rather
+  if (max <= 0) return null;
+  // Seeded off the path so a given endpoint is consistent run to run, rather
   // than one card randomly lagging on every reload.
   let h = 0;
   for (let i = 0; i < path.length; i++) h = (h * 31 + path.charCodeAt(i)) >>> 0;
@@ -187,7 +194,8 @@ export const demoAdapter: AxiosAdapter = async (config) => {
   const method = (config.method ?? "get").toUpperCase() as HttpMethod;
   const path = toPath(config);
 
-  await simulateLatency(path);
+  const delay = simulateLatency(path);
+  if (delay) await delay;
 
   const match = matchRoute(method, path);
   if (!match) {
