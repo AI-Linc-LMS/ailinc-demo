@@ -25,7 +25,16 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Error caught by boundary
+    // Log the component stack in development.
+    //
+    // This swallowed everything, which meant a crash surfaced only as
+    // "Something went wrong" with a one-line message and no way to tell WHICH
+    // component threw. Debugging a render error then becomes a search of every
+    // component on the route. React hands us the stack here; printing it in dev
+    // costs nothing and turns that search into a single line.
+    if (process.env.NODE_ENV !== "production") {
+      console.error("[ErrorBoundary]", error?.message, "\n", errorInfo?.componentStack);
+    }
   }
 
   render() {

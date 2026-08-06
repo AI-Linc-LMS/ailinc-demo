@@ -80,6 +80,15 @@ export function DemoCredentialsPanel({ onSelect, busy }: DemoCredentialsPanelPro
               alignItems: "center",
               gap: 1.5,
               width: "100%",
+              // border-box, explicitly. A <button> does not pick up the app's
+              // box-sizing reset, so `width: 100%` plus padding made every card
+              // wider than the panel containing it and they spilled out of its
+              // right edge.
+              boxSizing: "border-box",
+              // Without this a long blurb can push the flex item past its
+              // container instead of ellipsing, which is the same overflow
+              // arriving by a different route.
+              minWidth: 0,
               textAlign: "start",
               p: 1.25,
               border: "none",
@@ -123,10 +132,14 @@ export function DemoCredentialsPanel({ onSelect, busy }: DemoCredentialsPanelPro
                   fontFamily: FONT,
                   color: AUTH.inkFaint,
                   letterSpacing: 0,
-                  // Long blurbs must not push the chevron off the row on a phone.
+                  // Wrap to two lines rather than ellipsing on one. A single
+                  // nowrap line truncated to "Courses, assessments, mock
+                  // interviews, jobs…" in the narrow column, which hides the
+                  // very list that tells a prospect what the role covers.
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
                   overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
                 }}
               >
                 {persona.blurb}

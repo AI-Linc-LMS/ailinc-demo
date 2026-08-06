@@ -12,8 +12,7 @@
 import { defineRoutes } from "../router";
 import { STUDENT_PERSONA, rankedLearners } from "../../db/people";
 import { activeDates, leaderboardRows } from "../../db/learner";
-import { overlay } from "../../db/overlay";
-import { currentMonth, daysInMonth, iso, isoDaysAgo, nowMs, todayStart, ymd, daysAgo } from "../../clock";
+import { currentMonth, daysInMonth, iso, nowMs, todayStart, ymd, daysAgo } from "../../clock";
 import { seededInt } from "../../random";
 
 const MODULE = "progression";
@@ -176,39 +175,6 @@ defineRoutes(MODULE, {
       total: 210,
     },
   }),
-
-  /** Support tickets, including anything filed from the help menu this session. */
-  "GET /api/clients/:clientId/tickets/my/": () => {
-    const created = overlay.get<Array<Record<string, unknown>>>("tickets:new", []);
-    const seeded = [
-      {
-        id: 4821,
-        subject: "Video on the React module buffers on college wifi",
-        description:
-          "The lesson video pauses every few seconds on campus. It is fine at home, so it may be our network, but flagging it in case others hit it.",
-        issue_type: "technical",
-        status: "in_progress",
-        priority: "medium",
-        created_at: isoDaysAgo(3, 14, 20),
-        updated_at: isoDaysAgo(1, 10, 5),
-        assigned_to: "Support team",
-        replies: 2,
-      },
-      {
-        id: 4788,
-        subject: "Certificate name spelling",
-        description: "My certificate shows my name without the middle initial. Can that be corrected before I share it?",
-        issue_type: "account",
-        status: "resolved",
-        priority: "low",
-        created_at: isoDaysAgo(12, 9, 0),
-        updated_at: isoDaysAgo(10, 16, 30),
-        assigned_to: "Priya Nair",
-        replies: 3,
-      },
-    ];
-    return [...created, ...seeded];
-  },
 
   /**
    * Purchase history. Empty on purpose: every course in this tenant is free, so

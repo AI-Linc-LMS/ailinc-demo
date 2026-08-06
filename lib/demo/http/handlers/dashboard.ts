@@ -26,7 +26,6 @@ import {
 import { nextTopic } from "../../db/courses";
 import { STUDENT_PERSONA, rankedLearners } from "../../db/people";
 import { currentMonth, daysInMonth, iso, isoDaysAgo, nowMs, ymd, daysAgo } from "../../clock";
-import { overlay } from "../../db/overlay";
 import { seededInt } from "../../random";
 
 const MODULE = "dashboard";
@@ -478,11 +477,4 @@ defineRoutes(MODULE, {
     };
   },
 
-  /** Notification bell. Unread count reflects anything the visitor has read. */
-  "GET /notification/api/clients/:clientId/notifications/unread-count/": () => {
-    const read = overlay.get<number[]>("notifications:read", []);
-    const allRead = overlay.get<boolean>("notifications:allRead", false);
-    const unread = allRead ? 0 : Math.max(0, 4 - read.length);
-    return { unread_count: unread, count: unread };
-  },
 });
