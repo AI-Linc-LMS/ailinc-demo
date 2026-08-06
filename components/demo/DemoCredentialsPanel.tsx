@@ -152,7 +152,7 @@ export function DemoCredentialsPanel({ onSelect, busy }: DemoCredentialsPanelPro
           mt: 1.5,
         }}
       >
-        Or sign in manually — password{" "}
+        Or sign in manually - password{" "}
         <Box component="span" sx={{ fontWeight: 600, color: AUTH.inkMuted }}>
           {DEMO_PASSWORD}
         </Box>

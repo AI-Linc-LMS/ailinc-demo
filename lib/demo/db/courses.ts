@@ -130,7 +130,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     description:
       "Build and ship a production web application from an empty folder to a deployed URL. " +
       "You will write the API, model the database, build the interface, secure it with real " +
-      "authentication, and put it behind CI — the same path a working engineer takes on their " +
+      "authentication, and put it behind CI - the same path a working engineer takes on their " +
       "first week at a product company.",
     slug: "full-stack-web-development",
     difficulty: "Intermediate",

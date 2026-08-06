@@ -134,7 +134,7 @@ function board(course: DemoCourse): JourneyBoard {
       certificateThreshold: course.certificateThreshold,
       certificateEnabled: true,
       certificateTemplateUrl: null,
-      certificateTitle: `${course.title} — Certificate of Completion`,
+      certificateTitle: `${course.title} - Certificate of Completion`,
       estHours: course.durationHours,
       sections: course.modules.length,
       items: topics.length,
@@ -158,7 +158,7 @@ function board(course: DemoCourse): JourneyBoard {
       card: {
         assessmentId: course.id * 10 + 1,
         assessmentSlug: `${course.slug}-calibration`,
-        title: `${course.title} — placement check`,
+        title: `${course.title} - placement check`,
         points: 100,
         durationMinutes: 25,
         questionCount: 20,
@@ -173,7 +173,7 @@ function board(course: DemoCourse): JourneyBoard {
       done: course.completion >= 60,
       card: {
         templateId: course.id * 10 + 2,
-        title: `${course.title} — exit interview`,
+        title: `${course.title} - exit interview`,
         topic: course.tags[0] ?? null,
         difficulty: course.difficulty,
         durationMinutes: 30,

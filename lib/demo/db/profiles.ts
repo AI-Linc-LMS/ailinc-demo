@@ -113,7 +113,7 @@ const STUDENT_PROFILE: UserProfile = {
   projects: [
     {
       id: "pr-1",
-      name: "Sahayak — campus support assistant",
+      name: "Sahayak - campus support assistant",
       description:
         "Retrieval-augmented assistant that answers student queries from 4,000+ pages of " +
         "institute circulars. Cut the helpdesk's repeat-question load by roughly 60%.",
@@ -125,7 +125,7 @@ const STUDENT_PROFILE: UserProfile = {
     },
     {
       id: "pr-2",
-      name: "Ledgerly — expense splitting for hostels",
+      name: "Ledgerly - expense splitting for hostels",
       description:
         "Group expense tracker with settle-up optimisation that minimises the number of " +
         "transfers. Used by 300+ students across three hostels.",
@@ -137,7 +137,7 @@ const STUDENT_PROFILE: UserProfile = {
     },
     {
       id: "pr-3",
-      name: "Signal — real-time crop disease detection",
+      name: "Signal - real-time crop disease detection",
       description:
         "Fine-tuned a vision model on 18k leaf images and shipped it as an offline-first " +
         "mobile app for low-connectivity areas. 91% top-1 accuracy on the held-out set.",
@@ -162,7 +162,7 @@ const STUDENT_PROFILE: UserProfile = {
     {
       id: "ex-2",
       company: "Meridian Institute of Technology",
-      position: "Teaching Assistant — Data Structures",
+      position: "Teaching Assistant - Data Structures",
       location: "Mumbai, India",
       start_date: ymd(daysAgo(300)),
       current: true,
@@ -203,14 +203,14 @@ const STUDENT_PROFILE: UserProfile = {
   achievements: [
     {
       id: "ac-1",
-      title: "Winner — Meridian Annual Hackathon",
+      title: "Winner - Meridian Annual Hackathon",
       description: "First place out of 84 teams for an offline-first disaster-relief coordination app.",
       date: ymd(daysAgo(75)),
       organization: "Meridian Institute of Technology",
     },
     {
       id: "ac-2",
-      title: "Global rank 412 — ICPC Regionals qualifier",
+      title: "Global rank 412 - ICPC Regionals qualifier",
       date: ymd(daysAgo(210)),
       organization: "ICPC",
     },

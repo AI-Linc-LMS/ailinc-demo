@@ -104,12 +104,12 @@ function aiTipFor(
   skills: Array<{ skill: string; percent: number }>,
 ): string {
   if (course.completion === 0) {
-    return `Start with the first module — it sets up everything ${course.title} builds on later.`;
+    return `Start with the first module - it sets up everything ${course.title} builds on later.`;
   }
   const weakest = [...skills].sort((a, b) => a.percent - b.percent)[0];
   return weakest
     ? `${weakest.skill} is your weakest dimension here at ${weakest.percent}%. Two focused sessions would move it more than another pass over the material you already know.`
-    : "Keep going — your pace on this course is ahead of your cohort.";
+    : "Keep going - your pace on this course is ahead of your cohort.";
 }
 
 /** The next unfinished piece of work, as the dashboard's "up next" card. */

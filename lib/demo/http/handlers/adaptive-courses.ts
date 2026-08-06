@@ -62,7 +62,7 @@ function articleFor(topic: DemoTopic) {
 function quizFor(topic: DemoTopic) {
   return {
     config_id: QUIZ_ID(topic),
-    quiz_title: `${topic.title} — check your understanding`,
+    quiz_title: `${topic.title} - check your understanding`,
     target_skills: conceptsFor(topic),
     mcq_count: seededInt(`mcq:${topic.id}`, 6, 12),
     min_questions: 6,
@@ -78,7 +78,7 @@ function codingSetFor(topic: DemoTopic) {
   const count = seededInt(`cset:${topic.id}`, 2, 4);
   return {
     config_id: CODING_ID(topic),
-    title: `${topic.title} — practice set`,
+    title: `${topic.title} - practice set`,
     target_skills: conceptsFor(topic),
     default_language: "python",
     hint_layers: 3,

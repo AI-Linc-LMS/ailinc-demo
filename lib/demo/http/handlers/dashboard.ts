@@ -81,7 +81,7 @@ function briefing() {
     lastWeek: `Last week you cleared ${seededInt("briefing:lastweek", 6, 12)} items and held your streak every day. ${strongest?.title ?? "Your strongest course"} moved the most.`,
     thisWeek: {
       focus: weakest
-        ? `Close the gap on ${weakest.title} — it is your lowest course at ${weakest.completion}%.`
+        ? `Close the gap on ${weakest.title} - it is your lowest course at ${weakest.completion}%.`
         : "Keep your pace steady across all courses.",
       course: weakest?.title ?? "",
     },
