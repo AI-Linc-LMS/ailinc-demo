@@ -86,9 +86,19 @@ export const DEMO_CLIENT_INFO: ClientInfo = {
   is_active: true,
   timezone: DEMO_TENANT.timezone,
 
-  app_logo_url: "/demo/meridian-logo.svg",
-  app_icon_url: "/demo/meridian-icon.svg",
-  login_logo_url: "/demo/meridian-logo-dark.svg",
+  // Under /images/ deliberately. The route middleware (proxy.ts) bypasses auth
+  // for /images/, /videos/ and /assets/ only — anything else 307s to /login for
+  // a signed-out visitor, which would break the logo on the sign-in screen
+  // itself. Using the existing public prefix avoids touching shared auth logic.
+  //
+  // Three variants, because the two surfaces that show a logo are BOTH dark:
+  //   app_logo_url   -> ink sidebar, small box  -> light, wordmark only
+  //   login_logo_url -> ink hero panel, larger  -> light, full lockup
+  // meridian-logo-dark.svg is the dark-text lockup, kept for light surfaces
+  // (certificates, exported PDFs) rather than either of these.
+  app_logo_url: "/images/demo/meridian-logo.svg",
+  app_icon_url: "/images/demo/meridian-icon.svg",
+  login_logo_url: "/images/demo/meridian-logo-login.svg",
   login_img_url: null,
 
   features: ENABLED_FEATURES.map((name, index) => ({ id: index + 1, name })),

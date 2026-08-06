@@ -8,6 +8,8 @@
 
 import "./accounts";
 import "./client";
+import "./courses";
+import "./dashboard";
 
 /** Imported for its side effects only; nothing to export. */
 export {};
