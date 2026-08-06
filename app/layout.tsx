@@ -30,6 +30,7 @@ import { TourProvider } from "@/components/community/TourProvider";
 import { config } from "@/lib/config";
 import { themeToCssBlock } from "@/lib/theme/themeToCssBlock";
 import { OfflineAssets } from "@/components/demo/OfflineAssets";
+import { DemoWelcome } from "@/components/demo/DemoWelcome";
 
 /* ✅ Metadata (SEO) */
 export async function generateMetadata(): Promise<Metadata> {
@@ -133,6 +134,7 @@ export default async function RootLayout({
                                     <ProfileActivationBlocker />
                                     <TenantSetupBlocker />
                                     {children}
+                                    <DemoWelcome />
                                     <PointsPrimer />
                                     <XpCelebrationOverlay />
                                   </TourProvider>
