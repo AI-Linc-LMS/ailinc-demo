@@ -9,6 +9,7 @@
 import "./accounts";
 import "./adaptive-courses";
 import "./client";
+import "./content";
 import "./courses";
 import "./dashboard";
 import "./journey";

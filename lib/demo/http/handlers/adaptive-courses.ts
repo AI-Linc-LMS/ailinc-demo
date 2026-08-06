@@ -26,10 +26,10 @@ import { seededInt, seededPick } from "../../random";
 const MODULE = "adaptive-courses";
 
 /** Content-id namespaces. Offsetting keeps article/quiz/coding ids distinct from topic ids. */
-const ARTICLE_ID = (topic: DemoTopic) => topic.id + 100_000;
-const QUIZ_ID = (topic: DemoTopic) => topic.id + 200_000;
-const CODING_ID = (topic: DemoTopic) => topic.id + 300_000;
-const VIDEO_ID = (topic: DemoTopic) => topic.id + 400_000;
+export const ARTICLE_ID = (topic: DemoTopic) => topic.id + 100_000;
+export const QUIZ_ID = (topic: DemoTopic) => topic.id + 200_000;
+export const CODING_ID = (topic: DemoTopic) => topic.id + 300_000;
+export const VIDEO_ID = (topic: DemoTopic) => topic.id + 400_000;
 
 /** Items the visitor completed this session, on top of whatever the seed says. */
 function completedInSession(): number[] {
@@ -112,20 +112,57 @@ function videoFor(topic: DemoTopic) {
  * the titles. Splitting the title gives concepts that always match what is on the
  * card.
  */
-function conceptsFor(topic: DemoTopic): string[] {
+export function conceptsFor(topic: DemoTopic): string[] {
+  // The list has to be generous. A thin one let "Immutability and why state bugs
+  // hide there" produce the tag "Why", which reads as broken on a skill chip
+  // sitting next to real ones like "PostgreSQL".
   const STOP = new Set([
-    "the", "and", "of", "for", "with", "that", "you", "your", "a", "an", "in",
-    "on", "to", "it", "is", "as", "at", "do", "not", "they", "how", "what",
+    // articles, conjunctions, prepositions
+    "the", "and", "of", "for", "with", "a", "an", "in", "on", "to", "at", "as",
+    "by", "from", "into", "onto", "over", "under", "about", "after", "before",
+    "between", "through", "without", "within", "across", "than", "then", "but",
+    "or", "nor", "so", "yet", "per", "via",
+    // pronouns and determiners
+    "you", "your", "yours", "it", "its", "they", "them", "their", "we", "our",
+    "this", "that", "these", "those", "each", "every", "any", "all", "both",
+    "some", "most", "more", "much", "many", "one", "two", "other", "another",
+    // question words and adverbs, the ones that produced bad tags
+    "how", "what", "why", "when", "where", "which", "who", "whom", "whose",
+    "here", "there", "still", "just", "only", "even", "also", "really", "very",
+    // common verbs and auxiliaries
+    "is", "are", "was", "were", "be", "been", "being", "am", "do", "does",
+    "did", "has", "have", "had", "can", "could", "will", "would", "should",
+    "must", "may", "might", "let", "lets", "get", "gets", "got", "make",
+    "makes", "made", "need", "needs", "use", "uses", "using", "not", "no",
+    "actually", "hide", "hides", "matter", "matters", "work", "works",
+    "think", "know", "want", "take", "takes", "put", "puts", "end", "ends",
   ]);
-  return topic.title
+
+  const words = topic.title
     .replace(/[^\w\s-]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length > 2 && !STOP.has(w.toLowerCase()))
-    .slice(0, 4)
-    .map((w) => w[0].toUpperCase() + w.slice(1));
+    .filter((w) => w.length > 2 && !STOP.has(w.toLowerCase()));
+
+  // Prefer terms already capitalised or containing a capital (React, PostgreSQL,
+  // Big-O) — those are the real technical nouns in a title.
+  const technical = words.filter((w) => /[A-Z]/.test(w.slice(1)) || /^[A-Z]/.test(w));
+  const ordered = [...technical, ...words.filter((w) => !technical.includes(w))];
+
+  const seen = new Set<string>();
+  const concepts: string[] = [];
+  for (const word of ordered) {
+    const label = /[A-Z]/.test(word.slice(1)) ? word : word[0].toUpperCase() + word.slice(1);
+    if (seen.has(label.toLowerCase())) continue;
+    seen.add(label.toLowerCase());
+    concepts.push(label);
+    if (concepts.length === 4) break;
+  }
+
+  // A topic whose title is entirely stopwords would otherwise render no tags.
+  return concepts.length > 0 ? concepts : [topic.title.split(/\s+/)[0]];
 }
 
-function submoduleFor(topic: DemoTopic, order: number) {
+export function submoduleFor(topic: DemoTopic, order: number) {
   const kinds = new Set(topic.kinds);
   return {
     id: topic.id,

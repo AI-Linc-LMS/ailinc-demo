@@ -479,3 +479,17 @@ export { daysAhead };
 
 /** Avatar helper re-exported so course consumers do not import two modules. */
 export { avatarFor };
+
+/** Find a topic (submodule) by id, with the course and module that contain it. */
+export function topicById(
+  id: number,
+): { course: DemoCourse; module: DemoModule; topic: DemoTopic } | null {
+  for (const course of COURSES) {
+    for (const m of course.modules) {
+      for (const t of m.topics) {
+        if (t.id === id) return { course, module: m, topic: t };
+      }
+    }
+  }
+  return null;
+}
