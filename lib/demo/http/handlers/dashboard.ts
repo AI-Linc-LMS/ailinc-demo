@@ -25,7 +25,7 @@ import {
 } from "../../db/learner";
 import { nextTopic } from "../../db/courses";
 import { STUDENT_PERSONA, rankedLearners } from "../../db/people";
-import { currentMonth, daysInMonth, iso, nowMs, ymd, daysAgo } from "../../clock";
+import { currentMonth, daysInMonth, iso, isoDaysAgo, nowMs, ymd, daysAgo } from "../../clock";
 import { overlay } from "../../db/overlay";
 import { seededInt } from "../../random";
 
@@ -101,6 +101,124 @@ function briefing() {
     actions,
     focusRoute: weakest ? `/adaptive-courses/${weakest.id}` : "/adaptive-courses",
     source: "ai",
+  };
+}
+
+/**
+ * The scorecard, in one place.
+ *
+ * `full` adds the sections the dashboard preview endpoint skips. Building both
+ * from one function is what keeps the preview card and the full page telling the
+ * same story — a prospect who sees "Proficient, rank 2" on the dashboard and
+ * then opens the scorecard must not find different numbers.
+ */
+function scorecardPayload(full: boolean) {
+  const courses = enrolledCourses();
+  const hours = seededInt("scorecard:hours", 90, 160);
+
+  const base = {
+    scorecard_config: {
+      enabled_modules: full
+        ? ["overview", "learning_consumption", "skills", "weak_areas", "assessments", "mock_interviews", "behavioral", "comparative", "achievements", "action_panel"]
+        : ["overview", "learning_consumption", "skills", "assessments"],
+    },
+    overview: {
+      student_name: STUDENT_PERSONA.full_name,
+      program_name: "Full-Stack Engineering Track",
+      cohort: "Autumn 2026",
+      current_week: 7,
+      current_module: courses[0]?.title ?? "-",
+      overall_performance_score: overallProgress(),
+      overall_grade: "Proficient",
+      total_time_spent_seconds: hours * 3600,
+      attendance_percentage: 94,
+      rank_in_cohort: myRank().rank,
+      total_students: rankedLearners().length,
+    },
+    learning_consumption: {
+      videos_watched: seededInt("sc:videos", 40, 90),
+      articles_read: seededInt("sc:articles", 30, 70),
+      quizzes_attempted: seededInt("sc:quizzes", 18, 44),
+      coding_problems_solved: seededInt("sc:coding", 22, 60),
+      assignments_submitted: seededInt("sc:assign", 3, 9),
+      total_time_spent_seconds: hours * 3600,
+    },
+  };
+
+  if (!full) return base as typeof base & Record<string, never>;
+
+  const skills = courses
+    .flatMap((c) => c.tags.slice(0, 4))
+    .filter((s, i, arr) => arr.indexOf(s) === i)
+    .slice(0, 10)
+    .map((skill, i) => {
+      const score = seededInt(`scskill:${skill}`, 38, 92);
+      return {
+        skill,
+        score,
+        band: score >= 75 ? "strong" : score >= 50 ? "developing" : "needs work",
+        trend: i % 3 === 0 ? "up" : i % 3 === 1 ? "flat" : "up",
+      };
+    });
+
+  const weakest = [...skills].sort((a, b) => a.score - b.score).slice(0, 3);
+
+  return {
+    ...base,
+    skills,
+    weak_areas: {
+      areas: weakest.map((s) => ({
+        skill: s.skill,
+        score: s.score,
+        recommendation: `Two focused sessions on ${s.skill} would move this more than another pass over material you already know.`,
+      })),
+    },
+    performance_trends: {
+      granularity: "weekly",
+      points: Array.from({ length: 8 }, (_, i) => ({
+        label: `Week ${i + 1}`,
+        score: seededInt(`trend:${i}`, 52, 88),
+      })),
+    },
+    assessment_performance: [
+      { name: "Data Structures & Algorithms — Diagnostic", score: 76, date: isoDaysAgo(18), percentile: 72 },
+    ],
+    mock_interview_performance: {
+      attempts: 2,
+      average_score: 71,
+      best_score: 78,
+      dimensions: [
+        { dimension: "Correctness", score: 80 },
+        { dimension: "Communication", score: 84 },
+        { dimension: "Depth", score: 58 },
+        { dimension: "Structure", score: 71 },
+      ],
+    },
+    behavioral_metrics: {
+      consistency: 88,
+      streak_days: STUDENT_PERSONA.streak,
+      avg_session_minutes: 42,
+      preferred_time: "Evenings, 6-9pm",
+      on_time_rate: 92,
+    },
+    comparative_insights: {
+      cohort_average: 61,
+      your_score: overallProgress(),
+      percentile: myRank().percentile,
+      ahead_of: `${myRank().percentile}% of your cohort`,
+    },
+    achievements: [
+      { title: "23-day streak", description: "Longest active streak in your cohort this month", earned_at: isoDaysAgo(0) },
+      { title: "Diagnostic cleared", description: "Scored 76% on the DSA diagnostic", earned_at: isoDaysAgo(18) },
+      { title: "First capstone milestone", description: "Shipped the module 2 project", earned_at: isoDaysAgo(30) },
+    ],
+    action_panel: {
+      actions: weakest.slice(0, 2).map((s) => ({
+        label: `Practise ${s.skill}`,
+        reason: `Your weakest dimension at ${s.score}%`,
+        route: "/adaptive-courses",
+      })),
+    },
   };
 }
 
@@ -292,7 +410,44 @@ defineRoutes(MODULE, {
    * the trimmed payload that endpoint serves, and every field is optional in the
    * mapper, so the preview card renders without the heavy sections.
    */
-  "GET /api/scorecard/clients/:clientId/student/scorecard/dashboard/": () => {
+  "GET /api/scorecard/clients/:clientId/student/scorecard/dashboard/": () => scorecardPayload(false),
+
+  /**
+   * The full scorecard page: the preview above plus the heavy sections the
+   * dashboard endpoint deliberately skips.
+   */
+  "GET /api/scorecard/clients/:clientId/student/scorecard/": () => scorecardPayload(true),
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/skills/": () => ({
+    skills: scorecardPayload(true).skills,
+  }),
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/weak-areas/": () =>
+    scorecardPayload(true).weak_areas,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/assessments/": () => ({
+    assessment_performance: scorecardPayload(true).assessment_performance,
+  }),
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/achievements/": () =>
+    scorecardPayload(true).achievements,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/action-panel/": () =>
+    scorecardPayload(true).action_panel,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/performance-trends/": () =>
+    scorecardPayload(true).performance_trends,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/mock-interviews/": () =>
+    scorecardPayload(true).mock_interview_performance,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/behavioral/": () =>
+    scorecardPayload(true).behavioral_metrics,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/comparative/": () =>
+    scorecardPayload(true).comparative_insights,
+
+  "GET /api/scorecard/clients/:clientId/student/scorecard/dashboard-legacy/": () => {
     const courses = enrolledCourses();
     const hours = seededInt("scorecard:hours", 90, 160);
     return {

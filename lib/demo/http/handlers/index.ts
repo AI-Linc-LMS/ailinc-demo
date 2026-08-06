@@ -9,6 +9,11 @@
 import "./accounts";
 import "./activity";
 import "./adaptive-courses";
+import "./assessments";
+import "./jobs";
+import "./community";
+import "./live-sessions";
+import "./mock-interview";
 import "./client";
 import "./coding";
 import "./content";
