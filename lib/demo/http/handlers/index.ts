@@ -7,6 +7,7 @@
  */
 
 import "./accounts";
+import "./adaptive-courses";
 import "./client";
 import "./courses";
 import "./dashboard";
