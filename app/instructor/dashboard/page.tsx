@@ -116,7 +116,7 @@ export default function InstructorDashboardPage() {
         {/* ============================ MAIN COLUMN ============================ */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5, minWidth: 0 }}>
           {/* ---- Hero ---- */}
-          <Box sx={{ borderRadius: 4, position: "relative", overflow: "hidden", color: "#fff",
+          <Box data-tour-id="instructor-briefing" sx={{ borderRadius: 4, position: "relative", overflow: "hidden", color: "#fff",
             background: "radial-gradient(120% 140% at 85% 0%, #4c1d95 0%, #2e1065 45%, #1e1b4b 100%)" }}>
             <Box sx={{ height: 4, background: "linear-gradient(90deg,#8b5cf6,#ec4899,#f59e0b)" }} />
             <Box sx={{ p: { xs: 2.5, md: 3.5 } }}>
@@ -200,7 +200,7 @@ export default function InstructorDashboardPage() {
           </Box>
 
           {/* ---- KPI tiles ---- */}
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr 1fr", md: "repeat(4, 1fr)" }, gap: 2 }}>
+          <Box data-tour-id="instructor-kpis" sx={{ display: "grid", gridTemplateColumns: { xs: "1fr 1fr", md: "repeat(4, 1fr)" }, gap: 2 }}>
             <Kpi label="Students" value={students} icon="mdi:account-multiple" tint="#6366f1" sub={`${dash?.active_students ?? 0} active this week`} />
             <Kpi label="Cohorts" value={dash?.batches ?? 0} icon="mdi:school-outline" tint="#f59e0b" sub={`${dash?.courses ?? 0} course${(dash?.courses ?? 0) === 1 ? "" : "s"}`} />
             <Kpi label="Avg progress" value={fmtPct(dash?.avg_progress ?? 0)} icon="mdi:chart-line" tint="#10b981" sub={`${fmtPct(dash?.completion_rate ?? 0)} completed`} />

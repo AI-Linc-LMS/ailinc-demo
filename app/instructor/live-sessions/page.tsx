@@ -240,7 +240,7 @@ export default function InstructorLiveSessionsPage() {
       )}
 
       {/* Session rows */}
-      <Stack spacing={1.75}>
+      <Stack data-tour-id="instructor-sessions" spacing={1.75}>
         {visible.map(({ s, status }) => (
           <SessionRow
             key={s.id}

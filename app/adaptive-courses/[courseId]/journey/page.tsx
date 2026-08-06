@@ -22,7 +22,9 @@ export default function AdaptiveJourneyPage() {
           <Icon icon="mdi:arrow-left" width={18} />
           Back to course
         </ButtonBase>
-        <JourneyBoard courseId={courseId} />
+        <Box data-tour-id="journey-board">
+          <JourneyBoard courseId={courseId} />
+        </Box>
       </Box>
     </MainLayout>
   );

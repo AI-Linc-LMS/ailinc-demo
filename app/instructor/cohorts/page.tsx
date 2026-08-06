@@ -150,7 +150,7 @@ export default function InstructorCohortsPage() {
         </Box>
       )}
 
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }, gap: 2.5 }}>
+      <Box data-tour-id="instructor-cohorts" sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)", xl: "repeat(3, 1fr)" }, gap: 2.5 }}>
         {cohorts.map((c, i) => (
           <Reveal key={c.id} delay={Math.min(i, 8) * 0.05}>
             <Box sx={{ borderRadius: 4, overflow: "hidden", bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)",

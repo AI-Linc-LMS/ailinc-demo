@@ -925,7 +925,7 @@ export default function AssessmentPage() {
     <MainLayout fullWidthContent>
       <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
         {/* Header - adaptive-course design language (Phase 1 revamp) */}
-        <Box sx={{ mb: 4 }}>
+        <Box data-tour-id="admin-assessment-hero" sx={{ mb: 4 }}>
           <AssessmentSectionHero
             chapter="ASSESSMENT MANAGEMENT"
             title="Assessments"

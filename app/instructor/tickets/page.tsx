@@ -120,7 +120,7 @@ export default function InstructorTicketsPage() {
           </Box>
         </Reveal>
       ) : (
-        <Stack spacing={1.25}>
+        <Stack data-tour-id="instructor-tickets" spacing={1.25}>
           <Typography sx={{ color: "var(--font-secondary)", fontSize: "0.8rem" }}>
             {counts.total} ticket{counts.total === 1 ? "" : "s"}
             {counts.open ? ` · ${counts.open} open` : ""}

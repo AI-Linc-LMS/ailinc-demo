@@ -78,7 +78,7 @@ export default function InstructorAnalyticsPage() {
             ]}
           />
 
-          <Box sx={{ mt: 3.5, p: { xs: 2, md: 3 }, borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
+          <Box data-tour-id="instructor-analytics" sx={{ mt: 3.5, p: { xs: 2, md: 3 }, borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
               <Icon icon="mdi:chart-bar" width={20} style={{ color: "#06b6d4" }} />
               <Typography sx={{ fontWeight: 800, fontSize: "1.05rem" }}>Progress distribution</Typography>

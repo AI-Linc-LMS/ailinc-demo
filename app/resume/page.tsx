@@ -46,7 +46,7 @@ export default function ResumePage() {
 
   return (
     <MainLayout fullWidthContent>
-      <ResumeHero />
+      <Box data-tour-id="resume-hero"><ResumeHero /></Box>
 
       {showLock && <ProfileLockBanner moduleLabel="Resume" />}
 

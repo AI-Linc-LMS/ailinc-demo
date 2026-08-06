@@ -461,7 +461,7 @@ export default function InstructorStudentsPage() {
       />
 
       {/* KPIs */}
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2,1fr)", md: "repeat(4,1fr)" }, gap: 2, mb: 3 }}>
+      <Box data-tour-id="instructor-student-stats" sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2,1fr)", md: "repeat(4,1fr)" }, gap: 2, mb: 3 }}>
         {kpis.map((k) => (
           <Box key={k.label} sx={{ p: 2, borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ color: "text.secondary", mb: 0.75 }}>
@@ -533,7 +533,7 @@ export default function InstructorStudentsPage() {
       {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
       {/* Table */}
-      <Box sx={{ borderRadius: 3, overflow: "hidden", bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
+      <Box data-tour-id="instructor-students" sx={{ borderRadius: 3, overflow: "hidden", bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
         {/* Header row */}
         <Box
           sx={{

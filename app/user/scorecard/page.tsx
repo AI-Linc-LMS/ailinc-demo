@@ -318,7 +318,7 @@ export default function ScorecardPage() {
           sx={{ py: { xs: 4, md: 6 }, position: "relative", zIndex: 1 }}
         >
           {/* Wrapper for PDF export capture */}
-          <Box data-scorecard-pdf-content>
+          <Box data-scorecard-pdf-content data-tour-id="scorecard-body">
             {/* Editorial header */}
             <Box
               component={motion.header}

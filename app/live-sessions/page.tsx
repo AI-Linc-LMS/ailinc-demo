@@ -493,7 +493,7 @@ export default function LiveSessionsPage() {
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 320px" }, gap: 2.5, alignItems: "start" }}>
             <Box>
               {/* Tabs */}
-              <Stack direction="row" spacing={0.75} sx={{ mb: 2, flexWrap: "wrap", gap: 0.75 }}>
+              <Stack data-tour-id="live-tabs" direction="row" spacing={0.75} sx={{ mb: 2, flexWrap: "wrap", gap: 0.75 }}>
                 {TABS.map((tb) => {
                   const active = tab === tb.key;
                   return (

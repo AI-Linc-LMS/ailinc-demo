@@ -211,7 +211,7 @@ export default function AdaptiveCourseSubmodulePage() {
 
   return (
     <MainLayout fullWidthContent>
-      <Box sx={{ maxWidth: 1760, mx: "auto", px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
+      <Box data-tour-id="submodule-body" sx={{ maxWidth: 1760, mx: "auto", px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
         {loading && <AdaptiveSubmoduleSkeleton />}
         {error && (
           <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 6 }}>{error}</Typography>

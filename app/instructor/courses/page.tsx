@@ -63,7 +63,7 @@ export default function InstructorCoursesPage() {
           </Typography>
         </Box>
       )}
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }, gap: 2 }}>
+      <Box data-tour-id="instructor-courses" sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }, gap: 2 }}>
         {courses.map((c, i) => {
           // A course you BUILT opens in the builder; a course you were assigned to teach opens on
           // its roster. Both used to go to the roster, so the card that said "Yours to build.

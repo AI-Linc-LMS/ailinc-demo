@@ -11,6 +11,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
+import { DEMO_MODE } from "@/lib/demo/config";
 import { AnimatePresence, motion } from "framer-motion";
 import { Box, Button, IconButton, Switch, Typography } from "@mui/material";
 import { IconWrapper } from "@/components/common/IconWrapper";
@@ -21,7 +22,14 @@ export interface TourStep {
   targetId?: string;
   /** Short title shown above the narration. */
   title: string;
-  /** Long-form narration. Read aloud via Web Speech API; also revealed word-by-word. */
+  /**
+   * Long-form narration, revealed word-by-word as it is read.
+   *
+   * Read aloud via the Web Speech API outside demo mode. In demo mode voice is
+   * off — there is no key to speak with and a prospect on a shared screen does
+   * not want a browser talking at them — so the reveal is driven on a timer
+   * paced to the length of this string.
+   */
   narration: string;
   /** Preferred tooltip position. Auto-flips if the target is near a screen edge. */
   placement?: "top" | "bottom" | "left" | "right";
@@ -58,6 +66,26 @@ export function useTour() {
 
 const PADDING = 10; // px around target for the "hole"
 const RADIUS = 12;  // (visual) corner radius of highlight ring
+/** Below this a target is still rendering; keep polling rather than ring it. */
+const MIN_TARGET_HEIGHT = 40;
+
+/**
+ * Trim a target rect to the part of it that is actually on screen.
+ *
+ * Some anchors wrap a whole page section — a journey board or a scorecard body
+ * is several thousand pixels tall. Ringing the full element draws a highlight
+ * with no visible bottom edge, which reads as a broken overlay rather than a
+ * spotlight. Clamping keeps the ring closed around what the visitor can see.
+ */
+function clampToViewport(r: DOMRect): DOMRect {
+  const vh = window.innerHeight;
+  const vw = window.innerWidth;
+  const top = Math.max(r.top, PADDING);
+  const left = Math.max(r.left, PADDING);
+  const bottom = Math.min(r.bottom, vh - PADDING);
+  const right = Math.min(r.right, vw - PADDING);
+  return new DOMRect(left, top, Math.max(0, right - left), Math.max(0, bottom - top));
+}
 
 /** Best-effort detection. iOS Safari hides voices behind a user gesture. */
 function hasSpeechSynthesis(): boolean {
@@ -72,7 +100,16 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const [rect, setRect] = useState<DOMRect | null>(null);
   const [revealedChars, setRevealedChars] = useState(0);
   const [narrating, setNarrating] = useState(false);
-  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  /**
+   * DEMO REPO ONLY: voice starts OFF and stays off.
+   *
+   * The narration path calls /api/tts, a server route needing an OpenAI key
+   * this demo does not have, and falls back to the browser's speechSynthesis.
+   * Neither belongs here: the demo makes no server calls, and a tour that
+   * starts talking unprompted on a sales call is the wrong first impression.
+   * The text still reveals, just on a timer instead of to audio.
+   */
+  const [voiceEnabled, setVoiceEnabled] = useState(!DEMO_MODE);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   // Per-text blob URL cache so revisiting a step (Back button) doesn't re-fetch.
@@ -172,22 +209,28 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     let retry: ReturnType<typeof setTimeout> | null = null;
     const measure = () => {
       const el = document.querySelector<HTMLElement>(`[data-tour-id="${step.targetId}"]`);
-      if (!el) {
+      // Keep waiting for an element that is present but still collapsed. A list
+      // wrapper exists from the first render and only gains height once its data
+      // arrives; measuring it too early produced a 20px-tall ring around nothing.
+      const ready = el && el.getBoundingClientRect().height >= MIN_TARGET_HEIGHT;
+      if (!ready) {
         setRect(null);
         if (attempts++ < MAX_ATTEMPTS) retry = setTimeout(measure, 50);
         return;
       }
       attempts = 0;
-      // Auto-scroll target into view if it's outside the viewport.
+      // Auto-scroll target into view if it's outside the viewport. Tall targets
+      // are aligned to their top rather than centred: centring a 4000px element
+      // parks the viewport in the middle of it, showing neither end.
       const r = el.getBoundingClientRect();
+      const tall = r.height > window.innerHeight;
       const offscreen = r.top < 0 || r.bottom > window.innerHeight - 80;
       if (offscreen) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.scrollIntoView({ behavior: "smooth", block: tall ? "start" : "center" });
       }
       // Re-measure on next frame to catch the post-scroll position.
       raf = requestAnimationFrame(() => {
-        const r2 = el.getBoundingClientRect();
-        setRect(r2);
+        setRect(clampToViewport(el.getBoundingClientRect()));
       });
     };
     measure();
@@ -216,10 +259,34 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
     cancelSpeech();
 
     if (!voiceEnabled) {
-      // Voice off - reveal everything immediately.
-      setRevealedChars(step.narration.length);
-      setNarrating(false);
-      return;
+      if (!DEMO_MODE) {
+        // Voice off - reveal everything immediately.
+        setRevealedChars(step.narration.length);
+        setNarrating(false);
+        return;
+      }
+      /**
+       * Demo: no audio, but keep the word-by-word reveal — it is what makes the
+       * card feel narrated rather than a wall of text that appears at once.
+       * Paced at roughly 28 characters a second, near a comfortable reading
+       * speed, and capped so a long step never outstays its welcome.
+       */
+      const durationMs = Math.min(9000, Math.max(1600, step.narration.length * 36));
+      const startedAt = performance.now();
+      let stopped = false;
+      const tick = () => {
+        if (stopped) return;
+        const pct = Math.min(1, (performance.now() - startedAt) / durationMs);
+        setRevealedChars(Math.round(step.narration.length * pct));
+        if (pct < 1) revealRafRef.current = requestAnimationFrame(tick);
+        else setNarrating(false);
+      };
+      setNarrating(true);
+      revealRafRef.current = requestAnimationFrame(tick);
+      return () => {
+        stopped = true;
+        if (revealRafRef.current) cancelAnimationFrame(revealRafRef.current);
+      };
     }
 
     let cancelled = false;
@@ -493,9 +560,22 @@ function TourOverlay({
         sx={{
           position: "absolute",
           inset: 0,
-          backgroundColor: "rgba(15,23,42,0.62)",
-          backdropFilter: "blur(2px)",
-          WebkitBackdropFilter: "blur(2px)",
+          /**
+           * Dim hard only when there is something to spotlight.
+           *
+           * With no target the clip-path is undefined, so this covered the whole
+           * viewport: a step whose entire job was "here is the Courses page"
+           * rendered that page at 38% behind a blur, which is the opposite of
+           * showing it. When the page IS the subject, the scrim drops to a faint
+           * tint and the blur is removed so the page reads normally.
+           */
+          backgroundColor: rect ? "rgba(15,23,42,0.45)" : "rgba(15,23,42,0.10)",
+          /**
+           * No blur, in either case. The cutout and the glowing ring already say
+           * where to look; blurring everything else also destroys the context
+           * that makes the highlighted thing mean anything. A tour is meant to
+           * teach the page, not hide it.
+           */
           pointerEvents: "auto",
           clipPath,
           WebkitClipPath: clipPath,
@@ -535,6 +615,11 @@ function TourOverlay({
           transition={{ duration: 0.22 }}
           sx={{
             position: "absolute",
+            /**
+             * Docked bottom-right when describing a whole page, anchored beside
+             * the target otherwise. Centring the card over a page the step is
+             * asking you to look at covers the very thing being described.
+             */
             width: 360,
             maxWidth: "calc(100vw - 32px)",
             // Never exceed the viewport: if the card is somehow taller than the screen it scrolls
@@ -550,11 +635,8 @@ function TourOverlay({
             overflowX: "hidden",
             ...(tooltipPos
               ? { top: tooltipPos.top, left: tooltipPos.left }
-              : {
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                }),
+              : // Docked, not centred — see the note on the earlier spread.
+                { bottom: 24, right: 24 }),
           }}
         >
           {/* Top accent bar */}
@@ -608,18 +690,22 @@ function TourOverlay({
 
             {/* Footer */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <IconWrapper icon={narrating ? "mdi:volume-high" : "mdi:volume-off"} size={14} color="#94a3b8" />
-                <Switch
-                  size="small"
-                  checked={voiceEnabled}
-                  onChange={onToggleVoice}
-                  sx={{
-                    "& .MuiSwitch-switchBase.Mui-checked": { color: accent },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: accent },
-                  }}
-                />
-              </Box>
+              {/* Voice toggle is hidden in the demo: there is no audio to toggle,
+                  and a switch that controls nothing is worse than no switch. */}
+              {!DEMO_MODE && (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                  <IconWrapper icon={narrating ? "mdi:volume-high" : "mdi:volume-off"} size={14} color="#94a3b8" />
+                  <Switch
+                    size="small"
+                    checked={voiceEnabled}
+                    onChange={onToggleVoice}
+                    sx={{
+                      "& .MuiSwitch-switchBase.Mui-checked": { color: accent },
+                      "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: accent },
+                    }}
+                  />
+                </Box>
+              )}
 
               <Box sx={{ flex: 1 }} />
 

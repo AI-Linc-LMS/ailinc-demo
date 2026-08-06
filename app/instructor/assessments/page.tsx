@@ -58,7 +58,7 @@ export default function InstructorGradebookPage() {
         </Box>
       )}
 
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" }, gap: 2 }}>
+      <Box data-tour-id="instructor-gradebook" sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" }, gap: 2 }}>
         {items.map((a, i) => (
           <Reveal key={a.id} delay={Math.min(i, 8) * 0.05}>
             <Box sx={{ p: 2.25, borderRadius: 3, bgcolor: "var(--card-bg)", border: "1px solid var(--border-default)" }}>
