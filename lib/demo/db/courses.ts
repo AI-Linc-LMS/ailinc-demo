@@ -19,7 +19,19 @@ import { seededInt } from "../random";
 export interface DemoTopic {
   id: number;
   title: string;
-  /** Learning content types this topic contains, in order. */
+  /**
+   * Learning content types this topic contains, in order.
+   *
+   * "video" is supported everywhere (handlers, points, journey counts) but is
+   * deliberately UNUSED by the seed. The player is a Vimeo iframe, and this demo
+   * is required to run with no network at all, so a video step could only ever
+   * render as a dead embed - worse than not offering it.
+   *
+   * To turn video back on: drop an MP4 into /public and point the companion at
+   * it, switch the player from the Vimeo iframe to a <video> element, then add
+   * "video" back to whichever topics should have it. Everything downstream
+   * already handles it.
+   */
   kinds: Array<"article" | "video" | "quiz" | "coding" | "assignment">;
   /** 0-100. 100 = finished, 0 = untouched. */
   progress: number;
@@ -149,19 +161,19 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Foundations of the modern web",
         "How a request actually travels, and why every layer exists.",
         [
-          topic("The request lifecycle, end to end", ["article", "video", "quiz"], 100),
+          topic("The request lifecycle, end to end", ["article", "quiz"], 100),
           topic("HTTP semantics that matter in practice", ["article", "quiz"], 100),
-          topic("Semantic HTML and the accessibility tree", ["video", "coding"], 100),
-          topic("CSS layout: flexbox and grid in anger", ["video", "coding"], 100),
+          topic("Semantic HTML and the accessibility tree", ["article", "coding"], 100),
+          topic("CSS layout: flexbox and grid in anger", ["article", "coding"], 100),
         ],
       ),
       courseModule(
         "JavaScript and TypeScript in depth",
         "The language mechanics that separate working code from correct code.",
         [
-          topic("Closures, scope and the event loop", ["article", "video", "quiz"], 100),
+          topic("Closures, scope and the event loop", ["article", "quiz"], 100),
           topic("Promises, async/await and error propagation", ["article", "coding"], 100),
-          topic("Typing real data: unions, guards and generics", ["video", "coding"], 100),
+          topic("Typing real data: unions, guards and generics", ["article", "coding"], 100),
           topic("Immutability and why state bugs hide there", ["article", "quiz"], 80),
         ],
       ),
@@ -169,11 +181,11 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "React that scales",
         "Component design, state ownership and the rendering model.",
         [
-          topic("The rendering model and reconciliation", ["video", "article"], 100),
+          topic("The rendering model and reconciliation", ["article"], 100),
           topic("State ownership: lifting, colocating, deriving", ["article", "coding"], 100),
-          topic("Effects, and the four times you actually need one", ["video", "quiz"], 75),
+          topic("Effects, and the four times you actually need one", ["article", "quiz"], 75),
           topic("Data fetching, caching and race conditions", ["article", "coding"], 40),
-          topic("Performance: memo, virtualisation, code splitting", ["video", "coding"], 0),
+          topic("Performance: memo, virtualisation, code splitting", ["article", "coding"], 0),
         ],
       ),
       courseModule(
@@ -181,9 +193,9 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Designing an interface other people can build against.",
         [
           topic("Designing a REST API you will not regret", ["article", "quiz"], 55),
-          topic("Relational modelling and normalisation", ["video", "coding"], 20),
+          topic("Relational modelling and normalisation", ["article", "coding"], 20),
           topic("Indexes, query plans and the N+1 problem", ["article", "coding"], 0),
-          topic("Authentication, sessions and JWTs", ["video", "article", "quiz"], 0),
+          topic("Authentication, sessions and JWTs", ["article", "quiz"], 0),
         ],
       ),
       courseModule(
@@ -191,7 +203,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Everything between 'works locally' and 'works for users'.",
         [
           topic("Testing: unit, integration and what to skip", ["article", "coding"], 0),
-          topic("CI/CD and environment configuration", ["video", "article"], 0),
+          topic("CI/CD and environment configuration", ["article"], 0),
           topic("Observability: logs, traces and alerts", ["article", "quiz"], 0),
           topic("Capstone: ship a full application", ["assignment"], 0),
         ],
@@ -224,7 +236,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "The subset of the language you will actually use daily.",
         [
           topic("Comprehensions, generators and iterators", ["article", "coding"], 100),
-          topic("NumPy arrays and vectorised thinking", ["video", "coding"], 100),
+          topic("NumPy arrays and vectorised thinking", ["article", "coding"], 100),
           topic("Reading messy files without losing your mind", ["article", "coding"], 100),
         ],
       ),
@@ -232,9 +244,9 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "pandas in practice",
         "Reshaping, joining and aggregating real datasets.",
         [
-          topic("Indexing, selection and the SettingWithCopy trap", ["video", "coding"], 100),
+          topic("Indexing, selection and the SettingWithCopy trap", ["article", "coding"], 100),
           topic("Group-by, pivot and window operations", ["article", "coding"], 70),
-          topic("Joins, and what to do about the rows that vanish", ["video", "quiz"], 45),
+          topic("Joins, and what to do about the rows that vanish", ["article", "quiz"], 45),
           topic("Missing data: impute, drop, or model it", ["article", "coding"], 0),
         ],
       ),
@@ -242,9 +254,9 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Statistics you cannot skip",
         "Enough inference to know when a result means nothing.",
         [
-          topic("Distributions and sampling", ["video", "quiz"], 30),
+          topic("Distributions and sampling", ["article", "quiz"], 30),
           topic("Hypothesis testing and p-value misuse", ["article", "quiz"], 0),
-          topic("Correlation, causation and confounders", ["video", "article"], 0),
+          topic("Correlation, causation and confounders", ["article"], 0),
         ],
       ),
       courseModule(
@@ -252,9 +264,9 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Fit a model, then find out whether it generalises.",
         [
           topic("Train/test discipline and leakage", ["article", "coding"], 0),
-          topic("Regression and regularisation", ["video", "coding"], 0),
+          topic("Regression and regularisation", ["article", "coding"], 0),
           topic("Classification and the metric that fits the problem", ["article", "coding"], 0),
-          topic("Trees, forests and gradient boosting", ["video", "coding"], 0),
+          topic("Trees, forests and gradient boosting", ["article", "coding"], 0),
           topic("Capstone: end-to-end prediction project", ["assignment"], 0),
         ],
       ),
@@ -286,16 +298,16 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Reasoning about cost before writing code.",
         [
           topic("Big-O, amortised cost and the constants that bite", ["article", "quiz"], 100),
-          topic("Proving a loop does what you think", ["video", "quiz"], 100),
+          topic("Proving a loop does what you think", ["article", "quiz"], 100),
         ],
       ),
       courseModule(
         "Arrays and strings",
         "The two patterns behind most warm-up questions.",
         [
-          topic("Two pointers", ["video", "coding"], 100),
+          topic("Two pointers", ["article", "coding"], 100),
           topic("Sliding window", ["article", "coding"], 60),
-          topic("Prefix sums and difference arrays", ["video", "coding"], 0),
+          topic("Prefix sums and difference arrays", ["article", "coding"], 0),
         ],
       ),
       courseModule(
@@ -303,7 +315,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Choosing the structure that makes the problem trivial.",
         [
           topic("Hash maps and frequency counting", ["article", "coding"], 0),
-          topic("Monotonic stacks", ["video", "coding"], 0),
+          topic("Monotonic stacks", ["article", "coding"], 0),
           topic("Deques and streaming maxima", ["article", "coding"], 0),
         ],
       ),
@@ -311,9 +323,9 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Trees and graphs",
         "Traversal as a default tool.",
         [
-          topic("DFS and BFS as one idea", ["video", "coding"], 0),
+          topic("DFS and BFS as one idea", ["article", "coding"], 0),
           topic("Binary search trees and balance", ["article", "coding"], 0),
-          topic("Topological sort and cycle detection", ["video", "coding"], 0),
+          topic("Topological sort and cycle detection", ["article", "coding"], 0),
           topic("Shortest paths: BFS, Dijkstra", ["article", "coding"], 0),
         ],
       ),
@@ -321,9 +333,9 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
         "Dynamic programming",
         "Finding the state, then the transition.",
         [
-          topic("Memoisation to tabulation", ["video", "coding"], 0),
+          topic("Memoisation to tabulation", ["article", "coding"], 0),
           topic("Knapsack and subset patterns", ["article", "coding"], 0),
-          topic("Sequence DP: LIS, edit distance", ["video", "coding"], 0),
+          topic("Sequence DP: LIS, edit distance", ["article", "coding"], 0),
           topic("Mock interview: two problems, 45 minutes", ["assignment"], 0),
         ],
       ),
@@ -350,20 +362,20 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     ratingCount: 98,
     modules: [
       courseModule("Containers from first principles", "What an image actually is.", [
-        topic("Namespaces, layers and image size", ["article", "video"], 0),
-        topic("Writing a Dockerfile that builds fast", ["video", "coding"], 0),
+        topic("Namespaces, layers and image size", ["article"], 0),
+        topic("Writing a Dockerfile that builds fast", ["article", "coding"], 0),
       ]),
       courseModule("Core AWS services", "The handful you will use on almost every project.", [
         topic("IAM, and least privilege in practice", ["article", "quiz"], 0),
-        topic("Networking: VPC, subnets, security groups", ["video", "quiz"], 0),
-        topic("Compute: ECS, Lambda and when to choose which", ["article", "video"], 0),
-        topic("Storage and databases: S3 and RDS", ["video", "quiz"], 0),
+        topic("Networking: VPC, subnets, security groups", ["article", "quiz"], 0),
+        topic("Compute: ECS, Lambda and when to choose which", ["article"], 0),
+        topic("Storage and databases: S3 and RDS", ["article", "quiz"], 0),
       ]),
       courseModule("Delivery and operations", "Deploying without holding your breath.", [
         topic("Infrastructure as code with Terraform", ["article", "coding"], 0),
-        topic("Pipelines, rollbacks and blue/green", ["video", "article"], 0),
+        topic("Pipelines, rollbacks and blue/green", ["article"], 0),
         topic("Monitoring, alerting and on-call reality", ["article", "quiz"], 0),
-        topic("Cost: the bill as an engineering problem", ["video", "assignment"], 0),
+        topic("Cost: the bill as an engineering problem", ["article", "assignment"], 0),
       ]),
     ],
   },
@@ -389,17 +401,17 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     modules: [
       courseModule("Querying", "Getting exactly the rows you meant.", [
         topic("Filtering, ordering and NULL semantics", ["article", "coding"], 0),
-        topic("Joins, and the rows you did not expect", ["video", "coding"], 0),
+        topic("Joins, and the rows you did not expect", ["article", "coding"], 0),
         topic("Aggregation and HAVING", ["article", "coding"], 0),
-        topic("Window functions", ["video", "coding"], 0),
+        topic("Window functions", ["article", "coding"], 0),
       ]),
       courseModule("Modelling", "Designing for the questions you will ask later.", [
         topic("Keys, constraints and referential integrity", ["article", "quiz"], 0),
-        topic("Normalisation, and when to stop", ["video", "quiz"], 0),
+        topic("Normalisation, and when to stop", ["article", "quiz"], 0),
       ]),
       courseModule("Performance", "Why the same query is fast here and slow there.", [
         topic("Indexes and how the planner chooses", ["article", "coding"], 0),
-        topic("Reading an EXPLAIN plan", ["video", "coding"], 0),
+        topic("Reading an EXPLAIN plan", ["article", "coding"], 0),
       ]),
     ],
   },

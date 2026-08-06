@@ -7,6 +7,7 @@
  */
 
 import "./accounts";
+import "./activity";
 import "./adaptive-courses";
 import "./client";
 import "./coding";
@@ -14,6 +15,7 @@ import "./content";
 import "./courses";
 import "./dashboard";
 import "./journey";
+import "./progression";
 import "./quiz";
 
 /** Imported for its side effects only; nothing to export. */
