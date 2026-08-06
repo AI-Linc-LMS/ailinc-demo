@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56" role="img" aria-label="Meridian Institute of Technology">
+  <defs>
+    <linearGradient id="mrdGradDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="55%" stop-color="#7e22ce"/>
+      <stop offset="100%" stop-color="#581c87"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(6,6)">
+    <circle cx="22" cy="22" r="21" fill="none" stroke="url(#mrdGradDark)" stroke-width="3"/>
+    <ellipse cx="22" cy="22" rx="9" ry="21" fill="none" stroke="url(#mrdGradDark)" stroke-width="2.4" opacity="0.85"/>
+    <path d="M1 22 H43" stroke="url(#mrdGradDark)" stroke-width="2.4" opacity="0.55"/>
+    <circle cx="22" cy="22" r="4" fill="url(#mrdGradDark)"/>
+  </g>
+
+  <g fill="#0f0518" font-family="Satoshi, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="62" y="30" font-size="21" font-weight="700" letter-spacing="0.6">MERIDIAN</text>
+    <text x="63" y="44" font-size="9" font-weight="500" letter-spacing="2.3" opacity="0.62">INSTITUTE OF TECHNOLOGY</text>
+  </g>
+</svg>

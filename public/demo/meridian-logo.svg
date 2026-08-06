@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208 48" width="208" height="48" role="img" aria-label="Meridian Institute of Technology">
+  <defs>
+    <linearGradient id="mrdGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="55%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7e22ce"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mark: a globe with its meridian arc, the name made literal -->
+  <g transform="translate(3,5)">
+    <circle cx="19" cy="19" r="18" fill="none" stroke="url(#mrdGrad)" stroke-width="2.8"/>
+    <ellipse cx="19" cy="19" rx="7.6" ry="18" fill="none" stroke="url(#mrdGrad)" stroke-width="2.2" opacity="0.85"/>
+    <path d="M1 19 H37" stroke="url(#mrdGrad)" stroke-width="2.2" opacity="0.55"/>
+    <circle cx="19" cy="19" r="3.6" fill="url(#mrdGrad)"/>
+  </g>
+
+  <!-- Wordmark only. The full "Institute of Technology" lockup is kept for the
+       login hero, where it renders large enough to read; in the sidebar box
+       (185x42) that subtitle shrinks to ~6px and turns into grey mud. -->
+  <text x="50" y="31" fill="#ffffff" font-size="23" font-weight="700" letter-spacing="1.1"
+        font-family="Satoshi, 'Segoe UI', Helvetica, Arial, sans-serif">MERIDIAN</text>
+</svg>
