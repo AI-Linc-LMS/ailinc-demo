@@ -298,6 +298,10 @@ export default function AdminMockInterviewStudentDetailPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border-default)" vertical={false} />
                   <XAxis dataKey="label" tick={{ fontSize: 12, fill: "var(--font-secondary)" }} />
                   <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "var(--font-secondary)" }} />
+                  {/* recharts types the formatter's value as ValueType (string | number |
+                      array), not number. Annotating it as `number` stops compiling from
+                      recharts 3.10 on, which the ^3.6.0 range resolves to. Narrow the
+                      declared type instead of asserting a shape it does not guarantee. */}
                   <Tooltip
                     contentStyle={{
                       borderRadius: 8,
@@ -305,7 +309,10 @@ export default function AdminMockInterviewStudentDetailPage() {
                       background: "var(--card-bg)",
                       color: "var(--font-primary)",
                     }}
-                    formatter={(value: number | undefined) => [`${value ?? 0}%`, "Score"]}
+                    formatter={(value) => [
+                      `${typeof value === "number" ? value : Number(value) || 0}%`,
+                      "Score",
+                    ]}
                   />
                   <Bar dataKey="score" name="Score" fill="var(--accent-indigo)" radius={[6, 6, 0, 0]} />
                 </BarChart>

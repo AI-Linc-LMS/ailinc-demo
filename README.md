@@ -120,6 +120,32 @@ viewer looking at their session.
 
 ---
 
+## The lockfile (read before running `npm install`)
+
+`package-lock.json` is committed, and it must contain the **linux-x64** builds of the
+native packages (`lightningcss`, `@next/swc`, `@tailwindcss/oxide`, `sharp`, …) or the
+Netlify build fails with `Cannot find module '../lightningcss.linux-x64-gnu.node'`.
+
+npm prunes optional platform packages it does not need on the machine doing the install.
+So running `npm install` on a Mac quietly strips every Linux entry — no warning, and
+everything still builds locally. `npm run check:lockfile` catches it, and CI runs that
+check before anything else.
+
+If it fails, regenerate from a **clean directory** so npm resolves from the registry
+rather than from your existing `node_modules` (which is what prunes it):
+
+```bash
+mkdir /tmp/lockgen && cp package.json .npmrc /tmp/lockgen/
+(cd /tmp/lockgen && npm install --package-lock-only)
+cp /tmp/lockgen/package-lock.json .
+npm run check:lockfile
+```
+
+Regenerating in place does not work — npm rebuilds the lockfile from the pruned tree
+already on disk.
+
+---
+
 ## Re-branding
 
 `lib/demo/config.ts` holds the tenant name, slug, timezone and personas;

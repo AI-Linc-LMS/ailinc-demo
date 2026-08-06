@@ -15,7 +15,9 @@
     "vendor-noise-suppression": "node scripts/vendor-noise-suppression.mjs",
     "postinstall": "node scripts/vendor-noise-suppression.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "check:lockfile": "node scripts/check-lockfile-platforms.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",
