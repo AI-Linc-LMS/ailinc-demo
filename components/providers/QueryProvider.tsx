@@ -17,15 +17,28 @@ import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persist
 const QUERY_CONFIG: QueryClientConfig = {
   defaultOptions: {
     queries: {
-      // Serve cached data instantly for a minute, revalidating in the background.
-      staleTime: 60_000,
+      /**
+       * DEMO REPO ONLY: never stale, so a screen is never refetched twice.
+       *
+       * Upstream this is 60s, which is right when the data is on a server that
+       * can change underneath you. Here the data is deterministic and generated
+       * in this browser: re-running a query cannot produce a different answer,
+       * so revalidation is pure cost — and the cost lands as a skeleton flashing
+       * over a screen the visitor has already seen.
+       */
+      staleTime: Infinity,
+      // Nothing to refetch on mount either, for the same reason.
+      refetchOnMount: false,
       // Keep it around long enough that a return-after-lunch still paints from cache.
       gcTime: 24 * 60 * 60 * 1000,
       // The tab-return refetch is handled deliberately per-screen (see useVisibilityRefresh); having
       // every mounted query also refetch on focus is what produced the return-to-tab request storm.
       refetchOnWindowFocus: false,
-      refetchOnReconnect: true,
-      retry: 1,
+      // There is no connection to reconnect to.
+      refetchOnReconnect: false,
+      // A demo handler that throws will throw again; retrying only delays the
+      // error state by a round of timers.
+      retry: 0,
     },
   },
 };

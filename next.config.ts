@@ -45,9 +45,14 @@ const nextConfig: NextConfig = {
     // is instant instead of refetching the route on every visit. Default for
     // dynamic routes is 0 (never reused); 30s makes revisits snappy without
     // going stale. (Next.js experimental.staleTimes.)
+    // DEMO REPO ONLY: hold visited routes in the client Router Cache for the
+    // whole session. Upstream uses 30s because server data can change; here the
+    // data is generated in this browser and cannot, so re-fetching a route the
+    // visitor has already seen is pure latency. A revisit becomes an instant
+    // cache read with no network, no RSC round trip and nothing to re-render.
     staleTimes: {
-      dynamic: 30,
-      static: 180,
+      dynamic: 3600,
+      static: 3600,
     },
   },
   

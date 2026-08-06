@@ -103,10 +103,60 @@ function toApiCourse(course: DemoCourse) {
 defineRoutes(MODULE, {
   "GET /lms/clients/:clientId/courses/": () => COURSES.map(toApiCourse),
 
+  /**
+   * Course DETAIL is a different shape from the list item: `CourseDetail`, with
+   * course_id/course_title/modules rather than id/title/stats. Returning the
+   * list shape here crashed the page with "Objects are not valid as a React
+   * child" — the component rendered a field it expected to be a string and got
+   * one of the list's nested objects instead.
+   */
   "GET /lms/clients/:clientId/courses/:courseId/": (req) => {
     const course = courseById(Number(req.params.courseId));
     if (!course) throw notFound("Course not found");
-    return toApiCourse(course);
+
+    return {
+      course_id: course.id,
+      course_title: course.title,
+      course_description: course.description,
+      instructors: [
+        {
+          id: course.instructor.id,
+          name: course.instructor.full_name,
+          bio: course.instructor.headline,
+          profile_pic_url: course.instructor.profile_pic_url,
+          linkedin: course.instructor.linkedin_url,
+        },
+      ],
+      enrolled_students: course.enrolledCount,
+      liked_count: Math.round(course.enrolledCount * 0.42),
+      is_liked_by_current_user: false,
+      is_certified: true,
+      certificate_available: true,
+      updated_at: isoDaysAgo(4),
+      content_lock_enabled: false,
+      lock_threshold_value: 0,
+      modules: course.modules.map((m, i) => {
+        const done = m.topics.filter((t) => t.progress === 100).length;
+        return {
+          id: m.id,
+          weekno: i + 1,
+          title: m.title,
+          completion_percentage: Math.round((done / Math.max(1, m.topics.length)) * 100),
+          submodules: m.topics.map((t, order) => ({
+            id: t.id,
+            title: t.title,
+            description: `Work through ${t.title.toLowerCase()} and prove it with practice.`,
+            order: order + 1,
+            video_count: t.kinds.filter((k) => k === "video").length,
+            quiz_count: t.kinds.filter((k) => k === "quiz").length,
+            article_count: t.kinds.filter((k) => k === "article").length,
+            coding_problem_count: t.kinds.filter((k) => k === "coding").length,
+            assignment_count: t.kinds.filter((k) => k === "assignment").length,
+            subjective_question_count: 0,
+          })),
+        };
+      }),
+    };
   },
 
   /**

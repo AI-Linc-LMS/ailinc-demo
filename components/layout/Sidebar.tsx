@@ -896,6 +896,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return (
       <ListItem key={item.path} component="div" disablePadding sx={{ mb: 0.25 }}>
         <Box
+          // Tour anchor, derived from the route so it needs no per-item wiring:
+          // "/adaptive-courses" -> "nav-adaptive-courses". The platform tour
+          // spotlights each module in the sidebar by this id, which is what lets
+          // it say "this is where X lives" while pointing at X.
+          data-tour-id={`nav-${item.path.replace(/^\//, "").replace(/\//g, "-")}`}
           sx={{
             position: "relative",
             width: "100%",

@@ -18,6 +18,7 @@ import "./instructor";
 import "./admin";
 import "./tickets";
 import "./notifications";
+import "./details";
 import "./client";
 import "./coding";
 import "./content";

@@ -16,7 +16,8 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Box, Button, Typography, Fade } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { useAuth } from "@/lib/auth/auth-context";
 import { useTour } from "@/components/community/TourProvider";
@@ -34,6 +35,24 @@ export function DemoWelcome() {
   const { startTour, isRunning } = useTour();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  /**
+   * Landing on /login arms the guide again.
+   *
+   * "Once per session" was too sticky: signing out and back in as another role
+   * inside the same tab skipped the orientation entirely, which is exactly the
+   * moment a prospect most needs it — they are seeing a workspace they have not
+   * seen before. Clearing the flag here makes it "once per sign-in", which is
+   * what was actually asked for.
+   */
+  useEffect(() => {
+    if (pathname !== "/login") return;
+    try {
+      sessionStorage.removeItem(SEEN_KEY);
+    } catch {
+      /* nothing stored, nothing to clear */
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (!DEMO_MODE || loading || !isAuthenticated || !user?.role) return;
@@ -74,8 +93,13 @@ export function DemoWelcome() {
   const copy = welcomeCopy(user?.role);
 
   return (
-    <Fade in>
+    <AnimatePresence>
       <Box
+        component={motion.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.22 }}
         role="dialog"
         aria-modal="true"
         aria-label="Welcome to the demo"
@@ -92,6 +116,13 @@ export function DemoWelcome() {
         onClick={dismiss}
       >
         <Box
+          component={motion.div}
+          // A spring, not a fade. The card is the first thing a prospect sees
+          // after signing in, and an ease-out fade reads as a loading state
+          // where a settle reads as an interface arriving.
+          initial={{ opacity: 0, y: 18, scale: 0.94 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: "spring", stiffness: 320, damping: 26, mass: 0.7 }}
           onClick={(e) => e.stopPropagation()}
           sx={{
             width: "100%",
@@ -106,6 +137,10 @@ export function DemoWelcome() {
         >
           <Box
             aria-hidden
+            component={motion.div}
+            initial={{ scale: 0.4, rotate: -25, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.08 }}
             sx={{
               width: 56,
               height: 56,
@@ -195,6 +230,6 @@ export function DemoWelcome() {
           </Typography>
         </Box>
       </Box>
-    </Fade>
+    </AnimatePresence>
   );
 }

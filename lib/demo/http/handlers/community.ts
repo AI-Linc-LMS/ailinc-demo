@@ -341,16 +341,21 @@ defineRoutes(MODULE, {
 
   "GET /community-forum/api/clients/:clientId/tags/": () => TAGS,
 
-  "GET /community-forum/api/clients/:clientId/leaderboard/": () =>
-    [STUDENT_PERSONA, ...STUDENTS.slice(0, 14)]
-      .map((p) => ({
-        user: author(p),
-        xp: seededInt(`cxp:${p.id}`, 300, 4200),
-        threads: seededInt(`cth:${p.id}`, 0, 18),
-        accepted_answers: seededInt(`cac:${p.id}`, 0, 12),
-      }))
-      .sort((a, b) => b.xp - a.xp)
-      .map((row, i) => ({ ...row, rank: i + 1 })),
+  /**
+   * `{ period, results }` with rank/user/xp per row — NOT a bare array. The page
+   * reads `data.results.length`, so a bare array crashed it outright.
+   */
+  "GET /community-forum/api/clients/:clientId/leaderboard/": (req) => {
+    const period = (req.query.get("period") ?? "all") as "all" | "week" | "month";
+    const scale = period === "week" ? 0.12 : period === "month" ? 0.4 : 1;
+    return {
+      period,
+      results: [STUDENT_PERSONA, ...STUDENTS.slice(0, 19)]
+        .map((p) => ({ user: author(p), xp: Math.round(seededInt(`cxp:${p.id}`, 300, 4200) * scale) }))
+        .sort((a, b) => b.xp - a.xp)
+        .map((row, i) => ({ rank: i + 1, user: row.user, xp: row.xp, period })),
+    };
+  },
 
   /** Study rooms. Empty by design: a room is live audio, which needs a server. */
   "GET /community-forum/api/clients/:clientId/rooms/": () => [],

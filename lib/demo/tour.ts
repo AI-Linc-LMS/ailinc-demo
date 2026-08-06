@@ -20,7 +20,7 @@ const STUDENT_TOUR: TourStep[] = [
   {
     title: "Welcome to Meridian",
     narration:
-      "This is the learner's view. In the next minute I will show you the whole platform: how a course adapts to you, how practice is scored, and how it all feeds into being job-ready.",
+      "This is the learner's view. In the next two minutes I will walk you through every module: how a course adapts to you, how practice is scored, and how it all ends in being job-ready.",
     icon: "mdi:hand-wave-outline",
     color: "#a78bfa",
   },
@@ -43,51 +43,106 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#f59e0b",
   },
   {
+    targetId: "nav-adaptive-courses",
     title: "Adaptive courses",
     narration:
-      "Each course is a week-by-week journey. Lessons can be re-rendered at four reading levels, from plain-English to whitepaper, so the same material works whether you are new to it or revising.",
+      "Your courses live here. Each one is a week-by-week journey, and lessons can be re-rendered at four reading levels, from plain English to whitepaper — so the same material works whether you are new to it or revising it.",
+    placement: "right",
     icon: "mdi:book-education-outline",
     color: "#6366f1",
   },
   {
+    targetId: "nav-adaptive-courses",
     title: "Quizzes that actually adapt",
     narration:
-      "Answer well and the next question gets harder; miss one and it steps back. The platform keeps a confidence estimate per skill, and stops as soon as it is sure of your level rather than after a fixed number of questions.",
+      "Inside every topic is a quiz that steers. Answer well and the next question gets harder; miss one and it steps back. It keeps a confidence estimate per skill and stops as soon as it is sure of your level, rather than after a fixed number of questions.",
+    placement: "right",
     icon: "mdi:comment-question-outline",
     color: "#a855f7",
   },
   {
+    targetId: "nav-adaptive-courses",
     title: "A real coding workspace",
     narration:
-      "Coding problems run your code against real test cases, show you which one failed, and give layered hints — a nudge first, the mechanism only if you ask twice.",
+      "Coding problems run your code against real test cases, show you exactly which one failed and what it returned, and give layered hints — a nudge first, the actual mechanism only if you ask twice.",
+    placement: "right",
     icon: "mdi:code-braces",
     color: "#f97316",
   },
   {
-    title: "Assessments and mock interviews",
+    targetId: "nav-assessments",
+    title: "Assessments",
     narration:
-      "Formal papers can be timed and proctored. The AI interviewer holds a voice conversation, follows up on your answers, and scores communication as well as correctness.",
+      "Formal papers, timed, and proctored when the institution needs them to be. Results break down by section so you can see which part of the syllabus let you down.",
+    placement: "right",
     icon: "mdi:clipboard-text-clock-outline",
-    color: "#ec4899",
-  },
-  {
-    title: "Live sessions and community",
-    narration:
-      "Scheduled classes with attendance and recordings, and a forum where questions carry point bounties so they actually get answered.",
-    icon: "mdi:video-outline",
     color: "#0ea5e9",
   },
   {
-    title: "The point of all of it",
+    targetId: "nav-mock-interview",
+    title: "AI mock interviews",
     narration:
-      "Jobs, a resume builder, and a scorecard that turns everything you have done into evidence an employer can read. That is the whole loop: learn, prove it, get hired.",
+      "A voice conversation with an interviewer that follows up on your answers rather than reading from a list, and scores communication as well as correctness. The feedback tells you why, not just what.",
+    placement: "right",
+    icon: "mdi:account-voice",
+    color: "#ec4899",
+  },
+  {
+    targetId: "nav-jobs-v2",
+    title: "Jobs",
+    narration:
+      "Roles curated for this institution's students, with eligibility already checked against your profile, so you are not applying into a wall.",
+    placement: "right",
     icon: "mdi:briefcase-outline",
     color: "#10b981",
   },
   {
+    targetId: "nav-resume",
+    title: "Resume builder",
+    narration:
+      "Builds from the profile and the work you have actually completed, then scores it against a job description so you can see what a screening tool would see.",
+    placement: "right",
+    icon: "mdi:file-document-edit-outline",
+    color: "#14b8a6",
+  },
+  {
+    targetId: "nav-live-sessions",
+    title: "Live sessions",
+    narration:
+      "Scheduled classes with your cohort. Attendance is automatic, and recordings, transcripts and AI summaries attach themselves afterwards, so missing one is recoverable.",
+    placement: "right",
+    icon: "mdi:video-outline",
+    color: "#3b82f6",
+  },
+  {
+    targetId: "nav-community",
+    title: "Community",
+    narration:
+      "Ask your cohort. Questions can carry a points bounty, which is the mechanism that gets them answered instead of sitting unread.",
+    placement: "right",
+    icon: "mdi:forum-outline",
+    color: "#8b5cf6",
+  },
+  {
+    targetId: "nav-tickets",
+    title: "Support",
+    narration:
+      "Raise anything from a broken video to a certificate spelling, and follow it through to resolution. It routes to your instructor or the administration automatically.",
+    placement: "right",
+    icon: "mdi:lifebuoy",
+    color: "#64748b",
+  },
+  {
+    title: "The point of all of it",
+    narration:
+      "Everything you do feeds a scorecard: skills, consistency, assessment and interview performance, benchmarked against your cohort. That is the artefact an employer can actually read.",
+    icon: "mdi:chart-box-outline",
+    color: "#22c55e",
+  },
+  {
     title: "Explore freely",
     narration:
-      "Every module is switched on and filled with data. Click anything. The question mark in any page header explains that page in detail.",
+      "Every module is switched on and filled with data. Click anything. The question mark in any page header explains that page in detail, and the Guide button up top restarts this tour.",
     icon: "mdi:compass-outline",
     color: "#a78bfa",
   },
@@ -102,6 +157,8 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#a78bfa",
   },
   {
+    targetId: "nav-instructor-students",
+    placement: "right",
     title: "Who needs attention",
     narration:
       "Students are flagged with the rule that flagged them — under twenty-five percent progress, a week with no activity, two missed sessions. A red badge with no reason is not something you can act on.",
@@ -109,6 +166,8 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#ef4444",
   },
   {
+    targetId: "nav-instructor-cohorts",
+    placement: "right",
     title: "Your batches",
     narration:
       "Each cohort shows its own progress, average score and at-risk count, so you can see which group is struggling rather than only which individual is.",
@@ -116,6 +175,8 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#6366f1",
   },
   {
+    targetId: "nav-instructor-assessments",
+    placement: "right",
     title: "Gradebook and submissions",
     narration:
       "Anything awaiting review surfaces here, including subjective answers the AI cannot score on its own.",
@@ -123,6 +184,8 @@ const INSTRUCTOR_TOUR: TourStep[] = [
     color: "#f59e0b",
   },
   {
+    targetId: "nav-instructor-live-sessions",
+    placement: "right",
     title: "Live sessions",
     narration:
       "Host from here, take attendance automatically, and let the recording and transcript attach themselves afterwards.",
@@ -168,6 +231,8 @@ const ADMIN_TOUR: TourStep[] = [
     color: "#f59e0b",
   },
   {
+    targetId: "nav-admin-manage-students",
+    placement: "right",
     title: "People and support",
     narration:
       "Cohort fill, ticket volume and resolution time, and instructor feedback — suppressed below five responses, because averaging three opinions is not a rating.",
@@ -175,6 +240,8 @@ const ADMIN_TOUR: TourStep[] = [
     color: "#ec4899",
   },
   {
+    targetId: "nav-admin-branding",
+    placement: "right",
     title: "It is your platform",
     narration:
       "Branding, timezone, integrations, roles and permissions. Everything a prospect sees carries your institution's name, not ours.",

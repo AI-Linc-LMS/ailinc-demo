@@ -44,7 +44,37 @@ function encodeSvg(svg: string): string {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg.replace(/\s+/g, " ").trim())}`;
 }
 
-/** A stable avatar data-URI for a person. */
+/**
+ * Free portrait photos, used as the actual profile picture for everyone.
+ *
+ * randomuser.me serves these specifically as free placeholder portraits, which
+ * is why they are safe to point at rather than hosting our own. They are remote
+ * URLs by request, so avatars do need connectivity — everything else in the demo
+ * still runs with the network unplugged, and a portrait that fails to load falls
+ * back to the initials avatar below rather than breaking the layout.
+ *
+ * The pool is treated as ANONYMOUS: a person is mapped to a photo by hashing
+ * their name across the whole pool. Photos are never picked from a person's name
+ * in any other way — inferring anything about someone from their name is exactly
+ * the assumption worth avoiding, and a hash sidesteps it entirely.
+ */
+const PORTRAIT_POOL: readonly string[] = [
+  ...Array.from({ length: 30 }, (_, i) => `https://randomuser.me/api/portraits/men/${i}.jpg`),
+  ...Array.from({ length: 30 }, (_, i) => `https://randomuser.me/api/portraits/women/${i}.jpg`),
+];
+
+/** A stable portrait for a person, the same one everywhere they appear. */
+export function portraitFor(name: string): string {
+  const rng = makeRng(`portrait:${name}`);
+  return PORTRAIT_POOL[Math.floor(rng() * PORTRAIT_POOL.length)];
+}
+
+/**
+ * A stable generated avatar data-URI.
+ *
+ * Still used as the fallback when a portrait cannot load (offline, or the host
+ * is unreachable), and for organisations via companyLogoFor.
+ */
 export function avatarFor(name: string, size = 96): string {
   const rng = makeRng(`avatar:${name}`);
   const [from, to] = AVATAR_GRADIENTS[Math.floor(rng() * AVATAR_GRADIENTS.length)];

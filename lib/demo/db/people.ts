@@ -11,7 +11,7 @@
  * with enough international names to show the platform is not region-locked.
  */
 
-import { avatarFor } from "./avatar";
+import { portraitFor } from "./avatar";
 import { DEMO_PERSONAS } from "../config";
 import { seededInt, seededPick } from "../random";
 
@@ -142,7 +142,7 @@ function buildPerson(
     email: slugEmail(first, last, id),
     phone: `+91 ${seededInt(`${seed}:phone`, 70000, 99999)}${seededInt(`${seed}:phone2`, 10000, 99999)}`,
     role,
-    profile_pic_url: avatarFor(fullName),
+    profile_pic_url: portraitFor(fullName),
     college: seededPick(`${seed}:college`, COLLEGES),
     points: seededInt(`${seed}:points`, 420, 9800),
     streak: seededInt(`${seed}:streak`, 0, 46),
