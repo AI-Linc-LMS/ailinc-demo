@@ -1174,6 +1174,10 @@ export function attemptToApi(attempt: Attempt) {
     status: attempt.status,
     created_at: attempt.created_at,
     scheduled_date_time: attempt.scheduled_date_time ?? undefined,
+    // Included so the list can date a COMPLETED interview by when it actually
+    // happened. An interview started on the spot has no scheduled time, which is
+    // exactly the case the previous-interviews table lists.
+    submitted_at: attempt.submitted_at ?? undefined,
     score: scored ? scored.overall_percentage : undefined,
     feedback: scored ? scored.overall_feedback : undefined,
   };

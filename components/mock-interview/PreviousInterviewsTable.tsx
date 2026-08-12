@@ -26,8 +26,19 @@ const PreviousInterviewsTableComponent = ({
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
 
-  const formatDate = useCallback((dateString: string) => {
+  /**
+   * The date to show for a row, and never the string "Invalid Date".
+   *
+   * An interview started on the spot is never scheduled, so
+   * `scheduled_date_time` is null on exactly the rows this table lists. Reading
+   * only that field meant `new Date("")`, and every completed interview showed
+   * "Invalid Date". Fall through to when it actually happened, and if nothing
+   * usable is there, show a dash rather than a broken date.
+   */
+  const formatDate = useCallback((dateString?: string | null) => {
+    if (!dateString) return "-";
     const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return "-";
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
@@ -272,7 +283,11 @@ const PreviousInterviewsTableComponent = ({
                         variant="body2"
                         sx={{ color: "var(--font-secondary)", fontSize: "0.875rem" }}
                       >
-                        {formatDate(interview.scheduled_date_time || "")}
+                        {formatDate(
+                          interview.scheduled_date_time ??
+                            (interview as { submitted_at?: string }).submitted_at ??
+                            interview.created_at,
+                        )}
                       </Typography>
                     </Box>
                   </Box>

@@ -128,11 +128,28 @@ function scorecardPayload(full: boolean) {
       current_week: 7,
       current_module: courses[0]?.title ?? "-",
       overall_performance_score: overallProgress(),
-      overall_grade: "Proficient",
+      // Grade follows the score rather than being asserted. A card reading
+      // "38/100 Proficient" invites the reader to distrust every other number
+      // on the page.
+      overall_grade:
+        overallProgress() >= 75 ? "Advanced" : overallProgress() >= 50 ? "Proficient" : "Developing",
       total_time_spent_seconds: hours * 3600,
       attendance_percentage: 94,
       rank_in_cohort: myRank().rank,
       total_students: rankedLearners().length,
+      // These three were omitted, and the mapper defaults a missing number to 0.
+      // The scorecard therefore claimed a 0-day streak and 0% completion on the
+      // same screen as a nav badge reading 23 and a dashboard reading 38%.
+      // Derived from the same records those surfaces use, so they cannot drift.
+      active_days_streak: STUDENT_PERSONA.streak,
+      total_days_active: STUDENT_PERSONA.streak + seededInt("scorecard:priordays", 24, 58),
+      completion_percentage: overallProgress(),
+      course_progress: courses.map((c) => ({
+        course_id: c.id,
+        course_name: c.title,
+        current_week: Math.max(1, Math.round((c.completion / 100) * c.modules.length * 2)),
+        current_module: c.modules[0]?.title ?? "-",
+      })),
     },
     learning_consumption: {
       videos_watched: seededInt("sc:videos", 40, 90),
