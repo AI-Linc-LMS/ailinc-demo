@@ -16,6 +16,7 @@ import {
   topicsOf,
   itemCounts,
   courseArt,
+  courseCover,
   type DemoCourse,
   type DemoTopic,
 } from "../../db/courses";
@@ -221,7 +222,10 @@ function listItem(course: DemoCourse) {
     article_count: counts.article,
     coding_count: counts.coding_problem,
     video_count: counts.video,
-    card_image_url: courseArt(course),
+    // Real photograph, with the generated gradient as the documented fallback
+    // the card falls back to when the image cannot load.
+    card_image_url: courseCover(course.id) || courseArt(course),
+    card_image_fallback_url: courseArt(course),
     // Every course is open to self-enrolment so a prospect can enrol from the
     // catalogue and watch it appear on their dashboard.
     self_enroll_enabled: true,
@@ -237,7 +241,8 @@ function detail(course: DemoCourse) {
   let order = 0;
   return {
     ...listItem(course),
-    header_image_url: courseArt(course),
+    header_image_url: courseCover(course.id, 1600) || courseArt(course),
+    header_image_fallback_url: courseArt(course),
     instructors: [{ name: course.instructor.full_name }],
     modules: course.modules.map((m, i) => ({
       id: m.id,

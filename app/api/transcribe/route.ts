@@ -14,7 +14,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   if (!OPENAI_API_KEY?.trim()) {
     return NextResponse.json(
-      { error: "Speech-to-text not configured (set OPENAI_API_KEY)" },
+      { error: "Speech to text is unavailable here. Type your answer instead." },
       { status: 503 }
     );
   }

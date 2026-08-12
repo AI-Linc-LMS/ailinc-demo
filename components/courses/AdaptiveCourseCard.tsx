@@ -48,7 +48,21 @@ export function AdaptiveCourseCard({
       <Box sx={{ width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, flexShrink: 0, background: "linear-gradient(135deg, color-mix(in srgb, #6366f1 14%, transparent), color-mix(in srgb, #a855f7 12%, transparent))" }}>
         {course.card_image_url && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={course.card_image_url} alt={course.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          <img
+            src={course.card_image_url}
+            alt={course.title}
+            loading="lazy"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            onError={(e) => {
+              // A remote cover that fails must reveal the gradient plate behind
+              // it, not a broken image frame. The fallback is served inline as a
+              // data URI, so it works with the network unplugged.
+              const img = e.currentTarget;
+              const fb = (course as { card_image_fallback_url?: string }).card_image_fallback_url;
+              if (fb && img.src !== fb) img.src = fb;
+              else img.style.display = "none";
+            }}
+          />
         )}
       </Box>
 

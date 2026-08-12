@@ -67,6 +67,14 @@ export function CatalogCourseCard({
             alt={course.title}
             loading="lazy"
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            onError={(e) => {
+              // Same rule as the library card: fall back to the inline gradient
+              // rather than leave a broken image frame on the catalogue.
+              const img = e.currentTarget;
+              const fb = (course as { card_image_fallback_url?: string }).card_image_fallback_url;
+              if (fb && img.src !== fb) img.src = fb;
+              else img.style.display = "none";
+            }}
           />
         )}
       </Box>

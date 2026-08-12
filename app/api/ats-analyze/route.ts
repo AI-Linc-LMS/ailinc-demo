@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { ResumeData } from "@/components/profile/resume/types";
+import { buildLocalAnalysis } from "./localAnalysis";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
@@ -109,7 +110,7 @@ function buildResumeSummary(data: ResumeData): string {
 
 async function callAI(prompt: string, maxTokens: number): Promise<{ text: string; error?: string }> {
   if (!useOpenAI()) {
-    return { text: "", error: "ATS AI not configured (set OPENAI_API_KEY)" };
+    return { text: "", error: "Model analysis unavailable; using the structural checker." };
   }
   const res = await fetch(OPENAI_URL, {
     method: "POST",
@@ -126,11 +127,11 @@ async function callAI(prompt: string, maxTokens: number): Promise<{ text: string
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const msg = data?.error?.message || data?.message || "OpenAI request failed";
+    const msg = data?.error?.message || data?.message || "The analysis service did not respond.";
     return { text: "", error: msg };
   }
   const text = data?.choices?.[0]?.message?.content;
-  return { text: text ?? "", error: text ? undefined : "No response from OpenAI" };
+  return { text: text ?? "", error: text ? undefined : "The analysis service returned nothing." };
 }
 
 export interface FeedbackCategory {
@@ -325,13 +326,6 @@ function extractJsonFromResponse(text: string): ATSAnalysisResponse | null {
 }
 
 export async function POST(request: NextRequest) {
-  if (!useOpenAI()) {
-    return NextResponse.json(
-      { error: "ATS AI analysis is not configured (set OPENAI_API_KEY)" },
-      { status: 501 }
-    );
-  }
-
   let body: { resumeData: ResumeData; jobDescription?: string; light?: boolean };
   try {
     body = await request.json();
@@ -344,8 +338,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing resumeData" }, { status: 400 });
   }
 
-  const resumeSummary = buildResumeSummary(resumeData);
   const jobText = (jobDescription && typeof jobDescription === "string") ? jobDescription.trim() : "";
+
+  // No model available: answer with the structural checker rather than an error.
+  //
+  // The previous 501 carried the text "ATS AI analysis is not configured (set
+  // OPENAI_API_KEY)", which the resume screen rendered verbatim in a red toast
+  // and a warning banner. Showing a prospect an environment variable name is
+  // the same class of leak as the demo transport printing "No demo handler".
+  // The checks below are real and need no model; the summary says so.
+  if (!useOpenAI()) {
+    const local = buildLocalAnalysis(resumeData, jobText);
+    if (light === true) {
+      return NextResponse.json({ overallScore: local.overallScore, atsScore: local.atsScore });
+    }
+    return NextResponse.json(local);
+  }
+
+  const resumeSummary = buildResumeSummary(resumeData);
 
   if (light === true) {
     const lightPrompt = `Rate this resume for ATS. Return ONLY valid JSON: {"overallScore":NN,"atsScore":NN} where NN is 0-100. Weight: 80% technical (skills, experience, education, content depth, evidence) and 20% presentation (format, grammar, tone). If technical/evidence is poor, return at most 30 for both scores.

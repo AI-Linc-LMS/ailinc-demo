@@ -88,6 +88,42 @@ export interface DemoCourse {
   ratingCount: number;
 }
 
+/**
+ * Cover photographs, one per course.
+ *
+ * Every one was fetched and LOOKED AT before being written down, not picked by
+ * guessing at a photo id: the React editor shot really is a React editor, the
+ * server-rack shot really is a rack. A cover that turns out to be a beach is
+ * worse than the gradient it replaced.
+ *
+ * Unsplash's permanent `images.unsplash.com/photo-<id>` form, not the retired
+ * `source.unsplash.com` redirector, and sized down at the CDN so a card pulls
+ * roughly 30KB rather than a full-resolution original.
+ *
+ * These are the only remote images in the product besides the roster portraits.
+ * `courseArt` below stays as the fallback and every consumer must use it on
+ * error, so a blocked network degrades to the gradient rather than a broken
+ * image frame.
+ */
+const COVERS: Record<number, string> = {
+  // A React component open in VS Code.
+  201: "photo-1633356122544-f134324a6cee",
+  // A hand holding a sticky note reading PYTHON, over a developer's desk.
+  202: "photo-1526379095098-d400fd0bf935",
+  // Dense charting on a laptop screen: the shape of algorithmic work.
+  203: "photo-1518186285589-2f7649de83e0",
+  // A patch panel of network cabling.
+  204: "photo-1544197150-b99a580bb7a8",
+  // Cabled server racks in a data centre.
+  205: "photo-1558494949-ef010cbdcc31",
+};
+
+/** The cover photo for a course, or "" when none is mapped. */
+export function courseCover(courseId: number, width = 800): string {
+  const id = COVERS[courseId];
+  return id ? `https://images.unsplash.com/${id}?w=${width}&q=70&fm=jpg&fit=crop` : "";
+}
+
 /** Generated card art: a gradient plate with the course initials. Keeps the repo light and offline. */
 export function courseArt(course: { title: string; accent: [string, string] }): string {
   const [from, to] = course.accent;

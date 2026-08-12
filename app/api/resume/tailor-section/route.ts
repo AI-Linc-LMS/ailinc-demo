@@ -102,7 +102,7 @@ function parseAIJson(text: string): Record<string, unknown> | null {
 export async function POST(req: NextRequest): Promise<NextResponse<TailorSectionResponse>> {
   if (!OPENAI_API_KEY?.trim()) {
     return NextResponse.json(
-      { section: "summary", rationale: "", error: "AI tailoring is not configured (set OPENAI_API_KEY)." },
+      { section: "summary", rationale: "", error: "AI rewriting is not available in this preview. The ATS report still lists what to change." },
       { status: 503 }
     );
   }
@@ -191,7 +191,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<TailorSection
 
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
-      const msg = data?.error?.message || "OpenAI request failed";
+      const msg = data?.error?.message || "The rewriting service did not respond.";
       return NextResponse.json(
         { section: body.section, rationale: "", error: msg },
         { status: 502 }

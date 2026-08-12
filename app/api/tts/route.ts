@@ -83,13 +83,13 @@ async function fetchOpenAiTts(model: string, voice: string, text: string): Promi
     }
   }
 
-  throw lastErr || new Error("OpenAI TTS request failed");
+  throw lastErr || new Error("The narration service did not respond.");
 }
 
 export async function POST(request: NextRequest) {
   if (!OPENAI_API_KEY?.trim()) {
     return NextResponse.json(
-      { error: "tts-unavailable", detail: "Cloud TTS not configured (set OPENAI_API_KEY)" },
+      { error: "tts-unavailable", detail: "Cloud narration is unavailable here, using the browser voice instead." },
       { status: 503 }
     );
   }
