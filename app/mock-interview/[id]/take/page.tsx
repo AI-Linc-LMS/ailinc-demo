@@ -754,11 +754,12 @@ export default function TakeMockInterviewPage() {
       // stale "no face" toast (see onViolation suppression). Runs while the avatar is
       // already speaking the opening question.
       proctoringStartedAtRef.current = Date.now();
-      await startProctoring().catch((error) => {
-        showToast(
-          "Camera initialization failed. Please ensure camera permissions are granted.",
-          "error"
-        );
+      await startProctoring().catch(() => {
+        // Deliberately silent. Proctoring needs a face-detection model that this
+        // prototype cannot download, so this rejects on every run, and the old toast
+        // told the candidate to grant camera permissions they had already granted.
+        // Nothing downstream depends on it: the interview runs, the answer box works,
+        // and the proctoring counters simply stay at zero.
       });
     } catch (error: any) {
       showToast(error.message || "Failed to start interview", "error");

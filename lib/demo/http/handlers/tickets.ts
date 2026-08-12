@@ -23,11 +23,18 @@ import {
 } from "../../db/people";
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
+import type {
+  Ticket,
+  TicketCategory,
+  TicketStatus,
+} from "@/lib/services/ticket.service";
 
 const MODULE = "tickets";
 
-type Status = "OPEN" | "IN_PROGRESS" | "RESOLVED";
-type Category = "technical" | "content" | "video" | "quiz" | "navigation" | "other";
+// Aliased to the service's own unions rather than retyped here: the seed and the
+// consumer then cannot drift, and `toTicket` is checked against the real `Ticket`.
+type Status = TicketStatus;
+type Category = TicketCategory;
 
 const CATEGORY_LABEL: Record<Category, string> = {
   technical: "Technical",
@@ -38,13 +45,13 @@ const CATEGORY_LABEL: Record<Category, string> = {
   other: "Other",
 };
 
-const STATUS_LABEL: Record<Status, string> = {
+export const STATUS_LABEL: Record<Status, string> = {
   OPEN: "Open",
   IN_PROGRESS: "In progress",
   RESOLVED: "Resolved",
 };
 
-function userMini(p: DemoPerson) {
+export function userMini(p: DemoPerson) {
   return {
     id: p.id,
     user_id: p.id,
@@ -153,7 +160,7 @@ const SEEDS: Seed[] = [
   },
 ];
 
-function toTicket(s: Seed) {
+function toTicket(s: Seed): Ticket {
   const resolved = s.status === "RESOLVED";
   return {
     id: s.id,
@@ -172,7 +179,7 @@ function toTicket(s: Seed) {
     raised_by: userMini(s.by),
     resolved_by_user: resolved && s.assigned ? userMini(s.assigned) : null,
     cohort: 11,
-    cohort_name: "Autumn 2026 — Full-Stack",
+    cohort_name: "Autumn 2026: Full-Stack",
     assigned_to_user: s.assigned ? userMini(s.assigned) : null,
     // null assigner with an assignee means the system auto-routed it, which is
     // the real product's convention and worth showing in the triage column.
@@ -208,19 +215,66 @@ function toTicket(s: Seed) {
 }
 
 /** Tickets the visitor filed this session, newest first. */
-function visitorTickets() {
-  return overlay.get<Array<ReturnType<typeof toTicket>>>("tickets:filed", []);
+function visitorTickets(): Ticket[] {
+  return overlay.get<Ticket[]>("tickets:filed", []);
 }
 
-function allTickets() {
-  return [...visitorTickets(), ...SEEDS.map(toTicket)];
+/**
+ * Field-level triage edits, keyed by ticket id.
+ *
+ * Kept as a patch rather than a copy of the whole row because the seed is
+ * regenerated on every load so its dates stay relative to today (see
+ * `lib/demo/clock.ts`). Storing a resolved ticket wholesale would freeze its
+ * `created_at` at the moment the salesperson clicked Resolve, and a week later
+ * the queue would show a ticket raised "7 days ago" that is really the one they
+ * just touched. A patch layers the change over a seed that is still current.
+ */
+type TicketPatch = Partial<Ticket>;
+const PATCH_KEY = "tickets:triage";
+
+function triagePatches(): Record<string, TicketPatch> {
+  return overlay.get<Record<string, TicketPatch>>(PATCH_KEY, {});
 }
 
-function mine() {
+function withPatch(t: Ticket): Ticket {
+  const patch = triagePatches()[String(t.id)];
+  return patch ? { ...t, ...patch } : t;
+}
+
+/** Every ticket in the tenant, visitor-filed first, with triage edits applied. */
+export function allTickets(): Ticket[] {
+  return [...visitorTickets(), ...SEEDS.map(toTicket)].map(withPatch);
+}
+
+export function findTicket(id: number): Ticket {
+  const found = allTickets().find((t) => t.id === id);
+  if (!found) throw notFound("Ticket not found");
+  return found;
+}
+
+/**
+ * Persist a triage edit and return the row as it now reads.
+ *
+ * Every mutating ticket route goes through here so that the change survives the
+ * redirect back to the queue. Returning the merged row without writing it was
+ * the original bug: the detail page showed "Resolved", the list behind it still
+ * said "Open", and the demo contradicted itself on screen.
+ */
+export function patchTicket(id: number, patch: TicketPatch): Ticket {
+  const current = findTicket(id);
+  const merged: TicketPatch = { ...patch, updated_at: iso(new Date(nowMs())) };
+  overlay.update<Record<string, TicketPatch>>(PATCH_KEY, {}, (all) => ({
+    ...all,
+    [id]: { ...(all[id] ?? {}), ...merged },
+  }));
+  return { ...current, ...merged };
+}
+
+function mine(): Ticket[] {
   return allTickets().filter((t) => t.raised_by?.id === STUDENT_PERSONA.id);
 }
 
-type TicketRow = ReturnType<typeof toTicket>;
+type TicketRow = Ticket;
 
 /**
  * Apply the filters the page sends.
@@ -282,11 +336,8 @@ defineRoutes(MODULE, {
     };
   },
 
-  "GET /api/clients/:clientId/tickets/:ticketId/": (req) => {
-    const found = allTickets().find((t) => t.id === Number(req.params.ticketId));
-    if (!found) throw notFound("Ticket not found");
-    return found;
-  },
+  "GET /api/clients/:clientId/tickets/:ticketId/": (req) =>
+    findTicket(Number(req.params.ticketId)),
 
   "POST /api/clients/:clientId/tickets/": (req) => {
     const body = (req.body ?? {}) as Record<string, unknown>;
@@ -308,10 +359,17 @@ defineRoutes(MODULE, {
     return ticket;
   },
 
+  /**
+   * Generic update. Only status is editable from the UI today, and it is written
+   * through the overlay: returning a merged row without persisting it left the
+   * queue showing the old status the moment the page reloaded.
+   */
   "PATCH /api/clients/:clientId/tickets/:ticketId/": (req) => {
-    const found = allTickets().find((t) => t.id === Number(req.params.ticketId));
-    if (!found) throw notFound("Ticket not found");
+    const found = findTicket(Number(req.params.ticketId));
     const status = String(req.body?.status ?? found.status) as Status;
-    return { ...found, status, status_display: STATUS_LABEL[status] ?? found.status_display };
+    return patchTicket(found.id, {
+      status,
+      status_display: STATUS_LABEL[status] ?? found.status_display,
+    });
   },
 });

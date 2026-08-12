@@ -28,5 +28,24 @@ import "./journey";
 import "./progression";
 import "./quiz";
 
+/**
+ * Write-side coverage, one module per owning service.
+ *
+ * Split out from the read handlers above rather than folded into them for a
+ * practical reason: a crawl only ever exercises GETs a page fires on load, so
+ * every create/update/delete in the product went unimplemented and unnoticed
+ * until `scripts/demo-coverage.mjs` diffed the service call sites against the
+ * router. These modules close that gap, and keeping them separate keeps the
+ * boundary legible — if a button does nothing, its handler belongs here.
+ */
+import "./community-actions";
+import "./course-builder";
+import "./assessment-admin";
+import "./jobs-admin";
+import "./ticket-actions";
+import "./account-actions";
+import "./interview-actions";
+import "./misc-actions";
+
 /** Imported for its side effects only; nothing to export. */
 export {};

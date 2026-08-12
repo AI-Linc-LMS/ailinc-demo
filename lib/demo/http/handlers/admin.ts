@@ -22,9 +22,11 @@ import {
   type DemoPerson,
 } from "../../db/people";
 import { COURSES } from "../../db/courses";
+import { allJobs, toAdminJob } from "../../db/jobs";
+import { applyRoster, enrollmentJobs, isRosterActive } from "./account-actions";
+import { adaptiveCourseList, legacyAdminCourseList } from "./course-builder";
 import { overlay } from "../../db/overlay";
 import { DEMO_TENANT } from "../../config";
-import { clientInfo } from "../../db/tenant";
 import { iso, isoDaysAgo, nowMs, ymd, ymdDaysAgo, ymdDaysAhead, daysAgo } from "../../clock";
 import { seededInt, seededPick, seededBool } from "../../random";
 
@@ -593,26 +595,55 @@ defineRoutes(MODULE, {
     const search = (req.query.get("search") ?? "").toLowerCase();
     const page = Number(req.query.get("page") ?? 1);
     const limit = Number(req.query.get("limit") ?? 25);
-    const rows = allStudents()
+    // applyRoster, not the raw seed: an administrator who deletes a student, or
+    // quick-enrols one, must see that in this table on the very next refresh.
+    const rows = applyRoster(allStudents())
       .filter((p) => !search || p.full_name.toLowerCase().includes(search) || p.email.toLowerCase().includes(search))
-      .map((p) => ({
-        id: p.id,
-        user_id: p.id,
-        name: p.full_name,
-        full_name: p.full_name,
-        email: p.email,
-        phone_number: p.phone,
-        profile_pic_url: p.profile_pic_url,
-        college: p.college,
-        is_active: true,
-        date_joined: isoDaysAgo(seededInt(`dj:${p.id}`, 20, 200)),
-        last_login: isoDaysAgo(seededInt(`ll:${p.id}`, 0, 12)),
-        progress: progressOf(p),
-        points: p.points,
-        streak: p.streak,
-        courses_enrolled: seededInt(`ce:${p.id}`, 1, 3),
-        cohort: seededPick(`co:${p.id}`, COHORTS.map((c) => c.name)),
-      }));
+      .map((p) => {
+        const enrolled = seededInt(`ce:${p.id}`, 1, 3);
+        return {
+          id: p.id,
+          user_id: p.id,
+          name: p.full_name,
+          full_name: p.full_name,
+          first_name: p.first_name,
+          last_name: p.last_name,
+          username: p.user_name,
+          email: p.email,
+          phone_number: p.phone,
+          profile_pic_url: p.profile_pic_url,
+          college: p.college,
+          is_active: isRosterActive(p.id),
+          date_joined: isoDaysAgo(seededInt(`dj:${p.id}`, 20, 200)),
+          last_login: isoDaysAgo(seededInt(`ll:${p.id}`, 0, 12)),
+          progress: progressOf(p),
+          points: p.points,
+          streak: p.streak,
+          courses_enrolled: enrolled,
+          cohort: seededPick(`co:${p.id}`, COHORTS.map((c) => c.name)),
+          // The rest of the `Student` type. These render as blank cells and an
+          // empty CSV column when omitted, which reads as a broken table rather
+          // than an unused one.
+          total_marks: p.points,
+          most_active_course: seededPick(`mac:${p.id}`, COURSES.map((c) => c.title)),
+          total_time_spent: { value: seededInt(`tts:${p.id}`, 6, 180), unit: "hours" },
+          last_activity_date: isoDaysAgo(seededInt(`lad:${p.id}`, 0, 14)),
+          current_streak: p.streak,
+          streak_data: Array.from({ length: 7 }, (_, d) => seededBool(`sd:${p.id}:${d}`, 0.55)),
+          enrollment_count: enrolled,
+          has_saved_resume: true,
+          assessment_submissions: seededInt(`sas:${p.id}`, 0, 4),
+          activity_summary: {
+            total_activities: seededInt(`sact:${p.id}`, 30, 260),
+            by_type: {
+              article: seededInt(`sact:a:${p.id}`, 4, 60),
+              quiz: seededInt(`sact:q:${p.id}`, 2, 40),
+              coding: seededInt(`sact:c:${p.id}`, 0, 30),
+              assessment: seededInt(`sact:s:${p.id}`, 0, 6),
+            },
+          },
+        };
+      });
 
     const start = (page - 1) * limit;
     const paged = rows.slice(start, start + limit);
@@ -634,7 +665,10 @@ defineRoutes(MODULE, {
   },
 
   // A bare array: EnrollmentJobHistory does `jobs.map(...)` on the response.
-  "GET /admin-dashboard/api/clients/:clientId/student-enrollment-jobs/": () => [],
+  // Empty until the visitor uploads a CSV, and never empty after: a job history
+  // that forgets the upload it just accepted is the clearest possible signal
+  // that nothing really happened.
+  "GET /admin-dashboard/api/clients/:clientId/student-enrollment-jobs/": () => enrollmentJobs(),
 
   /** Per-course completion, shown as a column on the manage-students table. */
   "GET /admin-dashboard/api/clients/:clientId/course-completion-stats/": () =>
@@ -648,31 +682,16 @@ defineRoutes(MODULE, {
       avg_completion: c.completion,
     })),
 
-  "GET /admin-dashboard/api/clients/:clientId/courses/": () =>
-    COURSES.map((c) => ({
-      id: c.id,
-      title: c.title,
-      slug: c.slug,
-      is_published: true,
-      enrolled_students: c.enrolledCount,
-      created_at: isoDaysAgo(120),
-    })),
+  /**
+   * Both course lists come from the builder projection rather than straight off
+   * the seed, so a course an admin creates is in the very next response. They
+   * also carry the per-type counts (`quiz_count`, `article_count`, ...) that the
+   * library header sums: those were absent, and summing an absent key printed
+   * NaN across the whole stat row.
+   */
+  "GET /admin-dashboard/api/clients/:clientId/courses/": () => legacyAdminCourseList(),
 
-  "GET /adaptive-quiz/api/admin/courses/": () =>
-    COURSES.map((c) => ({
-      id: c.id,
-      title: c.title,
-      slug: c.slug,
-      description: c.description,
-      is_published: true,
-      module_count: c.modules.length,
-      submodule_count: c.modules.reduce((s, m) => s + m.topics.length, 0),
-      enrolled_count: c.enrolledCount,
-      self_enroll_enabled: true,
-      review_status: "approved",
-      updated_at: isoDaysAgo(seededInt(`aupd:${c.id}`, 1, 20)),
-      created_by: INSTRUCTOR_PERSONA.full_name,
-    })),
+  "GET /adaptive-quiz/api/admin/courses/": () => adaptiveCourseList(),
 
   // Bare array: the course list does `jobs.some(...)` to badge a course as generating.
   "GET /adaptive-quiz/api/admin/courses/jobs/": () => [],
@@ -798,15 +817,11 @@ defineRoutes(MODULE, {
   "GET /admin-dashboard/api/clients/:clientId/pending-instructors/": () =>
     instructorDirectory().filter((r) => r.pending_status === "pending"),
 
-  // ── Assessments, jobs, emails, tickets ──────────────────────────────────
-  "GET /admin-dashboard/api/clients/:clientId/assessments/": () => [
-    { id: 901, title: "Full-Stack Engineering — Mid-Programme Assessment", slug: "full-stack-mid-programme", is_draft: false, is_published: true, submissions: 24, pending_review: 2, avg_score: 71, number_of_questions: 45, duration_minutes: 90, created_at: isoDaysAgo(30) },
-    { id: 902, title: "Data Structures & Algorithms — Diagnostic", slug: "dsa-diagnostic", is_draft: false, is_published: true, submissions: 41, pending_review: 0, avg_score: 68, number_of_questions: 25, duration_minutes: 40, created_at: isoDaysAgo(45) },
-    { id: 903, title: "Python for Data Science — Unit 2 Test", slug: "python-ds-unit-2", is_draft: false, is_published: true, submissions: 18, pending_review: 0, avg_score: 66, number_of_questions: 30, duration_minutes: 60, created_at: isoDaysAgo(22) },
-    { id: 904, title: "End-of-Programme Comprehensive", slug: "end-of-programme-comprehensive", is_draft: true, is_published: false, submissions: 0, pending_review: 0, avg_score: 0, number_of_questions: 80, duration_minutes: 150, created_at: isoDaysAgo(6) },
-  ],
-
-  "GET /admin-dashboard/api/clients/:clientId/assessment-company-catalog/": () => ({ results: [], count: 0 }),
+  // ── Jobs, emails, tickets ───────────────────────────────────────────────
+  // The assessment list and the composer's company catalogue moved to
+  // `assessment-admin.ts`. They were literals here while the create, publish and
+  // delete handlers lived there, so a paper an administrator created never
+  // appeared in the list it was created from.
 
   /**
    * Sent mail, for both tabs of /admin/emails.
@@ -916,29 +931,28 @@ defineRoutes(MODULE, {
     };
   },
 
-  "GET /jobs-v2/api/admin/jobs/": () => ({
-    results: [
-      { id: 601, job_title: "Software Engineer I (Backend)", company_name: "Razorpay", status: "active", applications_count: 64, number_of_openings: 6, created_at: isoDaysAgo(9) },
-      { id: 602, job_title: "Frontend Engineer", company_name: "Zerodha", status: "active", applications_count: 51, number_of_openings: 3, created_at: isoDaysAgo(14) },
-      { id: 603, job_title: "Data Analyst — Growth", company_name: "Swiggy", status: "active", applications_count: 38, number_of_openings: 4, created_at: isoDaysAgo(4) },
-      { id: 606, job_title: "Associate Software Engineer", company_name: "Atlassian", status: "closed", applications_count: 96, number_of_openings: 10, created_at: isoDaysAgo(40) },
-    ],
-    count: 4,
-  }),
+  /**
+   * The admin job list.
+   *
+   * Reads the shared postings rather than its own literal. The literal listed
+   * four of the six jobs the learner could see, carried no `is_published` (so
+   * every row rendered "Draft"), no location, no courses and no closing date,
+   * and could never show a job an administrator had just created. It also
+   * ignored the status filter, so every option in the dropdown returned the
+   * same four rows.
+   */
+  "GET /jobs-v2/api/admin/jobs/": (req) => {
+    const status = req.query.get("status");
+    const results = allJobs()
+      .filter((job) => !status || job.status === status)
+      .map(toAdminJob);
+    return { results, count: results.length };
+  },
 
   // ── Settings ────────────────────────────────────────────────────────────
-  "GET /admin-dashboard/api/clients/:clientId/branding/": () => {
-    const info = clientInfo();
-    return {
-      name: info.name,
-      app_logo_url: info.app_logo_url,
-      app_icon_url: info.app_icon_url,
-      login_logo_url: info.login_logo_url,
-      login_img_url: info.login_img_url,
-      theme_settings: info.theme_settings,
-      show_footer: info.show_footer,
-    };
-  },
+  // Branding (GET + PATCH + upload) lives in `misc-actions.ts`: the read has to
+  // come from the same overlay the save writes, and a read here with the write
+  // over there is how the two drift.
 
   "GET /accounts/clients/:clientId/timezone/": () => ({
     timezone: DEMO_TENANT.timezone,
@@ -946,15 +960,11 @@ defineRoutes(MODULE, {
   }),
 
   /**
-   * Integration credentials. Reported as not connected rather than faked
-   * connected: an administrator evaluating this will click "Connect", and a
-   * dialog that claims a live Zoom link exists is a promise the demo cannot keep.
+   * Integration credentials. Zoom is answered in `misc-actions.ts` instead: the
+   * payload here was `{configured, mode, detail}`, which is not the shape
+   * `zoom.service.ts` reads, so the live-sessions page saw an unconfigured
+   * tenant and hid the whole integration behind a setup prompt.
    */
-  "GET /accounts/clients/:clientId/zoom-credentials/": () => ({
-    configured: false,
-    mode: null,
-    detail: "Zoom is not connected in this demo environment.",
-  }),
   "GET /accounts/clients/:clientId/google-credentials/": () => ({
     configured: false,
     detail: "Google Calendar is not connected in this demo environment.",

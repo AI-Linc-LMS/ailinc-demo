@@ -14,6 +14,9 @@
 
 import { defineRoutes } from "../router";
 import { emailJobDetail } from "./admin";
+import { adminAdaptiveCourseDetail, builderCourse as builderCourseById } from "./course-builder";
+import { courseRosterMembers } from "./misc-actions";
+import { isRosterActive, rosterPerson } from "./account-actions";
 import { notFound } from "../types";
 import { COURSES, courseById, topicsOf } from "../../db/courses";
 import {
@@ -24,6 +27,7 @@ import {
   type DemoPerson,
 } from "../../db/people";
 import { companyLogoFor } from "../../db/avatar";
+import { applicationsForJob, jobById, toAdminJob } from "../../db/jobs";
 import { iso, isoDaysAgo, isoDaysAhead, nowMs, ymd, ymdDaysAgo, ymdDaysAhead, daysAgo } from "../../clock";
 import { seededInt, seededPick } from "../../random";
 
@@ -126,103 +130,35 @@ defineRoutes(MODULE, {
     };
   },
 
-  // ── Adaptive course detail (admin builder) ──────────────────────────────
-  "GET /adaptive-quiz/api/admin/courses/:courseId/": (req) => {
-    const course = courseById(Number(req.params.courseId));
-    if (!course) throw notFound("Course not found");
-    let order = 0;
+  /**
+   * Adaptive course detail, the admin builder tree.
+   *
+   * Delegated to the course-builder projection rather than read off the seed
+   * directly. It used to project `COURSES`, so a module or topic the admin added
+   * in the builder was accepted, persisted, and then absent from the very tree
+   * they were looking at. Both now read the same merged view.
+   */
+  "GET /adaptive-quiz/api/admin/courses/:courseId/": (req) =>
+    adminAdaptiveCourseDetail(Number(req.params.courseId)),
 
-    return {
-      id: course.id,
-      title: course.title,
-      slug: course.slug,
-      description: course.description,
-      target_audience:
-        course.difficulty === "Beginner"
-          ? "Newcomers with no prior background"
-          : "Learners with some programming experience",
-      duration_weeks: course.modules.length * 2,
-      difficulty_levels: [course.difficulty],
-      is_published: true,
-      self_enroll_enabled: true,
-      review_status: "approved",
-      review_note: "",
-      created_by: INSTRUCTOR_PERSONA.full_name,
-      created_at: isoDaysAgo(120),
-      updated_at: isoDaysAgo(seededInt(`aupd:${course.id}`, 1, 20)),
-      enrolled_count: course.enrolledCount,
-      module_count: course.modules.length,
-      submodule_count: topicsOf(course).length,
-      certificate_enabled: true,
-      certificate_threshold: course.certificateThreshold,
-      // Content is ARRAYS here, not counts. The builder maps over them, and
-      // sending numbers crashed the page on `.length` of a number's contents.
-      modules: course.modules.map((m, i) => ({
-        id: m.id,
-        weekno: i + 1,
-        title: m.title,
-        description: m.summary,
-        submodules: m.topics.map((t) => ({
-          id: t.id,
-          order: ++order,
-          title: t.title,
-          description: `Work through ${t.title.toLowerCase()} and prove it with practice.`,
-          // default_tier + available_tiers are required: the builder prints
-          // `a.available_tiers.length` with no guard.
-          articles: t.kinds.includes("article")
-            ? [
-                {
-                  article_id: t.id + 100_000,
-                  title: t.title,
-                  default_tier: "Intermediate",
-                  available_tiers: ["Beginner", "Intermediate", "Advanced", "Expert"],
-                  reading_time_minutes: 8,
-                  concepts: [],
-                },
-              ]
-            : [],
-          quizzes: t.kinds.includes("quiz")
-            ? [{ config_id: t.id + 200_000, quiz_title: `${t.title} - check your understanding`, mcq_count: 9 }]
-            : [],
-          coding_sets: t.kinds.includes("coding")
-            ? [{ config_id: t.id + 300_000, title: `${t.title} - practice set`, problems: [] }]
-            : [],
-          video_companions: [],
-          attachments: [],
-        })),
-      })),
-      skills: course.tags.map((skill) => ({
-        skill,
-        question_count: seededInt(`sk:q:${course.id}:${skill}`, 6, 40),
-        article_count: seededInt(`sk:a:${course.id}:${skill}`, 2, 12),
-      })),
-      content_health: {
-        submodules_total: topicsOf(course).length,
-        expected_content_types: ["article", "quiz"],
-        missing: {},
-        total_missing: 0,
-        needs_regeneration: false,
-        last_job: null,
-      },
-      assigned_cohorts: [{ id: 11, name: "Autumn 2026 - Full-Stack" }],
-      enrollment_summary: {
-        total: course.enrolledCount,
-        by_source: {
-          self: Math.round(course.enrolledCount * 0.6),
-          cohort: Math.round(course.enrolledCount * 0.4),
-        },
-      },
-    };
-  },
-
-  /** The enrolled roster for one adaptive course (admin + instructor course page). */
+  /**
+   * The enrolled roster for one adaptive course (admin + instructor course page).
+   *
+   * Membership comes from `misc-actions.ts` rather than straight off the seed:
+   * that module owns the enrol and unenrol writes, and a student removed there
+   * has to still be gone after a reload.
+   */
   "GET /adaptive-quiz/api/admin/courses/:courseId/students/": (req) => {
     const course = courseById(Number(req.params.courseId));
     if (!course) throw notFound("Course not found");
-    const roster = [STUDENT_PERSONA, ...STUDENTS.slice(0, 24)];
+    const roster = courseRosterMembers(course.id);
 
     return {
       count: roster.length,
+      // CourseRoster declares page and page_size alongside count. The whole
+      // roster comes back in one response, so page 1 always holds all of it.
+      page: 1,
+      page_size: roster.length,
       results: roster.map((p) => ({
         student_id: p.id,
         id: p.id,
@@ -247,7 +183,10 @@ defineRoutes(MODULE, {
    * so a flat payload crashed it even though every value was present.
    */
   "GET /admin-dashboard/api/clients/:clientId/manage-student/:studentId/": (req) => {
-    const p = personById(Number(req.params.studentId));
+    // rosterPerson, not personById: a student the admin created through
+    // quick-enrol is not in the seeded cast, and opening their row from the
+    // table they just appeared in would 404.
+    const p = rosterPerson(Number(req.params.studentId));
     if (!p) throw notFound("Student not found");
     const hours = seededInt(`sdh:${p.id}`, 12, 160);
 
@@ -262,7 +201,7 @@ defineRoutes(MODULE, {
         profile_pic_url: p.profile_pic_url,
         date_joined: isoDaysAgo(seededInt(`dj:${p.id}`, 20, 200)),
         last_login: isoDaysAgo(seededInt(`ll:${p.id}`, 0, 12)),
-        is_active: true,
+        is_active: isRosterActive(p.id),
       },
       academic_summary: {
         total_marks: p.points,
@@ -412,40 +351,33 @@ defineRoutes(MODULE, {
     };
   },
 
-  // ── Job detail (admin) ──────────────────────────────────────────────────
+  /**
+   * Job detail (admin).
+   *
+   * Reads the shared posting. The previous version knew six hard-coded jobs by
+   * id and four fields each, so the detail page had no description, no skills,
+   * no colleges and no mapped courses, the edit form loaded blank over half its
+   * fields and saved the blanks back, and a job an administrator created 404'd
+   * the moment they clicked its row.
+   */
   "GET /jobs-v2/api/admin/jobs/:jobId/": (req) => {
     const id = Number(req.params.jobId);
-    const known: Record<number, { title: string; company: string; salary: string; location: string }> = {
-      601: { title: "Software Engineer I (Backend)", company: "Razorpay", salary: "₹18-24 LPA", location: "Bengaluru (Hybrid)" },
-      602: { title: "Frontend Engineer", company: "Zerodha", salary: "₹16-22 LPA", location: "Bengaluru (On-site)" },
-      603: { title: "Data Analyst — Growth", company: "Swiggy", salary: "₹12-18 LPA", location: "Bengaluru (Hybrid)" },
-      604: { title: "Machine Learning Intern", company: "Freshworks", salary: "₹60,000 / month", location: "Chennai (On-site)" },
-      605: { title: "Platform Engineer (Cloud)", company: "Postman", salary: "₹20-28 LPA", location: "Remote (India)" },
-      606: { title: "Associate Software Engineer", company: "Atlassian", salary: "₹22-30 LPA", location: "Bengaluru (Hybrid)" },
-    };
-    const job = known[id];
+    const job = jobById(id);
     if (!job) throw notFound("Job not found");
 
-    const applicants = STUDENTS.slice(0, seededInt(`apl:${id}`, 6, 18));
     return {
-      id,
-      job_title: job.title,
-      company_name: job.company,
-      company_logo: companyLogoFor(job.company),
-      location: job.location,
-      salary: job.salary,
-      employment_type: id === 604 ? "Internship" : "Full-time",
-      status: id === 606 ? "closed" : "active",
-      number_of_openings: seededInt(`op:${id}`, 2, 10),
-      application_deadline: id === 606 ? isoDaysAgo(4) : isoDaysAhead(12),
-      created_at: isoDaysAgo(id % 20),
-      is_published: true,
-      applications_count: applicants.length,
-      applications: applicants.map((p, i) => ({
-        id: 7100 + i,
-        student: { id: p.id, name: p.full_name, email: p.email, profile_pic_url: p.profile_pic_url },
-        status: i === 0 ? "shortlisted" : i === 1 ? "rejected" : "applied",
-        applied_at: isoDaysAgo(i + 2),
+      ...toAdminJob(job),
+      // Kept alongside the count for any surface that wants the roster inline.
+      applications: applicationsForJob(id).map((row) => ({
+        id: row.id,
+        student: {
+          id: row.student,
+          name: row.student_name,
+          email: row.student_email,
+          profile_pic_url: row.student_profile_pic_url,
+        },
+        status: row.status,
+        applied_at: row.applied_at,
       })),
     };
   },
@@ -463,19 +395,30 @@ defineRoutes(MODULE, {
     emailJobDetail(String(req.params.jobId)),
 
   // ── Certificate config for a course ─────────────────────────────────────
+  /**
+   * Certificate configuration for one course.
+   *
+   * Resolved through the builder projection, not `courseById`: the certificates
+   * page lists every course an admin can see, including ones they built in this
+   * session, and reading only the seed made those rows open onto a 404.
+   */
   "GET /admin-dashboard/api/clients/:clientId/courses/:courseId/view-course-details/": (req) => {
-    const course = courseById(Number(req.params.courseId));
-    if (!course) throw notFound("Course not found");
+    const id = Number(req.params.courseId);
+    const built = builderCourseById(id);
+    if (!built) throw notFound("Course not found");
+    const seeded = courseById(id);
+    const threshold = seeded ? seeded.certificateThreshold : 70;
+
     return {
-      course_id: course.id,
-      course_title: course.title,
-      certificate_enabled: true,
-      min_completion_percent: course.certificateThreshold,
-      title: `${course.title} — Certificate of Completion`,
+      course_id: built.id,
+      course_title: built.title,
+      certificate_enabled: built.certificate_available,
+      min_completion_percent: threshold,
+      title: `${built.title} — Certificate of Completion`,
       template_url: null,
-      configured: true,
-      eligible_students: Math.round(course.enrolledCount * 0.18),
-      issued_count: Math.round(course.enrolledCount * 0.11),
+      configured: Boolean(seeded),
+      eligible_students: Math.round(built.enrolled_count * 0.18),
+      issued_count: Math.round(built.enrolled_count * 0.11),
     };
   },
 
@@ -530,85 +473,12 @@ defineRoutes(MODULE, {
   }),
   "GET /api/clients/:clientId/upload/": () => ({ results: [], count: 0 }),
 
-  /** Pre-flight readiness gate shown before starting a paper. */
-  "GET /assessment/api/client/:clientId/assessment-readiness/:slug/": () => ({
-    ready: true,
-    can_start: true,
-    blockers: [],
-    device_supported: true,
-    camera_required: false,
-    microphone_required: false,
-    fullscreen_required: true,
-    attempts_used: 0,
-    attempts_allowed: 1,
-    detail: "You are ready to begin.",
-  }),
-
-  // ── Assessment detail + result ──────────────────────────────────────────
-  "GET /assessment/api/client/:clientId/assessment-details/:slug/": (req) => {
-    const slug = req.params.slug;
-    const known: Record<string, { id: number; title: string; minutes: number; questions: number; sections: number; proctored: boolean }> = {
-      "full-stack-mid-programme": { id: 901, title: "Full-Stack Engineering — Mid-Programme Assessment", minutes: 90, questions: 45, sections: 4, proctored: true },
-      "dsa-diagnostic": { id: 902, title: "Data Structures & Algorithms — Diagnostic", minutes: 40, questions: 25, sections: 3, proctored: false },
-      "python-ds-unit-2": { id: 903, title: "Python for Data Science — Unit 2 Test", minutes: 60, questions: 30, sections: 2, proctored: false },
-      "end-of-programme-comprehensive": { id: 904, title: "End-of-Programme Comprehensive", minutes: 150, questions: 80, sections: 6, proctored: true },
-    };
-    const a = known[slug];
-    if (!a) throw notFound("Assessment not found");
-
-    return {
-      id: a.id,
-      slug,
-      title: a.title,
-      description: "A timed paper covering the material for this stage of the programme.",
-      instructions:
-        `${a.minutes} minutes, ${a.questions} questions across ${a.sections} sections. You may move ` +
-        `freely between sections and flag questions to revisit. The paper submits itself when the ` +
-        `timer ends, so there is no penalty for running out of time on the last question.`,
-      duration_minutes: a.minutes,
-      number_of_questions: a.questions,
-      number_of_sections: a.sections,
-      proctoring_enabled: a.proctored,
-      is_active: true,
-      is_paid: false,
-      requires_purchase: false,
-      purchased: true,
-      allow_desktop: true,
-      allow_mobile: !a.proctored,
-      sections: Array.from({ length: a.sections }, (_, i) => ({
-        id: a.id * 10 + i,
-        title: `Section ${i + 1}`,
-        question_count: Math.round(a.questions / a.sections),
-        marks: Math.round(a.questions / a.sections) * 2,
-      })),
-    };
-  },
-
-  "GET /assessment/api/client/:clientId/assessment-result/:slug/": (req) => {
-    const slug = req.params.slug;
-    const score = slug === "dsa-diagnostic" ? 76 : 72;
-    const questions = slug === "dsa-diagnostic" ? 25 : 45;
-
-    return {
-      slug,
-      student_name: STUDENT_PERSONA.full_name,
-      score,
-      percentage: score,
-      total_marks: questions * 2,
-      obtained_marks: Math.round((score / 100) * questions * 2),
-      grade: score >= 85 ? "A" : score >= 70 ? "B" : "C",
-      passed: score >= 50,
-      rank: 7,
-      total_students: 84,
-      percentile: 72,
-      submitted_at: isoDaysAgo(18, 10, 40),
-      time_taken_minutes: 34,
-      sections: [
-        { name: "Complexity", total: 8, correct: 7, percentage: 88 },
-        { name: "Arrays and hashing", total: 9, correct: 7, percentage: 78 },
-        { name: "Trees and graphs", total: 8, correct: 5, percentage: 63 },
-      ],
-      generated_at: iso(new Date(nowMs())),
-    };
-  },
+  /*
+   * The three assessment reads that used to live here (details, readiness and
+   * result) moved to `assessment-admin.ts`, which owns the catalogue and the
+   * scorer. They were answering with shapes the app does not declare: the result
+   * carried a flat `sections` array where `AssessmentResult` wants `stats`,
+   * `assessment_details` and `user_responses`, so the report page rendered a
+   * failure toast rather than a report. Two projections of one record is the bug.
+   */
 });

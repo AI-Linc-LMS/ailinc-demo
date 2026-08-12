@@ -15,8 +15,10 @@ import {
   enrolledAt,
   itemCounts,
   courseById,
+  topicById,
   type DemoCourse,
 } from "../../db/courses";
+import { builderContents, builderModules, builderSubmodules } from "./course-builder";
 import { companyLogoFor } from "../../db/avatar";
 import { STUDENTS } from "../../db/people";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
@@ -135,25 +137,38 @@ defineRoutes(MODULE, {
       updated_at: isoDaysAgo(4),
       content_lock_enabled: false,
       lock_threshold_value: 0,
-      modules: course.modules.map((m, i) => {
-        const done = m.topics.filter((t) => t.progress === 100).length;
+      // The tree comes from the course-builder projection, not straight off the
+      // seed. An administrator who adds a week in the builder and then looks at
+      // the same course as a learner has to see it; reading `course.modules` here
+      // meant the two views disagreed about what the course contained.
+      modules: builderModules(course.id).map((m) => {
+        const topics = builderSubmodules(m.id);
+        const done = topics.filter((t) => {
+          const topic = topicById(t.id);
+          return topic?.topic.progress === 100;
+        }).length;
         return {
           id: m.id,
-          weekno: i + 1,
+          weekno: m.weekno,
           title: m.title,
-          completion_percentage: Math.round((done / Math.max(1, m.topics.length)) * 100),
-          submodules: m.topics.map((t, order) => ({
-            id: t.id,
-            title: t.title,
-            description: `Work through ${t.title.toLowerCase()} and prove it with practice.`,
-            order: order + 1,
-            video_count: t.kinds.filter((k) => k === "video").length,
-            quiz_count: t.kinds.filter((k) => k === "quiz").length,
-            article_count: t.kinds.filter((k) => k === "article").length,
-            coding_problem_count: t.kinds.filter((k) => k === "coding").length,
-            assignment_count: t.kinds.filter((k) => k === "assignment").length,
-            subjective_question_count: 0,
-          })),
+          completion_percentage: Math.round((done / Math.max(1, topics.length)) * 100),
+          submodules: topics.map((t) => {
+            const contents = builderContents(t.id);
+            const count = (type: string) =>
+              contents.filter((c) => c.content_type === type).length;
+            return {
+              id: t.id,
+              title: t.title,
+              description: t.description,
+              order: t.order,
+              video_count: count("VideoTutorial"),
+              quiz_count: count("Quiz"),
+              article_count: count("Article"),
+              coding_problem_count: count("CodingProblem"),
+              assignment_count: count("Assignment"),
+              subjective_question_count: 0,
+            };
+          }),
         };
       }),
     };

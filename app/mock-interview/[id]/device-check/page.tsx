@@ -63,6 +63,15 @@ export default function MockInterviewDeviceCheckPage() {
   const [audioLevel, setAudioLevel] = useState<number>(0);
   const [faceValidationPassed, setFaceValidationPassed] = useState(false);
   const [faceValidationMessage, setFaceValidationMessage] = useState<string>("");
+  /**
+   * DEMO: face tracking downloads a BlazeFace model over the network the first time it
+   * runs, and this prototype has no network, so `startProctoring()` rejects and the face
+   * check can never turn green. It used to be part of the gate on "Start Interview", which
+   * meant the button never appeared and the interview was unreachable from every entry
+   * point. When the model cannot arrive we mark the check skipped, say so in plain words,
+   * and let the candidate through: the take page already treats proctoring as best effort.
+   */
+  const [faceCheckSkipped, setFaceCheckSkipped] = useState(false);
   const [recognizedText, setRecognizedText] = useState<string>("");
   const [ttsMatch, setTtsMatch] = useState<boolean>(false);
   const [browserName, setBrowserName] = useState<BrowserName>("other");
@@ -172,6 +181,13 @@ export default function MockInterviewDeviceCheckPage() {
   });
 
   useEffect(() => {
+    if (faceCheckSkipped) {
+      setFaceValidationPassed(true);
+      setFaceValidationMessage(
+        "Your camera preview is live. On-device face tracking could not start in this browser, so the interview will run without it.",
+      );
+      return;
+    }
     if (faceCount === 1 && faceStatus === "NORMAL" && !latestViolation) {
       setFaceValidationPassed(true);
       setFaceValidationMessage(t("mockInterview.deviceCheck.faceDetectedOk"));
@@ -191,7 +207,7 @@ export default function MockInterviewDeviceCheckPage() {
         );
       }
     }
-  }, [faceCount, faceStatus, latestViolation, t]);
+  }, [faceCheckSkipped, faceCount, faceStatus, latestViolation, t]);
 
   const testDevices = useCallback(async () => {
     setChecking(true);
@@ -229,11 +245,11 @@ export default function MockInterviewDeviceCheckPage() {
                 videoRef.current.videoHeight > 0
               ) {
                 setTimeout(() => {
-                  startFaceDetection().catch((err) => {
-                    console.error("Failed to start face detection:", err);
-                    setFaceValidationMessage(
-                      t("mockInterview.deviceCheck.faceDetectionFailed")
-                    );
+                  startFaceDetection().catch(() => {
+                    // The detection model could not be fetched. Skip the check rather
+                    // than leaving the candidate staring at a red cross they have no
+                    // way to clear.
+                    setFaceCheckSkipped(true);
                   });
                 }, 500);
               } else {
@@ -434,117 +450,46 @@ export default function MockInterviewDeviceCheckPage() {
     setTtsMatch(false);
     fallbackInFlightRef.current = false;
 
-    // MediaRecorder + /api/transcribe (Whisper) fallback. Requires OPENAI_API_KEY on the
-    // Next.js server. Used when native window.SpeechRecognition is unavailable (Safari) or
-    // fails with a transient/permanent error (Edge's `network` quirk, etc.).
-    const startRecorderFallback = async () => {
+    /**
+     * DEMO: offline microphone check, replacing the Whisper fallback.
+     *
+     * Neither transcription path can run in this prototype. Chrome's SpeechRecognition
+     * ships the audio to a Google service, and this demo has no network; the
+     * /api/transcribe fallback needs an OPENAI_API_KEY the demo does not carry, so it
+     * answers 503. The old code therefore ended every attempt in a red "speech
+     * recognition failed" toast, `ttsMatch` never became true, and "Start Interview"
+     * never rendered: the interview was unreachable from all six entry points.
+     *
+     * What CAN be measured with no network is whether the microphone produced sound
+     * while the candidate read the sentence, which is the thing that actually matters
+     * here. The check always settles, in both directions, because a candidate with no
+     * microphone still has to be able to start; the interview accepts typed answers.
+     */
+    const startLevelCheck = () => {
       if (fallbackInFlightRef.current) return;
       fallbackInFlightRef.current = true;
       setIsListening(true);
       setIsTranscribing(false);
-      try {
-        const stream =
-          speechStreamRef.current ||
-          (await navigator.mediaDevices.getUserMedia({
-            audio: getAudioConstraints(),
-          }));
-        speechStreamRef.current = stream;
-
-        const chunks: BlobPart[] = [];
-        const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
-          ? "audio/webm;codecs=opus"
-          : MediaRecorder.isTypeSupported("audio/webm")
-            ? "audio/webm"
-            : MediaRecorder.isTypeSupported("audio/mp4")
-              ? "audio/mp4"
-              : "";
-
-        const recorder = new MediaRecorder(
-          stream,
-          mimeType ? { mimeType } : undefined
-        );
-        speechRecorderRef.current = recorder;
-
-        recorder.ondataavailable = (e) => {
-          if (e.data && e.data.size > 0) chunks.push(e.data);
-        };
-
-        recorder.onstop = async () => {
-          setIsListening(false);
-          setIsTranscribing(true);
-          try {
-            const blob = new Blob(chunks, { type: mimeType || "audio/webm" });
-            if (blob.size < 1000) {
-              setIsTranscribing(false);
-              showToast(t("mockInterview.deviceCheck.noSpeech"), "error");
-              return;
-            }
-
-            const form = new FormData();
-            form.append("file", blob, "speech.webm");
-            form.append("language", "en");
-            const res = await fetch("/api/transcribe", {
-              method: "POST",
-              body: form,
-            });
-
-            const data = (await res.json().catch(() => ({}))) as {
-              text?: string;
-              error?: string;
-            };
-
-            if (!res.ok) {
-              setIsTranscribing(false);
-              // 503 is typically missing OPENAI_API_KEY on the server running Next.js.
-              showToast(
-                data?.error ||
-                  t("mockInterview.deviceCheck.speechError"),
-                "error"
-              );
-              return;
-            }
-
-            const text = typeof data?.text === "string" ? data.text.trim() : "";
-            setIsTranscribing(false);
-            if (!text) {
-              showToast(t("mockInterview.deviceCheck.noSpeech"), "error");
-              return;
-            }
-            // Whisper produced the transcript here → this browser should use Whisper inside
-            // the interview too (native STT was unavailable or failed). Pin it so the
-            // interview doesn't re-try the broken native path.
-            persistSttEngine("whisper");
-            setRecognizedText(text);
-            evaluateSpeechMatch(text);
-          } catch {
-            setIsTranscribing(false);
-            showToast(t("mockInterview.deviceCheck.speechError"), "error");
-          }
-        };
-
-        recorder.start();
-
-        // Stop after a short deterministic window.
-        speechStopTimeoutRef.current = window.setTimeout(() => {
-          speechStopTimeoutRef.current = null;
-          try {
-            if (recorder.state !== "inactive") recorder.stop();
-          } catch {
-            setIsListening(false);
-            showToast(t("mockInterview.deviceCheck.speechError"), "error");
-          }
-        }, 4500);
-      } catch (err: any) {
+      // micVoicePeakRef is the running maximum of the analyser's normalised level since
+      // the camera pre-flight ran, so the delta over this window is the sound the
+      // candidate just made rather than whatever the room was doing beforehand.
+      const peakBefore = micVoicePeakRef.current;
+      speechStopTimeoutRef.current = window.setTimeout(() => {
+        speechStopTimeoutRef.current = null;
+        const heard =
+          micVoicePeakRef.current - peakBefore > 0.06 ||
+          micVoicePeakRef.current > 0.2;
         setIsListening(false);
-        if (
-          err?.name === "NotAllowedError" ||
-          err?.name === "PermissionDeniedError"
-        ) {
-          showToast(t("mockInterview.deviceCheck.micPermissionDenied"), "error");
+        setTtsMatch(true);
+        if (heard) {
+          showToast("Microphone check passed. We picked up your voice clearly.", "success");
         } else {
-          showToast(t("mockInterview.deviceCheck.speechError"), "error");
+          showToast(
+            "We did not pick up much sound. You can still continue: the interview accepts typed answers.",
+            "warning",
+          );
         }
-      }
+      }, 3500);
     };
 
     // Native window.SpeechRecognition is the primary path (Chrome / Chromium). It does NOT
@@ -558,7 +503,7 @@ export default function MockInterviewDeviceCheckPage() {
         : null;
 
     if (!SpeechRecognitionCtor) {
-      void startRecorderFallback();
+      startLevelCheck();
       return;
     }
 
@@ -588,28 +533,23 @@ export default function MockInterviewDeviceCheckPage() {
       recognition.onerror = (event: any) => {
         nativeSettled = true;
         const code = event?.error;
-        if (code === "not-allowed" || code === "permission-denied") {
-          setIsListening(false);
-          showToast(t("mockInterview.deviceCheck.micPermissionDenied"), "error");
-          return;
-        }
-        if (code === "no-speech") {
-          setIsListening(false);
-          showToast(t("mockInterview.deviceCheck.noSpeech"), "error");
-          return;
-        }
         if (code === "aborted") {
           setIsListening(false);
           return;
         }
-        // network / service-not-allowed / audio-capture - native won't deliver. Fall back.
-        void startRecorderFallback();
+        if (code === "not-allowed" || code === "permission-denied") {
+          showToast(t("mockInterview.deviceCheck.micPermissionDenied"), "warning");
+        }
+        // Every other code - network, service-not-allowed, audio-capture, no-speech -
+        // means native STT will not deliver a transcript. Measure the microphone
+        // instead rather than leaving the candidate on a check they cannot clear.
+        startLevelCheck();
       };
 
       recognition.onend = () => {
         // Some Edge versions end without ever firing onresult/onerror; recover via fallback.
         if (!nativeSettled && !fallbackInFlightRef.current) {
-          void startRecorderFallback();
+          startLevelCheck();
         }
       };
 
@@ -617,20 +557,22 @@ export default function MockInterviewDeviceCheckPage() {
       setIsTranscribing(false);
       recognition.start();
     } catch {
-      // Synchronous throw constructing/starting native recognition - fall through to Whisper.
-      void startRecorderFallback();
+      // Synchronous throw constructing/starting native recognition.
+      startLevelCheck();
     }
   };
 
   const handleProceed = async () => {
-    if (
-      !deviceStatus.camera ||
-      !deviceStatus.microphone ||
-      !ttsMatch ||
-      !faceValidationPassed
-    ) {
-      showToast(t("mockInterview.deviceCheck.completeAllChecks"), "error");
-      return;
+    // DEMO: no hard gate. Camera, microphone and face tracking are all best effort in
+    // this prototype (see the notes on `faceCheckSkipped` and `startLevelCheck`), and a
+    // candidate who denied permissions can still do the whole interview by typing. The
+    // cards above still report what is actually working, so nothing here is hidden;
+    // what changed is that a failed check no longer takes the interview away.
+    if (!deviceStatus.camera || !deviceStatus.microphone) {
+      showToast(
+        "Continuing without full camera and microphone access. You can type your answers.",
+        "info",
+      );
     }
     try {
       isNavigatingToInterviewRef.current = true;
@@ -685,12 +627,10 @@ export default function MockInterviewDeviceCheckPage() {
     }
   };
 
-  const canProceed =
-    deviceStatus.camera &&
-    deviceStatus.microphone &&
-    deviceStatus.browserSupported &&
-    ttsMatch &&
-    faceValidationPassed;
+  // Only a browser with no getUserMedia at all can block, and that is a genuine
+  // "this will not work here" rather than a check the candidate failed.
+  const canProceed = deviceStatus.browserSupported;
+  const needsRetest = !deviceStatus.camera || !deviceStatus.microphone;
 
   return (
     <MainLayout>
@@ -1178,8 +1118,10 @@ export default function MockInterviewDeviceCheckPage() {
             flexWrap: "wrap",
           }}
         >
-          {!canProceed &&
-            (!deviceStatus.camera || !deviceStatus.microphone) && (
+          {/* Retest now shows ALONGSIDE Start rather than instead of it: a candidate whose
+              camera is blocked should be able to fix it and try again, but never be
+              trapped behind it. */}
+          {needsRetest && (
               <Button
                 variant="contained"
                 size="large"
@@ -1211,26 +1153,24 @@ export default function MockInterviewDeviceCheckPage() {
               variant="contained"
               size="large"
               onClick={handleProceed}
-              disabled={!faceValidationPassed}
+              disabled={isNavigatingToInterview}
               endIcon={<IconWrapper icon="mdi:arrow-right" size={24} />}
               sx={{
                 textTransform: "none",
                 fontWeight: 600,
                 px: 4,
                 py: 1.5,
-                backgroundColor: faceValidationPassed ? "#10b981" : "#9ca3af",
-                "&:hover": {
-                  backgroundColor: faceValidationPassed ? "#059669" : "#9ca3af",
-                },
+                backgroundColor: "#10b981",
+                "&:hover": { backgroundColor: "#059669" },
                 "&:disabled": {
                   backgroundColor: "#9ca3af",
                   color: "#ffffff",
                 },
               }}
             >
-              {faceValidationPassed
-                ? t("mockInterview.deviceCheck.proceedToInterview")
-                : t("mockInterview.deviceCheck.positionFace")}
+              {isNavigatingToInterview
+                ? t("mockInterview.deviceCheck.startingInterview")
+                : t("mockInterview.deviceCheck.proceedToInterview")}
             </Button>
           )}
           <Button

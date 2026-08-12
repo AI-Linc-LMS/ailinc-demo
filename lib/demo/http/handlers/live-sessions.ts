@@ -199,6 +199,24 @@ function toApi(s: DemoSession) {
 }
 
 defineRoutes(MODULE, {
+  /**
+   * How many people are in the meeting right now.
+   *
+   * `LiveJoinedCount` is `{live, count, source}` and the card reads all three:
+   * `source` is what lets it say "unavailable on this plan" honestly instead of
+   * printing "0 joined" over a session that clearly has people in it.
+   */
+  "GET /live-class/api/clients/:clientId/live-activities/:id/live-count/": (req) => {
+    const s = SESSIONS.find((x) => x.id === Number(req.params.id));
+    if (!s || !s.live) return { live: false, count: null, source: "not_live" as const };
+    return {
+      live: true,
+      // Seeded, not random: the number must not jump every time the card polls.
+      count: seededInt(`joined:${s.id}`, 24, 68),
+      source: "zoom" as const,
+    };
+  },
+
   "GET /live-class/api/clients/:clientId/live-activities/": () =>
     [...SESSIONS]
       .sort((a, b) => new Date(sessionTime(a)).getTime() - new Date(sessionTime(b)).getTime())

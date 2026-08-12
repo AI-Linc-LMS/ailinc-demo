@@ -213,8 +213,12 @@ export const ticketService = {
     params?: ListTicketsParams,
   ): Promise<TicketListResponse> {
     try {
+      // The query is appended outside the template on purpose (here and in
+      // listInstructor/listAdmin). Interpolating it into the literal hides the
+      // base path from scripts/demo-coverage.mjs, which then reads the endpoint
+      // as `/tickets/my/:p` and reports a handler that does exist as missing.
       const { data } = await apiClient.get<TicketListResponse>(
-        `/api/clients/${clientId}/tickets/my/${buildQuery(params)}`,
+        `/api/clients/${clientId}/tickets/my/` + buildQuery(params),
       );
       return data;
     } catch (e) {
@@ -231,7 +235,7 @@ export const ticketService = {
     params?: Pick<ListTicketsParams, "status" | "category">
   ): Promise<Ticket[]> {
     const res = await apiClient.get<Ticket[]>(
-      `/api/clients/${clientId}/tickets/instructor/${buildQuery(params ?? {})}`
+      `/api/clients/${clientId}/tickets/instructor/` + buildQuery(params ?? {})
     );
     return Array.isArray(res.data) ? res.data : [];
   },
@@ -242,7 +246,7 @@ export const ticketService = {
   ): Promise<AdminTicketListResponse> {
     try {
       const { data } = await apiClient.get<AdminTicketListResponse>(
-        `/api/clients/${clientId}/tickets/admin/${buildQuery(params)}`,
+        `/api/clients/${clientId}/tickets/admin/` + buildQuery(params),
       );
       return data;
     } catch (e) {
