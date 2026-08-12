@@ -6,9 +6,27 @@ import dynamic from "next/dynamic";
 import type { OnMount } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
 
-// Dynamically import Monaco Editor to avoid SSR issues
+/**
+ * Serve Monaco from this origin, not from a CDN.
+ *
+ * `@monaco-editor/react` ships no copy of the editor. Left unconfigured it
+ * fetches the loader and the editor core from cdn.jsdelivr.net the moment the
+ * workspace opens, so with the network unplugged the coding screen, the one
+ * place in this demo where code really executes, has no editor at all.
+ *
+ * `scripts/copy-monaco.mjs` puts the editor under /public/monaco/vs during
+ * prebuild; this points the loader there. Configured at module scope rather
+ * than in an effect because the dynamic import below can win the race and start
+ * fetching before an effect has run.
+ */
+const MONACO_PATHS = { vs: "/monaco/vs" };
+
 const MonacoEditor = dynamic(
-  () => import("@monaco-editor/react").then((mod) => mod.Editor),
+  () =>
+    import("@monaco-editor/react").then((mod) => {
+      mod.loader.config({ paths: MONACO_PATHS });
+      return mod.Editor;
+    }),
   {
     ssr: false,
     loading: () => (

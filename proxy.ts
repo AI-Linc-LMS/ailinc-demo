@@ -64,7 +64,12 @@ export function proxy(request: NextRequest) {
   if (
     pathname.startsWith("/images/") ||
     pathname.startsWith("/videos/") ||
-    pathname.startsWith("/assets/")
+    pathname.startsWith("/assets/") ||
+    // DEMO REPO ONLY: the code editor is served from here rather than a CDN so
+    // the coding workspace works with the network unplugged. Its loader is
+    // fetched by a script tag, not by the app, so a 307 to /login here means the
+    // editor silently never appears.
+    pathname.startsWith("/monaco/")
   ) {
     return NextResponse.next();
   }

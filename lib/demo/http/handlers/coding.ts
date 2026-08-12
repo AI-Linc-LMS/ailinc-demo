@@ -363,6 +363,66 @@ function apiSession(session: CodingSessionState) {
   };
 }
 
+
+/**
+ * Mark a topic's coding set finished once one of its problems passes.
+ *
+ * Content ids for a coding SET are `topic.id + 300_000`; the individual problems
+ * are that plus 1..4. The lesson page tracks completion per set, so the set id
+ * is what has to be written.
+ */
+function markCodingComplete(problemId: number): void {
+  for (let offset = 1; offset <= 4; offset++) {
+    const topicId = problemId - 300_000 - offset;
+    if (!topicById(topicId)) continue;
+    const setId = topicId + 300_000;
+    overlay.update<number[]>("adaptive:completed", [], (list) =>
+      list.includes(setId) ? list : [...list, setId],
+    );
+    return;
+  }
+}
+
+
+/**
+ * Skill mastery, as PERCENTAGES and persisted per visitor.
+ *
+ * Two bugs met here. The values were emitted as 0..1 fractions while both
+ * renderers treat them as percentages, so the panel printed "0.62%" beside a
+ * progress bar 0.62% wide, and the delta chip read "0.17999999999999994".
+ * And the whole model was a fixed array, so it never moved no matter what was
+ * submitted, while the mentor card six lines above claimed the skill had just
+ * gone up. Now it is stored, it moves on a pass, and both surfaces read it.
+ */
+const MASTERY_KEY = "coding:mastery";
+
+const BASELINE_MASTERY: Record<string, number> = {
+  Algorithms: 62,
+  "Data Structures": 71,
+  "Hash maps": 58,
+  "Sliding window": 44,
+};
+
+function band(pct: number): "emerging" | "developing" | "proficient" {
+  return pct >= 75 ? "proficient" : pct >= 50 ? "developing" : "emerging";
+}
+
+function masteryMap(): Record<string, number> {
+  return { ...BASELINE_MASTERY, ...overlay.get<Record<string, number>>(MASTERY_KEY, {}) };
+}
+
+function masteryOf(skill: string): number {
+  return masteryMap()[skill] ?? 50;
+}
+
+/** Raise a skill on a pass. Rounded, so no float tail ever reaches the screen. */
+function raiseMastery(skill: string, by: number): { before: number; after: number } {
+  const before = masteryOf(skill);
+  const after = Math.min(95, Math.round(before + by));
+  overlay.update<Record<string, number>>(MASTERY_KEY, {}, (current) => ({ ...current, [skill]: after }));
+  return { before, after };
+}
+
 defineRoutes(MODULE, {
   "GET /adaptive-coding/api/problems/:problemId/": async (req) => {
     const problemId = Number(req.params.problemId);
@@ -412,12 +472,29 @@ defineRoutes(MODULE, {
    * 'active')" — the caller reads `data.active`, so null must be inside the
    * envelope, not instead of it.
    */
+  /**
+   * The session to resume when the workspace opens.
+   *
+   * A COMPLETED session counts. This filtered on `status === "active"`, so once
+   * a learner solved a problem the session became invisible: reopening it showed
+   * "Ready to begin?" again and restarted the timer on work already finished.
+   * The page has always been able to render a solved session (it sets its live
+   * timer from `status === "active"` and treats a completed one as solved), so
+   * the only thing missing was being sent one.
+   *
+   * Active wins over completed, so a half-finished attempt is never discarded in
+   * favour of an older solve.
+   */
   "GET /adaptive-coding/api/sessions/active/": (req) => {
     const problemId = Number(req.query.get("problem_id") ?? 0);
-    const ids = overlay.get<string[]>("coding:sessions", []);
-    const match = ids
+    const mine = overlay
+      .get<string[]>("coding:sessions", [])
       .map(loadSession)
-      .find((s): s is CodingSessionState => s !== null && s.status === "active" && (!problemId || s.problemId === problemId));
+      .filter((s): s is CodingSessionState => s !== null && (!problemId || s.problemId === problemId));
+    const match =
+      mine.find((s) => s.status === "active") ??
+      mine.find((s) => s.status === "completed") ??
+      null;
     return { active: match ? apiSession(match) : null };
   },
 
@@ -459,12 +536,21 @@ defineRoutes(MODULE, {
       session.passed = true;
       session.status = "completed";
       session.completedAt = iso(new Date(nowMs()));
+      // Record it against the TOPIC's coding set, not just this session.
+      //
+      // `markComplete` writes the shared "adaptive:completed" list that the
+      // lesson page, the journey board and the points total all read. Solving a
+      // problem used to update none of them: the topic still said "0 / 115 pts"
+      // and the step still read "Solve" immediately after a green pass, because
+      // this list was only ever written by the article route.
+      markCodingComplete(session.problemId);
     }
     saveSession(session);
 
     const skill = problem.skills[0] ?? "Algorithms";
-    const before = session.passed ? 0.55 : 0.4;
-    const after = outcome.all_passed ? Math.min(0.95, before + 0.18) : before;
+    const { before, after } = outcome.all_passed
+      ? raiseMastery(skill, problem.difficulty === "Hard" ? 12 : problem.difficulty === "Medium" ? 8 : 5)
+      : { before: masteryOf(skill), after: masteryOf(skill) };
 
     return {
       submission_id: nextDemoId("coding-submission"),
@@ -493,7 +579,7 @@ defineRoutes(MODULE, {
         [skill]: {
           before,
           after,
-          band: after >= 0.75 ? "proficient" : after >= 0.5 ? "developing" : "emerging",
+          band: band(after),
         },
       },
       points_earned: outcome.all_passed ? pointsFor(session, problem) : 0,
@@ -558,12 +644,11 @@ defineRoutes(MODULE, {
   },
 
   "GET /adaptive-coding/api/student-model/": () => ({
-    skills: [
-      { skill: "Algorithms", mastery: 0.62, band: "developing" },
-      { skill: "Data Structures", mastery: 0.71, band: "proficient" },
-      { skill: "Hash maps", mastery: 0.58, band: "developing" },
-      { skill: "Sliding window", mastery: 0.44, band: "emerging" },
-    ],
+    skills: Object.entries(masteryMap()).map(([skill, mastery]) => ({
+      skill,
+      mastery,
+      band: band(mastery),
+    })),
     open_misconceptions: [],
     updated_at: iso(new Date(nowMs())),
   }),

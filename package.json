@@ -19,7 +19,10 @@
     "typecheck": "tsc --noEmit",
     "check:lockfile": "node scripts/check-lockfile-platforms.mjs",
     "build:icons": "node scripts/build-icon-bundle.mjs",
-    "build:fonts": "node scripts/fetch-fonts.mjs"
+    "build:fonts": "node scripts/fetch-fonts.mjs",
+    "copy:monaco": "node scripts/copy-monaco.mjs",
+    "prebuild": "node scripts/copy-monaco.mjs",
+    "predev": "node scripts/copy-monaco.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",

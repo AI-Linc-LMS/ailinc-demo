@@ -22,6 +22,7 @@ import {
 import { overlay } from "../../db/overlay";
 import { isoDaysAgo } from "../../clock";
 import { seededInt, seededPick } from "../../random";
+import { peekTopic } from "../../db/curriculum";
 
 const MODULE = "adaptive-courses";
 
@@ -74,21 +75,43 @@ function quizFor(topic: DemoTopic) {
   };
 }
 
-function codingSetFor(topic: DemoTopic) {
-  const count = seededInt(`cset:${topic.id}`, 2, 4);
+/**
+ * The coding set shown on a lesson.
+ *
+ * Every field is read off the AUTHORED problem where one exists, rather than
+ * invented alongside it. The card used to name itself "<topic> - problem 1" and
+ * pick a difficulty with `seededPick(...)`, so the card and the page it opened
+ * disagreed on both: an audit found 79 of 117 cards stating the wrong
+ * difficulty, and the title never matched the problem at all.
+ *
+ * The course chunk is warmed by the lesson route before this runs, so the
+ * synchronous lookup hits. When it misses, the card falls back to the old
+ * derived labels rather than showing nothing.
+ */
+function codingSetFor(topic: DemoTopic, courseId?: number) {
+  const authored = courseId == null ? null : peekTopic(courseId, topic.id);
+  const problems = authored?.problems ?? [];
+  const count = problems.length || seededInt(`cset:${topic.id}`, 2, 4);
+
   return {
     config_id: CODING_ID(topic),
     title: `${topic.title} - practice set`,
-    target_skills: conceptsFor(topic),
-    default_language: "python",
+    target_skills: authored?.concepts ?? conceptsFor(topic),
+    // The judge here is the browser, which runs JavaScript. Offering Python as
+    // the default put the learner in a language this build cannot execute.
+    default_language: "javascript",
     hint_layers: 3,
-    problems: Array.from({ length: count }, (_, i) => ({
-      problem_id: CODING_ID(topic) + i + 1,
-      title: `${topic.title.split(":")[0]} · problem ${i + 1}`,
-      difficulty_level: seededPick(`diff:${topic.id}:${i}`, ["Easy", "Medium", "Hard"] as const),
-      target_skills: conceptsFor(topic),
-      completed: isDone(topic, CODING_ID(topic) + i + 1),
-    })),
+    problems: Array.from({ length: count }, (_, i) => {
+      const p = problems[i];
+      return {
+        problem_id: CODING_ID(topic) + i + 1,
+        title: p?.title ?? `${topic.title.split(":")[0]} · problem ${i + 1}`,
+        difficulty_level:
+          p?.difficulty ?? seededPick(`diff:${topic.id}:${i}`, ["Easy", "Medium", "Hard"] as const),
+        target_skills: p?.skills ?? conceptsFor(topic),
+        completed: isDone(topic, CODING_ID(topic) + i + 1),
+      };
+    }),
   };
 }
 
@@ -162,7 +185,7 @@ export function conceptsFor(topic: DemoTopic): string[] {
   return concepts.length > 0 ? concepts : [topic.title.split(/\s+/)[0]];
 }
 
-export function submoduleFor(topic: DemoTopic, order: number) {
+export function submoduleFor(topic: DemoTopic, order: number, courseId?: number) {
   const kinds = new Set(topic.kinds);
   return {
     id: topic.id,
@@ -171,7 +194,7 @@ export function submoduleFor(topic: DemoTopic, order: number) {
     description: `Work through ${topic.title.toLowerCase()} and prove it with practice.`,
     articles: kinds.has("article") ? [articleFor(topic)] : [],
     quizzes: kinds.has("quiz") ? [quizFor(topic)] : [],
-    coding_sets: kinds.has("coding") ? [codingSetFor(topic)] : [],
+    coding_sets: kinds.has("coding") ? [codingSetFor(topic, courseId)] : [],
     video_companions: kinds.has("video") ? [videoFor(topic)] : [],
     attachments: [],
   };
@@ -220,7 +243,7 @@ function detail(course: DemoCourse) {
       id: m.id,
       weekno: i + 1,
       title: m.title,
-      submodules: m.topics.map((t) => submoduleFor(t, ++order)),
+      submodules: m.topics.map((t) => submoduleFor(t, ++order, course.id)),
     })),
   };
 }

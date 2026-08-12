@@ -42,8 +42,14 @@ function isUnsuitableTemplate(tpl: string | undefined): boolean {
   return /not\s+(suitable|applicable)/i.test(tpl ?? "");
 }
 
-// Preference order when several languages are suitable - pick the most natural for a general problem.
-const LANGUAGE_PREFERENCE = ["python", "java", "cpp", "javascript", "typescript", "c#"];
+// Preference order when several languages are suitable.
+//
+// JavaScript leads deliberately. This build executes the learner's code in the
+// browser, and JavaScript is the only language it can run, so any other default
+// means the very first Run on a fresh problem reports "your code did not
+// compile" over code the learner never touched. Upstream, where a real judge
+// runs every language, Python leading is the better default.
+const LANGUAGE_PREFERENCE = ["javascript", "typescript", "python", "java", "cpp", "c#"];
 
 /** The language a problem is best answered in: among the OFFERED languages, the first (by
  *  preference) that has a real template, else the first offered. */

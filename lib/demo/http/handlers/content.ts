@@ -73,7 +73,7 @@ defineRoutes(MODULE, {
     // the reading time on this page matches the article the learner then opens.
     await loadCourseCurriculum(found.course.id);
     const order = found.module.topics.indexOf(found.topic) + 1;
-    return submoduleFor(found.topic, order);
+    return submoduleFor(found.topic, order, found.course.id);
   },
 
   /**
