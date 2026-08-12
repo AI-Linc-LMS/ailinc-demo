@@ -22,11 +22,11 @@ import { chromium } from "playwright";
 import fs from "fs";
 
 const BASE = process.env.DEMO_BASE ?? "http://localhost:4000";
-const PASSWORD = "Meridian@2026";
+const PASSWORD = "AiLinc@2026";
 const PERSONAS = {
-  student: "student@meridian.edu",
-  instructor: "instructor@meridian.edu",
-  admin: "admin@meridian.edu",
+  student: "student@ailinc.com",
+  instructor: "instructor@ailinc.com",
+  admin: "admin@ailinc.com",
 };
 
 function arg(name, fallback = null) {

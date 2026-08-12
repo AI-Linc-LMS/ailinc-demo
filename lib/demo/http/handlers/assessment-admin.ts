@@ -3217,7 +3217,7 @@ function certificateArt(title: string, learner: string): string {
       <text x="480" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#ffffff" opacity="0.72">Certificate of Achievement</text>
       <text x="480" y="250" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#ffffff">${safe(learner)}</text>
       <text x="480" y="320" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#ffffff" opacity="0.82">${safe(title)}</text>
-      <text x="480" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#ffffff" opacity="0.6">Meridian Institute of Technology</text>
+      <text x="480" y="430" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#ffffff" opacity="0.6">AI Linc</text>
     </svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg.replace(/\s+/g, " ").trim())}`;
 }
@@ -3522,7 +3522,7 @@ function scholarshipPercent(spec: AssessmentSpec, scored: ScoreResult): number {
 }
 
 function referralCode(spec: AssessmentSpec): string {
-  return `MERIDIAN-${spec.slug.slice(0, 6).toUpperCase()}-${STUDENT_PERSONA.id}`;
+  return `AILINC-${spec.slug.slice(0, 6).toUpperCase()}-${STUDENT_PERSONA.id}`;
 }
 
 // ── Admin routes ────────────────────────────────────────────────────────────

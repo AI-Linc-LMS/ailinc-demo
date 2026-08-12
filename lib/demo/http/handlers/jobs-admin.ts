@@ -332,7 +332,7 @@ defineRoutes(MODULE, {
       );
     }
     lines.push("");
-    lines.push(csvCell(`Exported from Meridian on ${ymd(todayStart())}, ${rows.length} applications.`));
+    lines.push(csvCell(`Exported from AI Linc on ${ymd(todayStart())}, ${rows.length} applications.`));
     return lines.join("\n");
   },
 

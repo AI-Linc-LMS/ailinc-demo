@@ -1278,7 +1278,7 @@ export function attemptDetail(attempt: Attempt) {
         multiple_face_detections: attempt.metadata.multiple_face_detections ?? 0,
         looking_away_count: attempt.metadata.looking_away_count ?? 0,
         screenResolution: "1512 x 982",
-        userAgent: "Meridian proctored session",
+        userAgent: "AI Linc proctored session",
         timestamp: Date.parse(attempt.submitted_at ?? attempt.created_at),
       },
     },

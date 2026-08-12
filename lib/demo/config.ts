@@ -30,12 +30,12 @@ export const DEMO_CLIENT_ID = 101;
  * values (and the palette below) to re-skin the entire demo.
  */
 export const DEMO_TENANT = {
-  name: "Meridian Institute of Technology",
-  shortName: "Meridian",
-  slug: "meridian",
+  name: "AI Linc",
+  shortName: "AI Linc",
+  slug: "ailinc",
   /** IANA zone. Drives live-session times shown across the app. */
   timezone: "Asia/Kolkata",
-  supportEmail: "support@meridian.edu",
+  supportEmail: "support@ailinc.com",
 } as const;
 
 /**
@@ -46,7 +46,7 @@ export const DEMO_TENANT = {
  * The password is shared across personas on purpose: one thing to remember on a
  * sales call, and there is nothing to protect behind it.
  */
-export const DEMO_PASSWORD = "Meridian@2026";
+export const DEMO_PASSWORD = "AiLinc@2026";
 
 export interface DemoPersona {
   key: "student" | "instructor" | "admin";
@@ -59,21 +59,21 @@ export interface DemoPersona {
 export const DEMO_PERSONAS: readonly DemoPersona[] = [
   {
     key: "student",
-    email: "student@meridian.edu",
+    email: "student@ailinc.com",
     label: "Student",
     blurb: "Courses, assessments, mock interviews, jobs and community",
     icon: "mdi:school-outline",
   },
   {
     key: "instructor",
-    email: "instructor@meridian.edu",
+    email: "instructor@ailinc.com",
     label: "Instructor",
     blurb: "Batches, gradebook, live sessions and student analytics",
     icon: "mdi:human-male-board",
   },
   {
     key: "admin",
-    email: "admin@meridian.edu",
+    email: "admin@ailinc.com",
     label: "Administrator",
     blurb: "Full institution control: people, content, branding and reporting",
     icon: "mdi:shield-crown-outline",

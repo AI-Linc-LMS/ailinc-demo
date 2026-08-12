@@ -278,7 +278,7 @@ function dashboard() {
           .map((id) => COURSES.find((x) => x.id === id))
           .filter((x): x is NonNullable<typeof x> => Boolean(x))
           .map((x) => ({ id: x.id, title: x.title })),
-        client_name: "Meridian Institute of Technology",
+        client_name: "AI Linc",
         status: c.status,
         end_date: c.status === "completed" ? isoDaysAgo(40) : isoDaysAhead(90),
         student_count: members.length,

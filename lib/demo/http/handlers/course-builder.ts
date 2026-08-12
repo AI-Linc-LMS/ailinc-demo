@@ -2080,7 +2080,7 @@ defineRoutes(MODULE, {
   /* ─────────────────────────────────── tenant setup wizard ──────────────── */
 
   /**
-   * Meridian is a live tenant, so setup reads as already finished and `/setup`
+   * AI Linc is a live tenant, so setup reads as already finished and `/setup`
    * hands the admin back to their dashboard. The flag still comes from the
    * overlay rather than a literal: an operator who wants to walk a prospect
    * through onboarding can clear it, and the rest of the wizard works.

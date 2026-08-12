@@ -109,7 +109,7 @@ const ASSIGNEE_SEEDS: AssigneeSeed[] = [
   {
     id: 3101,
     email: DEMO_TENANT.supportEmail,
-    name: "Meridian Support Desk",
+    name: "AI Linc Support Desk",
     daysAgo: 210,
   },
   {
@@ -120,7 +120,7 @@ const ASSIGNEE_SEEDS: AssigneeSeed[] = [
   },
   {
     id: 3103,
-    email: "helpdesk@meridian.edu",
+    email: "helpdesk@ailinc.com",
     name: "Campus IT Helpdesk",
     daysAgo: 64,
   },

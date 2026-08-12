@@ -161,7 +161,7 @@ const STUDENT_PROFILE: UserProfile = {
     },
     {
       id: "ex-2",
-      company: "Meridian Institute of Technology",
+      company: "AI Linc",
       position: "Teaching Assistant - Data Structures",
       location: "Mumbai, India",
       start_date: ymd(daysAgo(300)),
@@ -195,7 +195,7 @@ const STUDENT_PROFILE: UserProfile = {
     {
       id: "ce-2",
       name: "Full-Stack Web Development",
-      issuing_organization: "Meridian Institute of Technology",
+      issuing_organization: "AI Linc",
       issue_date: ymd(daysAgo(60)),
       credential_id: "MIT-FSWD-2291",
     },
@@ -203,10 +203,10 @@ const STUDENT_PROFILE: UserProfile = {
   achievements: [
     {
       id: "ac-1",
-      title: "Winner - Meridian Annual Hackathon",
+      title: "Winner - AI Linc Annual Hackathon",
       description: "First place out of 84 teams for an offline-first disaster-relief coordination app.",
       date: ymd(daysAgo(75)),
-      organization: "Meridian Institute of Technology",
+      organization: "AI Linc",
     },
     {
       id: "ac-2",
@@ -222,7 +222,7 @@ const INSTRUCTOR_PROFILE: UserProfile = {
   headline: "Senior Instructor | Backend Engineering & Systems",
   bio:
     "Twelve years building distributed systems before moving into teaching. I run the " +
-    "backend engineering track and the systems-design interview clinic at Meridian.",
+    "backend engineering track and the systems-design interview clinic at AI Linc.",
   degree_type: "M.Tech",
   branch: "Computer Science",
   graduation_year: "2011",
@@ -235,7 +235,7 @@ const INSTRUCTOR_PROFILE: UserProfile = {
   experience: [
     {
       id: "iex-1",
-      company: "Meridian Institute of Technology",
+      company: "AI Linc",
       position: "Senior Instructor",
       location: "Bengaluru, India",
       start_date: ymd(daysAgo(1100)),
@@ -250,7 +250,7 @@ const ADMIN_PROFILE: UserProfile = {
   headline: "Director of Programs",
   bio:
     "Responsible for programme design, outcomes and industry partnerships across every " +
-    "cohort at Meridian.",
+    "cohort at AI Linc.",
   degree_type: "Ph.D.",
   branch: "Education Technology",
   graduation_year: "2009",

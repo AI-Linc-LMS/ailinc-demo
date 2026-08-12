@@ -93,7 +93,9 @@ export function proxy(request: NextRequest) {
     // the coding workspace works with the network unplugged. Its loader is
     // fetched by a script tag, not by the app, so a 307 to /login here means the
     // editor silently never appears.
-    pathname.startsWith("/monaco/")
+    pathname.startsWith("/monaco/") ||
+    // Brand lockups live here and are needed on the SIGNED-OUT login screen.
+    pathname.startsWith("/logos/")
   ) {
     return NextResponse.next();
   }

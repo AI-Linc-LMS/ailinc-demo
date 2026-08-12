@@ -248,7 +248,7 @@ const COLLEGES: ReadonlyArray<readonly [string, string, string]> = [
   ["Silicon Institute of Technology", "Bhubaneswar", "Odisha"],
   ["National Institute of Technology, Srinagar", "Srinagar", "Jammu and Kashmir"],
   ["National Institute of Technology, Hamirpur", "Hamirpur", "Himachal Pradesh"],
-  ["Meridian Institute of Technology", "Mumbai", "Maharashtra"],
+  ["AI Linc", "Mumbai", "Maharashtra"],
   ["Nanyang Technological University", "Singapore", "Singapore"],
   ["National University of Singapore", "Singapore", "Singapore"],
   ["University of Melbourne", "Melbourne", "Victoria"],
@@ -799,7 +799,7 @@ function resumePdfFor(person: DemoPerson): Blob {
 
     lines.push({ text: "SELECTED WORK", bold: true, size: 11, gap: 12 });
     lines.push({
-      text: "Course capstone shipped and reviewed by a Meridian instructor.",
+      text: "Course capstone shipped and reviewed by a AI Linc instructor.",
       size: 10,
     });
     lines.push({

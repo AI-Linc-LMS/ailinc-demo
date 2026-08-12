@@ -26,7 +26,7 @@ async function call(method: string, path: string, body?: unknown) {
     query: new URLSearchParams(qs ?? ""),
     body,
     headers: {},
-    auth: { userId: 1003, email: "admin@meridian.edu", role: "admin" },
+    auth: { userId: 1003, email: "admin@ailinc.com", role: "admin" },
   };
   return await match.route.handler(req);
 }
@@ -257,7 +257,7 @@ describe("course builder round trips", () => {
       setup_completed: boolean;
     };
     expect(state.client_id).toBe(101);
-    expect(state.organisation_name).toContain("Meridian");
+    expect(state.organisation_name).toContain("AI Linc");
 
     const saved = (await call("PATCH", "/api/tenant/wizard/state/", {
       wizard_state: { brand: { primary: "#6366f1" } },

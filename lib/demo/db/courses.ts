@@ -75,7 +75,7 @@ export interface DemoCourse {
    * Null on every course, deliberately. The journey board runs unlocked
    * (`contentLocked: false`), whose banner reads "no due dates, no late
    * penalties" — so a dashboard card promising "Due Aug 10 - 4 days left" for
-   * the same course contradicted it two clicks away. Meridian is a self-paced
+   * the same course contradicted it two clicks away. AI Linc is a self-paced
    * institution; deadlines are worth demonstrating on the admin side, where an
    * administrator sets them, rather than faked on the learner side.
    *

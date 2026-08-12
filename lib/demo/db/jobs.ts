@@ -926,7 +926,7 @@ const PERSONA_APPLICATIONS: ReadonlyArray<{
     status: "selected",
     appliedDaysAgo: 18,
     pipeline: {
-      drive: "Meridian Placement Drive, Spring",
+      drive: "AI Linc Placement Drive, Spring",
       internal_shortlisting: "ops shortlisted",
       shortlisted_by_hr: "hr selected",
       round_1: "technical interview select",
@@ -939,7 +939,7 @@ const PERSONA_APPLICATIONS: ReadonlyArray<{
     status: "interview_stage",
     appliedDaysAgo: 12,
     pipeline: {
-      drive: "Meridian Placement Drive, Spring",
+      drive: "AI Linc Placement Drive, Spring",
       internal_shortlisting: "ops shortlisted",
       shortlisted_by_hr: "in process",
       round_1: "resume shortlisted",

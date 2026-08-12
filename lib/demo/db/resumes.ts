@@ -110,11 +110,11 @@ export function resumeDocumentUrl(person: DemoPerson, facts: ResumeFacts): strin
 <p style="margin:0;font-size:13px;color:#334155;line-height:1.7">${esc(facts.experience)}</p>
 <h2 style="margin:22px 0 6px;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#4f46e5">Selected projects</h2>
 <ul style="margin:0;padding-left:18px;font-size:13px;color:#334155;line-height:1.8">
-<li>Course capstone shipped to production, reviewed by a Meridian instructor.</li>
+<li>Course capstone shipped to production, reviewed by a AI Linc instructor.</li>
 <li>Weekly coding practice, 180 problems solved across arrays, graphs and dynamic programming.</li>
 <li>Team project delivered in a four-week cohort sprint with a live demo day.</li>
 </ul>
-<p style="margin:28px 0 0;font-size:11px;color:#94a3b8">Generated from the Meridian learner profile.</p>
+<p style="margin:28px 0 0;font-size:11px;color:#94a3b8">Generated from the AI Linc learner profile.</p>
 </div></body></html>`;
   return `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
 }
@@ -132,6 +132,6 @@ export function personaResumeUrl(): string {
     skills:
       "React, TypeScript, Node.js, PostgreSQL, Python, pandas, scikit-learn, Docker, AWS, Git",
     experience:
-      "Software engineering intern at a Bengaluru fintech for six months, working on the payouts service. Teaching assistant for the Data Structures and Algorithms track at Meridian.",
+      "Software engineering intern at a Bengaluru fintech for six months, working on the payouts service. Teaching assistant for the Data Structures and Algorithms track at AI Linc.",
   });
 }

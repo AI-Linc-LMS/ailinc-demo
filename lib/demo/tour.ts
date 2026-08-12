@@ -23,7 +23,7 @@ import type { TourStep } from "@/components/community/TourProvider";
 const STUDENT_TOUR: TourStep[] = [
   {
     route: "/dashboard",
-    title: "Welcome to Meridian",
+    title: "Welcome to AI Linc",
     narration:
       "This is the learner's view. In the next two minutes I will walk you through every module: how a course adapts to you, how practice is scored, and how it all ends in being job-ready.",
     icon: "mdi:hand-wave-outline",

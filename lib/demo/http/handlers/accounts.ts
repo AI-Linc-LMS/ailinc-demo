@@ -117,7 +117,7 @@ defineRoutes(MODULE, {
    * trying to see is what happens *after* the handshake, not the handshake.
    */
   "POST /accounts/clients/:clientId/user/login/google/": () => {
-    const person = personByEmail("student@meridian.edu");
+    const person = personByEmail("student@ailinc.com");
     if (!person) throw notFound("Demo student persona missing");
     return authResponse(person);
   },

@@ -151,21 +151,21 @@ function instructorDirectory() {
 
   const applicants = [
     {
-      person: applicant(1201, "Nikhil Chatterjee", "nikhil.chatterjee@meridian.edu"),
+      person: applicant(1201, "Nikhil Chatterjee", "nikhil.chatterjee@ailinc.com"),
       pending_status: "pending" as const,
       daysAgo: 4,
       reviewedDaysAgo: null,
       reason: null as string | null,
     },
     {
-      person: applicant(1202, "Sneha Balakrishnan", "sneha.balakrishnan@meridian.edu"),
+      person: applicant(1202, "Sneha Balakrishnan", "sneha.balakrishnan@ailinc.com"),
       pending_status: "pending" as const,
       daysAgo: 9,
       reviewedDaysAgo: null,
       reason: null as string | null,
     },
     {
-      person: applicant(1203, "Arjun Sethi", "arjun.sethi@meridian.edu"),
+      person: applicant(1203, "Arjun Sethi", "arjun.sethi@ailinc.com"),
       pending_status: "rejected" as const,
       daysAgo: 26,
       reviewedDaysAgo: 21,
@@ -228,7 +228,7 @@ interface EmailJobSeed {
 const EMAIL_JOBS: EmailJobSeed[] = [
   {
     taskId: "eml-9f21c4",
-    subject: "Your week 7 progress at Meridian",
+    subject: "Your week 7 progress at AI Linc",
     taskName: "Weekly progress digest",
     status: "completed",
     daysAgo: 6,

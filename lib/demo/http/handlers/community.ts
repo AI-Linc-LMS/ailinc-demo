@@ -1149,7 +1149,7 @@ export interface XpEvent {
 /** History earned before the demo started, newest last. */
 function seedXpEvents(): XpEvent[] {
   const rows: Array<[string, string, number, string, number | null, number]> = [
-    ["signup", "Joined the community", 50, "Welcome to the Meridian community", null, 42],
+    ["signup", "Joined the community", 50, "Welcome to the AI Linc community", null, 42],
     ["thread", "Posted a question", 20, "Asked about React state updates", 3001, 2],
     ["comment", "Answered a question", 15, "Answered the 'dvdf' test case question", 3005, 1],
     ["upvote_received", "Answer upvoted", 62, "Your answer collected 31 upvotes", 3005, 1],

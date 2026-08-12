@@ -1,5 +1,5 @@
 /**
- * The demo tenant: Meridian Institute of Technology.
+ * The demo tenant: AI Linc.
  *
  * This is the `client-info` payload the whole app boots from — branding, the
  * timezone live sessions render in, and the feature flags that decide which
@@ -106,11 +106,11 @@ export const DEMO_CLIENT_INFO: ClientInfo = {
   // Three variants, because the two surfaces that show a logo are BOTH dark:
   //   app_logo_url   -> ink sidebar, small box  -> light, wordmark only
   //   login_logo_url -> ink hero panel, larger  -> light, full lockup
-  // meridian-logo-dark.svg is the dark-text lockup, kept for light surfaces
+  // ai-linc-lockup-ink.svg is the dark-text lockup, kept for light surfaces
   // (certificates, exported PDFs) rather than either of these.
-  app_logo_url: "/images/demo/meridian-logo.svg",
-  app_icon_url: "/images/demo/meridian-icon.svg",
-  login_logo_url: "/images/demo/meridian-logo-login.svg",
+  app_logo_url: "/logos/ai-linc-lockup-white.svg",
+  app_icon_url: "/logos/ai-linc-mark-color.svg",
+  login_logo_url: "/logos/ai-linc-lockup-white.svg",
   login_img_url: null,
 
   features: ENABLED_FEATURES.map((name, index) => ({ id: index + 1, name })),
@@ -122,7 +122,7 @@ export const DEMO_CLIENT_INFO: ClientInfo = {
   hide_available_courses_from_students: false,
 
   certificate_signatory_name: "Dr. Priya Nair",
-  certificate_signatory_title: "Director of Programs, Meridian Institute of Technology",
+  certificate_signatory_title: "Director of Programs, AI Linc",
   certificate_signature_url: null,
 
   // The tenant is fully provisioned: a prospect must never land in the

@@ -11,7 +11,7 @@
  * with enough international names to show the platform is not region-locked.
  */
 
-import { portraitFor } from "./avatar";
+import { portraitAt, portraitFor } from "./avatar";
 import { DEMO_PERSONAS } from "../config";
 import { seededInt, seededPick } from "../random";
 
@@ -64,54 +64,70 @@ const HEADLINES = [
 ] as const;
 
 /** Raw roster: only the parts that must be hand-authored to read as real. */
-const ROSTER_NAMES: ReadonlyArray<readonly [string, string]> = [
-  ["Kabir", "Deshmukh"],
-  ["Ishita", "Bansal"],
-  ["Rohan", "Pillai"],
-  ["Meera", "Krishnan"],
-  ["Arjun", "Sethi"],
-  ["Sara", "Qureshi"],
-  ["Nikhil", "Chaturvedi"],
-  ["Diya", "Malhotra"],
-  ["Aditya", "Ranganathan"],
-  ["Tanvi", "Joshi"],
-  ["Farhan", "Ansari"],
-  ["Neha", "Bhattacharya"],
-  ["Siddharth", "Venkatesh"],
-  ["Pooja", "Reddy"],
-  ["Yash", "Agarwal"],
-  ["Ritika", "Sen"],
-  ["Harsh", "Vardhan"],
-  ["Aisha", "Khan"],
-  ["Karthik", "Subramanian"],
-  ["Shreya", "Ghosh"],
-  ["Manav", "Trivedi"],
-  ["Lakshmi", "Narayanan"],
-  ["Devansh", "Kulkarni"],
-  ["Zoya", "Merchant"],
-  ["Pranav", "Bhatt"],
-  ["Anjali", "Verma"],
-  ["Imran", "Sheikh"],
-  ["Kavya", "Prasad"],
-  ["Rahul", "Chatterjee"],
-  ["Simran", "Gill"],
-  ["Vivek", "Nambiar"],
-  ["Tara", "D'Souza"],
-  ["Aryan", "Mishra"],
-  ["Nandini", "Rajan"],
-  ["Omar", "Haddad"],
-  ["Elena", "Petrova"],
-  ["Daniel", "Okafor"],
-  ["Mei", "Lin"],
-  ["Gaurav", "Saxena"],
-  ["Priyanka", "Iyer"],
-  ["Sameer", "Kapadia"],
-  ["Ayesha", "Siddiqui"],
-  ["Varun", "Chopra"],
-  ["Ridhi", "Aggarwal"],
+/**
+ * The learner roster: a name and the portrait that belongs to that character.
+ *
+ * The portrait is AUTHORED alongside the name, not derived from it. Portraits
+ * used to be hashed across an anonymous pool, on the reasoning that inferring
+ * anything about a person from their name is an assumption worth avoiding. That
+ * reasoning is right, and this keeps it: nothing here reads a name and decides
+ * anything. The photo is simply part of the character the seed describes, the
+ * same as the name and the college.
+ *
+ * What the hash produced instead was a demo where a persona introduced as Ananya
+ * Rao appeared under a stranger's photograph on every screen, which a prospect
+ * reads as a broken build rather than as a principled position.
+ *
+ * Indices are unique, so no two people in the demo share a face.
+ */
+const ROSTER_NAMES: ReadonlyArray<readonly [string, string, string]> = [
+  ["Kabir", "Deshmukh", "men/1"],
+  ["Ishita", "Bansal", "women/2"],
+  ["Rohan", "Pillai", "men/3"],
+  ["Meera", "Krishnan", "women/4"],
+  ["Arjun", "Sethi", "men/5"],
+  ["Sara", "Qureshi", "women/6"],
+  ["Nikhil", "Chaturvedi", "men/7"],
+  ["Diya", "Malhotra", "women/8"],
+  ["Aditya", "Ranganathan", "men/9"],
+  ["Tanvi", "Joshi", "women/10"],
+  ["Farhan", "Ansari", "men/11"],
+  ["Neha", "Bhattacharya", "women/12"],
+  ["Siddharth", "Venkatesh", "men/13"],
+  ["Pooja", "Reddy", "women/14"],
+  ["Yash", "Agarwal", "men/15"],
+  ["Ritika", "Sen", "women/16"],
+  ["Harsh", "Vardhan", "men/17"],
+  ["Aisha", "Khan", "women/18"],
+  ["Karthik", "Subramanian", "men/19"],
+  ["Shreya", "Ghosh", "women/20"],
+  ["Manav", "Trivedi", "men/21"],
+  ["Lakshmi", "Narayanan", "women/22"],
+  ["Devansh", "Kulkarni", "men/23"],
+  ["Zoya", "Merchant", "women/24"],
+  ["Pranav", "Bhatt", "men/25"],
+  ["Anjali", "Verma", "women/26"],
+  ["Imran", "Sheikh", "men/27"],
+  ["Kavya", "Prasad", "women/28"],
+  ["Rahul", "Chatterjee", "men/29"],
+  ["Simran", "Gill", "women/30"],
+  ["Vivek", "Nambiar", "men/31"],
+  ["Tara", "D\'Souza", "women/32"],
+  ["Aryan", "Mishra", "men/33"],
+  ["Nandini", "Rajan", "women/34"],
+  ["Omar", "Haddad", "men/35"],
+  ["Elena", "Petrova", "women/36"],
+  ["Daniel", "Okafor", "men/37"],
+  ["Mei", "Lin", "women/38"],
+  ["Gaurav", "Saxena", "men/39"],
+  ["Priyanka", "Iyer", "women/40"],
+  ["Sameer", "Kapadia", "men/41"],
+  ["Ayesha", "Siddiqui", "women/42"],
+  ["Varun", "Chopra", "men/43"],
+  ["Ridhi", "Aggarwal", "women/44"],
 ] as const;
 
-const EMAIL_DOMAIN = "meridian.edu";
+const EMAIL_DOMAIN = "ailinc.com";
 
 function slugEmail(first: string, last: string, id: number): string {
   const base = `${first}.${last}`
@@ -161,6 +177,7 @@ function buildPerson(
  */
 export const STUDENT_PERSONA: DemoPerson = buildPerson(1001, "Ananya", "Rao", "student", {
   email: DEMO_PERSONAS[0].email,
+  profile_pic_url: portraitAt("women/70"),
   college: "Indian Institute of Technology, Bombay",
   headline: "Final-year CS undergrad | full-stack and ML",
   points: 7840,
@@ -169,7 +186,8 @@ export const STUDENT_PERSONA: DemoPerson = buildPerson(1001, "Ananya", "Rao", "s
 
 export const INSTRUCTOR_PERSONA: DemoPerson = buildPerson(1002, "Vikram", "Menon", "instructor", {
   email: DEMO_PERSONAS[1].email,
-  college: "Meridian Institute of Technology",
+  profile_pic_url: portraitAt("men/70"),
+  college: "AI Linc",
   headline: "Senior Instructor | Backend Engineering and Systems",
   points: 0,
   streak: 0,
@@ -177,7 +195,8 @@ export const INSTRUCTOR_PERSONA: DemoPerson = buildPerson(1002, "Vikram", "Menon
 
 export const ADMIN_PERSONA: DemoPerson = buildPerson(1003, "Priya", "Nair", "admin", {
   email: DEMO_PERSONAS[2].email,
-  college: "Meridian Institute of Technology",
+  profile_pic_url: portraitAt("women/72"),
+  college: "AI Linc",
   headline: "Director of Programs",
   points: 0,
   streak: 0,
@@ -192,19 +211,22 @@ export const PERSONAS: readonly DemoPerson[] = [
 /** Additional teaching staff, for cohort assignment and live-session hosts. */
 export const FACULTY: readonly DemoPerson[] = [
   buildPerson(1101, "Ritu", "Kulkarni", "instructor", {
+    profile_pic_url: portraitAt("women/74"),
     headline: "Instructor | Data Science and Analytics",
   }),
   buildPerson(1102, "Suresh", "Iyengar", "instructor", {
+    profile_pic_url: portraitAt("men/72"),
     headline: "Instructor | Cloud and DevOps",
   }),
   buildPerson(1103, "Fatima", "Rizvi", "instructor", {
+    profile_pic_url: portraitAt("women/76"),
     headline: "Instructor | Frontend Engineering",
   }),
 ];
 
 /** The learner body. Ids start at 2000 to stay clearly distinct from staff. */
-export const STUDENTS: readonly DemoPerson[] = ROSTER_NAMES.map(([first, last], i) =>
-  buildPerson(2000 + i, first, last, "student"),
+export const STUDENTS: readonly DemoPerson[] = ROSTER_NAMES.map(([first, last, portrait], i) =>
+  buildPerson(2000 + i, first, last, "student", { profile_pic_url: portraitAt(portrait) }),
 );
 
 /** Everyone, in one list — the lookup surface handlers use. */

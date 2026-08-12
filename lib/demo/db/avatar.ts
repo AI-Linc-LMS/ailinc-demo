@@ -63,6 +63,17 @@ const PORTRAIT_POOL: readonly string[] = [
   ...Array.from({ length: 30 }, (_, i) => `https://randomuser.me/api/portraits/women/${i}.jpg`),
 ];
 
+/**
+ * The portrait for an authored slot such as "women/12".
+ *
+ * Preferred over `portraitFor` everywhere a person is part of the seed, because
+ * the seed author chose that photo for that character. `portraitFor` remains for
+ * anyone created at runtime, who has no authored portrait to use.
+ */
+export function portraitAt(slot: string): string {
+  return `https://randomuser.me/api/portraits/${slot}.jpg`;
+}
+
 /** A stable portrait for a person, the same one everywhere they appear. */
 export function portraitFor(name: string): string {
   const rng = makeRng(`portrait:${name}`);
