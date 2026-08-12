@@ -9,6 +9,7 @@
  */
 
 import { defineRoutes } from "../router";
+import type { DemoRequest } from "../types";
 import type { LearnerDashboard } from "@/lib/types/dashboard";
 import {
   dashboardCourse,
@@ -24,7 +25,7 @@ import {
   activeDates,
 } from "../../db/learner";
 import { nextTopic } from "../../db/courses";
-import { STUDENT_PERSONA, rankedLearners } from "../../db/people";
+import { STUDENT_PERSONA, personByEmail, rankedLearners } from "../../db/people";
 import { currentMonth, daysInMonth, iso, isoDaysAgo, nowMs, ymd, daysAgo } from "../../clock";
 import { seededInt } from "../../random";
 
@@ -238,13 +239,33 @@ function scorecardPayload(full: boolean) {
   };
 }
 
-function learnerDashboard(): LearnerDashboard {
+
+/**
+ * The name to greet, for whoever is actually signed in.
+ *
+ * A full administrator in this product keeps a learner view and toggles into
+ * Admin Mode, so /dashboard is a legitimate destination for them. What was not
+ * legitimate was the greeting: the learner payload hard-coded the student
+ * persona, so signing in as Priya Nair and landing on the dashboard said
+ * "WELCOME BACK, ANANYA RAO". A prospect reads that as the wrong account, or a
+ * broken build.
+ *
+ * The seeded progress underneath stays as it is. The demo's job is to show a
+ * populated product, and staff are not enrolled learners; the name is the part
+ * that has to be true.
+ */
+function viewerName(auth: DemoRequest["auth"]): string {
+  if (!auth) return STUDENT_PERSONA.full_name;
+  return personByEmail(auth.email)?.full_name ?? STUDENT_PERSONA.full_name;
+}
+
+function learnerDashboard(auth: DemoRequest["auth"]): LearnerDashboard {
   const courses = enrolledCourses();
   const streak = streakSummary();
 
   return {
     profile: {
-      name: STUDENT_PERSONA.full_name,
+      name: viewerName(auth),
       weekNo: 7,
       weekDueAt: null,
       weekProgressPct: overallProgress(),
@@ -293,7 +314,7 @@ function learnerDashboard(): LearnerDashboard {
 }
 
 defineRoutes(MODULE, {
-  "GET /adaptive-journey/api/learner/dashboard/": () => learnerDashboard(),
+  "GET /adaptive-journey/api/learner/dashboard/": (req) => learnerDashboard(req.auth),
 
   "GET /adaptive-journey/api/learner/points-total/": () => ({ total: totalPoints() }),
 

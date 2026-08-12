@@ -43,6 +43,30 @@ function normalizeRole(role?: string): string {
  * nor were assigned to, per object, with tests. An instructor typing another course's id gets a
  * 403 from the API and an error state on the page, not somebody else's course.
  */
+
+/**
+ * Roles allowed under /admin.
+ *
+ * Kept local to the middleware rather than imported from lib/auth/role-utils so
+ * the edge bundle stays free of app code. The list must track
+ * `canAccessAdminArea` there: full admins plus the limited content roles.
+ */
+const ADMIN_AREA_ROLES = new Set([
+  "admin",
+  "superadmin",
+  "super_admin",
+  "client_admin",
+  "clientadmin",
+  "course_manager",
+  "coursemanager",
+  "content_manager",
+  "contentmanager",
+]);
+
+function canReachAdminArea(role: string): boolean {
+  return ADMIN_AREA_ROLES.has(role);
+}
+
 const INSTRUCTOR_ALLOWED_ADMIN_PATH = /^\/admin\/adaptive-courses\/\d+(\/|$)/;
 
 function instructorBlocked(pathname: string): boolean {
@@ -122,6 +146,24 @@ export function proxy(request: NextRequest) {
   // Confine instructors to /instructor/* — bounce them off the student learner view and /admin/*.
   if (isInstructor && token && instructorBlocked(pathname)) {
     return NextResponse.redirect(new URL(INSTRUCTOR_HOME, request.url));
+  }
+
+  /**
+   * Keep learners out of /admin/*.
+   *
+   * Instructors were confined here; students never were. Against a real backend
+   * that is survivable, because every admin endpoint 403s and the page renders
+   * empty. This prototype answers from seeds with no role check, so a student
+   * who typed /admin/manage-students got the fully populated roster, the
+   * settings screen and the institution dashboard. In a demo handed to a
+   * prospect to explore unsupervised, that is the whole admin product visible
+   * from the student login.
+   *
+   * Server-side, so there is no flash of admin UI before a client-side guard
+   * catches up.
+   */
+  if (token && pathname.startsWith("/admin") && !canReachAdminArea(role)) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
