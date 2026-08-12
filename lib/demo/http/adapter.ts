@@ -40,12 +40,65 @@ export function unhandledRoutes(): Array<{ route: string; count: number }> {
 function recordMiss(method: string, path: string): void {
   const key = `${method} ${path}`;
   unhandled.set(key, (unhandled.get(key) ?? 0) + 1);
+  // Loud in dev, and always available via `__demo.unhandled()`. Never rendered:
+  // see `missBody` for why the diagnostic and the on-screen text are separate.
   if (process.env.NODE_ENV !== "production") {
     console.warn(
-      `[demo] No handler for ${key} — this page will render an empty state. ` +
+      `[demo] No handler for ${key} — the page will degrade to an empty state. ` +
         `Add a handler in lib/demo/http/handlers/.`,
     );
   }
+}
+
+/**
+ * What a miss returns to the page.
+ *
+ * The diagnostic and the thing a visitor can read are deliberately different
+ * strings. This used to throw with `detail: "No demo handler for GET /..."`, and
+ * because every page in this codebase surfaces `detail` through
+ * `getAxiosErrorDetail`, that internal text was rendered in a red banner — on
+ * the admin course form, the quiz library, the community, six routes in all. A
+ * prospect reading our debug output is worse than any dead end, so a miss can
+ * never again produce text written for a developer.
+ *
+ * A GET degrades to an EMPTY SUCCESS rather than an error: the page then renders
+ * the empty state it was designed for instead of a failure banner. The shape is
+ * guessed from the path, because most consumers here read either a bare array or
+ * a `{count, results}` envelope, and handing a list page an object is the one
+ * mistake that crashes rather than empties.
+ *
+ * Writes still fail — inventing a success would tell someone their course was
+ * created and then not show it in the list, which is a worse lie than an error —
+ * but they fail with product language.
+ */
+const COLLECTION_HINT =
+  /\/(list|all|results|search)\/?$|s\/?$|s\/\d+\/(items|entries)\/?$/i;
+
+/**
+ * A degraded collection is a BARE ARRAY that also answers `.results` and
+ * `.count`.
+ *
+ * Guessing between the two shapes is not possible from the path, and guessing
+ * wrong is worse than not degrading at all: the quiz library reads the response
+ * directly and calls `.filter` on it, so returning `{count, results}` there
+ * replaced a missing-handler empty state with a full-page crash reading
+ * "v.filter is not a function".
+ *
+ * An array with the envelope's fields attached satisfies both readers at once.
+ * `results` is self-referential on purpose, so `data.results.map(...)` and
+ * `data.map(...)` walk the same (empty) list.
+ */
+function emptyCollection(): unknown {
+  const rows: unknown[] = [];
+  return Object.assign(rows, { count: 0, next: null, previous: null, results: rows });
+}
+
+function missBody(method: string, path: string): { status: number; body: unknown } | null {
+  if (method !== "GET") return null;
+  const base = path.split("?")[0];
+  return COLLECTION_HINT.test(base)
+    ? { status: 200, body: emptyCollection() }
+    : { status: 200, body: {} };
 }
 
 /**
@@ -200,7 +253,13 @@ export const demoAdapter: AxiosAdapter = async (config) => {
   const match = matchRoute(method, path);
   if (!match) {
     recordMiss(method, path);
-    throw fail(404, { detail: `No demo handler for ${method} ${path}` }, config);
+    const degraded = missBody(method, path);
+    if (degraded) return ok(degraded.body, config);
+    throw fail(
+      501,
+      { detail: "That action is not available in this preview." },
+      config,
+    );
   }
 
   const headers = toHeaders(config);

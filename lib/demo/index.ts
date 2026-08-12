@@ -31,6 +31,19 @@ export function installDemoTransport(client: AxiosInstance): void {
 
   client.defaults.adapter = demoAdapter;
 
+  if (typeof window !== "undefined") {
+    // Exposed in production too, deliberately. Since the console warning for a
+    // missed route is stripped from a production build, this registry is the
+    // only way to audit the bundle that actually ships — and auditing the dev
+    // build instead is how a whole class of gaps stayed invisible. It is inert
+    // and read-only: a visitor has to open devtools and type it to find it.
+    (window as unknown as Record<string, unknown>).__demo = {
+      unhandled: unhandledRoutes,
+      routes: registeredRoutes,
+      reset: resetDemo,
+    };
+  }
+
   if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
     console.info(
       `%c[demo] %cAI Linc prototype — ${registeredRoutes().length} endpoints served locally. ` +
@@ -38,12 +51,6 @@ export function installDemoTransport(client: AxiosInstance): void {
       "color:#a855f7;font-weight:700",
       "color:inherit",
     );
-    // Handy during a build-out: `__demo.unhandled()` lists endpoints still to write.
-    (window as unknown as Record<string, unknown>).__demo = {
-      unhandled: unhandledRoutes,
-      routes: registeredRoutes,
-      reset: resetDemo,
-    };
   }
 }
 
