@@ -348,11 +348,21 @@ export async function POST(request: NextRequest) {
   // the same class of leak as the demo transport printing "No demo handler".
   // The checks below are real and need no model; the summary says so.
   if (!useOpenAI()) {
-    const local = buildLocalAnalysis(resumeData, jobText);
-    if (light === true) {
-      return NextResponse.json({ overallScore: local.overallScore, atsScore: local.atsScore });
+    try {
+      const local = buildLocalAnalysis(resumeData, jobText);
+      if (light === true) {
+        return NextResponse.json({ overallScore: local.overallScore, atsScore: local.atsScore });
+      }
+      return NextResponse.json(local);
+    } catch {
+      // Never 500 here. This is the path a demo always takes, and a failed
+      // analysis must not be the thing a prospect sees; the client keeps its
+      // own client-side estimate when the report is absent.
+      return NextResponse.json(
+        { error: "Could not analyse this resume. Add a little more detail and try again." },
+        { status: 200 },
+      );
     }
-    return NextResponse.json(local);
   }
 
   const resumeSummary = buildResumeSummary(resumeData);

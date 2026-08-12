@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { QueryClient, type QueryClientConfig } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, type QueryClientConfig } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
@@ -56,9 +56,22 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       : createSyncStoragePersister({ storage: window.localStorage, key: CACHE_KEY })
   );
 
-  // SSR pass: no storage, so render without persistence rather than crashing.
+  /**
+   * SSR pass: keep the client, drop only the persistence.
+   *
+   * This used to return bare `{children}`, which removed the QueryClientProvider
+   * along with the persister. Anything calling `useQuery` during the server
+   * render then threw "No QueryClient set", React abandoned the Suspense
+   * boundary, and the page logged the minified #419 and fell back to rendering
+   * on the client. That is exactly what /dashboard did on every load, because
+   * DashboardV2 opens with a useQuery.
+   *
+   * There is nothing to persist on the server (no localStorage), but the CLIENT
+   * is still needed for the render to complete, so provide it plainly here and
+   * add persistence only in the browser.
+   */
   if (!persister) {
-    return <>{children}</>;
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
   }
 
   return (

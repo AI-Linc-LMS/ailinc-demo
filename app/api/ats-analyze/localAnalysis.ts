@@ -145,7 +145,30 @@ function lengthCheck(data: ResumeData) {
   return { score: 50, note: `About ${words} words. Long enough that a recruiter will skim rather than read.` };
 }
 
-export function buildLocalAnalysis(data: ResumeData, jobDescription: string): LocalAnalysis {
+/**
+ * Fill in any array the caller left out.
+ *
+ * `computeATSScore` walks workExperience, education, skills, projects and
+ * certifications unconditionally, so a payload missing one throws
+ * "Cannot read properties of undefined (reading 'forEach')" and the route
+ * answers 500. A resume screen with nothing in a section is an ordinary state,
+ * and an analysis endpoint that dies on it is worse than one that scores it
+ * zero.
+ */
+function normalise(data: ResumeData): ResumeData {
+  return {
+    ...data,
+    basicInfo: data.basicInfo ?? ({} as ResumeData["basicInfo"]),
+    workExperience: (data.workExperience ?? []).map((w) => ({ ...w, description: w.description ?? [] })),
+    education: data.education ?? [],
+    skills: data.skills ?? [],
+    projects: (data.projects ?? []).map((p) => ({ ...p, technologies: p.technologies ?? [] })),
+    certifications: data.certifications ?? [],
+  };
+}
+
+export function buildLocalAnalysis(input: ResumeData, jobDescription: string): LocalAnalysis {
+  const data = normalise(input);
   const scored = computeATSScore(data, jobDescription);
 
   const checks = {
