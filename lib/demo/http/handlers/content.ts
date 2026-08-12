@@ -13,6 +13,7 @@ import { defineRoutes } from "../router";
 import { badRequest, notFound, type DemoRequest } from "../types";
 import { topicById, type DemoTopic } from "../../db/courses";
 import { articleBody, type ReadingTier } from "../../db/article-content";
+import { loadCourseCurriculum } from "../../db/curriculum";
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
 import { seededInt } from "../../random";
@@ -46,11 +47,15 @@ function isComplete(topic: DemoTopic, contentId: number): boolean {
 const POINTS = { article: 25, quiz: 60, coding: 90, video: 30 } as const;
 
 /** Re-render an article at another reading tier. Shared by the POST and GET routes. */
-function articleTier(req: DemoRequest) {
+async function articleTier(req: DemoRequest) {
   const found = topicForArticle(Number(req.params.articleId));
   if (!found) throw notFound("Article not found");
   const tier: ReadingTier = isTier(req.params.tier) ? req.params.tier : "Intermediate";
-  const body = articleBody(found.topic, tier, conceptsFor(found.topic));
+  // The authored body lives in a per-course chunk. Await it before reading, or
+  // the synchronous lookup misses and the lesson silently falls back to the
+  // generated scaffold that made every article read the same.
+  await loadCourseCurriculum(found.course.id);
+  const body = articleBody(found.topic, tier, conceptsFor(found.topic), found.course.id);
   return {
     tier,
     content_html: body.html,
@@ -60,9 +65,13 @@ function articleTier(req: DemoRequest) {
 
 defineRoutes(MODULE, {
   /** The lesson page: one topic and everything inside it. */
-  "GET /adaptive-quiz/api/courses/:courseId/submodules/:submoduleId/": (req) => {
+  "GET /adaptive-quiz/api/courses/:courseId/submodules/:submoduleId/": async (req) => {
     const found = topicById(Number(req.params.submoduleId));
     if (!found) throw notFound("Submodule not found");
+    // The lesson page is the doorway to the article, the quiz and the coding
+    // set, so warming the course chunk here means all three open instantly and
+    // the reading time on this page matches the article the learner then opens.
+    await loadCourseCurriculum(found.course.id);
     const order = found.module.topics.indexOf(found.topic) + 1;
     return submoduleFor(found.topic, order);
   },
@@ -122,13 +131,14 @@ defineRoutes(MODULE, {
   },
 
   /** The article reader. */
-  "GET /adaptive-quiz/api/articles/:articleId/": (req) => {
+  "GET /adaptive-quiz/api/articles/:articleId/": async (req) => {
     const found = topicForArticle(Number(req.params.articleId));
     if (!found) throw notFound("Article not found");
 
     const requested = req.query.get("tier");
     const tier: ReadingTier = isTier(requested) ? requested : "Intermediate";
-    const body = articleBody(found.topic, tier, conceptsFor(found.topic));
+    await loadCourseCurriculum(found.course.id);
+    const body = articleBody(found.topic, tier, conceptsFor(found.topic), found.course.id);
 
     return {
       id: Number(req.params.articleId),
@@ -159,13 +169,14 @@ defineRoutes(MODULE, {
   "GET /adaptive-quiz/api/articles/:articleId/tier/:tier/": (req) => articleTier(req),
 
   /** "Explain this term", the inline AI helper in the reader. */
-  "POST /adaptive-quiz/api/articles/:articleId/explain/": (req) => {
+  "POST /adaptive-quiz/api/articles/:articleId/explain/": async (req) => {
     const found = topicForArticle(Number(req.params.articleId));
     if (!found) throw notFound("Article not found");
     const term = String(req.body?.term ?? req.body?.selection ?? "").trim();
     if (!term) throw badRequest({ detail: "Select a term to explain." });
 
-    const body = articleBody(found.topic, "Intermediate", conceptsFor(found.topic));
+    await loadCourseCurriculum(found.course.id);
+    const body = articleBody(found.topic, "Intermediate", conceptsFor(found.topic), found.course.id);
     const known = body.glossary[term];
 
     return {
@@ -181,10 +192,11 @@ defineRoutes(MODULE, {
   },
 
   /** "Summarise this lesson". */
-  "POST /adaptive-quiz/api/articles/:articleId/summarise/": (req) => {
+  "POST /adaptive-quiz/api/articles/:articleId/summarise/": async (req) => {
     const found = topicForArticle(Number(req.params.articleId));
     if (!found) throw notFound("Article not found");
-    const body = articleBody(found.topic, "Intermediate", conceptsFor(found.topic));
+    await loadCourseCurriculum(found.course.id);
+    const body = articleBody(found.topic, "Intermediate", conceptsFor(found.topic), found.course.id);
 
     return {
       summary_html: `<p>${body.summary}</p>`,

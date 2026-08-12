@@ -14,11 +14,13 @@
 
 import { defineRoutes } from "../router";
 import { badRequest, notFound, type DemoRequest } from "../types";
-import { topicById } from "../../db/courses";
+import { COURSES, topicById } from "../../db/courses";
 import { bankForTopic, type DemoMcq } from "../../db/quiz-bank";
+import { loadCourseCurriculum } from "../../db/curriculum";
 import { conceptsFor } from "./adaptive-courses";
 import { overlay, nextDemoId } from "../../db/overlay";
-import { iso, nowMs } from "../../clock";
+import { iso, isoDaysAgo, nowMs } from "../../clock";
+import { seededInt } from "../../random";
 
 const MODULE = "quiz";
 
@@ -99,7 +101,9 @@ function topicForConfig(configId: number) {
 function bankFor(session: QuizSession): DemoMcq[] {
   const found = topicById(session.topicId);
   if (!found) return [];
-  return bankForTopic(session.courseId, conceptsFor(found.topic));
+  // topicId is passed so the topic's own authored questions lead the bank. The
+  // course chunk is warmed when the session starts, so this stays synchronous.
+  return bankForTopic(session.courseId, conceptsFor(found.topic), session.topicId);
 }
 
 /**
@@ -274,11 +278,70 @@ function sessionDetail(session: QuizSession) {
   };
 }
 
+
+/**
+ * The visitor's latest session for a quiz config, for the library card's CTA.
+ *
+ * `quiz:sessions` is a list of session IDS, newest first, not of session
+ * objects: each session is stored under its own overlay key.
+ */
+function latestSessionFor(configId: number): QuizSession | null {
+  for (const id of overlay.get<string[]>("quiz:sessions", [])) {
+    const session = loadSession(id);
+    if (session?.configId === configId) return session;
+  }
+  return null;
+}
+
 defineRoutes(MODULE, {
-  "POST /adaptive-quiz/api/sessions/start/": (req) => {
+  /**
+   * The standalone quiz library.
+   *
+   * Returns a BARE ARRAY, not a `{results}` envelope: `listQuizzes` hands the
+   * response straight to the page, which calls `.filter` on it. When nothing
+   * answered this route the page crashed with "v.filter is not a function",
+   * which is the whole reason shape matters more than presence here.
+   *
+   * The library is built from the course topics that actually carry a quiz, so
+   * every card opens onto real authored questions rather than a stub.
+   */
+  "GET /adaptive-quiz/api/quizzes/": () => {
+    const rows: Array<Record<string, unknown>> = [];
+    for (const course of COURSES) {
+      for (const m of course.modules) {
+        for (const t of m.topics) {
+          if (!t.kinds.includes("quiz")) continue;
+          const configId = t.id + 200_000;
+          const session = latestSessionFor(configId);
+          rows.push({
+            config_id: configId,
+            quiz_title: `${t.title} - check your understanding`,
+            course_id: course.id,
+            course_title: course.title,
+            target_skills: conceptsFor(t).slice(0, 4),
+            min_questions: 6,
+            max_questions: 12,
+            mcq_count: 10,
+            hint_tokens: 3,
+            is_personal: false,
+            is_archived: false,
+            latest_session_id: session?.id ?? null,
+            latest_session_status: session?.status ?? null,
+            updated_at: isoDaysAgo(seededInt(`quizupd:${t.id}`, 2, 40)),
+          });
+        }
+      }
+    }
+    return rows;
+  },
+
+  "POST /adaptive-quiz/api/sessions/start/": async (req) => {
     const configId = Number(req.body?.config_id);
     const found = topicForConfig(configId);
     if (!found) throw notFound("Quiz not found");
+    // Warm the course chunk once, here. Every later call in this session reads
+    // the authored questions out of the warm cache synchronously.
+    await loadCourseCurriculum(found.course.id);
 
     const session: QuizSession = {
       id: `qs-${nextDemoId("quiz")}`,

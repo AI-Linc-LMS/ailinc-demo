@@ -16,6 +16,7 @@ import { defineRoutes } from "../router";
 import { badRequest, notFound, type DemoRequest } from "../types";
 import { topicById } from "../../db/courses";
 import { CODING_PROBLEMS, problemAt, type CodingTest, type DemoCodingProblem } from "../../db/coding-bank";
+import { loadCourseCurriculum, peekTopic, type AuthoredProblem } from "../../db/curriculum";
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, nowMs } from "../../clock";
 
@@ -66,25 +67,83 @@ function requireSession(id: string): CodingSessionState {
 }
 
 /**
- * Map a generated problem id back to a bank problem.
+ * Project an authored problem into the shape the workspace already speaks.
  *
- * Coding-set problem ids are `topic.id + 300_000 + n` for n in 1..4, so the
- * offset within the set picks the bank entry deterministically: the same id
- * always resolves to the same problem.
+ * The authored bank stores what a problem IS (statement, tests, hints, the
+ * function to write); the workspace additionally wants input/output format
+ * strings and per-language templates, which are mechanical from the signature.
+ */
+function fromAuthored(p: AuthoredProblem): DemoCodingProblem {
+  const sample = p.tests.find((t) => !t.hidden) ?? p.tests[0];
+  const args = sample ? sample.args.map((a) => JSON.stringify(a)).join(", ") : "";
+  return {
+    title: p.title,
+    difficulty: p.difficulty,
+    skills: p.skills,
+    topic: p.skills[0] ?? p.title,
+    statement: p.statement,
+    inputFormat: `Arguments to ${p.fn}(${p.params}).`,
+    outputFormat: "The value your function returns.",
+    sampleInput: args,
+    sampleOutput: sample ? JSON.stringify(sample.expected) : "",
+    constraints: "Inputs are always valid for the stated signature.",
+    fnName: p.fn,
+    templates: {
+      javascript: `/**\n * Complete this function.\n */\nfunction ${p.fn}(${p.params}) {\n  // your code here\n}\n`,
+    },
+    tests: p.tests.map((t) => ({ args: t.args, expected: t.expected, label: t.label, hidden: t.hidden })),
+    hints: p.hints.map((body, i) => ({
+      title: i === 0 ? "A nudge" : i === 1 ? "The approach" : "The mechanism",
+      body,
+      revealsCode: i === 2,
+    })),
+  };
+}
+
+/**
+ * Map a generated problem id back to a problem.
+ *
+ * Coding-set problem ids are `topic.id + 300_000 + n` for n in 1..4.
+ *
+ * The authored curriculum is preferred, and that is the whole point of this
+ * function: it used to pick with `(topicId + offset) % CODING_PROBLEMS.length`
+ * over a bank of five, so all 41 coding topics served the same five problems,
+ * six to ten times each, none of them related to the topic being studied. A
+ * prospect who opened two coding lessons in one course saw the same puzzle.
+ *
+ * The lookup is a synchronous cache read, so callers that can be async should
+ * `await loadCourseCurriculum(courseId)` first; the entry points do.
  */
 function resolveProblem(problemId: number): { problem: DemoCodingProblem; index: number } {
   for (let offset = 1; offset <= 4; offset++) {
     const topicId = problemId - 300_000 - offset;
     const found = topicById(topicId);
-    if (found) {
-      const index = (topicId + offset) % CODING_PROBLEMS.length;
-      return { problem: problemAt(index), index };
-    }
+    if (!found) continue;
+
+    const authored = peekTopic(found.course.id, topicId);
+    const own = authored?.problems?.[offset - 1] ?? authored?.problems?.[0];
+    if (own) return { problem: fromAuthored(own), index: offset - 1 };
+
+    // Nothing authored for this topic yet: fall back to the shared bank rather
+    // than 404ing a lesson the journey board links to.
+    const index = (topicId + offset) % CODING_PROBLEMS.length;
+    return { problem: problemAt(index), index };
   }
   // An id we did not generate still resolves to something real rather than 404,
   // so a deep link a prospect was given can never dead-end.
   const index = Math.abs(problemId) % CODING_PROBLEMS.length;
   return { problem: problemAt(index), index };
+}
+
+/** Warm the course chunk that owns a problem id, so `resolveProblem` can see it. */
+async function warmProblem(problemId: number): Promise<void> {
+  for (let offset = 1; offset <= 4; offset++) {
+    const found = topicById(problemId - 300_000 - offset);
+    if (found) {
+      await loadCourseCurriculum(found.course.id);
+      return;
+    }
+  }
 }
 
 function apiProblem(problemId: number, problem: DemoCodingProblem) {
@@ -305,15 +364,19 @@ function apiSession(session: CodingSessionState) {
 }
 
 defineRoutes(MODULE, {
-  "GET /adaptive-coding/api/problems/:problemId/": (req) => {
+  "GET /adaptive-coding/api/problems/:problemId/": async (req) => {
     const problemId = Number(req.params.problemId);
+    // The two entry points warm the course chunk; every later call in the same
+    // session (run, submit, hint) reads the warm cache synchronously.
+    await warmProblem(problemId);
     const { problem } = resolveProblem(problemId);
     return apiProblem(problemId, problem);
   },
 
-  "POST /adaptive-coding/api/sessions/start/": (req) => {
+  "POST /adaptive-coding/api/sessions/start/": async (req) => {
     const problemId = Number(req.body?.problem_id ?? req.body?.problemId);
     const configId = Number(req.body?.config_id ?? 0);
+    await warmProblem(problemId);
     const { problem, index } = resolveProblem(problemId);
     // JavaScript by default because it is the language this demo can actually
     // execute; offering a default it cannot run would be the wrong first

@@ -15,6 +15,7 @@
  */
 
 import type { DemoTopic } from "./courses";
+import { peekTopic } from "./curriculum";
 
 export type ReadingTier = "Beginner" | "Intermediate" | "Advanced" | "Expert";
 
@@ -473,14 +474,51 @@ export interface ArticleBody {
   readingMinutes: number;
 }
 
-/** The article for a topic, at the requested reading tier. */
+/**
+ * Reading time, derived from the text actually being shown.
+ *
+ * One function, because an audit found the same article claiming 14 minutes on
+ * the course card, 6 in the lesson header, and carrying about a minute of prose.
+ * Anything that displays a reading time must call this on the same HTML the
+ * reader will get, or the three numbers drift apart again.
+ */
+export function readingMinutesFor(html: string): number {
+  const words = html.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+/**
+ * The article for a topic, at the requested reading tier.
+ *
+ * Three sources, in priority order:
+ *   1. The authored curriculum (lib/demo/db/curriculum) if its course chunk has
+ *      been loaded. Call `loadCourseCurriculum(courseId)` before this, since the
+ *      lookup is a synchronous cache read: a miss means "not loaded yet", not
+ *      "not written".
+ *   2. The four hand-written articles in AUTHORED below, kept because they
+ *      predate the curriculum and are the ones the tour opens.
+ *   3. The generated scaffold, which is now a genuine last resort. It used to
+ *      serve 63 of 67 topics, which is why every lesson read the same.
+ */
 export function articleBody(
   topic: DemoTopic,
   tier: ReadingTier,
   fallbackConcepts: string[],
+  courseId?: number,
 ): ArticleBody {
-  const authored = AUTHORED[topic.title];
+  const curriculum = courseId == null ? null : peekTopic(courseId, topic.id);
+  if (curriculum) {
+    const html = curriculum.body[tier] ?? curriculum.body.Intermediate;
+    return {
+      summary: curriculum.summary,
+      concepts: curriculum.concepts,
+      glossary: curriculum.glossary,
+      html,
+      readingMinutes: readingMinutesFor(html),
+    };
+  }
 
+  const authored = AUTHORED[topic.title];
   if (authored) {
     const html = authored.body[tier] ?? authored.body.Intermediate;
     return {
@@ -488,18 +526,18 @@ export function articleBody(
       concepts: authored.concepts,
       glossary: authored.glossary,
       html,
-      // Roughly 200 words a minute over the rendered text.
-      readingMinutes: Math.max(3, Math.round(html.split(/\s+/).length / 200)),
+      readingMinutes: readingMinutesFor(html),
     };
   }
 
   const concepts = fallbackConcepts;
+  const html = generatedBody(topic, concepts);
   return {
     summary: `An introduction to ${topic.title.toLowerCase()}, and how it connects to the rest of this track.`,
     concepts,
     glossary: {},
-    html: generatedBody(topic, concepts),
-    readingMinutes: 6,
+    html,
+    readingMinutes: readingMinutesFor(html),
   };
 }
 

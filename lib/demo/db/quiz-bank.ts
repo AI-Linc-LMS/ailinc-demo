@@ -1,3 +1,4 @@
+import { peekTopic, type AuthoredQuestion } from "./curriculum";
 /**
  * The MCQ bank.
  *
@@ -493,10 +494,42 @@ export const QUIZ_BANK: Record<number, DemoMcq[]> = {
  * come first. The selector then filters by difficulty, so a learner doing well
  * sees the harder on-topic questions before any generic ones.
  */
-export function bankForTopic(courseId: number, concepts: string[]): DemoMcq[] {
+export function bankForTopic(
+  courseId: number,
+  concepts: string[],
+  topicId?: number,
+): DemoMcq[] {
+  // Authored questions for THIS topic come first and in full: they are written
+  // against its own concepts and carry an explanation that names the tempting
+  // wrong answer. The shared course bank follows as filler, so a learner who
+  // exhausts the authored set still gets on-course questions rather than a
+  // "no more questions" dead end.
+  const authored = topicId == null ? null : peekTopic(courseId, topicId);
+  const own = (authored?.questions ?? []).map(authoredToMcq);
+
   const bank = QUIZ_BANK[courseId] ?? [];
   const wanted = new Set(concepts.map((c) => c.toLowerCase()));
   const onTopic = bank.filter((q) => wanted.has(q.skill.toLowerCase()));
   const rest = bank.filter((q) => !wanted.has(q.skill.toLowerCase()));
-  return [...onTopic, ...rest];
+  return [...own, ...onTopic, ...rest];
+}
+
+/**
+ * Authored question to the shape the quiz engine speaks.
+ *
+ * The id is derived from the topic and the question number rather than taken
+ * from a counter, because the engine records "already asked" by id and a counter
+ * would renumber the same question between two sessions.
+ */
+function authoredToMcq(q: AuthoredQuestion & { topicId?: number }, i: number): DemoMcq {
+  const keys = ["A", "B", "C", "D"];
+  return {
+    id: 800_000 + (q.n ?? i) * 97,
+    question: q.question,
+    options: q.options.map((text, k) => ({ id: keys[k], label: text, value: text })),
+    correct: keys[q.answer],
+    difficulty: q.difficulty,
+    skill: q.skill,
+    explanation: q.explanation,
+  };
 }
