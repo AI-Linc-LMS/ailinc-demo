@@ -9,6 +9,18 @@
  * Each problem names the function it expects and lists concrete argument/result
  * pairs, so grading is a genuine comparison rather than a heuristic on the
  * source text.
+ *
+ * SCHOOL EDITION: these were LeetCode-style interview problems (Two Sum, Group
+ * Anagrams, Merge Intervals), which is the right bank for adults preparing for
+ * technical interviews and hopeless for a Grade 7 class writing their first
+ * program. They are beginner problems now, one per idea in the Computing course:
+ * a variable, a condition, a loop, a list.
+ *
+ * The hidden tests are chosen to catch the specific mistake each problem invites,
+ * not to be obscure. "Pass or Fail" tests exactly 35 because the boundary is the
+ * whole lesson; "The Biggest Number" tests an all-negative list because starting
+ * your best-so-far at zero is the error every child makes first. A hidden test
+ * that fails for a reason the learner cannot work out teaches nothing.
  */
 
 export interface CodingTest {
@@ -47,222 +59,235 @@ const pyTemplate = (fn: string, params: string) =>
 
 export const CODING_PROBLEMS: DemoCodingProblem[] = [
   {
-    title: "Two Sum",
+    title: "Add Two Numbers",
     difficulty: "Easy",
-    skills: ["Algorithms", "Hash maps"],
-    topic: "Arrays and hashing",
+    skills: ["Variables", "Returning a value"],
+    topic: "Variables",
     statement:
-      "Given an array of integers `nums` and an integer `target`, return the indices of the two " +
-      "numbers that add up to `target`.\n\nExactly one valid answer exists, and you may not use " +
-      "the same element twice. Return the indices in ascending order.",
-    inputFormat: "nums: number[], target: number",
-    outputFormat: "number[] of length 2",
-    sampleInput: "nums = [2, 7, 11, 15], target = 9",
-    sampleOutput: "[0, 1]",
-    constraints: "2 <= nums.length <= 10^4\n-10^9 <= nums[i] <= 10^9\nExactly one solution exists.",
-    fnName: "twoSum",
-    templates: {
-      javascript: jsTemplate("twoSum", "nums, target"),
-      python: pyTemplate("two_sum", "nums, target"),
-    },
-    tests: [
-      { args: [[2, 7, 11, 15], 9], expected: [0, 1], label: "basic" },
-      { args: [[3, 2, 4], 6], expected: [1, 2], label: "not the first element" },
-      { args: [[3, 3], 6], expected: [0, 1], label: "duplicate values", hidden: true },
-      { args: [[-1, -2, -3, -4, -5], -8], expected: [2, 4], label: "negatives", hidden: true },
-    ],
-    hints: [
-      {
-        title: "Start with the brute force",
-        body: "Two nested loops over every pair works and is O(n squared). Get that correct first, then ask what work it repeats.",
-        revealsCode: false,
-      },
-      {
-        title: "What are you searching for?",
-        body: "For each number x, you are looking for target - x among the numbers you have already seen. A lookup, not a scan.",
-        revealsCode: false,
-      },
-      {
-        title: "One pass with a map",
-        body: "Walk the array once, keeping a map from value to index. For each x, check whether target - x is already in the map before inserting x.",
-        revealsCode: true,
-      },
-    ],
-  },
-  {
-    title: "Longest Substring Without Repeating Characters",
-    difficulty: "Medium",
-    skills: ["Algorithms", "Sliding window"],
-    topic: "Sliding window",
-    statement:
-      "Given a string `s`, return the length of the longest substring that contains no repeated " +
-      "characters.\n\nA substring is a contiguous run of characters.",
-    inputFormat: "s: string",
+      "Write a function that takes two numbers and gives back their total.\n\nThis is the " +
+      "smallest complete program you can write: it takes something in, does one thing, and hands " +
+      "something back. Everything later is this shape with more steps.",
+    inputFormat: "a: number, b: number",
     outputFormat: "number",
-    sampleInput: 's = "abcabcbb"',
-    sampleOutput: "3",
-    constraints: "0 <= s.length <= 5 * 10^4\ns consists of English letters, digits, symbols and spaces.",
-    fnName: "lengthOfLongestSubstring",
+    sampleInput: "a = 4, b = 7",
+    sampleOutput: "11",
+    constraints: "Both numbers are whole numbers between -1000 and 1000.",
+    fnName: "addTwo",
     templates: {
-      javascript: jsTemplate("lengthOfLongestSubstring", "s"),
-      python: pyTemplate("length_of_longest_substring", "s"),
+      javascript: jsTemplate("addTwo", "a, b"),
+      python: pyTemplate("add_two", "a, b"),
     },
     tests: [
-      { args: ["abcabcbb"], expected: 3, label: "repeats after three" },
-      { args: ["bbbbb"], expected: 1, label: "all identical" },
-      { args: [""], expected: 0, label: "empty string", hidden: true },
-      { args: ["pwwkew"], expected: 3, label: "window must not reset fully", hidden: true },
-      { args: ["dvdf"], expected: 3, label: "left pointer must not move backwards", hidden: true },
+      { args: [4, 7], expected: 11, label: "two positives" },
+      { args: [0, 0], expected: 0, label: "both zero" },
+      { args: [-3, 8], expected: 5, label: "one negative", hidden: true },
+      { args: [-6, -9], expected: -15, label: "both negative", hidden: true },
     ],
     hints: [
       {
-        title: "Name the invariant",
-        body: "Write down what must always be true of your window. Here: the window never contains a duplicate. Every line either preserves that or restores it.",
+        title: "What does the function have to give back?",
+        body: "A number. Not print it, give it back. A function that prints the answer but does not return it looks right in the console and fails every test.",
         revealsCode: false,
       },
       {
-        title: "Remember where you saw it",
-        body: "A set tells you a character is present but not where. A map from character to its last index lets you jump the left edge instead of stepping it.",
+        title: "The word you need is return",
+        body: "return hands a value back to whoever called the function. Without it the function gives back nothing at all.",
         revealsCode: false,
       },
       {
-        title: "Never move left backwards",
-        body: 'On "dvdf", the earlier index of "d" is behind the current left edge. Guard with left = max(left, seen[ch] + 1) or the window grows invalid.',
+        title: "The whole thing",
+        body: "return a + b;",
         revealsCode: true,
       },
     ],
   },
   {
-    title: "Group Anagrams",
-    difficulty: "Medium",
-    skills: ["Hash maps", "Data Structures"],
-    topic: "Hashing",
-    statement:
-      "Given an array of strings, group the anagrams together. Return the groups sorted by their " +
-      "first element, with each group's members in their original relative order.",
-    inputFormat: "words: string[]",
-    outputFormat: "string[][]",
-    sampleInput: 'words = ["eat", "tea", "tan", "ate", "nat", "bat"]',
-    sampleOutput: '[["bat"], ["eat","tea","ate"], ["tan","nat"]]',
-    constraints: "1 <= words.length <= 10^4\nwords[i] consists of lowercase English letters.",
-    fnName: "groupAnagrams",
-    templates: {
-      javascript: jsTemplate("groupAnagrams", "words"),
-      python: pyTemplate("group_anagrams", "words"),
-    },
-    tests: [
-      {
-        args: [["eat", "tea", "tan", "ate", "nat", "bat"]],
-        expected: [["bat"], ["eat", "tea", "ate"], ["tan", "nat"]],
-        label: "mixed groups",
-      },
-      { args: [[""]], expected: [[""]], label: "empty string", hidden: true },
-      { args: [["a"]], expected: [["a"]], label: "single letter", hidden: true },
-    ],
-    hints: [
-      {
-        title: "What makes two words anagrams?",
-        body: "They share a canonical form. Find a key that is identical for anagrams and different for everything else.",
-        revealsCode: false,
-      },
-      {
-        title: "Sorting is one canonical form",
-        body: "The sorted letters of a word are the same for all its anagrams. Group by that string.",
-        revealsCode: false,
-      },
-      {
-        title: "Build the map, then order it",
-        body: "Accumulate into a map from sorted-letters to the list of words, then sort the resulting groups by their first element.",
-        revealsCode: true,
-      },
-    ],
-  },
-  {
-    title: "Valid Parentheses",
+    title: "Pass or Fail",
     difficulty: "Easy",
-    skills: ["Data Structures", "Stacks"],
-    topic: "Stacks",
+    skills: ["Conditionals", "Comparison"],
+    topic: "Making decisions",
     statement:
-      "Given a string containing only the characters ()[]{}, decide whether the brackets are " +
-      "correctly balanced and correctly nested.",
-    inputFormat: "s: string",
-    outputFormat: "boolean",
-    sampleInput: 's = "()[]{}"',
-    sampleOutput: "true",
-    constraints: "1 <= s.length <= 10^4",
-    fnName: "isValid",
+      "A student passes if they score 35 or more out of 100.\n\nWrite a function that takes a " +
+      "mark and returns the word \"Pass\" or the word \"Fail\".\n\nWatch the boundary: a mark of " +
+      "exactly 35 is a pass.",
+    inputFormat: "marks: number",
+    outputFormat: 'string, either "Pass" or "Fail"',
+    sampleInput: "marks = 62",
+    sampleOutput: '"Pass"',
+    constraints: "0 <= marks <= 100",
+    fnName: "passOrFail",
     templates: {
-      javascript: jsTemplate("isValid", "s"),
-      python: pyTemplate("is_valid", "s"),
+      javascript: jsTemplate("passOrFail", "marks"),
+      python: pyTemplate("pass_or_fail", "marks"),
     },
     tests: [
-      { args: ["()[]{}"], expected: true, label: "all pairs" },
-      { args: ["(]"], expected: false, label: "mismatched" },
-      { args: ["([)]"], expected: false, label: "wrong nesting", hidden: true },
-      { args: ["{[]}"], expected: true, label: "nested", hidden: true },
-      { args: ["("], expected: false, label: "unclosed", hidden: true },
+      { args: [62], expected: "Pass", label: "comfortably passing" },
+      { args: [12], expected: "Fail", label: "failing" },
+      { args: [35], expected: "Pass", label: "exactly on the boundary", hidden: true },
+      { args: [34], expected: "Fail", label: "one mark below", hidden: true },
+      { args: [100], expected: "Pass", label: "full marks", hidden: true },
     ],
     hints: [
       {
-        title: "Which bracket must close next?",
-        body: "Always the most recently opened one. That ordering is exactly what a stack gives you.",
+        title: "Which comparison?",
+        body: "35 itself is a pass, so the test has to include 35. Greater-than on its own would fail a student who got exactly 35.",
         revealsCode: false,
       },
       {
-        title: "Two ways to fail",
-        body: "A closer that does not match the top of the stack, and a stack that is not empty at the end. Check both.",
+        title: "Two possible answers, one choice",
+        body: "Use if to handle one case and else to handle everything left over. You never need to test the second case separately.",
         revealsCode: false,
       },
       {
-        title: "Push openers, pop closers",
-        body: "Push every opening bracket. On a closing bracket, pop and compare. Return whether the stack is empty at the end.",
+        title: "The whole thing",
+        body: 'if (marks >= 35) {\n  return "Pass";\n} else {\n  return "Fail";\n}',
         revealsCode: true,
       },
     ],
   },
   {
-    title: "Merge Overlapping Intervals",
-    difficulty: "Hard",
-    skills: ["Algorithms", "Sorting"],
-    topic: "Intervals",
+    title: "Count the Vowels",
+    difficulty: "Easy",
+    skills: ["Loops", "Strings"],
+    topic: "Loops",
     statement:
-      "Given a list of intervals `[start, end]`, merge every set of overlapping intervals and " +
-      "return the result sorted by start.\n\nIntervals that merely touch (one ends where the next " +
-      "begins) count as overlapping.",
-    inputFormat: "intervals: number[][]",
-    outputFormat: "number[][]",
-    sampleInput: "intervals = [[1,3],[2,6],[8,10],[15,18]]",
-    sampleOutput: "[[1,6],[8,10],[15,18]]",
-    constraints: "1 <= intervals.length <= 10^4\nstart <= end",
-    fnName: "mergeIntervals",
+      "Count how many vowels are in a word.\n\nThe vowels are a, e, i, o and u. The word might " +
+      "have capital letters in it, and those still count.",
+    inputFormat: "word: string",
+    outputFormat: "number",
+    sampleInput: 'word = "elephant"',
+    sampleOutput: "3",
+    constraints: "The word contains only letters and is at most 50 characters long.",
+    fnName: "countVowels",
     templates: {
-      javascript: jsTemplate("mergeIntervals", "intervals"),
-      python: pyTemplate("merge_intervals", "intervals"),
+      javascript: jsTemplate("countVowels", "word"),
+      python: pyTemplate("count_vowels", "word"),
     },
     tests: [
-      {
-        args: [[[1, 3], [2, 6], [8, 10], [15, 18]]],
-        expected: [[1, 6], [8, 10], [15, 18]],
-        label: "classic",
-      },
-      { args: [[[1, 4], [4, 5]]], expected: [[1, 5]], label: "touching counts" },
-      { args: [[[1, 4], [0, 4]]], expected: [[0, 4]], label: "unsorted input", hidden: true },
-      { args: [[[1, 4], [2, 3]]], expected: [[1, 4]], label: "fully contained", hidden: true },
+      { args: ["elephant"], expected: 3, label: "a normal word" },
+      { args: ["rhythm"], expected: 0, label: "no vowels at all" },
+      { args: ["Aeiou"], expected: 5, label: "capitals count too", hidden: true },
+      { args: ["a"], expected: 1, label: "one letter", hidden: true },
+      { args: ["Mississippi"], expected: 4, label: "repeats", hidden: true },
     ],
     hints: [
       {
-        title: "Order first",
-        body: "Overlap is only easy to reason about once the intervals are sorted by start. Sort before merging.",
+        title: "Keep a running total",
+        body: "Make a variable holding 0 before the loop starts, and add 1 to it each time you find a vowel. Putting it inside the loop resets it every letter.",
         revealsCode: false,
       },
       {
-        title: "Compare against the last kept interval",
-        body: "Walk the sorted list holding the interval you are currently building. Either the next one extends it or it starts a new one.",
+        title: "Capital letters",
+        body: 'Rather than testing ten letters, turn the whole word lowercase first with word.toLowerCase(). Then you only test five.',
         revealsCode: false,
       },
       {
-        title: "Extend with a max",
-        body: "If next.start <= current.end they overlap, and the merged end is max(current.end, next.end) - not simply next.end, because one interval can contain another.",
+        title: "The whole thing",
+        body: 'let count = 0;\nconst lower = word.toLowerCase();\nfor (const letter of lower) {\n  if ("aeiou".includes(letter)) {\n    count = count + 1;\n  }\n}\nreturn count;',
+        revealsCode: true,
+      },
+    ],
+  },
+  {
+    title: "The Biggest Number",
+    difficulty: "Easy",
+    skills: ["Lists", "Loops", "Comparison"],
+    topic: "Lists",
+    statement:
+      "Find the largest number in a list.\n\nYou may not use a built-in that finds the maximum " +
+      "for you. The point is the pattern: hold onto the best you have seen so far, and replace it " +
+      "whenever you see better.",
+    inputFormat: "numbers: number[]",
+    outputFormat: "number",
+    sampleInput: "numbers = [3, 17, 8, 2]",
+    sampleOutput: "17",
+    constraints: "The list has at least one number. Numbers are between -1000 and 1000.",
+    fnName: "biggest",
+    templates: {
+      javascript: jsTemplate("biggest", "numbers"),
+      python: pyTemplate("biggest", "numbers"),
+    },
+    tests: [
+      { args: [[3, 17, 8, 2]], expected: 17, label: "largest in the middle" },
+      { args: [[5]], expected: 5, label: "only one number" },
+      { args: [[9, 4, 1]], expected: 9, label: "largest is first", hidden: true },
+      { args: [[-7, -2, -40]], expected: -2, label: "all negative", hidden: true },
+      { args: [[6, 6, 6]], expected: 6, label: "all the same", hidden: true },
+    ],
+    hints: [
+      {
+        title: "What do you start with?",
+        body: "Starting your best-so-far at 0 breaks on a list where every number is negative, because nothing beats 0. Start with the FIRST number in the list instead.",
+        revealsCode: false,
+      },
+      {
+        title: "One pass is enough",
+        body: "Walk the list once. Each time you meet a number bigger than your best so far, that number becomes the new best.",
+        revealsCode: false,
+      },
+      {
+        title: "The whole thing",
+        body: "let best = numbers[0];\nfor (const n of numbers) {\n  if (n > best) {\n    best = n;\n  }\n}\nreturn best;",
+        revealsCode: true,
+      },
+    ],
+  },
+  {
+    title: "Times Table",
+    difficulty: "Easy",
+    skills: ["Loops", "Lists"],
+    topic: "Loops",
+    statement:
+      "Build the times table for a number, from 1 times it up to 10 times it.\n\nGive back a " +
+      "list of the ten answers in order. For 3 that is 3, 6, 9 and so on up to 30.",
+    inputFormat: "n: number",
+    outputFormat: "number[] of length 10",
+    sampleInput: "n = 3",
+    sampleOutput: "[3, 6, 9, 12, 15, 18, 21, 24, 27, 30]",
+    constraints: "1 <= n <= 20",
+    fnName: "timesTable",
+    templates: {
+      javascript: jsTemplate("timesTable", "n"),
+      python: pyTemplate("times_table", "n"),
+    },
+    tests: [
+      {
+        args: [3],
+        expected: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30],
+        label: "the three times table",
+      },
+      {
+        args: [1],
+        expected: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        label: "the one times table",
+      },
+      {
+        args: [10],
+        expected: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        label: "the ten times table",
+        hidden: true,
+      },
+      {
+        args: [7],
+        expected: [7, 14, 21, 28, 35, 42, 49, 56, 63, 70],
+        label: "the seven times table",
+        hidden: true,
+      },
+    ],
+    hints: [
+      {
+        title: "Ten answers, so ten turns of the loop",
+        body: "You want 1 times n up to 10 times n. Count from 1 to 10, not from 0 to 9, or your first answer will be 0.",
+        revealsCode: false,
+      },
+      {
+        title: "Collect them as you go",
+        body: "Start with an empty list before the loop and push each answer onto the end as you work it out.",
+        revealsCode: false,
+      },
+      {
+        title: "The whole thing",
+        body: "const answers = [];\nfor (let i = 1; i <= 10; i++) {\n  answers.push(n * i);\n}\nreturn answers;",
         revealsCode: true,
       },
     ],

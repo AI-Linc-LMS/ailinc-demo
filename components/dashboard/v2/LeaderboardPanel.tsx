@@ -35,12 +35,12 @@ export function LeaderboardPanel({ leaderboard }: { leaderboard: DashboardLeader
             <Stack
               key={r.rank}
               direction="row" alignItems="center" spacing={1}
-              sx={{ p: 0.85, borderRadius: 2.5, bgcolor: r.is_current_user ? "#f5f3ff" : "transparent", border: r.is_current_user ? "1px solid #ede9fe" : "1px solid transparent" }}
+              sx={{ p: 0.85, borderRadius: 2.5, bgcolor: r.is_current_user ? "#eff7ff" : "transparent", border: r.is_current_user ? "1px solid #e3f0ff" : "1px solid transparent" }}
             >
               <Box sx={{ width: 22, height: 22, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center", fontSize: "0.66rem", fontWeight: 800, color: RANK_FG[r.rank] || "#64748b", bgcolor: RANK_BG[r.rank] || "#f1f5f9" }}>{r.rank}</Box>
               <Avatar src={r.profile_pic_url ?? undefined} sx={{ width: 28, height: 28, flexShrink: 0, fontSize: "0.78rem", fontWeight: 800, color: "white", bgcolor: avatarColor(r.name || "?") }}>{initial}</Avatar>
               <Typography sx={{ flex: 1, minWidth: 0, fontWeight: r.is_current_user ? 800 : 600, fontSize: "0.85rem", color: "#0f172a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {r.name}{r.is_current_user && <Box component="span" sx={{ color: "#7c3aed", fontWeight: 700 }}> (you)</Box>}
+                {r.name}{r.is_current_user && <Box component="span" sx={{ color: "#1b6fd4", fontWeight: 700 }}> (you)</Box>}
               </Typography>
               <Typography sx={{ fontWeight: 800, fontSize: "0.82rem", color: "#475569", flexShrink: 0 }}>{r.score.toLocaleString()}</Typography>
             </Stack>
@@ -49,9 +49,9 @@ export function LeaderboardPanel({ leaderboard }: { leaderboard: DashboardLeader
       </Stack>
 
       {leaderboard.aiTip && (
-        <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mt: 1.25, p: 1, borderRadius: 2, background: "linear-gradient(135deg, #f5f3ff, #fdf2f8)" }}>
-          <Icon icon="mdi:star-four-points" width={13} color="#6d28d9" style={{ flexShrink: 0, marginTop: 2 }} />
-          <Typography sx={{ fontSize: "0.74rem", color: "#6d28d9", fontWeight: 600, lineHeight: 1.45 }}>{leaderboard.aiTip}</Typography>
+        <Stack direction="row" spacing={0.6} alignItems="flex-start" sx={{ mt: 1.25, p: 1, borderRadius: 2, background: "linear-gradient(135deg, #eff7ff, #fdf2f8)" }}>
+          <Icon icon="mdi:star-four-points" width={13} color="#13498c" style={{ flexShrink: 0, marginTop: 2 }} />
+          <Typography sx={{ fontSize: "0.74rem", color: "#13498c", fontWeight: 600, lineHeight: 1.45 }}>{leaderboard.aiTip}</Typography>
         </Stack>
       )}
     </PanelCard>

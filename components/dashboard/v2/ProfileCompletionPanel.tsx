@@ -47,8 +47,8 @@ export function ProfileCompletionPanel() {
         sx={{
           p: 1.5,
           borderRadius: 3,
-          bgcolor: "#f5f3ff",
-          border: "1px solid #ede9fe",
+          bgcolor: "#eff7ff",
+          border: "1px solid #e3f0ff",
           textAlign: "center",
         }}
       >
@@ -70,7 +70,7 @@ export function ProfileCompletionPanel() {
             bgcolor: "#eef2f7",
             "& .MuiLinearProgress-bar": {
               borderRadius: 4,
-              background: "linear-gradient(90deg, #7c3aed, #ec4899)",
+              background: "linear-gradient(90deg, #1b6fd4, #ec4899)",
             },
           }}
         />
@@ -109,7 +109,7 @@ export function ProfileCompletionPanel() {
           fontSize: "0.88rem",
           color: "white",
           gap: 0.5,
-          background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+          background: "linear-gradient(135deg, #1b6fd4, #ec4899)",
         }}
       >
         Complete profile <Icon icon="mdi:arrow-right" width={16} />

@@ -94,390 +94,60 @@ function fromAdaptiveBank(m: DemoMcq, topic: string): BankQuestion {
   };
 }
 
-const FS = QUIZ_BANK[201];
-const PY = QUIZ_BANK[202];
-const DSA = QUIZ_BANK[203];
-const CLOUD = QUIZ_BANK[204];
-const SQL = QUIZ_BANK[205];
+/**
+ * Subject banks.
+ *
+ * These are the same questions the adaptive quiz draws on, reused so a child
+ * meets a familiar kind of question in an exam rather than a different voice.
+ * Section groups below slice them by skill.
+ */
+const MATHS = QUIZ_BANK[301];
+const SCIENCE = QUIZ_BANK[302];
+const ENGLISH = QUIZ_BANK[303];
+const SOCIAL = QUIZ_BANK[304];
+const COMPUTING = QUIZ_BANK[305];
 
-// Full-Stack paper -----------------------------------------------------------
+/** Pick the bank questions whose skill is in `skills`. */
+const bySkill = (bank: DemoMcq[], skills: string[], topic: string): BankQuestion[] =>
+  bank.filter((m) => skills.includes(m.skill)).map((m) => fromAdaptiveBank(m, topic));
 
-const FS_HTTP: BankQuestion[] = [
-  fromAdaptiveBank(FS[1], "HTTP"),
-  fromAdaptiveBank(FS[7], "Authentication"),
-  q(
-    "A POST returns 201 with a Location header. What is the client expected to do with it?",
-    [
-      "Retry the POST against that URL",
-      "Treat it as the address of the resource that was just created",
-      "Use it as a redirect target and nothing else",
-      "Ignore it, because 201 already means success",
-    ],
-    1,
-    "Easy",
-    "HTTP",
-    "HTTP",
-    "201 Created says a new resource exists; Location says where. A client that ignores it has to guess the new id or refetch the whole collection.",
-  ),
-  q(
-    "Your API answers 200 with a body of {\"error\": \"not found\"}. Why is that a problem?",
-    [
-      "It wastes bandwidth",
-      "Every generic client, cache and monitor reads 200 as success, so the failure becomes invisible",
-      "JSON cannot carry error text",
-      "200 responses cannot be logged",
-    ],
-    1,
-    "Medium",
-    "HTTP",
-    "REST",
-    "The status line is the part of a response that infrastructure understands. Returning 200 for a failure means retries, caches and alerting all behave as if nothing went wrong.",
-  ),
-  q(
-    "The browser blocks your fetch with a CORS error even though the server logged a 200. What actually failed?",
-    [
-      "The request never left the browser",
-      "The response arrived, but it carried no Access-Control-Allow-Origin the browser would accept",
-      "The server rejected the credentials",
-      "The response body was malformed JSON",
-    ],
-    1,
-    "Medium",
-    "HTTP",
-    "CORS",
-    "CORS is enforced by the browser after the response arrives. The server saw a normal request; the browser refused to hand the body to your JavaScript because the headers did not permit the origin.",
-  ),
-];
+// Mathematics ----------------------------------------------------------------
 
-const FS_LANGUAGE: BankQuestion[] = [
-  fromAdaptiveBank(FS[4], "TypeScript"),
-  q(
-    "What does awaiting inside a for loop over an array of promises actually do?",
-    [
-      "Runs them in parallel and waits once at the end",
-      "Runs them one at a time, so the total wait is the sum of all of them",
-      "Throws if any promise rejects before the loop starts",
-      "Nothing: await is ignored inside a loop",
-    ],
-    1,
-    "Medium",
-    "JavaScript",
-    "Async",
-    "Each iteration suspends until its own promise settles. If the calls are independent, start them all and await Promise.all instead, which turns a sum into a maximum.",
-  ),
-  q(
-    "0.1 + 0.2 === 0.3 is false in JavaScript because:",
-    [
-      "=== compares numbers by reference",
-      "Numbers are IEEE-754 doubles and 0.1 has no exact binary representation",
-      "The engine rounds every result to 15 digits",
-      "Floating point addition is not commutative",
-    ],
-    1,
-    "Easy",
-    "JavaScript",
-    "JavaScript",
-    "0.1 and 0.2 are stored as the nearest representable binary fractions, so their sum is very slightly off 0.3. Compare with a tolerance, or work in integers such as paise or cents.",
-  ),
-  q(
-    "In TypeScript, what is the practical difference between an interface and a type alias for an object shape?",
-    [
-      "Interfaces exist at runtime, type aliases do not",
-      "Interfaces can be reopened and merged by a later declaration; a type alias cannot",
-      "Type aliases cannot describe functions",
-      "There is no difference in any situation",
-    ],
-    1,
-    "Medium",
-    "TypeScript",
-    "TypeScript",
-    "Declaration merging is the one behavioural difference that matters day to day. It is why library authors expose interfaces: consumers can extend them without patching the package.",
-  ),
-  q(
-    "A callback inside setTimeout logs the wrong counter in a var loop. Why does let fix it?",
-    [
-      "let is faster than var",
-      "let creates a fresh binding per iteration, so each callback closes over its own value",
-      "let hoists the declaration to the top of the function",
-      "let makes the callback run synchronously",
-    ],
-    1,
-    "Medium",
-    "JavaScript",
-    "JavaScript",
-    "var has one function-scoped binding that every callback shares, so all of them read the final value. let is block scoped and the loop creates a new binding each pass.",
-  ),
-];
+const MATHS_NUMBER: BankQuestion[] = bySkill(MATHS, ["Fractions", "Decimals"], "Number");
+const MATHS_PERCENT: BankQuestion[] = bySkill(MATHS, ["Percentages"], "Percentages");
+const MATHS_SHAPE: BankQuestion[] = bySkill(MATHS, ["Angles", "Area"], "Shape and space");
 
-const FS_REACT: BankQuestion[] = [
-  fromAdaptiveBank(FS[0], "React"),
-  fromAdaptiveBank(FS[3], "React"),
-  fromAdaptiveBank(FS[5], "React"),
-  q(
-    "A useEffect with no dependency array refetches on every render, in a loop. What is the fix?",
-    [
-      "Wrap the fetch in useMemo",
-      "Give it a dependency array listing exactly what the effect reads",
-      "Move the fetch into the component body",
-      "Delay the fetch with setTimeout",
-    ],
-    1,
-    "Easy",
-    "React",
-    "React",
-    "No array means the effect runs after every render, and setting state from it schedules the next render. The dependency array is what tells React when the effect is actually stale.",
-  ),
-  q(
-    "Why can lifting state up make an application slower?",
-    [
-      "A parent state change re-renders the whole subtree, not just the component that needed the value",
-      "State held in a parent is written to disk",
-      "Child components stop batching their updates",
-      "It forces a full page reload",
-    ],
-    0,
-    "Medium",
-    "React",
-    "React",
-    "State should live at the lowest common ancestor of the components that read it. Lifted too far, every keystroke re-renders siblings that do not care about the value.",
-  ),
-];
+// Science --------------------------------------------------------------------
 
-// DSA diagnostic -------------------------------------------------------------
+const SCI_MATTER: BankQuestion[] = bySkill(SCIENCE, ["States of matter", "Mixtures"], "Matter");
+const SCI_FORCES: BankQuestion[] = bySkill(SCIENCE, ["Forces", "Motion"], "Forces and motion");
+const SCI_LIFE: BankQuestion[] = bySkill(
+  SCIENCE,
+  ["Cells", "Photosynthesis", "Food chains"],
+  "Living things",
+);
 
-const DSA_COMPLEXITY: BankQuestion[] = [
-  fromAdaptiveBank(DSA[2], "Complexity"),
-  fromAdaptiveBank(DSA[7], "Complexity"),
-  fromAdaptiveBank(DSA[6], "Complexity"),
-  q(
-    "What is the time complexity of binary search on a sorted array of n elements?",
-    ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
-    1,
-    "Easy",
-    "Complexity",
-    "Complexity",
-    "Each comparison discards half the remaining range, so the number of steps is the number of times n can be halved before reaching one.",
-  ),
-  q(
-    "Two nested loops, where the inner loop runs to i rather than to n, give which complexity?",
-    ["O(n)", "O(n log n)", "O(n squared)", "O(2^n)"],
-    2,
-    "Easy",
-    "Complexity",
-    "Complexity",
-    "The total work is 1 + 2 + ... + n, which is n(n+1)/2. Constants and lower-order terms drop, leaving O(n squared).",
-  ),
-  q(
-    "An algorithm does O(n) work and then calls itself twice on half the input. What does it cost?",
-    ["O(n)", "O(n log n)", "O(n squared)", "O(log n)"],
-    1,
-    "Medium",
-    "Complexity",
-    "Algorithms",
-    "Every level of the recursion does O(n) total work and there are log n levels. Merge sort is the canonical example of this shape.",
-  ),
-  q(
-    "Why is appending to a dynamic array described as amortised O(1)?",
-    [
-      "Appending never copies anything",
-      "A resize costs O(n), but doublings are rare enough that the average over any run of appends stays constant",
-      "The array is preallocated to its maximum size",
-      "The copy happens on a background thread",
-    ],
-    1,
-    "Medium",
-    "Complexity",
-    "Data Structures",
-    "Because capacity doubles, the total copying across n appends is bounded by 2n. Any single append can be expensive; the average never is.",
-  ),
-  q(
-    "Which sort has an O(n log n) worst case AND uses O(1) extra space?",
-    ["Merge sort", "Quicksort", "Heapsort", "Insertion sort"],
-    2,
-    "Hard",
-    "Complexity",
-    "Algorithms",
-    "Merge sort needs O(n) scratch space and quicksort degrades to O(n squared) in the worst case. Heapsort sorts in place with a guaranteed bound, which is why it is the safe answer.",
-  ),
-];
+// English --------------------------------------------------------------------
 
-const DSA_ARRAYS: BankQuestion[] = [
-  fromAdaptiveBank(DSA[0], "Arrays and hashing"),
-  fromAdaptiveBank(DSA[1], "Arrays and hashing"),
-  fromAdaptiveBank(DSA[5], "Arrays and hashing"),
-  q(
-    "You need to know whether any value repeats in an array. What is the cheapest correct approach?",
-    [
-      "Sort, then scan neighbouring pairs",
-      "Insert into a hash set and stop at the first value already present",
-      "Compare every pair of elements",
-      "Binary search for each element in turn",
-    ],
-    1,
-    "Easy",
-    "Arrays and hashing",
-    "Hashing",
-    "The set answers in O(n) time and O(n) space. Sorting first is O(n log n), and is only preferable when you are not allowed the extra memory.",
-  ),
-  q(
-    "The two-pointer walk from both ends solves two-sum only when:",
-    [
-      "The array is sorted",
-      "Every value is positive",
-      "The array has even length",
-      "There are no duplicate values",
-    ],
-    0,
-    "Medium",
-    "Arrays and hashing",
-    "Algorithms",
-    "The move is chosen by comparing the current sum with the target, and that decision is only meaningful if moving inward changes the sum in a known direction.",
-  ),
-  q(
-    "After O(n) preprocessing, a prefix-sum array answers which question in O(1)?",
-    [
-      "The maximum value in a range",
-      "The sum of any contiguous range",
-      "The number of distinct values in a range",
-      "The median of a range",
-    ],
-    1,
-    "Medium",
-    "Arrays and hashing",
-    "Algorithms",
-    "The sum of the range [i, j] is prefix[j+1] minus prefix[i]. Maximum and median do not decompose by subtraction, so they need different structures.",
-  ),
-  q(
-    "Why does grouping anagrams by their sorted letters work?",
-    [
-      "Sorting is faster than counting letters",
-      "Two words are anagrams exactly when their sorted letters are identical, so the sorted string is a canonical form",
-      "Sorted strings hash more evenly",
-      "It removes the possibility of collisions",
-    ],
-    1,
-    "Medium",
-    "Arrays and hashing",
-    "Hashing",
-    "Any canonical form works. A 26-slot count vector is the same idea in O(k) rather than O(k log k) per word.",
-  ),
-  q(
-    "At each element, what decision does Kadane's algorithm make?",
-    [
-      "Whether to sort the rest of the array",
-      "Whether to extend the current subarray or start a new one here",
-      "Whether to move the left pointer of a window",
-      "Whether to recurse on the left or the right half",
-    ],
-    1,
-    "Medium",
-    "Arrays and hashing",
-    "Algorithms",
-    "If the running sum has gone negative it can only hurt, so the best subarray ending here is the element itself. That single comparison is the whole algorithm.",
-  ),
-  q(
-    "You must return the k most frequent values from n elements, with k much smaller than n. What is best?",
-    [
-      "Sort all the counts, O(n log n)",
-      "Count with a hash map, then keep a size-k min-heap, O(n log k)",
-      "Compare every pair of elements",
-      "Binary search over the frequency values",
-    ],
-    1,
-    "Hard",
-    "Arrays and hashing",
-    "Data Structures",
-    "The heap holds only the k best seen so far, so each of the n counts costs at most log k. Bucket sort by frequency does it in O(n) when the counts are bounded by n.",
-  ),
-];
+const ENG_READING: BankQuestion[] = bySkill(
+  ENGLISH,
+  ["Main idea", "Inference", "Character"],
+  "Reading",
+);
+const ENG_WRITING: BankQuestion[] = bySkill(
+  ENGLISH,
+  ["Paragraphs", "Description", "Argument"],
+  "Writing",
+);
 
-const DSA_GRAPHS: BankQuestion[] = [
-  fromAdaptiveBank(DSA[4], "Trees and graphs"),
-  fromAdaptiveBank(DSA[3], "Trees and graphs"),
-  q(
-    "An in-order traversal of a binary search tree produces:",
-    [
-      "The values in sorted order",
-      "The values level by level",
-      "The root first, then each subtree",
-      "The leaves first",
-    ],
-    0,
-    "Easy",
-    "Trees and graphs",
-    "Data Structures",
-    "Left subtree, node, right subtree is exactly the ordering invariant of a BST, so the traversal reads the values in ascending order.",
-  ),
-  q(
-    "What makes a binary search tree degrade to O(n) lookups?",
-    [
-      "Storing duplicate values",
-      "Inserting already-sorted data, which builds what is effectively a linked list",
-      "Using recursion rather than iteration",
-      "Storing strings instead of numbers",
-    ],
-    1,
-    "Medium",
-    "Trees and graphs",
-    "Data Structures",
-    "Every insert goes down the same side, so the height becomes n. Self-balancing variants such as AVL and red-black trees exist precisely to stop this.",
-  ),
-  q(
-    "Which traversal order do you need in order to compute the height of a tree?",
-    [
-      "Level order only",
-      "One that visits both children before the parent, so post-order",
-      "Pre-order only",
-      "In-order only",
-    ],
-    1,
-    "Medium",
-    "Trees and graphs",
-    "Algorithms",
-    "A node's height is one more than the taller of its children, so the children's answers must already exist when the parent is visited.",
-  ),
-  q(
-    "To detect a cycle in a DIRECTED graph with depth-first search you must track:",
-    [
-      "Only the visited set",
-      "Visited nodes plus the nodes currently on the recursion stack",
-      "The parent of each node",
-      "The in-degree of every node",
-    ],
-    1,
-    "Hard",
-    "Trees and graphs",
-    "Graphs",
-    "Reaching a visited node is fine if it was finished on another branch. A cycle exists only when you reach a node that is still open on the current path. The parent trick works for undirected graphs only.",
-  ),
-  q(
-    "A topological ordering is defined for:",
-    ["Any graph", "A directed acyclic graph", "An undirected connected graph", "A weighted graph"],
-    1,
-    "Medium",
-    "Trees and graphs",
-    "Graphs",
-    "A cycle makes the ordering impossible, since each node in it would have to come before itself. Kahn's algorithm reports the cycle by finishing with nodes left over.",
-  ),
-  q(
-    "Dijkstra's algorithm gives the wrong answer when the graph contains:",
-    [
-      "Self loops",
-      "Negative edge weights",
-      "More than 100000 nodes",
-      "Disconnected components",
-    ],
-    1,
-    "Hard",
-    "Trees and graphs",
-    "Graphs",
-    "Dijkstra settles a node the first time it is popped, assuming no later path can be shorter. A negative edge breaks that assumption. Use Bellman-Ford instead.",
-  ),
-];
+// Cross-subject, for the end of term paper ------------------------------------
 
-// Python paper ---------------------------------------------------------------
-
-const PY_PANDAS: BankQuestion[] = PY.map((m) => fromAdaptiveBank(m, "pandas"));
+const TERM_SOCIAL: BankQuestion[] = SOCIAL.slice(0, 4).map((m) =>
+  fromAdaptiveBank(m, "Social Studies"),
+);
+const TERM_COMPUTING: BankQuestion[] = COMPUTING.slice(0, 4).map((m) =>
+  fromAdaptiveBank(m, "Computing"),
+);
 
 export interface WrittenQuestion {
   id: number;
@@ -512,56 +182,61 @@ function written(
   };
 }
 
+/**
+ * Written questions.
+ *
+ * Marked by a teacher rather than auto-graded, which is the point of having them
+ * in a school demo: it is the only place a visiting head teacher sees what
+ * marking actually looks like in the product. The marking guidance is written the
+ * way a real scheme is, naming what earns full marks and what earns half, because
+ * a scheme reading "award marks for a good answer" is what makes a demo feel fake.
+ */
 const WRITTEN_BANK: WrittenQuestion[] = [
   written(
-    "Explain when you would reach for a left join rather than an inner join, and give one example from data you have actually worked with.",
-    "Look for a correct statement that a left join preserves unmatched rows from the left table, and for a concrete example where losing those rows would change a conclusion (for instance customers with no orders disappearing from a churn count). Full marks require both the rule and the consequence.",
-    14,
-    "Joins",
-    "pandas, SQL",
+    "A friend says \"I read the whole chapter but I cannot remember any of it.\" Using what you know about reading closely, give them two things to do differently and explain why each one helps.",
+    "Full marks for two SPECIFIC strategies (for example stopping at the end of each paragraph to say the main idea aloud, or noting what a character wants and how you know) each with a reason tied to how understanding works. Half marks for two strategies with no reasons, or one strategy explained well. Generic advice such as concentrate harder earns nothing.",
+    12,
+    "Reading strategies",
+    "Reading, Main idea",
   ),
   written(
-    "You are handed a dataset where 18% of the salary column is missing. Describe how you would choose between dropping those rows, imputing the values, or modelling the missingness, and say what evidence would change your mind.",
-    "Award marks for testing whether the missingness is related to other columns rather than assuming it is random, for naming a specific imputation with its distortion (mean imputation shrinking variance), and for stating a decision rule tied to evidence. A bare list of three options with no reasoning is half marks.",
-    14,
-    "Missing data",
-    "pandas, Statistics",
+    "Describe your walk to school so that someone who has never been there can picture it. Show what it is like rather than telling the reader.",
+    "Look for concrete detail a reader can see, hear or smell, and for the absence of stated conclusions such as it was busy. Full marks need at least three specific details and no summarising adjectives doing the work. A list of nouns with no sense of place is half marks.",
+    12,
+    "Description",
+    "Writing, Description",
   ),
   written(
-    "A stakeholder asks why the weekly active user chart moved but the monthly one did not. Walk through how you would investigate before answering.",
-    "Look for separating a real change from a definitional or pipeline one: checking the metric definition, the window boundaries, a backfill or late-arriving events, and segment-level movement before claiming a behavioural cause.",
-    14,
-    "Analysis",
-    "Statistics",
+    "Ice is left out of the freezer and turns to water. Sugar is stirred into that water and disappears. Are these the same kind of change? Explain your reasoning.",
+    "Both are physical and reversible, which is the answer, but the marks are in the reasoning: melting is a change of state, dissolving is a mixture where the sugar is still present and could be recovered by evaporation. Full marks require naming BOTH mechanisms and saying why neither makes a new substance. Answering yes with no mechanism is a quarter of the marks.",
+    12,
+    "Physical change",
+    "States of matter, Mixtures",
+  ),
+  written(
+    "Your village is deciding where to build one new water pump. Who should be part of that decision, and how would you settle a disagreement fairly?",
+    "Award marks for naming the people affected rather than only those in charge, for a decision method that is stated and defensible (a vote, a rule about distance, a rota), and for recognising that a fair process matters even when the outcome disappoints somebody. A single named authority deciding alone is half marks at most.",
+    12,
+    "Local government",
+    "Rights, Local government",
   ),
 ];
 
-const PY_WRITTEN = [WRITTEN_BANK[0], WRITTEN_BANK[1]];
+const ENG_WRITTEN = [WRITTEN_BANK[0], WRITTEN_BANK[1]];
+const TERM_WRITTEN = [WRITTEN_BANK[2], WRITTEN_BANK[3]];
 
-// Comprehensive paper --------------------------------------------------------
-
-const COMP_SYSTEMS: BankQuestion[] = [
-  fromAdaptiveBank(FS[2], "Databases"),
-  fromAdaptiveBank(FS[6], "Databases"),
-  ...SQL.map((m) => fromAdaptiveBank(m, "Databases")),
-];
-
-const COMP_CLOUD: BankQuestion[] = CLOUD.map((m) => fromAdaptiveBank(m, "Cloud and delivery"));
-
-const COMP_WEB: BankQuestion[] = [FS_HTTP[2], FS_HTTP[3], FS_HTTP[4]];
-
-/** Every MCQ this institution owns, keyed by id. The answer key and the library. */
 const MCQ_BY_ID = new Map<number, BankQuestion>();
 for (const list of [
-  FS_HTTP,
-  FS_LANGUAGE,
-  FS_REACT,
-  DSA_COMPLEXITY,
-  DSA_ARRAYS,
-  DSA_GRAPHS,
-  PY_PANDAS,
-  COMP_SYSTEMS,
-  COMP_CLOUD,
+  MATHS_NUMBER,
+  MATHS_PERCENT,
+  MATHS_SHAPE,
+  SCI_MATTER,
+  SCI_FORCES,
+  SCI_LIFE,
+  ENG_READING,
+  ENG_WRITING,
+  TERM_SOCIAL,
+  TERM_COMPUTING,
 ]) {
   for (const item of list) MCQ_BY_ID.set(item.id, item);
 }
@@ -674,235 +349,232 @@ const ids = (list: BankQuestion[] | WrittenQuestion[]) => list.map((x) => x.id);
 const BASE_ASSESSMENTS: AssessmentSpec[] = [
   {
     id: 901,
-    slug: "full-stack-mid-programme",
-    title: "Full-Stack Engineering — Mid-Programme Assessment",
+    slug: "maths-half-yearly",
+    title: "Mathematics: Half-Yearly Paper",
     description:
-      "A timed paper covering the first half of the Full-Stack track: HTTP and the request " +
-      "lifecycle, JavaScript and TypeScript mechanics, React's rendering model, and a short " +
-      "applied coding round.",
+      "The half-yearly paper for Grade 7 Mathematics: fractions and decimals, percentages in " +
+      "everyday situations, and angles and area.",
     instructions:
-      "60 minutes, 17 questions across 4 sections. You may move freely between sections and flag " +
-      "questions to revisit. The coding round runs your JavaScript against real test cases. The " +
-      "paper submits itself when the timer ends, so there is no penalty for running out of time " +
-      "on the last question.",
-    durationMinutes: 60,
-    proctoringEnabled: true,
+      "45 minutes, 3 sections. You can move between sections and flag a question to come back " +
+      "to. Nothing is deducted for a wrong answer, so answer every question even if you are not " +
+      "sure. The paper hands itself in when the time is up.",
+    durationMinutes: 45,
+    proctoringEnabled: false,
     evaluationMode: "auto",
     allowMovement: true,
     isDraft: false,
     isActive: true,
     certificateAvailable: true,
-    passLower: "40",
+    passLower: "35",
     passUpper: "75",
-    tabSwitchLimit: 5,
+    tabSwitchLimit: null,
     aiGenerated: false,
-    courseIds: [201],
+    courseIds: [301],
     startTime: null,
     endTime: null,
-    cohortSize: 24,
+    cohortSize: 31,
     sections: [
       {
         id: 9011,
         type: "quiz",
-        title: "HTTP and the request lifecycle",
-        description: "Status codes, idempotency, CORS and where a token check belongs.",
+        title: "Fractions and decimals",
+        description: "Equivalent fractions, adding them, and writing a decimal as a fraction.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(FS_HTTP),
+        questionIds: ids(MATHS_NUMBER),
       },
       {
         id: 9012,
         type: "quiz",
-        title: "JavaScript and TypeScript mechanics",
-        description: "Closures, the event loop, floating point, and what the type system buys you.",
+        title: "Percentages",
+        description: "Discounts, marks and finding a percentage of an amount.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(FS_LANGUAGE),
+        questionIds: ids(MATHS_PERCENT),
       },
       {
         id: 9013,
         type: "quiz",
-        title: "React's rendering model",
-        description: "Reference identity, keys, effects and where state should live.",
+        title: "Shape and space",
+        description: "Angles in a triangle, perimeter and area.",
         order: 3,
         timeLimitMinutes: null,
-        questionIds: ids(FS_REACT),
-      },
-      {
-        id: 9014,
-        type: "coding",
-        title: "Applied coding round",
-        description: "Two problems, graded on the test cases your solution actually passes.",
-        order: 4,
-        timeLimitMinutes: 25,
-        questionIds: [codingId(0), codingId(3)],
+        questionIds: ids(MATHS_SHAPE),
       },
     ],
   },
   {
     id: 902,
-    slug: "dsa-diagnostic",
-    title: "Data Structures & Algorithms — Diagnostic",
+    slug: "science-unit-test-2",
+    title: "Science: Unit Test 2",
     description:
-      "Placement diagnostic used to set your starting difficulty in the DSA track. Complexity, " +
-      "arrays and hashing, trees and graphs.",
+      "A short class test on matter, forces and living things. Used to decide what the class " +
+      "revisits next week rather than for the report card.",
     instructions:
-      "40 minutes, 25 questions across 3 sections. This paper is not graded for your transcript. " +
-      "It exists to calibrate what the platform gives you next, so answer what you know and leave " +
-      "what you do not.",
-    durationMinutes: 40,
+      "30 minutes, 3 sections. This test is not counted towards your report. It tells your " +
+      "teacher what to go over again, so answer what you know and leave what you do not.",
+    durationMinutes: 30,
     proctoringEnabled: false,
     evaluationMode: "auto",
     allowMovement: true,
     isDraft: false,
     isActive: true,
-    certificateAvailable: true,
-    passLower: "40",
+    certificateAvailable: false,
+    passLower: "35",
     passUpper: "75",
     tabSwitchLimit: null,
     aiGenerated: false,
-    courseIds: [203],
+    courseIds: [302],
     startTime: null,
     endTime: null,
-    cohortSize: 50,
+    cohortSize: 29,
     sections: [
       {
         id: 9021,
         type: "quiz",
-        title: "Complexity",
-        description: "Reading the cost of an algorithm rather than reciting it.",
+        title: "Matter and its changes",
+        description: "States of matter, boiling, and separating a mixture.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(DSA_COMPLEXITY),
+        questionIds: ids(SCI_MATTER),
       },
       {
         id: 9022,
         type: "quiz",
-        title: "Arrays and hashing",
-        description: "Windows, pointers, prefix sums and when a map is the whole answer.",
+        title: "Forces and motion",
+        description: "Friction, and working out a speed.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(DSA_ARRAYS),
+        questionIds: ids(SCI_FORCES),
       },
       {
         id: 9023,
         type: "quiz",
-        title: "Trees and graphs",
-        description: "Traversal order, balance, cycles and shortest paths.",
+        title: "Living things",
+        description: "Cells, photosynthesis and what a food chain does when a link is removed.",
         order: 3,
         timeLimitMinutes: null,
-        questionIds: ids(DSA_GRAPHS),
+        questionIds: ids(SCI_LIFE),
       },
     ],
   },
   {
     id: 903,
-    slug: "python-ds-unit-2",
-    title: "Python for Data Science — Unit 2 Test",
+    slug: "english-reading-and-writing",
+    title: "English: Reading and Writing Paper",
     description:
-      "pandas, reshaping, joins and missing data, plus two written answers marked by your " +
-      "instructor.",
+      "Two halves. The first asks what a passage is really saying; the second asks you to write " +
+      "something a reader cannot misunderstand. The writing half is marked by your teacher.",
     instructions:
-      "45 minutes, 10 questions across 2 sections. The written section is marked by a human, so " +
-      "your score appears once your instructor has finished grading. Notes are allowed: the " +
-      "questions are about judgement rather than recall.",
-    durationMinutes: 45,
+      "50 minutes, 3 sections. The last section is written by hand into the box and marked by " +
+      "your teacher, so it will not show a score straight away. Plan before you write: two " +
+      "minutes thinking is worth more than two extra sentences.",
+    durationMinutes: 50,
     proctoringEnabled: false,
     evaluationMode: "manual",
     allowMovement: true,
     isDraft: false,
     isActive: true,
-    certificateAvailable: false,
-    passLower: "40",
-    passUpper: null,
+    certificateAvailable: true,
+    passLower: "35",
+    passUpper: "75",
     tabSwitchLimit: null,
     aiGenerated: false,
-    courseIds: [202],
+    courseIds: [303],
     startTime: null,
     endTime: null,
-    cohortSize: 18,
+    cohortSize: 30,
     sections: [
       {
         id: 9031,
         type: "quiz",
-        title: "pandas in practice",
-        description: "Grouping, alignment, joins and the warnings people learn to ignore.",
+        title: "Reading closely",
+        description: "Main idea, inference, and what a character's actions tell you.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(PY_PANDAS),
+        questionIds: ids(ENG_READING),
       },
       {
         id: 9032,
-        type: "subjective",
-        title: "Judgement and communication",
-        description: "Two written answers. Marked against a rubric, not a keyword list.",
+        type: "quiz",
+        title: "How writing works",
+        description: "Topic sentences, showing rather than telling, and answering an objection.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(PY_WRITTEN),
+        questionIds: ids(ENG_WRITING),
+      },
+      {
+        id: 9033,
+        type: "subjective",
+        title: "Write it yourself",
+        description: "Two written answers, marked by your teacher against a scheme.",
+        order: 3,
+        timeLimitMinutes: 25,
+        questionIds: ids(ENG_WRITTEN),
       },
     ],
   },
   {
     id: 904,
-    slug: "end-of-programme-comprehensive",
-    title: "End-of-Programme Comprehensive",
+    slug: "end-of-term-comprehensive",
+    title: "End of Term Comprehensive",
     description:
-      "The final graded paper across every track you are enrolled in. Opens on the scheduled " +
-      "date for the whole cohort at once.",
+      "Everything from this term in one paper: Social Studies, Computing, a written explanation, " +
+      "and a short programming round.",
     instructions:
-      "90 minutes, 17 questions across 4 sections, proctored. Your certificate grade is " +
-      "calculated from this paper together with your coursework.",
-    durationMinutes: 90,
+      "75 minutes, 4 sections. The programming round runs your code against real tests, so you " +
+      "can check it before moving on. You may move freely between sections.",
+    durationMinutes: 75,
     proctoringEnabled: true,
-    evaluationMode: "auto",
-    allowMovement: false,
+    evaluationMode: "manual",
+    allowMovement: true,
     isDraft: false,
     isActive: true,
     certificateAvailable: true,
-    passLower: "50",
-    passUpper: "80",
-    tabSwitchLimit: 3,
+    passLower: "35",
+    passUpper: "75",
+    tabSwitchLimit: 5,
     aiGenerated: false,
-    courseIds: [201, 203, 205],
-    startTime: isoDaysAhead(24, 10, 0),
-    endTime: isoDaysAhead(24, 13, 30),
-    cohortSize: 0,
+    courseIds: [304, 305],
+    startTime: null,
+    endTime: null,
+    cohortSize: 30,
     sections: [
       {
         id: 9041,
         type: "quiz",
-        title: "Systems and data",
-        description: "Relational modelling, query plans and the cost of getting them wrong.",
+        title: "Maps, empires and citizens",
+        description: "Scale, why cities formed where they did, and what a right is.",
         order: 1,
         timeLimitMinutes: null,
-        questionIds: ids(COMP_SYSTEMS),
+        questionIds: ids(TERM_SOCIAL),
       },
       {
         id: 9042,
         type: "quiz",
-        title: "Cloud and delivery",
-        description: "Least privilege, image layers, networking and what to check first.",
+        title: "Programming ideas",
+        description: "Variables, conditions, loops and lists.",
         order: 2,
         timeLimitMinutes: null,
-        questionIds: ids(COMP_CLOUD),
+        questionIds: ids(TERM_COMPUTING),
       },
       {
         id: 9043,
-        type: "quiz",
-        title: "Web fundamentals",
-        description: "The request lifecycle, end to end.",
+        type: "subjective",
+        title: "Explain your reasoning",
+        description: "Two written answers, marked by your teacher.",
         order: 3,
-        timeLimitMinutes: null,
-        questionIds: ids(COMP_WEB),
+        timeLimitMinutes: 20,
+        questionIds: ids(TERM_WRITTEN),
       },
       {
         id: 9044,
         type: "coding",
-        title: "Coding round",
-        description: "Two problems, graded on passed test cases.",
+        title: "Programming round",
+        description: "Two short programs, graded on the tests they pass.",
         order: 4,
-        timeLimitMinutes: 35,
-        questionIds: [codingId(2), codingId(4)],
+        timeLimitMinutes: 25,
+        questionIds: [codingId(0), codingId(1)],
       },
     ],
   },

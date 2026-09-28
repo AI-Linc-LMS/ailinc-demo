@@ -722,10 +722,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         if (!effectiveAdminMode && item.featureName === "support") {
           return true;
         }
-        // Resume builder is available to every student (no per-tenant flag).
-        if (!effectiveAdminMode && item.featureName === "resume") {
-          return true;
-        }
+        // DEMO REPO ONLY: the unconditional `return true` for "resume" is removed.
+        //
+        // Upstream the resume builder is available to every student with no
+        // per-tenant flag, which means switching the `resume` feature off cannot
+        // hide it: the item was still in this school's sidebar after the flag was
+        // gone, and no amount of tenant configuration would have changed that.
+        // A twelve year old does not have a CV, so this fork honours the flag like
+        // every other item.
         // (admin_scorecard used to be unconditionally shown here; it now
         // honors the per-client feature flag like every other admin item.
         // Super-admins can toggle "admin_scorecard" via the super-admin

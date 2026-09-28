@@ -42,7 +42,7 @@ export default function InstructorCoursesPage() {
         eyebrow="Teach"
         title="Course Content"
         description="The course material you teach. A course is the content; a batch is the group of students studying it — open My Batches to work with a specific class."
-        accent="purple"
+        accent="brand"
         icon="mdi:book-education"
         action={
           // An instructor can build their own course. It stays theirs — full edit rights over

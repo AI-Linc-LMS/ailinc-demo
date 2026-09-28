@@ -94,7 +94,7 @@ export default function InstructorCoursePage() {
         eyebrow="Course"
         title="Course students"
         description={`${count} enrolled student${count === 1 ? "" : "s"}.`}
-        accent="purple"
+        accent="brand"
         icon="mdi:book-education"
         action={
           <Stack direction="row" spacing={1}>

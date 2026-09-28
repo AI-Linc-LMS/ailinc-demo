@@ -33,11 +33,11 @@ function fmtPct(n: number): string {
 
 const COHORT_GRADIENTS = [
   "linear-gradient(120deg,#6366f1,#f59e0b)",
-  "linear-gradient(120deg,#a855f7,#ec4899)",
-  "linear-gradient(120deg,#6366f1,#8b5cf6)",
+  "linear-gradient(120deg,#4aa2f0,#ec4899)",
+  "linear-gradient(120deg,#6366f1,#4aa2f0)",
   "linear-gradient(120deg,#0ea5e9,#6366f1)",
 ];
-const AI_GRAD = "linear-gradient(135deg,#7c3aed,#ec4899)";
+const AI_GRAD = "linear-gradient(135deg,#1b6fd4,#ec4899)";
 
 type Band = { label: string; color: string; bg: string };
 function band(pct: number): Band {
@@ -117,8 +117,8 @@ export default function InstructorDashboardPage() {
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5, minWidth: 0 }}>
           {/* ---- Hero ---- */}
           <Box data-tour-id="instructor-briefing" sx={{ borderRadius: 4, position: "relative", overflow: "hidden", color: "#fff",
-            background: "radial-gradient(120% 140% at 85% 0%, #4c1d95 0%, #2e1065 45%, #1e1b4b 100%)" }}>
-            <Box sx={{ height: 4, background: "linear-gradient(90deg,#8b5cf6,#ec4899,#f59e0b)" }} />
+            background: "radial-gradient(120% 140% at 85% 0%, #1559ae 0%, #122a56 45%, #132a5c 100%)" }}>
+            <Box sx={{ height: 4, background: "linear-gradient(90deg,#4aa2f0,#ec4899,#f59e0b)" }} />
             <Box sx={{ p: { xs: 2.5, md: 3.5 } }}>
               <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5, gap: 1 }}>
                 <Box sx={{ px: 1.25, py: 0.5, borderRadius: 999, border: "1px solid rgba(255,255,255,0.2)",
@@ -286,7 +286,7 @@ export default function InstructorDashboardPage() {
                   sx={{ display: "flex", alignItems: "center", gap: 1.25, p: 1, borderRadius: 2, cursor: "pointer",
                     "&:hover": { bgcolor: "color-mix(in srgb, #ef4444 6%, transparent)" } }}>
                   <Box sx={{ width: 30, height: 30, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center",
-                    color: "#fff", fontWeight: 800, fontSize: "0.72rem", background: "linear-gradient(135deg,#6366f1,#a855f7)" }}>
+                    color: "#fff", fontWeight: 800, fontSize: "0.72rem", background: "linear-gradient(135deg,#6366f1,#4aa2f0)" }}>
                     {(s.name || s.email || "?").slice(0, 1).toUpperCase()}
                   </Box>
                   <Box sx={{ minWidth: 0, flex: 1 }}>
@@ -320,7 +320,7 @@ export default function InstructorDashboardPage() {
 
 /** SVG progress ring. The progress arc is only drawn when pct >= 1, so a near-zero value shows a
  *  clean empty track (no stray rounded-cap dot at 12 o'clock). */
-function Ring({ pct, size = 120, stroke = 11, track = "rgba(255,255,255,0.12)", grad = ["#8b5cf6", "#ec4899"], children }: {
+function Ring({ pct, size = 120, stroke = 11, track = "rgba(255,255,255,0.12)", grad = ["#4aa2f0", "#ec4899"], children }: {
   pct: number; size?: number; stroke?: number; track?: string; grad?: [string, string]; children?: React.ReactNode;
 }) {
   const clamped = Math.max(0, Math.min(100, pct));
@@ -378,7 +378,7 @@ function TodayCard({ onTrackPct, liveNow, pending, atRisk, nextSession, onGrade,
   ];
   return (
     <Box sx={{ borderRadius: 4, overflow: "hidden", color: "#fff",
-      background: "radial-gradient(120% 130% at 10% 0%, #312e81 0%, #1e1b4b 55%, #0f172a 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      background: "radial-gradient(120% 130% at 10% 0%, #1b3a7a 0%, #132a5c 55%, #0f172a 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
       <Box sx={{ p: 2.5, display: "flex", gap: 2, alignItems: "center" }}>
         <Ring pct={onTrackPct} size={100} grad={["#34d399", "#10b981"]}>
           <Typography sx={{ fontWeight: 900, fontSize: "1.35rem", lineHeight: 1 }}>{fmtPct(onTrackPct)}</Typography>
@@ -445,7 +445,7 @@ function ReadinessCard({ ready, engagement, progress, completion, onTrack }: {
   ];
   return (
     <Box sx={{ borderRadius: 4, overflow: "hidden", color: "#fff",
-      background: "radial-gradient(120% 130% at 0% 0%, #1e1b4b 0%, #0f172a 60%, #020617 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      background: "radial-gradient(120% 130% at 0% 0%, #132a5c 0%, #0f172a 60%, #020617 100%)", border: "1px solid rgba(255,255,255,0.08)" }}>
       <Box sx={{ p: { xs: 2.5, md: 3 }, display: "grid", gridTemplateColumns: { xs: "1fr", sm: "auto 1fr" }, gap: 3, alignItems: "center" }}>
         <Stack alignItems="center" spacing={1}>
           <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.75 }}>
@@ -454,7 +454,7 @@ function ReadinessCard({ ready, engagement, progress, completion, onTrack }: {
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "0.72rem", letterSpacing: 0.6, textTransform: "uppercase", color: "rgba(255,255,255,0.7)" }}>Cohort readiness</Typography>
           </Box>
-          <Ring pct={ready} size={128} grad={["#8b5cf6", "#ec4899"]}>
+          <Ring pct={ready} size={128} grad={["#4aa2f0", "#ec4899"]}>
             <Typography sx={{ fontWeight: 900, fontSize: "1.6rem", lineHeight: 1 }}>{fmtPct(ready)}</Typography>
             <Typography sx={{ fontSize: "0.56rem", color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: 0.5 }}>ready</Typography>
           </Ring>
@@ -534,8 +534,8 @@ function CohortHealthCard({ cohorts, avg, onReport }: { cohorts: InstructorCohor
       </Stack>
 
       {weakest && weakest.progress < 60 && (
-        <Box sx={{ mt: 2, p: 1.5, borderRadius: 2.5, bgcolor: "color-mix(in srgb,#7c3aed 8%,transparent)", display: "flex", gap: 1, alignItems: "flex-start" }}>
-          <Icon icon="mdi:sparkles" width={16} style={{ color: "#7c3aed", flexShrink: 0, marginTop: 2 }} />
+        <Box sx={{ mt: 2, p: 1.5, borderRadius: 2.5, bgcolor: "color-mix(in srgb,#1b6fd4 8%,transparent)", display: "flex", gap: 1, alignItems: "flex-start" }}>
+          <Icon icon="mdi:sparkles" width={16} style={{ color: "#1b6fd4", flexShrink: 0, marginTop: 2 }} />
           <Typography sx={{ fontSize: "0.8rem", color: "var(--font-secondary)", lineHeight: 1.4 }}>
             Focus on <b>{weakest.name}</b> next. It's your lowest-progress cohort at {fmtPct(weakest.progress)}.
           </Typography>
@@ -655,7 +655,7 @@ function SubmissionRow({ s, first, onGrade }: { s: InstructorRecentSubmission; f
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, p: 1.75, borderTop: first ? "none" : "1px solid var(--border-default)" }}>
       <Box sx={{ width: 34, height: 34, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center",
-        color: "#fff", fontWeight: 800, fontSize: "0.78rem", background: "linear-gradient(135deg,#6366f1,#a855f7)" }}>
+        color: "#fff", fontWeight: 800, fontSize: "0.78rem", background: "linear-gradient(135deg,#6366f1,#4aa2f0)" }}>
         {(s.student_name || "?").slice(0, 1).toUpperCase()}
       </Box>
       <Box sx={{ minWidth: 0, flex: 1 }}>

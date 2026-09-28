@@ -14,6 +14,19 @@ import { describe, expect, it } from "vitest";
 import "./index";
 import { matchRoute } from "../router";
 import type { DemoRequest } from "../types";
+import { COURSES, topicsOf } from "../../db/courses";
+
+/**
+ * The seeded course these tests drive, READ FROM THE SEED rather than hardcoded.
+ *
+ * They used to hardcode course 201 and topic 5000. When the catalogue was
+ * replaced with school subjects and the topic ids moved off the 5000 range, six
+ * tests failed with "Course not found" - which is the right failure, but it
+ * pointed at the test rather than at anything real. Deriving both from the seed
+ * means a future catalogue change moves these with it.
+ */
+const SEEDED = COURSES[0];
+const SEEDED_TOPIC = topicsOf(SEEDED)[0];
 
 async function call(method: string, path: string, body?: unknown) {
   const [pathname, qs] = path.split("?");
@@ -154,20 +167,20 @@ describe("course builder round trips", () => {
   });
 
   it("edits and removes a SEEDED module without touching the seed itself", async () => {
-    const before = (await call("GET", `${C}/courses/201/modules/`)) as Array<{ id: number; title: string }>;
-    expect(before.length).toBe(5);
-    const target = before[4];
+    const before = (await call("GET", `${C}/courses/${SEEDED.id}/modules/`)) as Array<{ id: number; title: string }>;
+    expect(before.length).toBe(SEEDED.modules.length);
+    const target = before[before.length - 1];
 
-    await call("PATCH", `${C}/courses/201/modules/${target.id}/`, { title: "Shipping it, revised" });
-    const renamed = (await call("GET", `${C}/courses/201/modules/`)) as Array<{ id: number; title: string }>;
+    await call("PATCH", `${C}/courses/${SEEDED.id}/modules/${target.id}/`, { title: "Shipping it, revised" });
+    const renamed = (await call("GET", `${C}/courses/${SEEDED.id}/modules/`)) as Array<{ id: number; title: string }>;
     expect(renamed.find((m) => m.id === target.id)!.title).toBe("Shipping it, revised");
 
-    await call("DELETE", `${C}/courses/201/modules/${target.id}/`);
-    const after = (await call("GET", `${C}/courses/201/modules/`)) as Array<{ id: number }>;
+    await call("DELETE", `${C}/courses/${SEEDED.id}/modules/${target.id}/`);
+    const after = (await call("GET", `${C}/courses/${SEEDED.id}/modules/`)) as Array<{ id: number }>;
     expect(after.map((m) => m.id)).not.toContain(target.id);
 
     // The learner course page reads the same tree.
-    const learner = (await call("GET", "/lms/clients/101/courses/201/")) as {
+    const learner = (await call("GET", `/lms/clients/101/courses/${SEEDED.id}/`)) as {
       modules: Array<{ id: number; title: string }>;
     };
     expect(learner.modules.map((m) => m.id)).not.toContain(target.id);
@@ -175,7 +188,7 @@ describe("course builder round trips", () => {
   });
 
   it("serves the legacy lesson page: outline, article, quiz, comments, submissions", async () => {
-    const outline = (await call("GET", "/lms/clients/101/courses/201/sub-module/5000/")) as {
+    const outline = (await call("GET", `/lms/clients/101/courses/${SEEDED.id}/sub-module/${SEEDED_TOPIC.id}/`)) as {
       status: string;
       moduleName: string;
       weekNo: number;
@@ -185,14 +198,14 @@ describe("course builder round trips", () => {
     };
     expect(outline.status).toBe("success");
     expect(outline.weekNo).toBe(1);
-    expect(outline.submoduleName).toBe("The request lifecycle, end to end");
+    expect(outline.submoduleName).toBe(SEEDED_TOPIC.title);
     expect(outline.data.map((d) => d.content_type)).toEqual(["Article", "Quiz"]);
     expect(outline.data[0].status).toBe("complete");
     // The seeded handout hangs off the first content of the first topic.
     expect(Object.keys(outline.attachments_by_content)).toHaveLength(1);
 
     const articleId = outline.data[0].id;
-    const article = (await call("GET", `/lms/clients/101/courses/201/content/${articleId}/`)) as {
+    const article = (await call("GET", `/lms/clients/101/courses/${SEEDED.id}/content/${articleId}/`)) as {
       content_type: string;
       content_title: string;
       details: { content: string };
@@ -205,7 +218,7 @@ describe("course builder round trips", () => {
     expect(article.next_content!.id).toBe(outline.data[1].id);
 
     const quizId = outline.data[1].id;
-    const quiz = (await call("GET", `/lms/clients/101/courses/201/content/${quizId}/`)) as {
+    const quiz = (await call("GET", `/lms/clients/101/courses/${SEEDED.id}/content/${quizId}/`)) as {
       details: { mcqs: Array<{ question_text: string; options: string[]; correct_option: string }> };
     };
     expect(quiz.details.mcqs.length).toBeGreaterThan(0);
@@ -214,39 +227,39 @@ describe("course builder round trips", () => {
 
     const comments = (await call(
       "GET",
-      `/lms/clients/101/courses/201/content/${articleId}/comment/`,
+      `/lms/clients/101/courses/${SEEDED.id}/content/${articleId}/comment/`,
     )) as Array<{ text: string; user_profile: { user_name: string } }>;
     expect(comments.length).toBe(2);
 
-    await call("POST", `/lms/clients/101/courses/201/content/${articleId}/comment/`, {
+    await call("POST", `/lms/clients/101/courses/${SEEDED.id}/content/${articleId}/comment/`, {
       text: "This finally made the middleware order click for me.",
     });
     const after = (await call(
       "GET",
-      `/lms/clients/101/courses/201/content/${articleId}/comment/`,
+      `/lms/clients/101/courses/${SEEDED.id}/content/${articleId}/comment/`,
     )) as unknown[];
     expect(after).toHaveLength(3);
 
     const subs = (await call(
       "GET",
-      `/lms/clients/101/courses/201/content/${quizId}/past-submissions/`,
+      `/lms/clients/101/courses/${SEEDED.id}/content/${quizId}/past-submissions/`,
     )) as Array<{ id: number; obtained_marks: number; maximum_marks: number }>;
     expect(subs).toHaveLength(2);
 
     const detail = (await call(
       "GET",
-      `/lms/clients/101/courses/201/content/${quizId}/past-submissions/${subs[0].id}/`,
+      `/lms/clients/101/courses/${SEEDED.id}/content/${quizId}/past-submissions/${subs[0].id}/`,
     )) as { questions: Array<{ is_correct: boolean; selected_option: string }> };
     expect(detail.questions.length).toBeGreaterThan(0);
   });
 
   it("toggles a like and answers the wizard", async () => {
-    const on = (await call("POST", "/lms/clients/101/courses/201/toggle-like/")) as {
+    const on = (await call("POST", `/lms/clients/101/courses/${SEEDED.id}/toggle-like/`)) as {
       liked: boolean;
       likes_count: number;
     };
     expect(on.liked).toBe(true);
-    const off = (await call("POST", "/lms/clients/101/courses/201/toggle-like/")) as {
+    const off = (await call("POST", `/lms/clients/101/courses/${SEEDED.id}/toggle-like/`)) as {
       liked: boolean;
     };
     expect(off.liked).toBe(false);
@@ -269,7 +282,7 @@ describe("course builder round trips", () => {
     const catalogue = (await call("GET", "/api/tenant/wizard/catalogue/")) as {
       courses: Array<{ id: number; modules: Array<{ submodules: unknown[] }>; thumbnail: string }>;
     };
-    expect(catalogue.courses).toHaveLength(5);
+    expect(catalogue.courses).toHaveLength(COURSES.length);
     expect(catalogue.courses[0].thumbnail.startsWith("data:")).toBe(true);
     expect(catalogue.courses[0].modules[0].submodules.length).toBeGreaterThan(0);
   });
@@ -300,8 +313,9 @@ describe("course builder round trips", () => {
       expect(read[key]).toBeDefined();
     }
 
-    // Attachments hang off a content row; the seeded handout is on 105000.
-    const list = (await call("GET", `${C}/courses/201/contents/105000/attachments/`)) as Array<{
+    // Attachments hang off a content row. The handout is seeded on the first
+    // topic's first content, whose id is derived the same way the handler derives it.
+    const list = (await call("GET", `${C}/courses/${SEEDED.id}/contents/${100000 + SEEDED_TOPIC.id}/attachments/`)) as Array<{
       id: number;
       file_url: string;
     }>;
@@ -310,24 +324,24 @@ describe("course builder round trips", () => {
 
     const renamed = (await call(
       "PATCH",
-      `${C}/courses/201/contents/105000/attachments/${list[0].id}/`,
+      `${C}/courses/${SEEDED.id}/contents/${100000 + SEEDED_TOPIC.id}/attachments/${list[0].id}/`,
       { title: "Weekly checklist" },
     )) as { title: string };
     expect(renamed.title).toBe("Weekly checklist");
 
-    await call("DELETE", `${C}/courses/201/contents/105000/attachments/${list[0].id}/`);
-    expect((await call("GET", `${C}/courses/201/contents/105000/attachments/`)) as unknown[]).toHaveLength(0);
+    await call("DELETE", `${C}/courses/${SEEDED.id}/contents/${100000 + SEEDED_TOPIC.id}/attachments/${list[0].id}/`);
+    expect((await call("GET", `${C}/courses/${SEEDED.id}/contents/${100000 + SEEDED_TOPIC.id}/attachments/`)) as unknown[]).toHaveLength(0);
   });
 
   it("duplicates a whole course tree", async () => {
-    const copy = (await call("POST", `${C}/courses/201/duplicate/`)) as {
+    const copy = (await call("POST", `${C}/courses/${SEEDED.id}/duplicate/`)) as {
       id: number;
       title: string;
       module_count: number;
       submodule_count: number;
     };
-    expect(copy.title).toBe("Full-Stack Web Development (copy)");
-    const original = (await call("GET", `${C}/courses/201/modules/`)) as unknown[];
+    expect(copy.title).toBe(`${SEEDED.title} (copy)`);
+    const original = (await call("GET", `${C}/courses/${SEEDED.id}/modules/`)) as unknown[];
     expect(copy.module_count).toBe(original.length);
     expect(copy.submodule_count).toBeGreaterThan(0);
 
@@ -364,7 +378,7 @@ describe("course builder round trips", () => {
 
     const suggestions = (await call(
       "GET",
-      `/adaptive-quiz/api/admin/submodules/5000/suggestions/`,
+      `/adaptive-quiz/api/admin/submodules/${SEEDED_TOPIC.id}/suggestions/`,
     )) as { has: Record<string, boolean>; gaps: unknown[]; bank_matches: { mcqs: unknown[] } };
     expect(suggestions.has.article).toBe(true);
     expect(suggestions.has.coding).toBe(false);

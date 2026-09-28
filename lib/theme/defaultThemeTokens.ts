@@ -73,6 +73,9 @@ export const DEFAULT_THEME_FLAT: Record<string, string> = {
   // self-hosted from /public/fonts (see app/layout.tsx), so the demo needs no
   // font CDN and renders identically with no network at all.
   fontImportUrl: "",
+  // SCHOOL EDITION: Nunito leads. applyDocumentTheme writes this onto body.style
+  // AND onto --font-family-primary, so it has to agree with globals.css or the
+  // JS pass after hydration silently reverts the CSS default.
   fontFamilySans:
-    '"Satoshi","Satoshi Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
+    '"Nunito","Satoshi","Satoshi Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif',
 };

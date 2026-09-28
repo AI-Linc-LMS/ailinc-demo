@@ -53,8 +53,7 @@ export function AuthLayout({ children, slogan }: AuthLayoutProps) {
     heroBranding,
     useCustomSlogan,
     supportingText: t("auth.supporting", {
-      defaultValue:
-        "Start from scratch, or from where you left off. Your path adapts as you go.",
+      defaultValue: "Pick up where you left off, or try something new today.",
     }),
   };
 

@@ -7,8 +7,18 @@ import { IconWrapper } from "@/components/common/IconWrapper";
 import { PageGuide } from "@/components/common/PageGuide";
 import { resolveGuide } from "@/lib/guide/registry";
 
-/** Accent tones - drive the icon badge, the ambient glow, and the solid CTA. */
+/**
+ * Accent tones - drive the icon badge, the ambient glow, and the solid CTA.
+ *
+ * `brand` is the school azure and is what a module header should use unless it
+ * has a reason not to. It exists because "purple" had quietly become the brand
+ * tone: six learner-facing headers passed accent="purple" not because the page
+ * was purple but because the product was. Repainting `purple` would have made the
+ * name lie and dragged every genuine purple with it, so the brand got its own
+ * entry and those call sites now say what they mean.
+ */
 const ACCENTS = {
+  brand: { a: "#4aa2f0", b: "#1b6fd4", glow: "rgba(27,111,212,0.42)" },
   indigo: { a: "#6366f1", b: "#4338ca", glow: "rgba(99,102,241,0.45)" },
   purple: { a: "#a855f7", b: "#7c3aed", glow: "rgba(168,85,247,0.45)" },
   pink: { a: "#ec4899", b: "#db2777", glow: "rgba(236,72,153,0.45)" },
@@ -67,8 +77,8 @@ export function ModulePageHeader({
         color: "white",
         position: "relative",
         overflow: "hidden",
-        background: `radial-gradient(120% 130% at 8% 115%, ${tone.glow} 0%, rgba(124,58,237,0.22) 32%, rgba(15,10,40,0) 62%), linear-gradient(150deg, #241653 0%, #181040 55%, #100a2c 100%)`,
-        boxShadow: "0 24px 60px -30px rgba(76,29,149,0.7)",
+        background: `radial-gradient(120% 130% at 8% 115%, ${tone.glow} 0%, rgba(27,111,212,0.22) 32%, rgba(15,10,40,0) 62%), linear-gradient(150deg, #241653 0%, #122a56 55%, #0e1f45 100%)`,
+        boxShadow: "0 24px 60px -30px rgba(19,73,140,0.7)",
       }}
     >
       {/* faint dotted texture */}
@@ -191,8 +201,8 @@ export function HeaderActionButton({
         transition: "filter .15s, background .15s",
         ...(variant === "solid"
           ? {
-              background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-              boxShadow: "0 14px 30px -12px rgba(192,38,211,0.7)",
+              background: "linear-gradient(135deg, #4aa2f0 0%, #ec4899 100%)",
+              boxShadow: "0 14px 30px -12px rgba(74,162,240,0.7)",
               "&:hover": { filter: "brightness(1.06)" },
             }
           : {

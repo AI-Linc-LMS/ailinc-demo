@@ -77,8 +77,8 @@ function LevelUpTotalCard({
             py: { xs: 3.5, sm: 4.5 },
             textAlign: "center",
             minWidth: { xs: 244, sm: 312 },
-            background: "radial-gradient(130% 120% at 50% 0%, #2a1150 0%, #14061f 55%, #0f0518 100%)",
-            boxShadow: "inset 0 0 34px rgba(124,58,237,0.24)",
+            background: "radial-gradient(130% 120% at 50% 0%, #17346e 0%, #0e1f45 55%, #0e1f45 100%)",
+            boxShadow: "inset 0 0 34px rgba(27,111,212,0.24)",
           }}
         >
           {/* CREST: gold medallion with a crown peeking above + a lightning bolt */}
@@ -115,7 +115,7 @@ function LevelUpTotalCard({
               fontWeight: 800,
               fontSize: "0.72rem",
               letterSpacing: "0.26em",
-              color: "rgba(168,85,247,0.9)",
+              color: "rgba(74,162,240,0.9)",
               mb: 0.75,
             }}
           >
@@ -230,7 +230,7 @@ function LevelUpTotalCard({
               height: 6,
               borderRadius: 999,
               overflow: "hidden",
-              background: "rgba(168,85,247,0.22)",
+              background: "rgba(74,162,240,0.22)",
             }}
           >
             <motion.div
@@ -243,7 +243,7 @@ function LevelUpTotalCard({
                 top: 0,
                 bottom: 0,
                 borderRadius: 999,
-                background: "linear-gradient(90deg,#a855f7,#fde047)",
+                background: "linear-gradient(90deg,#4aa2f0,#fde047)",
               }}
             />
             {!reduce && (
@@ -328,7 +328,7 @@ export function XpCelebrationOverlay() {
               width: 380,
               height: 380,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(250,204,21,0.5) 0%, rgba(168,85,247,0.28) 45%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(250,204,21,0.5) 0%, rgba(74,162,240,0.28) 45%, transparent 70%)",
             }}
           />
 
