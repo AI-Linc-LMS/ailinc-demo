@@ -11,6 +11,7 @@
  */
 
 import { defineRoutes } from "../router";
+import { subjectOf } from "../../db/subjects";
 import { notFound } from "../types";
 import type {
   JourneyBoard,
@@ -140,6 +141,14 @@ function board(course: DemoCourse): JourneyBoard {
       items: topics.length,
       completionPct: course.completion,
       startedAt: isoDaysAgo(seededInt(`start:${course.id}`, 40, 150)),
+      // SCHOOL EDITION: the subject's own colours, so the course page's hero is
+      // the same colour as the card that opened it. Sent by the API for the same
+      // reason the catalogue card's are: a lookup table in the component would put
+      // demo seed data inside components/.
+      subjectLabel: subjectOf(course.subject).label,
+      subjectFrom: subjectOf(course.subject).from,
+      subjectTo: subjectOf(course.subject).to,
+      subjectIcon: subjectOf(course.subject).icon,
     },
     progressCard: {
       pointsEarned,
@@ -149,39 +158,19 @@ function board(course: DemoCourse): JourneyBoard {
       nodesTotal,
       completionPct: course.completion,
     },
-    // Calibration and the exit interview are both already done for this learner:
-    // an outstanding calibration gate is the one thing that would stand between a
-    // prospect and the course content they came to look at.
-    calibration: {
-      required: true,
-      done: true,
-      card: {
-        assessmentId: course.id * 10 + 1,
-        assessmentSlug: `${course.slug}-calibration`,
-        title: `${course.title} - placement check`,
-        points: 100,
-        durationMinutes: 25,
-        questionCount: 20,
-        proctored: false,
-        configured: true,
-        generating: false,
-        status: "done",
-      },
-    },
-    interview: {
-      required: true,
-      done: course.completion >= 60,
-      card: {
-        templateId: course.id * 10 + 2,
-        title: `${course.title} - exit interview`,
-        topic: course.tags[0] ?? null,
-        difficulty: course.difficulty,
-        durationMinutes: 30,
-        points: 200,
-        configured: true,
-        status: course.completion >= 60 ? "done" : "not_started",
-      },
-    },
+    // SCHOOL EDITION: no calibration, no exit interview.
+    //
+    // Both are switched off rather than marked done. A placement check is a
+    // sensible idea for an adult choosing a track and wrong for a Grade 7 pupil
+    // who is simply in the class they are in, and an exit interview with an AI
+    // interviewer has no place in a child's schoolwork at all. Leaving them
+    // "already completed" would still have put two cards at the top of every
+    // course explaining features the school will never use.
+    //
+    // `card: null` is what hides each one; the surrounding shape stays because it
+    // is the API contract the board component reads.
+    calibration: { required: false, done: true, card: null },
+    interview: { required: false, done: true, card: null },
     weeks,
   };
 }

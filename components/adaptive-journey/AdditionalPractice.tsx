@@ -22,14 +22,14 @@ const DIFFS: { value: PracticeDifficulty; label: string; color: string }[] = [
   { value: "Easy", label: "Easy", color: "#16a34a" },
   { value: "Medium", label: "Medium", color: "#d97706" },
   { value: "Hard", label: "Hard", color: "#dc2626" },
-  { value: "match", label: "✦ Match me", color: "#7c3aed" },
+  { value: "match", label: "✦ Match me", color: "#1b6fd4" },
 ];
 
 const COUNTS = [3, 5, 10];
 
 const KIND_META: Record<PracticeKind, { icon: string; color: string; bg: string; unit: string }> = {
-  article: { icon: "mdi:file-document-outline", color: "#a855f7", bg: "#f5f3ff", unit: "explainer" },
-  quiz: { icon: "mdi:help-circle", color: "#6366f1", bg: "#eef2ff", unit: "questions" },
+  article: { icon: "mdi:file-document-outline", color: "#4aa2f0", bg: "#eff7ff", unit: "explainer" },
+  quiz: { icon: "mdi:help-circle", color: "#1b6fd4", bg: "#eff7ff", unit: "questions" },
   coding: { icon: "mdi:laptop", color: "#ec4899", bg: "#fdf2f8", unit: "problems" },
 };
 
@@ -92,17 +92,17 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
   const exhausted = left <= 0;
 
   return (
-    <Box sx={{ mt: 3, borderRadius: 4, border: "1.5px solid #ddd6fe", overflow: "hidden", bgcolor: "#fff" }}>
+    <Box sx={{ mt: 3, borderRadius: 4, border: "1.5px solid #d9ecfe", overflow: "hidden", bgcolor: "#fff" }}>
       {/* Header band */}
-      <Box sx={{ p: { xs: 2, md: 2.5 }, background: "linear-gradient(180deg, #faf5ff 0%, #f5f3ff 100%)", borderBottom: open ? "1px solid #ede9fe" : "none" }}>
+      <Box sx={{ p: { xs: 2, md: 2.5 }, background: "linear-gradient(180deg, #faf5ff 0%, #eff7ff 100%)", borderBottom: open ? "1px solid #eff7ff" : "none" }}>
         <Stack direction="row" alignItems="flex-start" spacing={1.5}>
-          <Box sx={{ width: 44, height: 44, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)", boxShadow: "0 8px 20px -8px rgba(124,58,237,0.6)" }}>
+          <Box sx={{ width: 44, height: 44, borderRadius: "50%", flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b6fd4 0%, #ec4899 100%)", boxShadow: "0 8px 20px -8px rgba(124,58,237,0.6)" }}>
             <Icon icon="mdi:auto-fix" width={24} />
           </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Stack direction="row" alignItems="center" spacing={1} flexWrap="wrap">
               <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", color: "#1e1b4b" }}>Additional Practice</Typography>
-              <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 1, py: 0.3, borderRadius: 999, color: "white", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)" }}>
+              <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 1, py: 0.3, borderRadius: 999, color: "white", background: "linear-gradient(135deg, #1b6fd4 0%, #4aa2f0 100%)" }}>
                 <Icon icon="mdi:plus" width={12} />
                 <Typography sx={{ fontSize: "0.66rem", fontWeight: 800 }}>Generate</Typography>
               </Stack>
@@ -115,14 +115,14 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
           {/* Quota meter */}
           <Box sx={{ minWidth: 150, textAlign: "right", flexShrink: 0, display: { xs: "none", sm: "block" } }}>
             <Typography sx={{ fontWeight: 800, fontSize: "0.95rem", color: "#1e1b4b" }}>
-              <Box component="span" sx={{ color: "#7c3aed", fontWeight: 900 }}>{used}</Box> / {limit} generated
+              <Box component="span" sx={{ color: "#1b6fd4", fontWeight: 900 }}>{used}</Box> / {limit} generated
             </Typography>
-            <Box sx={{ height: 6, borderRadius: 999, bgcolor: "#ede9fe", mt: 0.5, overflow: "hidden" }}>
-              <Box sx={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: "linear-gradient(90deg, #7c3aed 0%, #ec4899 100%)", transition: "width .3s" }} />
+            <Box sx={{ height: 6, borderRadius: 999, bgcolor: "#eff7ff", mt: 0.5, overflow: "hidden" }}>
+              <Box sx={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: "linear-gradient(90deg, #1b6fd4 0%, #ec4899 100%)", transition: "width .3s" }} />
             </Box>
             <Typography sx={{ fontSize: "0.7rem", color: "#94a3b8", mt: 0.4 }}>{left} left for this topic</Typography>
           </Box>
-          <ButtonBase onClick={() => setOpen((o) => !o)} sx={{ width: 30, height: 30, borderRadius: 2, border: "1px solid #ddd6fe", color: "#7c3aed", flexShrink: 0 }}>
+          <ButtonBase onClick={() => setOpen((o) => !o)} sx={{ width: 30, height: 30, borderRadius: 2, border: "1px solid #d9ecfe", color: "#1b6fd4", flexShrink: 0 }}>
             <Icon icon={open ? "mdi:chevron-up" : "mdi:chevron-down"} width={20} />
           </ButtonBase>
         </Stack>
@@ -183,8 +183,8 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
                     return (
                       <ButtonBase key={c} disabled={disabled} onClick={() => { setCustom(false); setCount(c); }} sx={{
                         minWidth: 48, px: 1.5, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.9rem", border: "1.5px solid",
-                        borderColor: active ? "#7c3aed" : "#e5e7eb", color: active ? "#7c3aed" : disabled ? "#cbd5e1" : "#475569",
-                        bgcolor: active ? "#f5f3ff" : "#fff", opacity: disabled ? 0.5 : 1,
+                        borderColor: active ? "#1b6fd4" : "#e5e7eb", color: active ? "#1b6fd4" : disabled ? "#cbd5e1" : "#475569",
+                        bgcolor: active ? "#eff7ff" : "#fff", opacity: disabled ? 0.5 : 1,
                       }}>
                         {c}
                       </ButtonBase>
@@ -192,7 +192,7 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
                   })}
                   <ButtonBase onClick={() => setCustom(true)} sx={{
                     px: 1.5, py: 0.85, borderRadius: 2, fontWeight: 700, fontSize: "0.84rem", border: "1.5px solid",
-                    borderColor: custom ? "#7c3aed" : "#e5e7eb", color: custom ? "#7c3aed" : "#475569", bgcolor: custom ? "#f5f3ff" : "#fff",
+                    borderColor: custom ? "#1b6fd4" : "#e5e7eb", color: custom ? "#1b6fd4" : "#475569", bgcolor: custom ? "#eff7ff" : "#fff",
                   }}>
                     Custom…
                   </ButtonBase>
@@ -213,11 +213,11 @@ export function AdditionalPractice({ courseId, submoduleId }: { courseId: number
             <TextField
               fullWidth size="small" value={focus} onChange={(e) => setFocus(e.target.value)}
               placeholder={'Optional: focus on… e.g. "string slicing & f-strings"'}
-              InputProps={{ startAdornment: <Icon icon="mdi:target" width={16} style={{ marginRight: 8, color: "#a855f7", flexShrink: 0 }} /> }}
+              InputProps={{ startAdornment: <Icon icon="mdi:target" width={16} style={{ marginRight: 8, color: "#4aa2f0", flexShrink: 0 }} /> }}
             />
             <ButtonBase onClick={generate} disabled={!canGenerate} sx={{
               flexShrink: 0, px: 3, py: 1.2, borderRadius: 2, fontWeight: 800, fontSize: "0.9rem", color: "white", gap: 0.75, whiteSpace: "nowrap",
-              background: canGenerate ? "linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)" : "#cbd5e1",
+              background: canGenerate ? "linear-gradient(135deg, #1b6fd4 0%, #ec4899 100%)" : "#cbd5e1",
               boxShadow: canGenerate ? "0 12px 28px -14px rgba(124,58,237,0.7)" : "none",
             }}>
               {generating ? <CircularProgress size={16} sx={{ color: "white" }} /> : <Icon icon="mdi:auto-fix" width={18} />}

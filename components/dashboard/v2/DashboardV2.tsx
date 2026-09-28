@@ -20,6 +20,7 @@ import type { LearnerDashboard } from "@/lib/types/dashboard";
 // adaptive feature and there is no reason to fork that path too.
 import { SchoolTodayHero } from "@/components/school/SchoolTodayHero";
 import { SchoolStats } from "@/components/school/SchoolStats";
+import { TodayLessonsPanel, HomeworkDuePanel } from "@/components/school/SchoolDayPanels";
 import { CourseReadinessCard } from "./CourseReadinessCard";
 import { SkillProfilePanel } from "./SkillProfilePanel";
 import { CertificatePanel } from "./CertificatePanel";
@@ -130,6 +131,14 @@ export function DashboardV2() {
           <CourseReadinessCard courses={data.courses} activeCourseId={activeCourse?.id ?? null} onSelect={setActiveCourseId} />
         </Box>
         {courseEnabled && <ContinueCoursesRow courses={data.courses} />}
+        {/* The leaderboard moved here from the right rail. The two columns were
+            1197px against 2276px, which is what made the page look broken at the
+            bottom: the left simply ran out while the right kept going. */}
+        {!hideLeaderboard && (
+          <Box data-tour-id="dash-leaderboard" sx={{ mt: 2.5 }}>
+            <LeaderboardPanel leaderboard={data.leaderboard} />
+          </Box>
+        )}
       </Box>
 
       <Stack spacing={2}>
@@ -151,15 +160,20 @@ export function DashboardV2() {
             crossCourseMastery={data.aggregate.overallMasteryAvg}
           />
         </Box>
+        {/* What is on today and what is due: the two questions a school portal's
+            Home page should answer before it answers anything about mastery. */}
+        <TodayLessonsPanel />
+        <HomeworkDuePanel />
         {activeCourse?.certificate.enabled && <CertificatePanel course={activeCourse} />}
         {courseEnabled && <UpNextPanel items={data.crossCourseUpNext} />}
-        <DashboardModulesRail />
-        {!hideLeaderboard && (
-          <Box data-tour-id="dash-leaderboard">
-            <LeaderboardPanel leaderboard={data.leaderboard} />
-          </Box>
-        )}
       </Stack>
+
+      {/* Full width, under both columns. As a rail item this was a narrow stack of
+          module cards squeezed into 390px, and it was a third of why the right
+          column ran so far past the left. */}
+      <Box sx={{ gridColumn: { xs: "auto", lg: "1 / -1" }, mt: 0.5 }}>
+        <DashboardModulesRail />
+      </Box>
     </Box>
   );
 }

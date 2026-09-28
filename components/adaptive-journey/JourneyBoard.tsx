@@ -63,34 +63,43 @@ function contentSummary(n: JourneyNodeView): string {
     const p: string[] = [];
     if (c.videos) p.push(`${c.videos} video${c.videos > 1 ? "s" : ""}`);
     if (c.quizzes) p.push(`${c.quizzes} quiz${c.quizzes > 1 ? "zes" : ""}`);
-    if (c.articles) p.push(`${c.articles} article${c.articles > 1 ? "s" : ""}`);
-    if (c.coding) p.push(`${c.coding} coding`);
+    if (c.articles) p.push(`${c.articles} to read`);
+    if (c.coding) p.push(`${c.coding} to code`);
     return p.join(" · ");
   }
   if (n.type === "checkpoint" || n.type === "week_final") {
-    const p = ["Proctored"];
-    if (n.questionCount) p.push(`${n.questionCount} Qs`);
-    p.push(n.weight > 1 ? `counts ${n.weight}×` : "same for all");
+    const p: string[] = [];
+    if (n.questionCount) p.push(`${n.questionCount} question${n.questionCount > 1 ? "s" : ""}`);
+    if (n.weight > 1) p.push("counts for more");
     return p.join(" · ");
   }
-  if (n.type === "interview") return `AI interviewer · ~${n.durationMinutes ?? 15} min`;
+  if (n.type === "interview") return `About ${n.durationMinutes ?? 15} minutes`;
   return "";
 }
 
+/**
+ * SCHOOL EDITION labels.
+ *
+ * "CALIBRATION", "CHECKPOINT ASSESSMENT", "PROCTORED · NON-ADAPTIVE" and "MOCK
+ * INTERVIEW" are all words a child has no way to decode, and two of them describe
+ * things this school does not use at all. The calibration and interview cases are
+ * kept rather than deleted because the type still allows those node kinds; they
+ * are simply never seeded here.
+ */
 function nodeLabel(n: JourneyNodeView): { main: string; sub?: string; ai?: boolean } {
-  if (n.isCalibration) return { main: "CALIBRATION", sub: "PROCTORED · NON-ADAPTIVE" };
-  if (n.type === "topic") return { main: "TOPIC" };
+  if (n.isCalibration) return { main: "WARM-UP" };
+  if (n.type === "topic") return { main: "LESSON" };
   if (n.type === "checkpoint" || n.type === "week_final")
-    return { main: "CHECKPOINT ASSESSMENT", sub: n.proctored ? "PROCTORED · NON-ADAPTIVE" : undefined };
-  if (n.type === "interview") return { main: "MOCK INTERVIEW", ai: true };
+    return { main: "CLASS TEST", sub: n.proctored ? "YOUR TEACHER WATCHES THIS ONE" : undefined };
+  if (n.type === "interview") return { main: "TALK IT THROUGH", ai: true };
   return { main: "STEP" };
 }
 
 const NODE_STYLE: Record<string, { color: string; bg: string; icon: string }> = {
-  topic: { color: "#6366f1", bg: "#eef2ff", icon: "mdi:book-open-page-variant" },
-  checkpoint: { color: "#a855f7", bg: "#f5f3ff", icon: "mdi:shield-check" },
-  week_final: { color: "#f59e0b", bg: "#fff7ed", icon: "mdi:flag-checkered" },
-  interview: { color: "#db2777", bg: "#fdf2f8", icon: "mdi:account-voice" },
+  topic: { color: "#1b6fd4", bg: "#eff7ff", icon: "mdi:book-open-page-variant" },
+  checkpoint: { color: "#0f766e", bg: "#e4fbf7", icon: "mdi:clipboard-check-outline" },
+  week_final: { color: "#b45309", bg: "#fff8e6", icon: "mdi:flag-checkered" },
+  interview: { color: "#a21caf", bg: "#fdf0fd", icon: "mdi:account-voice" },
 };
 
 function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; courseId: number; stepNo: number; dueAt?: string | null }) {
@@ -117,12 +126,12 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
       <Icon icon="mdi:check" width={16} />
     </Box>
   ) : current ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#6366f1", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(99,102,241,0.18)" }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#1b6fd4", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(99,102,241,0.18)" }}>
       {stepNo}
     </Box>
   ) : available ? (
     // Unlocked-but-not-started: open and actionable - a step number, never a padlock.
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#eef2ff", color: "#6366f1", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, border: "1.5px solid #c7d2fe" }}>
+    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#eff7ff", color: "#1b6fd4", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, border: "1.5px solid #c7d2fe" }}>
       {stepNo}
     </Box>
   ) : (
@@ -163,8 +172,8 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
           <Box sx={{ minWidth: 0, flex: 1 }}>
             <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap">
               <Typography sx={{ fontSize: "0.64rem", fontWeight: 800, letterSpacing: 0.6, color: ns.color }}>{l.main}</Typography>
-              {l.sub && <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 0.5, color: "#a855f7" }}>· {l.sub}</Typography>}
-              {l.ai && <Chip label="+AI" size="small" sx={{ height: 16, fontSize: "0.56rem", fontWeight: 800, color: "#7c3aed", bgcolor: "#ede9fe" }} />}
+              {l.sub && <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 0.5, color: "#4aa2f0" }}>· {l.sub}</Typography>}
+              {l.ai && <Chip label="+AI" size="small" sx={{ height: 16, fontSize: "0.56rem", fontWeight: 800, color: "#1b6fd4", bgcolor: "#eff7ff" }} />}
             </Stack>
             <Typography sx={{ fontWeight: 700, fontSize: "0.95rem", color: "#0f172a", mt: 0.25 }}>{node.title}</Typography>
             {contentSummary(node) && (
@@ -195,7 +204,7 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
               </Typography>
             </Stack>
             {navigable && (
-              <ButtonBase onClick={go} sx={{ flexShrink: 0, px: 2, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.8rem", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+              <ButtonBase onClick={go} sx={{ flexShrink: 0, px: 2, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.8rem", color: "white", background: "linear-gradient(135deg, #1b6fd4 0%, #4aa2f0 100%)" }}>
                 Continue →
               </ButtonBase>
             )}
@@ -225,10 +234,10 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
 
   return (
     <Box sx={{ border: "1px solid #e9e6f7", borderRadius: 4, overflow: "hidden", bgcolor: "#fff", mb: 2, boxShadow: "0 12px 30px -24px rgba(99,102,241,0.45)" }}>
-      <Box sx={{ p: { xs: 2, md: 2.5 }, borderBottom: "1px solid #eef2f7", backgroundImage: "linear-gradient(135deg, #f5f3ff 0%, #fdf2f8 100%)" }}>
+      <Box sx={{ p: { xs: 2, md: 2.5 }, borderBottom: "1px solid #eef2f7", backgroundImage: "linear-gradient(135deg, #eff7ff 0%, #fdf2f8 100%)" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="wrap" gap={1}>
           <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap">
-            <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+            <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #4aa2f0 0%, #1b6fd4 100%)", boxShadow: "0 4px 0 0 rgba(16,34,74,0.18)" }}>
               <Icon icon="mdi:calendar-month" width={18} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#0f172a" }}>
@@ -252,12 +261,12 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
               size="small"
               icon={<Icon icon="mdi:trophy" width={14} />}
               label={`${week.totals.earned} / ${week.totals.total} pts`}
-              sx={{ fontWeight: 800, fontSize: "0.74rem", color: "#6d28d9", bgcolor: "#ede9fe", "& .MuiChip-icon": { color: "#6d28d9" } }}
+              sx={{ fontWeight: 800, fontSize: "0.74rem", color: "#13498c", bgcolor: "#eff7ff", "& .MuiChip-icon": { color: "#13498c" } }}
             />
           </Stack>
         </Stack>
 
-        <LinearProgress variant="determinate" value={pct} sx={{ mt: 1.5, height: 6, borderRadius: 3, bgcolor: "#eef2f7", "& .MuiLinearProgress-bar": { borderRadius: 3, background: "linear-gradient(90deg, #6366f1, #a855f7)" } }} />
+        <LinearProgress variant="determinate" value={pct} sx={{ mt: 1.5, height: 6, borderRadius: 3, bgcolor: "#eef2f7", "& .MuiLinearProgress-bar": { borderRadius: 3, background: "linear-gradient(90deg, #1b6fd4, #4aa2f0)" } }} />
 
         {week.penaltyStrip && week.schedule && (
           <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems="stretch" sx={{ mt: 1.5 }}>
@@ -299,20 +308,26 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
   const current = board.weeks.flatMap((w) => w.nodes).find((n) => n.status === "current" && n.ref.submoduleId);
   const firstTopic = board.weeks.flatMap((w) => w.nodes).find((n) => n.type === "topic" && n.ref.submoduleId);
   const resumeSub = current?.ref.submoduleId ?? firstTopic?.ref.submoduleId;
+  // SCHOOL EDITION: the hero takes the SUBJECT's colours, so the course page is
+  // the same colour as the card that opened it. Falls back to the original violet
+  // literals, so a tenant whose API sends no subject is unchanged.
+  const from = c.subjectFrom || "#7c3aed";
+  const to = c.subjectTo || "#c026d3";
+
   const meta: { icon: string; label: string }[] = [];
   if (c.startedAt) meta.push({ icon: "mdi:calendar-check", label: `Started ${fmtLongDate(c.startedAt)}` });
-  meta.push({ icon: "mdi:account-group", label: `${c.enrolledCount} enrolled` });
-  meta.push({ icon: "mdi:certificate-outline", label: `Certificate on ${c.certificateThreshold}%` });
-  if (c.estHours) meta.push({ icon: "mdi:clock-outline", label: `~${c.estHours} hrs` });
+  meta.push({ icon: "mdi:account-group", label: `${c.enrolledCount} in your year` });
+  meta.push({ icon: "mdi:certificate-outline", label: `Certificate at ${c.certificateThreshold}%` });
+  if (c.estHours) meta.push({ icon: "mdi:clock-outline", label: `About ${c.estHours} hours` });
 
   return (
-    <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -28px rgba(124,58,237,0.6)" }}>
+    <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`, boxShadow: "0 8px 0 0 rgba(16,34,74,0.16)" }}>
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.7)", mb: 1 }}>‹ My Courses / {c.title}</Typography>
           <Stack direction="row" spacing={0.75} sx={{ mb: 1 }}>
             <Chip label={subject} size="small" sx={{ fontWeight: 700, color: "white", bgcolor: "rgba(255,255,255,0.18)" }} />
-            <Chip icon={<Icon icon="mdi:certificate" width={14} color="white" />} label="Certified track" size="small" sx={{ fontWeight: 700, color: "white", bgcolor: "rgba(255,255,255,0.18)", "& .MuiChip-icon": { color: "white" } }} />
+            <Chip icon={<Icon icon="mdi:certificate" width={14} color="white" />} label="You get a certificate" size="small" sx={{ fontWeight: 700, color: "white", bgcolor: "rgba(255,255,255,0.18)", "& .MuiChip-icon": { color: "white" } }} />
           </Stack>
           <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.7rem", md: "2.2rem" }, lineHeight: 1.1 }}>{c.title}</Typography>
           {c.description && (
@@ -340,8 +355,8 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
           </Box>
           <Box sx={{ minWidth: 0 }}>
             <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-              <Typography sx={{ fontWeight: 800, fontSize: "0.92rem" }}>AI has tuned this course to you</Typography>
-              {c.fieldTier && <Chip label={`LEVEL · ${c.fieldTier.toUpperCase()}`} size="small" sx={{ height: 18, fontSize: "0.6rem", fontWeight: 800, color: "#7c3aed", bgcolor: "white" }} />}
+              <Typography sx={{ fontWeight: 800, fontSize: "0.92rem" }}>This subject is set up for you</Typography>
+              {c.fieldTier && <Chip label={`LEVEL · ${c.fieldTier.toUpperCase()}`} size="small" sx={{ height: 18, fontSize: "0.6rem", fontWeight: 800, color: "#13498c", bgcolor: "white" }} />}
             </Stack>
             <Typography sx={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.8)", mt: 0.25, lineHeight: 1.45 }}>
               {c.fieldTier
@@ -354,9 +369,9 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
           disabled={!resumeSub}
           onMouseEnter={() => resumeSub && prefetch(`/adaptive-courses/${courseId}/submodule/${resumeSub}`)}
           onClick={() => resumeSub && push(`/adaptive-courses/${courseId}/submodule/${resumeSub}`)}
-          sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.82rem", color: "#7c3aed", bgcolor: "white", "&.Mui-disabled": { opacity: 0.5 } }}
+          sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.82rem", color: "#1b6fd4", bgcolor: "white", "&.Mui-disabled": { opacity: 0.5 } }}
         >
-          Resume learning →
+          Carry on →
         </ButtonBase>
       </Stack>
     </Box>
@@ -381,7 +396,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
         if (cancelled) return;
         const status = (e as { response?: { status?: number } })?.response?.status;
         if (status === 403) setNotEnrolled(true);
-        else setError(e instanceof Error ? e.message : "Failed to load journey.");
+        else setError(e instanceof Error ? e.message : "We could not open your lessons.");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -406,7 +421,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
     return <Typography sx={{ color: "#64748b", py: 6, textAlign: "center" }}>You are not enrolled in this course.</Typography>;
   }
   if (error || !board) {
-    return <Typography sx={{ color: "#b91c1c", py: 6, textAlign: "center" }}>{error || "Journey unavailable."}</Typography>;
+    return <Typography sx={{ color: "#b91c1c", py: 6, textAlign: "center" }}>{error || "Your lessons are not ready yet."}</Typography>;
   }
 
   // Never fall back to the legacy week→submodule list. A 0-node board is only transient now
@@ -419,7 +434,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
         <Hero board={board} courseId={courseId} />
         <JourneyTopCards courseId={courseId} calibration={board.calibration} interview={board.interview} />
         <Box sx={{ mt: 2.5, p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", border: "1px solid #eef2f7", bgcolor: "#fff", boxShadow: "0 1px 2px rgba(16,24,40,0.04)" }}>
-          <Box sx={{ width: 52, height: 52, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+          <Box sx={{ width: 52, height: 52, mx: "auto", mb: 1.5, borderRadius: "50%", display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b6fd4 0%, #4aa2f0 100%)" }}>
             <Icon icon="mdi:map-marker-path" width={26} />
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#0f172a" }}>Your learning journey is being set up</Typography>
@@ -440,35 +455,35 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
         <Box>
           <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1} sx={{ mb: 1.25 }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
-              <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+              <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #4aa2f0 0%, #1b6fd4 100%)", boxShadow: "0 4px 0 0 rgba(16,34,74,0.18)" }}>
                 <Icon icon="mdi:map-marker-path" width={19} />
               </Box>
               <Box>
-                <Typography sx={{ fontWeight: 800, fontSize: "1.1rem", color: "#0f172a" }}>Course Overview</Typography>
+                <Typography sx={{ fontWeight: 800, fontSize: "1.1rem", color: "#0f172a" }}>Your lessons</Typography>
                 <Typography sx={{ fontSize: "0.8rem", color: "#64748b" }}>
-                  Your learning journey · {board.course.sections} sections · {board.course.items} items
+                  {board.course.sections} chapters · {board.course.items} things to do
                 </Typography>
               </Box>
             </Stack>
             {board.contentLocked ? (
-              <Chip icon={<Icon icon="mdi:auto-fix" width={15} />} label="Adaptive paths on" size="small" sx={{ fontWeight: 800, color: "#6d28d9", bgcolor: "#ede9fe", border: "1px solid #ddd6fe", "& .MuiChip-icon": { color: "#6d28d9" } }} />
+              <Chip icon={<Icon icon="mdi:auto-fix" width={15} />} label="Set up for you" size="small" sx={{ fontWeight: 800, color: "#13498c", bgcolor: "#eff7ff", border: "2px solid rgba(16,34,74,0.12)", "& .MuiChip-icon": { color: "#13498c" } }} />
             ) : (
-              <Chip icon={<Icon icon="mdi:lock-open-variant-outline" width={15} />} label="Open access" size="small" sx={{ fontWeight: 800, color: "#047857", bgcolor: "#d1fae5", border: "1px solid #a7f3d0", "& .MuiChip-icon": { color: "#047857" } }} />
+              <Chip icon={<Icon icon="mdi:lock-open-variant-outline" width={15} />} label="All unlocked" size="small" sx={{ fontWeight: 800, color: "#047857", bgcolor: "#d1fae5", border: "1px solid #a7f3d0", "& .MuiChip-icon": { color: "#047857" } }} />
             )}
           </Stack>
 
           {board.contentLocked ? (
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, backgroundImage: "linear-gradient(135deg, #faf5ff, #fff1f7)", border: "1px solid #f0e7fb" }}>
-              <Icon icon="mdi:calendar-alert" width={17} color="#a855f7" style={{ flexShrink: 0 }} />
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, bgcolor: "#fff8e6", border: "2px solid rgba(16,34,74,0.10)" }}>
+              <Icon icon="mdi:calendar-alert" width={17} color="#b45309" style={{ flexShrink: 0 }} />
               <Typography sx={{ fontSize: "0.8rem", color: "#475569", lineHeight: 1.4 }}>
-                Each week has its own due date. Late penalties apply to the <b style={{ color: "#7c3aed" }}>points earned</b> for that week - finish before the date to keep 100%.
+                Each week has its own hand-in date. Finish before it and you keep all the <b style={{ color: "#13498c" }}>points</b> for that week.
               </Typography>
             </Stack>
           ) : (
             <Stack direction="row" spacing={1} alignItems="center" sx={{ p: 1.5, mb: 2, borderRadius: 2.5, backgroundImage: "linear-gradient(135deg, #ecfdf5, #f0fdfa)", border: "1px solid #bbf7d0" }}>
               <Icon icon="mdi:lock-open-variant-outline" width={17} color="#059669" style={{ flexShrink: 0 }} />
               <Typography sx={{ fontSize: "0.8rem", color: "#475569", lineHeight: 1.4 }}>
-                Every step is <b style={{ color: "#047857" }}>open</b> - learn in any order and earn <b style={{ color: "#047857" }}>full points anytime</b>. No due dates, no late penalties.
+                You can do these in <b style={{ color: "#047857" }}>any order</b>, and there is no rush. Every one is worth <b style={{ color: "#047857" }}>full points</b> whenever you finish it.
               </Typography>
             </Stack>
           )}

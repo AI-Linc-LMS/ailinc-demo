@@ -25,7 +25,7 @@ function Pill({
 }) {
   const active = !disabled;
   const color = active ? (tone === "primary" ? "white" : "#0a66c2") : "#64748b";
-  const bgcolor = active && tone === "primary" ? "#6366f1" : "#f1f5f9";
+  const bgcolor = active && tone === "primary" ? "#4aa2f0" : "#f1f5f9";
   return (
     <ButtonBase
       onClick={onClick}

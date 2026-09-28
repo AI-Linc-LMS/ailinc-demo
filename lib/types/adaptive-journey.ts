@@ -102,6 +102,12 @@ export interface JourneyBoard {
     items: number;
     completionPct: number;
     startedAt: string | null;
+    /** Subject palette, sent by the API so the course hero matches the card that
+     *  opened it. Optional: a tenant not using subjects keeps the default. */
+    subjectLabel?: string | null;
+    subjectFrom?: string | null;
+    subjectTo?: string | null;
+    subjectIcon?: string | null;
   };
   progressCard: {
     pointsEarned: number;
@@ -139,7 +145,10 @@ export interface JourneyBoard {
       points: number;
       configured: boolean;
       status: "done" | "not_started" | "not_configured";
-    };
+      // Nullable, matching `calibration.card` above. A course need not have an
+      // interview configured, and the school edition configures none at all; the
+      // type said otherwise, which forced a placeholder card into every board.
+    } | null;
   };
   weeks: JourneyWeekView[];
 }

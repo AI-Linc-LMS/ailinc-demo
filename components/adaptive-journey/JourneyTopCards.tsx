@@ -130,6 +130,10 @@ function InterviewerCard({ interview, courseId }: { interview: JourneyBoard["int
   const { showToast } = useToast();
   const [busy, setBusy] = useState(false);
   const card = interview.card;
+  // Nothing configured, nothing to show. Matches how CalibrationCard is gated by
+  // its caller; the interview card used to render unconditionally, which is why
+  // it needed a placeholder in the seed.
+  if (!card) return null;
   const status = card.status;
   const configured = card.configured && card.templateId != null;
 
@@ -186,9 +190,9 @@ function InterviewerCard({ interview, courseId }: { interview: JourneyBoard["int
     >
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
         <Stack direction="row" spacing={1.25} alignItems="center">
-          <Box sx={{ p: "2px", borderRadius: "50%", background: "linear-gradient(135deg, #7c3aed 0%, #db2777 100%)" }}>
+          <Box sx={{ p: "2px", borderRadius: "50%", background: "linear-gradient(135deg, #1b6fd4 0%, #db2777 100%)" }}>
             <Box sx={{ width: 36, height: 36, borderRadius: "50%", bgcolor: "#fff", display: "grid", placeItems: "center" }}>
-              <Icon icon="mdi:star-four-points" width={18} color="#a855f7" />
+              <Icon icon="mdi:star-four-points" width={18} color="#4aa2f0" />
             </Box>
           </Box>
           <Box>
@@ -198,14 +202,14 @@ function InterviewerCard({ interview, courseId }: { interview: JourneyBoard["int
                 icon={<Icon icon="mdi:star-four-points" width={11} color="#fff" />}
                 label="LIVE"
                 size="small"
-                sx={{ height: 20, fontSize: "0.6rem", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #7c3aed, #db2777)", "& .MuiChip-icon": { color: "#fff", ml: 0.5 } }}
+                sx={{ height: 20, fontSize: "0.6rem", fontWeight: 800, color: "#fff", background: "linear-gradient(135deg, #1b6fd4, #db2777)", "& .MuiChip-icon": { color: "#fff", ml: 0.5 } }}
               />
               {status === "done" && <Chip label="DONE" size="small" sx={{ height: 20, fontSize: "0.6rem", fontWeight: 800, color: "#14532d", bgcolor: "#bbf7d0" }} />}
             </Stack>
             <Typography sx={{ fontSize: "0.76rem", color: "#64748b" }}>Practice rounds, on demand</Typography>
           </Box>
         </Stack>
-        <ButtonBase disabled={!configured} onClick={launch} sx={{ p: 0.5, borderRadius: "50%", color: "#a855f7", "&.Mui-disabled": { color: "#cbd5e1" } }}>
+        <ButtonBase disabled={!configured} onClick={launch} sx={{ p: 0.5, borderRadius: "50%", color: "#4aa2f0", "&.Mui-disabled": { color: "#cbd5e1" } }}>
           <Icon icon="mdi:arrow-right" width={22} />
         </ButtonBase>
       </Stack>
@@ -221,9 +225,9 @@ function InterviewerCard({ interview, courseId }: { interview: JourneyBoard["int
             key={t}
             sx={{
               px: 1.4, py: 0.5, borderRadius: 999, fontSize: "0.76rem", fontWeight: 700,
-              bgcolor: hot ? "#ede9fe" : "#f1f5f9",
-              color: hot ? "#6d28d9" : "#334155",
-              border: hot ? "1px solid #ddd6fe" : "1px solid #e2e8f0",
+              bgcolor: hot ? "#eff7ff" : "#f1f5f9",
+              color: hot ? "#13498c" : "#334155",
+              border: hot ? "1px solid #d9ecfe" : "1px solid #e2e8f0",
             }}
           >
             {t}
@@ -237,7 +241,7 @@ function InterviewerCard({ interview, courseId }: { interview: JourneyBoard["int
           onClick={launch}
           sx={{
             flex: 1, py: 1.15, borderRadius: 2.5, fontWeight: 800, fontSize: "0.88rem", color: "white",
-            gap: 0.75, background: configured ? "linear-gradient(135deg, #7c3aed 0%, #db2777 100%)" : "#cbd5e1",
+            gap: 0.75, background: configured ? "linear-gradient(135deg, #1b6fd4 0%, #db2777 100%)" : "#cbd5e1",
             boxShadow: configured ? "0 12px 26px -12px rgba(124,58,237,0.6)" : "none",
           }}
         >
