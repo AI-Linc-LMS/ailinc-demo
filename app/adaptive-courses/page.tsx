@@ -118,7 +118,7 @@ export default function AdaptiveCourseListPage() {
       <ModulePageHeader
         eyebrow="Learn"
         title="Courses"
-        description="AI-personalised courses that adapt to your level in real time - practice, get instant feedback, and level up."
+        description="Your subjects for this term. Each one works out what you already know and gives you the next thing to try."
         accent="brand"
         icon="mdi:book-education-outline"
         action={
