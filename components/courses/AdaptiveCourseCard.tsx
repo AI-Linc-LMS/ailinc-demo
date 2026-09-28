@@ -96,9 +96,12 @@ export function AdaptiveCourseCard({
 
       {/* Meta pinned to the card bottom so it aligns across every card. */}
       <Box sx={{ display: "flex", gap: 1.5, columnGap: 2, mt: "auto", pt: 2, flexWrap: "wrap" }}>
-        <Metric icon="mdi:view-module-outline" label="modules" value={course.module_count} />
-        <Metric icon="mdi:file-tree-outline" label="submodules" value={course.submodule_count} />
-        <Metric icon="mdi:book-open-variant" label="articles" value={course.article_count} />
+        {/* "modules" and "submodules" are the API's words, not a child's. A subject
+            is made of chapters, and a chapter is made of lessons. The `course.*`
+            fields keep their names because they are the backend contract. */}
+        <Metric icon="mdi:view-module-outline" label="chapters" value={course.module_count} />
+        <Metric icon="mdi:file-tree-outline" label="lessons" value={course.submodule_count} />
+        <Metric icon="mdi:book-open-variant" label="to read" value={course.article_count} />
         <Metric icon="mdi:tune-vertical" label="quizzes" value={course.quiz_count} />
         {(course.coding_count ?? 0) > 0 && <Metric icon="mdi:robot-happy-outline" label="coding" value={course.coding_count ?? 0} />}
         {(course.video_count ?? 0) > 0 && <Metric icon="mdi:play-circle-outline" label="videos" value={course.video_count ?? 0} />}

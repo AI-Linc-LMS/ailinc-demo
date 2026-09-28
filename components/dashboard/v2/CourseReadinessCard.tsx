@@ -7,11 +7,23 @@ import { AnimatedRing } from "@/components/scorecard/shared";
 import type { DashboardCourse } from "@/lib/types/dashboard";
 import { BAND_STYLE, SignalBar } from "./parts";
 
+/**
+ * Four signals, renamed for the reader.
+ *
+ * "Curriculum Coverage", "Practice Precision", "Applied Craft" and "Clutch
+ * Performance" are consultancy language. They were on a dashboard a twelve year
+ * old opens every morning, and none of them says what it measures to somebody who
+ * has not read a product brief. The `key` values are untouched: they are the API
+ * contract, and only the words on screen changed.
+ *
+ * The rule used for each one: say the thing the number counts, in words a child
+ * would use out loud.
+ */
 const SIGNALS: { key: "coverage" | "precision" | "craft" | "clutch"; icon: string; label: string; sub: string }[] = [
-  { key: "coverage", icon: "mdi:book-open-variant", label: "Curriculum Coverage", sub: "topics & skills completed" },
-  { key: "precision", icon: "mdi:target", label: "Practice Precision", sub: "accuracy in quizzes & drills" },
-  { key: "craft", icon: "mdi:code-tags", label: "Applied Craft", sub: "hands-on coding expertise" },
-  { key: "clutch", icon: "mdi:trophy-variant", label: "Clutch Performance", sub: "assessments & interviews" },
+  { key: "coverage", icon: "mdi:book-open-variant", label: "Topics finished", sub: "how much of the subject you have done" },
+  { key: "precision", icon: "mdi:target", label: "Answers you get right", sub: "in quizzes and practice" },
+  { key: "craft", icon: "mdi:code-tags", label: "Hands-on practice", sub: "things you made or solved yourself" },
+  { key: "clutch", icon: "mdi:trophy-variant", label: "How you do in tests", sub: "when it counts" },
 ];
 
 export function CourseReadinessCard({
@@ -37,10 +49,10 @@ export function CourseReadinessCard({
           <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1, #4aa2f0)" }}>
             <Icon icon="mdi:target-variant" width={18} />
           </Box>
-          <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>Course readiness</Typography>
+          <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>How you are getting on</Typography>
         </Stack>
         <Typography sx={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.55)", display: { xs: "none", sm: "block" }, maxWidth: 240, textAlign: "right" }}>
-          Four signals of how prepared you are in each course
+          Four things that show how you are getting on in each subject
         </Typography>
       </Stack>
 

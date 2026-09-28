@@ -37,7 +37,7 @@ export function CommunityHighlightsPanel() {
 
   return (
     <ModulePanel>
-      <ModuleHeader icon="mdi:forum-outline" title="Community highlights" gradient={GRADIENT} onViewAll={() => router.push("/community")} />
+      <ModuleHeader icon="mdi:forum-outline" title="From your class group" gradient={GRADIENT} onViewAll={() => router.push("/community")} />
       {items == null ? (
         <ModuleRowsSkeleton rows={3} />
       ) : items.length === 0 ? (

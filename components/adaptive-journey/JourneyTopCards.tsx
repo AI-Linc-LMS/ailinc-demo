@@ -53,9 +53,9 @@ function CalibrationCard({ calibration, courseId }: { calibration: JourneyBoard[
   const chip = CALIB_STATUS_CHIP[status] ?? CALIB_STATUS_CHIP.not_configured;
 
   let ctaLabel = "Start self-proctored assessment →";
-  if (status === "done") ctaLabel = "View calibration results →";
-  else if (status === "generating") ctaLabel = "Calibration is being prepared…";
-  else if (status === "not_configured") ctaLabel = "Calibration not set up yet";
+  if (status === "done") ctaLabel = "See how your warm-up went →";
+  else if (status === "generating") ctaLabel = "Getting your warm-up quiz ready…";
+  else if (status === "not_configured") ctaLabel = "No warm-up quiz yet";
 
   return (
     <Box

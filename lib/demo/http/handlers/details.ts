@@ -34,9 +34,9 @@ import { seededInt, seededPick } from "../../random";
 const MODULE = "details";
 
 const COHORTS = [
-  { id: 11, name: "Autumn 2026 — Full-Stack", courseIds: [201], size: 28, capacity: 35, status: "active" },
-  { id: 12, name: "Autumn 2026 — Interview Prep", courseIds: [203], size: 22, capacity: 30, status: "active" },
-  { id: 13, name: "Spring 2026 — Full-Stack", courseIds: [201], size: 24, capacity: 30, status: "completed" },
+  { id: 11, name: "Grade 7B", courseIds: [301], size: 28, capacity: 35, status: "active" },
+  { id: 12, name: "Grade 7A", courseIds: [302], size: 22, capacity: 30, status: "active" },
+  { id: 13, name: "Grade 8A", courseIds: [301], size: 24, capacity: 30, status: "completed" },
 ];
 
 function membersOf(cohortId: number, size: number): DemoPerson[] {

@@ -345,8 +345,8 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
             </Stack>
             <Typography sx={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.8)", mt: 0.25, lineHeight: 1.45 }}>
               {c.fieldTier
-                ? "Based on your calibration baseline, quizzes start at the right difficulty and articles open at your reading tier. Retake the calibration anytime to recalibrate."
-                : "Complete the calibration assessment and the course retunes itself - quizzes start at the right difficulty and articles open at your reading tier."}
+                ? "Your warm-up quiz told us where to start, so questions come out at about the right level and lessons are written the way you read best. You can do the warm-up again whenever you like."
+                : "Do the warm-up quiz and this subject sets itself up for you: questions at about the right level, and lessons written the way you read best."}
             </Typography>
           </Box>
         </Stack>

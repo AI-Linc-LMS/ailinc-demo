@@ -188,7 +188,7 @@ function toApi(s: DemoSession) {
     has_recording: past,
     course_detail: course ? { id: course.id, title: course.title } : null,
     adaptive_course_detail: course ? { id: course.id, title: course.title } : null,
-    cohort_detail: { id: 11, name: "Autumn 2026 — Full-Stack" },
+    cohort_detail: { id: 11, name: "Grade 7B" },
     instructor: s.instructor,
     attendance_count: seededInt(`att:${s.id}`, 28, 74),
     reminder_enabled: remindersOn().includes(s.id),

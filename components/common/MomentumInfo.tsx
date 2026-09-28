@@ -27,7 +27,7 @@ export function MomentumInfo({ info, size = 15, color = "#94a3b8" }: { info: Mom
       <IconButton
         size="small"
         onClick={open}
-        aria-label="How momentum is calculated"
+        aria-label="How your effort score works"
         sx={{ p: 0.2, color, "&:hover": { color: "#f59e0b", bgcolor: "transparent" } }}
       >
         <Icon icon="mdi:information-outline" width={size} />

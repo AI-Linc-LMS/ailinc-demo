@@ -20,29 +20,48 @@
 
 import type { TourStep } from "@/components/community/TourProvider";
 
+/**
+ * The student tour.
+ *
+ * Rewritten twice over for the school edition. The narration is written for an
+ * eleven year old, which mostly means saying what a thing is FOR in the words a
+ * child would use, and never naming a feature the sidebar does not name.
+ *
+ * It also had to be repointed. It walked to /adaptive-courses/201/journey and
+ * /adaptive-courses/201/submodule/5009, and neither exists any more: the school
+ * catalogue renumbered courses to 301-306 and topics to the 6000 range, so the
+ * tour was leading every visitor to two dead routes. Three stops were removed
+ * outright - mock interviews, jobs and the CV builder - because those modules are
+ * switched off for a school and the tour was the only thing still linking to them.
+ *
+ * Ids are written as literals rather than imported from the seed on purpose: a
+ * tour step is content, and importing the catalogue here would make the narration
+ * depend on whatever order the seed happens to be in. They are checked by a test
+ * instead, so a renumbering fails loudly rather than silently walking to a 404.
+ */
 const STUDENT_TOUR: TourStep[] = [
   {
     route: "/dashboard",
-    title: "Welcome to AI Linc",
+    title: "Hello, and welcome",
     narration:
-      "This is the learner's view. In the next two minutes I will walk you through every module: how a course adapts to you, how practice is scored, and how it all ends in being job-ready.",
+      "This is what your pupils see when they sign in. In the next two minutes I will show you every part of it: where their lessons live, how the quizzes work out what they know, and where their teacher sees how they are getting on.",
     icon: "mdi:hand-wave-outline",
-    color: "#a78bfa",
+    color: "#4aa2f0",
   },
   {
     targetId: "dash-briefing",
-    title: "Your AI briefing",
+    title: "What to do today",
     narration:
-      "Every morning this reads your actual progress and tells you the single most useful thing to do next. Not a motivational message — a specific lesson, chosen because of where you are weakest.",
+      "Every morning this looks at what a child has actually done and picks the one thing worth doing next. Not a cheerful message: a particular lesson, chosen because that is where they are struggling.",
     placement: "bottom",
-    icon: "mdi:robot-happy-outline",
-    color: "#7c3aed",
+    icon: "mdi:white-balance-sunny",
+    color: "#1b6fd4",
   },
   {
     targetId: "dash-stats",
-    title: "Points, streak and rank",
+    title: "Points, streaks and where they are in the class",
     narration:
-      "Points come from finishing work, and they decay the longer you take, so speed is rewarded but never at the cost of correctness. Your streak and your standing in the cohort sit alongside them.",
+      "Points come from finishing work. A streak counts the days in a row they have done something. Both are there because a twelve year old will come back for a streak long after they have stopped caring about a progress bar.",
     placement: "bottom",
     icon: "mdi:lightning-bolt",
     color: "#f59e0b",
@@ -50,79 +69,49 @@ const STUDENT_TOUR: TourStep[] = [
   {
     route: "/adaptive-courses",
     targetId: "adaptive-grid",
-    title: "Courses",
+    title: "Their subjects",
     narration:
-      "Your courses live here. Each one is a week-by-week journey that adapts to you, and lessons can be re-rendered at four reading levels, from plain English to whitepaper — so the same material works whether you are new to it or revising it.",
+      "Maths, Science, English, Social Studies, Computing and Art. Each subject has a colour and a picture, so a child finds the right one by recognising it rather than by reading six titles.",
     placement: "right",
     icon: "mdi:book-education-outline",
-    color: "#6366f1",
+    color: "#14b8a6",
   },
   {
-    route: "/adaptive-courses/201/journey",
+    route: "/adaptive-courses/301/journey",
     targetId: "journey-board",
-    title: "Quizzes that actually adapt",
+    title: "Quizzes that follow the child",
     narration:
-      "Inside every topic is a quiz that steers. Answer well and the next question gets harder; miss one and it steps back. It keeps a confidence estimate per skill and stops as soon as it is sure of your level, rather than after a fixed number of questions.",
+      "Inside each topic is a quiz that adjusts. Get one right and the next is harder; get one wrong and it steps back and tries an easier way in. It stops when it knows where they are, instead of marching through twenty questions regardless.",
     placement: "right",
     icon: "mdi:comment-question-outline",
-    color: "#a855f7",
+    color: "#4aa2f0",
   },
   {
-    route: "/adaptive-courses/201/submodule/5009",
+    route: "/adaptive-courses/305/submodule/6028",
     targetId: "submodule-body",
-    title: "A real coding workspace",
+    title: "Writing real code",
     narration:
-      "Coding problems run your code against real test cases, show you exactly which one failed and what it returned, and give layered hints — a nudge first, the actual mechanism only if you ask twice.",
+      "In Computing they write a real program and it really runs. If it is wrong, they see exactly which test failed and what their code gave back. Hints come one at a time: a nudge first, and the answer only if they ask again.",
     placement: "right",
     icon: "mdi:code-braces",
-    color: "#f97316",
+    color: "#818cf8",
   },
   {
     route: "/assessments",
     targetId: "assessments-grid",
-    title: "Assessments",
+    title: "Tests",
     narration:
-      "Formal papers, timed, and proctored when the institution needs them to be. Results break down by section so you can see which part of the syllabus let you down.",
+      "Proper papers, timed, set by the teacher. Results are broken down section by section, so a child can see it was fractions that let them down rather than just seeing a number.",
     placement: "right",
     icon: "mdi:clipboard-text-clock-outline",
     color: "#0ea5e9",
   },
   {
-    route: "/mock-interview",
-    targetId: "mock-modes",
-    title: "AI mock interviews",
-    narration:
-      "A voice conversation with an interviewer that follows up on your answers rather than reading from a list, and scores communication as well as correctness. The feedback tells you why, not just what.",
-    placement: "right",
-    icon: "mdi:account-voice",
-    color: "#ec4899",
-  },
-  {
-    route: "/jobs-v2",
-    targetId: "jobs-tabs",
-    title: "Jobs",
-    narration:
-      "Roles curated for this institution's students, with eligibility already checked against your profile, so you are not applying into a wall.",
-    placement: "right",
-    icon: "mdi:briefcase-outline",
-    color: "#10b981",
-  },
-  {
-    route: "/resume",
-    targetId: "resume-hero",
-    title: "Resume builder",
-    narration:
-      "Builds from the profile and the work you have actually completed, then scores it against a job description so you can see what a screening tool would see.",
-    placement: "right",
-    icon: "mdi:file-document-edit-outline",
-    color: "#14b8a6",
-  },
-  {
     route: "/live-sessions",
     targetId: "live-tabs",
-    title: "Live sessions",
+    title: "Live classes",
     narration:
-      "Scheduled classes with your cohort. Attendance is automatic, and recordings, transcripts and AI summaries attach themselves afterwards, so missing one is recoverable.",
+      "Lessons with their teacher and their class. Attendance is taken on its own, and the recording is waiting afterwards, so a child who was off sick can catch up without asking anyone.",
     placement: "right",
     icon: "mdi:video-outline",
     color: "#3b82f6",
@@ -130,39 +119,30 @@ const STUDENT_TOUR: TourStep[] = [
   {
     route: "/community",
     targetId: "tour-filters",
-    title: "Community",
+    title: "Their class group",
     narration:
-      "Ask your cohort. Questions can carry a points bounty, which is the mechanism that gets them answered instead of sitting unread.",
+      "Where they ask the rest of the class. A question can carry points for whoever answers it well, which is the part that gets questions answered instead of ignored.",
     placement: "right",
     icon: "mdi:forum-outline",
-    color: "#8b5cf6",
+    color: "#e879f9",
   },
   {
     route: "/tickets",
     targetId: "tickets-tabs",
-    title: "Support",
+    title: "Getting help",
     narration:
-      "Raise anything from a broken video to a certificate spelling, and follow it through to resolution. It routes to your instructor or the administration automatically.",
+      "For when something is broken rather than hard: a video that will not play, a name spelled wrong on a certificate. It reaches the right person without the child having to know who that is.",
     placement: "right",
     icon: "mdi:lifebuoy",
     color: "#64748b",
   },
   {
-    route: "/user/scorecard",
-    targetId: "scorecard-body",
-    title: "The point of all of it",
-    narration:
-      "Everything you do feeds a scorecard: skills, consistency, assessment and interview performance, benchmarked against your cohort. That is the artefact an employer can actually read.",
-    icon: "mdi:chart-box-outline",
-    color: "#22c55e",
-  },
-  {
     route: "/dashboard",
-    title: "Explore freely",
+    title: "Have a look around",
     narration:
-      "Every module is switched on and filled with data. Click anything. The question mark in any page header explains that page in detail, and the Guide button up top restarts this tour.",
+      "Everything is switched on and full of real work, so click anything. The question mark on any page explains that page, and the Guide button at the top starts this tour again.",
     icon: "mdi:compass-outline",
-    color: "#a78bfa",
+    color: "#4aa2f0",
   },
 ];
 

@@ -339,7 +339,7 @@ const SEED_JOBS: readonly JobSeed[] = [
     is_published: true,
     createdDaysAgo: 14,
     deadlineInDays: 20,
-    courseIds: [201],
+    courseIds: [301],
     colleges: [
       { id: 3, college_name: "Delhi Technological University", department: "Information Technology", batch: "2026" },
     ],
@@ -476,7 +476,7 @@ const SEED_JOBS: readonly JobSeed[] = [
     is_published: true,
     createdDaysAgo: 40,
     deadlineInDays: -4,
-    courseIds: [203],
+    courseIds: [302],
     colleges: [
       { id: 8, college_name: "Indian Institute of Technology, Bombay", department: "Computer Science", batch: "2026" },
       { id: 9, college_name: "PES University", department: "Computer Science", batch: "2026" },

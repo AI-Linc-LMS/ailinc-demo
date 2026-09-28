@@ -105,9 +105,9 @@ function atRiskRows() {
 }
 
 const COHORTS = [
-  { id: 11, name: "Autumn 2026 — Full-Stack", status: "active", members: 28, capacity: 35 },
-  { id: 12, name: "Autumn 2026 — Interview Prep", status: "active", members: 22, capacity: 30 },
-  { id: 13, name: "Spring 2026 — Full-Stack", status: "completed", members: 24, capacity: 30 },
+  { id: 11, name: "Grade 7B", status: "active", members: 28, capacity: 35 },
+  { id: 12, name: "Grade 7A", status: "active", members: 22, capacity: 30 },
+  { id: 13, name: "Grade 8A", status: "completed", members: 24, capacity: 30 },
 ];
 
 /**
@@ -258,7 +258,7 @@ const EMAIL_JOBS: EmailJobSeed[] = [
   },
   {
     taskId: "eml-51c9b8",
-    subject: "Certificate ready: Full-Stack Web Development",
+    subject: "Certificate ready: Fractions, Decimals and Shapes",
     taskName: "Certificate issued",
     status: "failed",
     daysAgo: 19,
@@ -271,14 +271,14 @@ const EMAIL_JOBS: EmailJobSeed[] = [
 const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
   {
     taskId: "aeml-2d41f7",
-    subject: "Mid-Programme Assessment opens Monday 10:00 AM",
+    subject: "Mathematics half-yearly paper opens Monday 10:00 AM",
     taskName: "Assessment invitation",
     status: "completed",
     daysAgo: 8,
     recipients: 28,
     failed: 0,
     assessmentId: 901,
-    assessmentTitle: "Full-Stack Engineering — Mid-Programme Assessment",
+    assessmentTitle: "Mathematics: Half-Yearly Paper",
     body: "You have 90 minutes and one attempt. Run the device check before you start — it takes about a minute.",
   },
   {
@@ -295,14 +295,14 @@ const ASSESSMENT_EMAIL_JOBS: EmailJobSeed[] = [
   },
   {
     taskId: "aeml-4a6b19",
-    subject: "You have not started the Mid-Programme Assessment yet",
+    subject: "You have not started the Mathematics paper yet",
     taskName: "Non-starter reminder",
     status: "failed",
     daysAgo: 5,
     recipients: 6,
     failed: 2,
     assessmentId: 901,
-    assessmentTitle: "Full-Stack Engineering — Mid-Programme Assessment",
+    assessmentTitle: "Mathematics: Half-Yearly Paper",
     body: "The window closes Sunday at midnight. If something is blocking you, reply to this email.",
   },
 ];
@@ -901,7 +901,7 @@ defineRoutes(MODULE, {
         Medium: { total: 6, completed: 4, average_score: 70 },
         Hard: { total: 2, completed: 1, average_score: 61 },
       },
-      topic_breakdown: ["Backend Engineering", "Algorithms", "Full-Stack Engineering"].map((topic) => {
+      topic_breakdown: ["Mathematics", "Science", "English"].map((topic) => {
         const inTopic = rows.filter((r) => r.topic === topic);
         const done = inTopic.filter((r) => r.status === "completed");
         return {
@@ -1027,7 +1027,7 @@ function adminMockInterviews() {
         "Data structures — arrays, hashing and complexity",
         "Full-stack — end-to-end feature design",
       ]),
-      topic: seededPick(`mit:${p.id}`, ["Backend Engineering", "Algorithms", "Full-Stack Engineering"]),
+      topic: seededPick(`mit:${p.id}`, ["Mathematics", "Science", "English"]),
       difficulty: seededPick(`mid:${p.id}`, ["Easy", "Medium", "Hard"]),
       status: i < 9 ? "completed" : "scheduled",
       score: i < 9 ? seededInt(`mis:${p.id}`, 48, 92) : null,

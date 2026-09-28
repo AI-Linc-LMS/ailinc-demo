@@ -66,7 +66,7 @@ export function UpcomingAssessmentsPanel() {
 
   return (
     <ModulePanel>
-      <ModuleHeader icon="mdi:clipboard-text-clock-outline" title="Assessments" gradient={GRADIENT} onViewAll={() => router.push("/assessments")} />
+      <ModuleHeader icon="mdi:clipboard-text-clock-outline" title="Tests coming up" gradient={GRADIENT} onViewAll={() => router.push("/assessments")} />
       {items == null ? (
         <ModuleRowsSkeleton rows={2} />
       ) : items.length === 0 ? (

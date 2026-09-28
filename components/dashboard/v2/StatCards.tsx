@@ -59,7 +59,7 @@ export function StatCards({
     cards.push(
       <StatBox
         key="rank"
-        label="Cohort rank"
+        label="Class rank"
         value={`#${a.cohortRank.bestRank}`}
         sub={rankDelta > 0 ? `▲ +${rankDelta} this week` : rankDelta < 0 ? `▼ ${rankDelta} this week` : "holding steady"}
         subColor={rankDelta > 0 ? "#15803d" : rankDelta < 0 ? "#b91c1c" : "#94a3b8"}
@@ -72,18 +72,18 @@ export function StatCards({
   cards.push(
     <StatBox
       key="momentum"
-      label="Momentum"
+      label="Effort score"
       value={<CountUp value={a.momentum} />}
-      sub="of 100"
+      sub="out of 100"
       icon="mdi:chart-line-variant"
       accent="#f59e0b"
       info={<MomentumInfo info={a.momentumInfo} size={13} />}
     />,
     <StatBox
       key="ontime"
-      label="On-time rate"
+      label="Handed in on time"
       value={a.onTimeRate == null ? "-" : `${Math.round(a.onTimeRate * 100)}%`}
-      sub={a.onTimeRate === 1 ? "no penalties" : a.onTimeRate == null ? "no data yet" : "keep it up"}
+      sub={a.onTimeRate === 1 ? "nothing late" : a.onTimeRate == null ? "no data yet" : "keep it up"}
       subColor={a.onTimeRate === 1 ? "#15803d" : "#94a3b8"}
       icon="mdi:check-circle-outline"
       accent="#22c55e"

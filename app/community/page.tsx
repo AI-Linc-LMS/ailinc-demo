@@ -681,7 +681,7 @@ export default function CommunityPage() {
       <ModulePageHeader
         eyebrow="Engage"
         title="Community"
-        description="Ask questions, share wins, and connect with peers across your cohort in the forum."
+        description="Ask your class a question, help somebody out, and show what you have made."
         accent="emerald"
         icon="mdi:forum"
         action={

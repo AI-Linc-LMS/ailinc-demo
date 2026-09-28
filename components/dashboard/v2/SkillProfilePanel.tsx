@@ -22,7 +22,7 @@ import { PanelCard } from "./parts";
  */
 const SKILL_STYLE = {
   strong: { color: "#15803d", bg: "#dcfce7", bar: "#22c55e", label: "Strong" },
-  emerging: { color: "#96610a", bg: "#fff8e6", bar: "#f59e0b", label: "Emerging" },
+  emerging: { color: "#96610a", bg: "#fff8e6", bar: "#f59e0b", label: "Getting there" },
 };
 
 export function SkillProfilePanel({
@@ -48,13 +48,13 @@ export function SkillProfilePanel({
           </Box>
           <Box>
             <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: 0.6, color: "#1b6fd4" }}>
-              SKILL LEVEL{tier ? ` · ${tier}` : ""}
+              YOUR LEVEL{tier ? ` · ${tier}` : ""}
             </Typography>
-            <Typography sx={{ fontWeight: 800, color: "#0f172a", fontSize: "0.95rem", lineHeight: 1.1 }}>Your Skill Profile</Typography>
+            <Typography sx={{ fontWeight: 800, color: "#0f172a", fontSize: "0.95rem", lineHeight: 1.1 }}>What you are good at</Typography>
           </Box>
         </Stack>
         <ButtonBase onClick={() => router.push(`/adaptive-courses/${active.id}`)} sx={{ fontSize: "0.74rem", fontWeight: 700, color: "#1b6fd4", flexShrink: 0, gap: 0.25 }}>
-          Full report →
+          See more →
         </ButtonBase>
       </Stack>
 
@@ -107,17 +107,17 @@ export function SkillProfilePanel({
       )}
 
       <Box sx={{ p: 1.5, borderRadius: 3, bgcolor: "#eff7ff", border: "1px solid #e3f0ff", mb: 1.5 }}>
-        <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#94a3b8" }}>MASTERY · THIS COURSE</Typography>
+        <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 0.5, color: "#94a3b8" }}>HOW WELL YOU KNOW THIS</Typography>
         <Stack direction="row" alignItems="baseline" justifyContent="space-between">
           {sp.mastery == null ? (
             <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", lineHeight: 1.1, color: "#94a3b8" }}>Not started yet</Typography>
           ) : (
             <Typography sx={{ fontWeight: 900, fontSize: "2.2rem", lineHeight: 1, color: "#6366f1" }}>{sp.mastery}%</Typography>
           )}
-          <Typography sx={{ fontSize: "0.72rem", color: "#94a3b8" }}>{sp.skillsTracked} skills tracked</Typography>
+          <Typography sx={{ fontSize: "0.72rem", color: "#94a3b8" }}>{sp.skillsTracked} skills we follow</Typography>
         </Stack>
         {crossCourseMastery != null && (
-          <Typography sx={{ fontSize: "0.72rem", color: "#94a3b8", mt: 0.5 }}>Across all courses: <b style={{ color: "#475569" }}>{crossCourseMastery}%</b></Typography>
+          <Typography sx={{ fontSize: "0.72rem", color: "#94a3b8", mt: 0.5 }}>Across all subjects: <b style={{ color: "#475569" }}>{crossCourseMastery}%</b></Typography>
         )}
       </Box>
 

@@ -848,7 +848,7 @@ const SEED_ATTEMPTS: Attempt[] = [
     id: 803,
     templateId: null,
     title: "Full-stack: end-to-end feature design",
-    topic: "Full-Stack Engineering",
+    topic: "Mathematics",
     subtopic: "Schema, API, interface, trade-offs",
     difficulty: "Medium",
     duration_minutes: 30,

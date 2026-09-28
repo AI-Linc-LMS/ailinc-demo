@@ -45,7 +45,7 @@ export function LiveSessionsPanel() {
 
   return (
     <ModulePanel>
-      <ModuleHeader icon="mdi:video-outline" title="Live sessions" gradient={GRADIENT} onViewAll={() => router.push("/live-sessions")} />
+      <ModuleHeader icon="mdi:video-outline" title="Live classes" gradient={GRADIENT} onViewAll={() => router.push("/live-sessions")} />
       {items == null ? (
         <ModuleRowsSkeleton rows={2} />
       ) : items.length === 0 ? (

@@ -53,7 +53,7 @@ export function AiBriefingHero({
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2} sx={{ mb: 1 }}>
           <Stack direction="row" spacing={0.75} alignItems="center">
             <Box sx={{ px: 1, py: 0.4, borderRadius: 999, fontSize: "0.66rem", fontWeight: 800, letterSpacing: 0.5, color: "white", bgcolor: "rgba(255,255,255,0.18)", display: "inline-flex", alignItems: "center", gap: 0.4 }}>
-              <Icon icon="mdi:star-four-points" width={12} /> YOUR AI BRIEFING
+              <Icon icon="mdi:star-four-points" width={12} /> TODAY'S PLAN
             </Box>
           </Stack>
           <Stack direction="row" spacing={1} alignItems="center" sx={{ flexShrink: 0 }}>
@@ -105,14 +105,14 @@ export function AiBriefingHero({
 
         <Stack direction={{ xs: "column", md: "row" }} spacing={1.5} sx={{ mt: 2.5 }}>
           <ActionCard
-            eyebrow="DO THIS WEEK"
+            eyebrow="THIS WEEK"
             title={briefing.thisWeek.focus}
             sub={briefing.thisWeek.course}
             icon="mdi:pin"
             onClick={() => go(briefing.focusRoute)}
           />
           <ActionCard
-            eyebrow="DO TODAY"
+            eyebrow="TODAY"
             title={briefing.today}
             sub={action0?.course}
             icon={ACTION_ICON[action0?.kind || "topic"] || "mdi:lightning-bolt"}
@@ -124,7 +124,7 @@ export function AiBriefingHero({
           onClick={() => go(briefing.focusRoute)}
           sx={{ mt: 2.5, px: 3, py: 1.25, borderRadius: 999, fontWeight: 800, fontSize: "0.95rem", color: "white", background: "linear-gradient(135deg, #4aa2f0 0%, #ec4899 100%)", gap: 0.75, boxShadow: "0 14px 34px -12px rgba(74,162,240,0.7)", "&:hover": { filter: "brightness(1.06)" } }}
         >
-          <Icon icon="mdi:timer-outline" width={18} /> Start this week&apos;s focus →
+          <Icon icon="mdi:timer-outline" width={18} /> Start this week →
         </ButtonBase>
       </Box>
     </Reveal>

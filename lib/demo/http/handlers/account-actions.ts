@@ -1072,9 +1072,9 @@ const BADGE_SEEDS: BadgeSeed[] = [
   },
   {
     id: 606,
-    name: "Full-Stack Graduate",
+    name: "Maths Star",
     slug: "full-stack-graduate",
-    description: "Completed every item in Full-Stack Web Development.",
+    description: "Finished every lesson in Fractions, Decimals and Shapes.",
     icon_slug: "mdi:school-outline",
     criteria_json: { type: "course_complete", course_id: 201 },
     points: 150,

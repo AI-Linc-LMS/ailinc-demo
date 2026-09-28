@@ -79,140 +79,95 @@ function baseProfile(person: DemoPerson): UserProfile {
 const STUDENT_PROFILE: UserProfile = {
   ...baseProfile(STUDENT_PERSONA),
   bio:
-    "Final-year computer science student at IIT Bombay. I build full-stack products and " +
-    "spend most weekends on machine-learning side projects. Currently preparing for " +
-    "backend and applied-ML roles.",
-  headline: "Final-year CS undergrad | Full-stack & ML | Open to SDE roles",
-  date_of_birth: "2004-03-14",
-  city: "Mumbai",
+    "I am in Grade 7 at AI Linc Schools. I like maths when it is puzzles, I am in the " +
+    "science club, and I am teaching myself to make a game on the computer. I play " +
+    "badminton on Saturdays.",
+  headline: "Grade 7 - Section B | Science club | Learning to code",
+  // Twelve years old. This profile belonged to a final-year CS undergraduate with
+  // an AWS certification and a LeetCode account, which was the most out-of-place
+  // page left once the rest of the demo became a school.
+  date_of_birth: "2014-03-14",
+  city: "Pune",
   state: "Maharashtra",
-  portfolio_website_url: "https://ananyarao.dev",
-  leetcode_url: "https://leetcode.com/ananyarao",
-  hackerrank_url: "https://www.hackerrank.com/ananyarao",
-  kaggle_url: "https://www.kaggle.com/ananyarao",
-  medium_url: "https://medium.com/@ananyarao",
-  social_links: {
-    linkedin: STUDENT_PERSONA.linkedin_url,
-    github: "https://github.com/ananyarao",
-    twitter: "https://x.com/ananyarao",
-  },
+  // A child has no portfolio site, no competitive-programming profile and no
+  // public writing. These keep the shape the API defines and are simply empty,
+  // which is what a real pupil's profile looks like too.
+  portfolio_website_url: "",
+  leetcode_url: "",
+  hackerrank_url: "",
+  kaggle_url: "",
+  medium_url: "",
+  social_links: {},
   skills: [
-    "Python",
-    "TypeScript",
-    "React",
-    "Node.js",
-    "PostgreSQL",
-    "Django",
-    "Docker",
-    "AWS",
-    "Pandas",
-    "scikit-learn",
-    "System Design",
-    "Data Structures & Algorithms",
+    "Fractions",
+    "Times tables",
+    "Reading aloud",
+    "Creative writing",
+    "Map reading",
+    "Scratch",
+    "Drawing",
+    "Badminton",
   ].map((name, i) => ({ id: `sk-${i + 1}`, name })),
   projects: [
     {
       id: "pr-1",
-      name: "Sahayak - campus support assistant",
+      name: "A volcano that actually erupted",
       description:
-        "Retrieval-augmented assistant that answers student queries from 4,000+ pages of " +
-        "institute circulars. Cut the helpdesk's repeat-question load by roughly 60%.",
-      technologies: ["Python", "FastAPI", "pgvector", "React"],
-      url: "https://github.com/ananyarao/sahayak",
-      start_date: ymd(daysAgo(240)),
-      end_date: ymd(daysAgo(90)),
-      current: false,
+        "Science club project with two friends. Baking soda and vinegar in a papier mache " +
+        "cone. We tried four different amounts to find which one gave the biggest eruption, " +
+        "and wrote down every result.",
+      technologies: ["Science club", "Group work"],
+      start_date: ymd(daysAgo(120)),
+      end_date: ymd(daysAgo(95)),
+      url: "",
     },
     {
       id: "pr-2",
-      name: "Ledgerly - expense splitting for hostels",
+      name: "Catch the Star game",
       description:
-        "Group expense tracker with settle-up optimisation that minimises the number of " +
-        "transfers. Used by 300+ students across three hostels.",
-      technologies: ["TypeScript", "Next.js", "PostgreSQL", "Prisma"],
-      url: "https://github.com/ananyarao/ledgerly",
-      start_date: ymd(daysAgo(400)),
-      end_date: ymd(daysAgo(250)),
-      current: false,
-    },
-    {
-      id: "pr-3",
-      name: "Signal - real-time crop disease detection",
-      description:
-        "Fine-tuned a vision model on 18k leaf images and shipped it as an offline-first " +
-        "mobile app for low-connectivity areas. 91% top-1 accuracy on the held-out set.",
-      technologies: ["PyTorch", "ONNX", "React Native"],
-      start_date: ymd(daysAgo(120)),
-      current: true,
+        "My first proper program. A star falls down the screen and you move a basket to " +
+        "catch it. It keeps score and gets faster the longer you play.",
+      technologies: ["Scratch", "Loops", "Variables"],
+      start_date: ymd(daysAgo(40)),
+      end_date: "",
+      url: "",
     },
   ],
-  experience: [
-    {
-      id: "ex-1",
-      company: "Zensar Technologies",
-      position: "Software Engineering Intern",
-      location: "Pune, India",
-      start_date: ymd(daysAgo(430)),
-      end_date: ymd(daysAgo(340)),
-      current: false,
-      description:
-        "Rebuilt the internal reporting pipeline on Airflow, taking a nightly job from " +
-        "3.5 hours to 22 minutes. Wrote the migration runbook the team still uses.",
-    },
-    {
-      id: "ex-2",
-      company: "AI Linc",
-      position: "Teaching Assistant - Data Structures",
-      location: "Mumbai, India",
-      start_date: ymd(daysAgo(300)),
-      current: true,
-      description:
-        "Run weekly lab sessions for 60 second-year students and grade assignments. " +
-        "Built an autograder that removed most of the manual marking.",
-    },
-  ],
+  experience: [],
   education: [
     {
       id: "ed-1",
-      institution: "Indian Institute of Technology, Bombay",
-      degree: "B.Tech",
-      field_of_study: "Computer Science and Engineering",
-      start_date: ymd(daysAgo(1200)),
-      end_date: ymd(daysAgo(-200)),
-      gpa: "8.7 / 10",
-      description: "Coursework: Operating Systems, Distributed Systems, Machine Learning, Databases.",
+      institution: "AI Linc Schools",
+      degree: "Grade 7",
+      field_of_study: "",
+      start_date: ymd(daysAgo(240)),
+      end_date: "",
+      gpa: "",
+      description: "Section B. Subjects: Maths, Science, English, Social Studies, Computing, Art.",
     },
   ],
   certifications: [
     {
       id: "ce-1",
-      name: "AWS Certified Cloud Practitioner",
-      issuing_organization: "Amazon Web Services",
-      issue_date: ymd(daysAgo(180)),
-      credential_id: "AWS-CCP-4471902",
-      credential_url: "https://aws.amazon.com/verification",
-    },
-    {
-      id: "ce-2",
-      name: "Full-Stack Web Development",
-      issuing_organization: "AI Linc",
+      name: "Fractions, Decimals and Shapes",
+      issuing_organization: "AI Linc Schools",
       issue_date: ymd(daysAgo(60)),
-      credential_id: "MIT-FSWD-2291",
+      credential_id: "AL-MATHS-2291",
+      credential_url: "",
     },
   ],
   achievements: [
     {
       id: "ac-1",
-      title: "Winner - AI Linc Annual Hackathon",
-      description: "First place out of 84 teams for an offline-first disaster-relief coordination app.",
-      date: ymd(daysAgo(75)),
-      organization: "AI Linc",
+      title: "Longest streak in Grade 7B",
+      description: "Did something on the platform 23 days in a row.",
+      date: ymd(daysAgo(2)),
     },
     {
       id: "ac-2",
-      title: "Global rank 412 - ICPC Regionals qualifier",
-      date: ymd(daysAgo(210)),
-      organization: "ICPC",
+      title: "Science club, volcano project",
+      description: "Best experiment write-up in the class this term.",
+      date: ymd(daysAgo(95)),
     },
   ],
 };

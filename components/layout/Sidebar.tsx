@@ -81,7 +81,7 @@ const STUDENT_SECTIONS: NavSection[] = [
   {
     id: "engage",
     labelKey: "navSection.engage",
-    label: "Engage",
+    label: "Together",
     icon: "mdi:account-group-outline",
     itemFeatures: ["live_sessions", "community_forum"],
   },
@@ -429,7 +429,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   // Regular (non-admin) navigation items
   const regularNavigationItems: NavigationItem[] = [
     {
-      label: "Dashboard",
+      label: "Home",
       labelKey: "nav.dashboard",
       path: "/dashboard",
       icon: "mdi:view-dashboard",
@@ -440,7 +440,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     // leads; the legacy structured catalogue follows. Labels stay feature-scoped via i18n so
     // a traditional-only tenant (no adaptive_quiz) still sees its catalogue as "Courses".
     {
-      label: "Courses",
+      label: "My Subjects",
       labelKey: "nav.adaptiveCourses",
       path: "/adaptive-courses",
       icon: "mdi:book-education-outline",
@@ -448,7 +448,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.adaptiveCourses",
     },
     {
-      label: "Courses",
+      label: "My Subjects",
       labelKey: "nav.courses",
       path: "/courses",
       icon: "mdi:book-open-variant",
@@ -456,7 +456,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.courses",
     },
     {
-      label: "Assessments",
+      label: "Tests",
       labelKey: "nav.assessments",
       path: "/assessments",
       icon: "mdi:file-document-edit",
@@ -491,7 +491,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       gateKey: "resume",
     },
     {
-      label: "Live Sessions",
+      label: "Live Classes",
       labelKey: "nav.liveSessions",
       path: "/live-sessions",
       icon: "mdi:video-box",
@@ -499,7 +499,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.liveSessions",
     },
     {
-      label: "Community",
+      label: "Class Group",
       labelKey: "nav.community",
       path: "/community",
       icon: "mdi:forum",
@@ -507,7 +507,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       descKey: "navDesc.community",
     },
     {
-      label: "Support",
+      label: "Get Help",
       labelKey: "nav.support",
       path: "/tickets",
       icon: "mdi:ticket-confirmation-outline",

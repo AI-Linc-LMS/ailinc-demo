@@ -77,11 +77,11 @@ function briefing() {
     .slice(0, 3);
 
   return {
-    headline: `You are ${overallProgress()}% through your programme and on a ${STUDENT_PERSONA.streak}-day streak.`,
+    headline: `You have finished ${overallProgress()}% of this year's work, ${STUDENT_PERSONA.streak} days in a row.`,
     lastWeek: `Last week you cleared ${seededInt("briefing:lastweek", 6, 12)} items and held your streak every day. ${strongest?.title ?? "Your strongest course"} moved the most.`,
     thisWeek: {
       focus: weakest
-        ? `Close the gap on ${weakest.title} - it is your lowest course at ${weakest.completion}%.`
+        ? `Close the gap on ${weakest.title} - it is your lowest subject at ${weakest.completion}%.`
         : "Keep your pace steady across all courses.",
       course: weakest?.title ?? "",
     },
@@ -94,7 +94,7 @@ function briefing() {
           course: weakest.title,
           percent: Math.max(20, weakest.completion - 8),
           fixSuggestion:
-            "Two 25-minute sessions this week would move this more than another pass over material you already know.",
+            "Two short goes at it this week will help more than going over things you can already do.",
           route: `/adaptive-courses/${weakest.id}`,
         }
       : null,
@@ -124,8 +124,8 @@ function scorecardPayload(full: boolean) {
     },
     overview: {
       student_name: STUDENT_PERSONA.full_name,
-      program_name: "Full-Stack Engineering Track",
-      cohort: "Autumn 2026",
+      program_name: "Grade 7",
+      cohort: "Grade 7B",
       current_week: 7,
       current_module: courses[0]?.title ?? "-",
       overall_performance_score: overallProgress(),
@@ -187,7 +187,7 @@ function scorecardPayload(full: boolean) {
       areas: weakest.map((s) => ({
         skill: s.skill,
         score: s.score,
-        recommendation: `Two focused sessions on ${s.skill} would move this more than another pass over material you already know.`,
+        recommendation: `Two short goes at ${s.skill} will help more than going over things you can already do.`,
       })),
     },
     performance_trends: {
@@ -222,17 +222,17 @@ function scorecardPayload(full: boolean) {
       cohort_average: 61,
       your_score: overallProgress(),
       percentile: myRank().percentile,
-      ahead_of: `${myRank().percentile}% of your cohort`,
+      ahead_of: `${myRank().percentile}% of your class`,
     },
     achievements: [
-      { title: "23-day streak", description: "Longest active streak in your cohort this month", earned_at: isoDaysAgo(0) },
+      { title: "23-day streak", description: "Longest streak in your class this month", earned_at: isoDaysAgo(0) },
       { title: "Diagnostic cleared", description: "Scored 76% on the DSA diagnostic", earned_at: isoDaysAgo(18) },
       { title: "First capstone milestone", description: "Shipped the module 2 project", earned_at: isoDaysAgo(30) },
     ],
     action_panel: {
       actions: weakest.slice(0, 2).map((s) => ({
         label: `Practise ${s.skill}`,
-        reason: `Your weakest dimension at ${s.score}%`,
+        reason: `Your trickiest one so far, at ${s.score}%`,
         route: "/adaptive-courses",
       })),
     },
@@ -305,7 +305,7 @@ function learnerDashboard(auth: DemoRequest["auth"]): LearnerDashboard {
     leaderboard: {
       me: myRank(),
       rows: leaderboardRows(10),
-      aiTip: `You are ${Math.max(1, leaderboardRows(3)[0].score - totalPoints())} points behind the top of your cohort. Two coding problems would close most of it.`,
+      aiTip: `You are ${Math.max(1, leaderboardRows(3)[0].score - totalPoints())} points behind the top of your class. Two more lessons would close most of it.`,
     },
     todayGoal: todayGoal(),
     briefing: briefing(),
@@ -371,7 +371,7 @@ defineRoutes(MODULE, {
         linkedin_url: person.linkedin_url,
         email: person.email,
         user_name: person.full_name,
-        course_name: "Full-Stack Web Development",
+        course_name: "Fractions, Decimals and Shapes",
       }));
   },
 
@@ -493,8 +493,8 @@ defineRoutes(MODULE, {
       },
       overview: {
         student_name: STUDENT_PERSONA.full_name,
-        program_name: "Full-Stack Engineering Track",
-        cohort: "Autumn 2026",
+        program_name: "Grade 7",
+        cohort: "Grade 7B",
         current_week: 7,
         current_module: courses[0]?.title ?? "-",
         overall_performance_score: overallProgress(),

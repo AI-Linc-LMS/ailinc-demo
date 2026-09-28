@@ -28,7 +28,7 @@ export function UpNextPanel({ items }: { items: CrossCourseUpNext[] }) {
       <SectionHeader
         icon="mdi:arrow-right-bold-box"
         title="Up Next"
-        subtitle="Across your courses"
+        subtitle="Across your subjects"
       />
       <Stack spacing={1}>
         {items.map((it) => {

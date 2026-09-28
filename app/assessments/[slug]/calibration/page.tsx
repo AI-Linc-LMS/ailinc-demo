@@ -43,7 +43,7 @@ function CalibrationTakeInner() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [title, setTitle] = useState("Calibration Assessment");
+  const [title, setTitle] = useState("Warm-up Quiz");
   const [sectionId, setSectionId] = useState<string | null>(null);
   const [mcqs, setMcqs] = useState<CalibMcq[]>([]);
   const [answers, setAnswers] = useState<Record<string, Letter>>({});
@@ -108,7 +108,7 @@ function CalibrationTakeInner() {
         }
         const section = (data.quizSection || [])[0];
         const list: CalibMcq[] = section?.mcqs || [];
-        setTitle(data.title || "Calibration Assessment");
+        setTitle(data.title || "Warm-up Quiz");
         setSectionId(section ? String(section.id) : null);
         setMcqs(list);
         setRemaining((Number(data.remaining_time) || Number(data.duration_minutes) || 45) * 60);
@@ -124,7 +124,7 @@ function CalibrationTakeInner() {
         }
       } catch (e) {
         const code = (e as { response?: { status?: number } })?.response?.status;
-        setError(code === 409 ? "You have already completed calibration." : "Couldn't start the calibration assessment.");
+        setError(code === 409 ? "You have already done the warm-up quiz." : "We could not start the warm-up quiz.");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -205,7 +205,7 @@ function CalibrationTakeInner() {
         // Fetch the "what we learned about you" profile (evaluation runs on submit).
         await loadResult();
       } catch {
-        setError("Couldn't submit your calibration. Please try again.");
+        setError("We could not send your answers. Please try again.");
       } finally {
         setSubmitting(false);
       }
@@ -261,7 +261,7 @@ function CalibrationTakeInner() {
           <Stack alignItems="center" spacing={1} sx={{ mb: 3 }}>
             <Icon icon="mdi:shield-check" width={44} color="#4ade80" />
             <Typography sx={{ fontWeight: 800, fontSize: "1.4rem", textAlign: "center" }}>
-              {ins ? ins.headline : "Calibration submitted"}
+              {ins ? ins.headline : "Warm-up quiz done"}
             </Typography>
             <Typography sx={{ color: "rgba(255,255,255,0.55)", fontSize: "0.82rem", textAlign: "center" }}>
               We don&apos;t show right or wrong answers - this is what we learned about you.
@@ -349,7 +349,7 @@ function CalibrationTakeInner() {
             <Icon icon="mdi:shield-lock" width={28} color="#a5b4fc" />
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.35rem" }}>
-            Calibration Assessment{fieldName ? ` · ${fieldName}` : ""}
+            Warm-up Quiz{fieldName ? ` · ${fieldName}` : ""}
           </Typography>
           <Typography sx={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
             This is a self-proctored assessment. When you begin, it goes full screen and your
@@ -390,7 +390,7 @@ function CalibrationTakeInner() {
             <Icon icon="mdi:shield-half-full" width={18} />
           </Box>
           <Box>
-            <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>Calibration Assessment{fieldName ? ` · ${fieldName}` : ""}</Typography>
+            <Typography sx={{ fontWeight: 800, fontSize: "0.95rem" }}>Warm-up Quiz{fieldName ? ` · ${fieldName}` : ""}</Typography>
             <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.5)" }}>Standardized · Non-adaptive · Same set for all learners</Typography>
           </Box>
         </Stack>
@@ -465,7 +465,7 @@ function CalibrationTakeInner() {
               <Button variant="contained" disabled={submitting} onClick={() => doSubmit(false)}
                 sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, bgcolor: "#16a34a", "&:hover": { bgcolor: "#15803d" } }}
                 endIcon={submitting ? <CircularProgress size={15} sx={{ color: "white" }} /> : <Icon icon="mdi:check" width={16} />}>
-                {submitting ? "Submitting…" : "Submit calibration"}
+                {submitting ? "Submitting…" : "Send my answers"}
               </Button>
             )}
           </Stack>

@@ -137,9 +137,9 @@ export default function AdaptiveCourseSubmodulePage() {
         if (cancelled) return;
         const resp = (e as { response?: { status?: number; data?: { locked?: boolean; detail?: string } } })?.response;
         if (resp?.status === 403 && resp?.data?.locked) {
-          setLocked(resp.data.detail || "Complete the calibration assessment first.");
+          setLocked(resp.data.detail || "Do the warm-up quiz first.");
         } else {
-          setError(e instanceof Error ? e.message : "Failed to load submodule.");
+          setError(e instanceof Error ? e.message : "We could not open this lesson.");
         }
       } finally {
         if (!cancelled) setLoading(false);

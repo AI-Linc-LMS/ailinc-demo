@@ -24,7 +24,7 @@ export function CertificatePanel({ course }: { course: DashboardCourse }) {
           {ready ? "Your certificate is ready 🎓" : `You're ${pct}% toward your certificate`}
         </Typography>
         <Typography sx={{ fontSize: "0.8rem", color: "#64748b", mt: 0.5 }}>
-          {ready ? "Open the course to download & share it." : `Complete ${threshold}% of the track to unlock your shareable certificate.`}
+          {ready ? "Open the subject to download and share it." : `Finish ${threshold}% of this subject to earn a certificate you can share.`}
         </Typography>
       </Box>
 
