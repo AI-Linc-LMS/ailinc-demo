@@ -13,6 +13,8 @@
 
 import { avatarFor } from "./avatar";
 import { INSTRUCTOR_PERSONA, FACULTY, type DemoPerson } from "./people";
+import { subjectAccent, subjectOf, type SubjectKey } from "./subjects";
+import { subjectCover } from "../illustrations/subjectCover";
 import { daysAhead, isoDaysAgo, isoDaysAhead } from "../clock";
 import { seededInt } from "../random";
 
@@ -46,6 +48,13 @@ export interface DemoModule {
 
 export interface DemoCourse {
   id: number;
+  /**
+   * The school subject. Drives the colour, the icon and the cover illustration
+   * through `lib/demo/db/subjects.ts`, so a course is the same colour on the
+   * dashboard, in the catalogue and on its own page by construction rather than
+   * by three surfaces agreeing to use the same hex.
+   */
+  subject: SubjectKey;
   title: string;
   subtitle: string;
   description: string;
@@ -89,71 +98,51 @@ export interface DemoCourse {
 }
 
 /**
- * Cover photographs, one per course.
+ * Cover art, drawn per subject.
  *
- * Every one was fetched and LOOKED AT before being written down, not picked by
- * guessing at a photo id: the React editor shot really is a React editor, the
- * server-rack shot really is a rack. A cover that turns out to be a beach is
- * worse than the gradient it replaced.
+ * This was a map of Unsplash photo ids, one per course, each one fetched and
+ * looked at before being written down. That care was right for a catalogue of
+ * five engineering courses and pointless here: there is no stock photograph of
+ * "Grade 7 fractions" that is not a posed picture of a child at a desk, which is
+ * both generic and a photograph of a minor.
  *
- * Unsplash's permanent `images.unsplash.com/photo-<id>` form, not the retired
- * `source.unsplash.com` redirector, and sized down at the CDN so a card pulls
- * roughly 30KB rather than a full-resolution original.
- *
- * These are the only remote images in the product besides the roster portraits.
- * `courseArt` below stays as the fallback and every consumer must use it on
- * error, so a blocked network degrades to the gradient rather than a broken
- * image frame.
+ * Covers are illustrations now, keyed on the SUBJECT rather than the course id,
+ * so a second Maths course gets the right cover without anyone adding a row. See
+ * `lib/demo/illustrations/subjectCover.ts`.
  */
-const COVERS: Record<number, string> = {
-  // A React component open in VS Code.
-  201: "photo-1633356122544-f134324a6cee",
-  // A hand holding a sticky note reading PYTHON, over a developer's desk.
-  202: "photo-1526379095098-d400fd0bf935",
-  // Dense charting on a laptop screen: the shape of algorithmic work.
-  203: "photo-1518186285589-2f7649de83e0",
-  // A patch panel of network cabling.
-  204: "photo-1544197150-b99a580bb7a8",
-  // Cabled server racks in a data centre.
-  205: "photo-1558494949-ef010cbdcc31",
-};
 
-/** The cover photo for a course, or "" when none is mapped. */
+/** The cover illustration for a course. */
 export function courseCover(courseId: number, width = 800): string {
-  const id = COVERS[courseId];
-  return id ? `https://images.unsplash.com/${id}?w=${width}&q=70&fm=jpg&fit=crop` : "";
+  const course = COURSES.find((c) => c.id === courseId);
+  // Width picks the variant rather than scaling: the wide one widens the plate
+  // around the drawing instead of cropping it, which is what a page header needs.
+  return course ? subjectCover(course.subject, width > 1000 ? "wide" : "card") : "";
 }
 
-/** Generated card art: a gradient plate with the course initials. Keeps the repo light and offline. */
-export function courseArt(course: { title: string; accent: [string, string] }): string {
-  const [from, to] = course.accent;
-  // Stopwords are dropped so "Python for Data Science" reads "PD", not "PF".
-  const STOPWORDS = new Set(["for", "and", "of", "with", "the", "to", "in", "on", "a", "an"]);
-  const initials = course.title
-    .split(/\s+/)
-    .filter((w) => /^[A-Za-z]/.test(w) && !STOPWORDS.has(w.toLowerCase()))
-    .slice(0, 2)
-    .map((w) => w[0].toUpperCase())
-    .join("");
-  const id = `ca${initials}${from.replace("#", "")}`;
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270">
-      <defs>
-        <linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="${from}"/>
-          <stop offset="100%" stop-color="${to}"/>
-        </linearGradient>
-      </defs>
-      <rect width="480" height="270" fill="url(#${id})"/>
-      <circle cx="410" cy="46" r="120" fill="#ffffff" opacity="0.07"/>
-      <circle cx="70" cy="240" r="90" fill="#ffffff" opacity="0.06"/>
-      <text x="40" y="168" font-family="Satoshi, 'Segoe UI', Helvetica, Arial, sans-serif"
-            font-size="96" font-weight="700" fill="#ffffff" opacity="0.92">${initials}</text>
-    </svg>`;
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg.replace(/\s+/g, " ").trim())}`;
+/**
+ * Card art for a course.
+ *
+ * Every consumer uses this as the fallback when a cover fails to load. It returns
+ * the subject illustration, so a failure degrades to the same picture rather than
+ * to initials on a gradient - and since both are inline data URIs now, there is
+ * nothing left that can fail.
+ *
+ * Still accepts the structural shape rather than a course, because the course
+ * builder calls it for a course that does not exist yet.
+ */
+export function courseArt(course: { title: string; accent: [string, string]; subject?: SubjectKey }): string {
+  return subjectCover(course.subject ?? "maths", "card");
 }
 
-let topicSeq = 5000;
+/**
+ * Topic ids start at 6000, not 5000.
+ *
+ * The authored curriculum in db/curriculum is keyed by topic id, and the tech
+ * courses used 5000-5069. Reusing those ids would have served a lesson on SQL
+ * NULL semantics inside "Adding and subtracting fractions" - the worst possible
+ * failure, because it looks like working content.
+ */
+let topicSeq = 6000;
 function topic(
   title: string,
   kinds: DemoTopic["kinds"],
@@ -172,283 +161,289 @@ type CourseSeed = Omit<DemoCourse, "completion">;
 
 const COURSE_SEEDS: readonly CourseSeed[] = [
   {
-    id: 201,
-    title: "Full-Stack Web Development",
-    subtitle: "React, Node and PostgreSQL, end to end",
+    id: 301,
+    subject: "maths",
+    title: "Fractions, Decimals and Shapes",
+    subtitle: "The number work Grade 7 is built on",
     description:
-      "Build and ship a production web application from an empty folder to a deployed URL. " +
-      "You will write the API, model the database, build the interface, secure it with real " +
-      "authentication, and put it behind CI - the same path a working engineer takes on their " +
-      "first week at a product company.",
-    slug: "full-stack-web-development",
-    difficulty: "Intermediate",
-    durationHours: 68,
-    tags: ["React", "Node.js", "PostgreSQL", "TypeScript", "REST"],
-    instructor: INSTRUCTOR_PERSONA,
-    enrolled: true,
-    accent: ["#6366f1", "#a855f7"],
-    dueInDays: null,
-    certificateThreshold: 70,
-    enrolledCount: 412,
-    rating: 4.7,
-    ratingCount: 186,
-    modules: [
-      courseModule(
-        "Foundations of the modern web",
-        "How a request actually travels, and why every layer exists.",
-        [
-          topic("The request lifecycle, end to end", ["article", "quiz"], 100),
-          topic("HTTP semantics that matter in practice", ["article", "quiz"], 100),
-          topic("Semantic HTML and the accessibility tree", ["article", "coding"], 100),
-          topic("CSS layout: flexbox and grid in anger", ["article", "coding"], 100),
-        ],
-      ),
-      courseModule(
-        "JavaScript and TypeScript in depth",
-        "The language mechanics that separate working code from correct code.",
-        [
-          topic("Closures, scope and the event loop", ["article", "quiz"], 100),
-          topic("Promises, async/await and error propagation", ["article", "coding"], 100),
-          topic("Typing real data: unions, guards and generics", ["article", "coding"], 100),
-          topic("Immutability and why state bugs hide there", ["article", "quiz"], 80),
-        ],
-      ),
-      courseModule(
-        "React that scales",
-        "Component design, state ownership and the rendering model.",
-        [
-          topic("The rendering model and reconciliation", ["article"], 100),
-          topic("State ownership: lifting, colocating, deriving", ["article", "coding"], 100),
-          topic("Effects, and the four times you actually need one", ["article", "quiz"], 75),
-          topic("Data fetching, caching and race conditions", ["article", "coding"], 40),
-          topic("Performance: memo, virtualisation, code splitting", ["article", "coding"], 0),
-        ],
-      ),
-      courseModule(
-        "APIs and data",
-        "Designing an interface other people can build against.",
-        [
-          topic("Designing a REST API you will not regret", ["article", "quiz"], 55),
-          topic("Relational modelling and normalisation", ["article", "coding"], 20),
-          topic("Indexes, query plans and the N+1 problem", ["article", "coding"], 0),
-          topic("Authentication, sessions and JWTs", ["article", "quiz"], 0),
-        ],
-      ),
-      courseModule(
-        "Shipping it",
-        "Everything between 'works locally' and 'works for users'.",
-        [
-          topic("Testing: unit, integration and what to skip", ["article", "coding"], 0),
-          topic("CI/CD and environment configuration", ["article"], 0),
-          topic("Observability: logs, traces and alerts", ["article", "quiz"], 0),
-          topic("Capstone: ship a full application", ["assignment"], 0),
-        ],
-      ),
-    ],
-  },
-  {
-    id: 202,
-    title: "Python for Data Science",
-    subtitle: "From pandas to a deployed model",
-    description:
-      "Work with data the way analysts and ML engineers do: load something messy, clean it, " +
-      "understand it, model it, and defend the result. Every module ends with a dataset that " +
-      "does not cooperate.",
-    slug: "python-for-data-science",
-    difficulty: "Intermediate",
-    durationHours: 54,
-    tags: ["Python", "pandas", "scikit-learn", "Statistics", "Visualisation"],
+      "Split things up, put them back together, and find out how much space a shape takes. " +
+      "Every topic starts with something you can draw, because a fraction you can picture is a " +
+      "fraction you can work with.",
+    slug: "fractions-decimals-and-shapes",
+    difficulty: "Beginner",
+    durationHours: 26,
+    tags: ["Grade 7", "Fractions", "Decimals", "Geometry"],
     instructor: FACULTY[0],
     enrolled: true,
-    accent: ["#0ea5e9", "#22d3ee"],
+    accent: subjectAccent("maths"),
     dueInDays: null,
     certificateThreshold: 70,
-    enrolledCount: 358,
-    rating: 4.8,
-    ratingCount: 141,
+    enrolledCount: 118,
+    rating: 4.6,
+    ratingCount: 74,
     modules: [
       courseModule(
-        "Python for working with data",
-        "The subset of the language you will actually use daily.",
+        "Numbers you can split",
+        "What a fraction really is, and how to add one to another without guessing.",
         [
-          topic("Comprehensions, generators and iterators", ["article", "coding"], 100),
-          topic("NumPy arrays and vectorised thinking", ["article", "coding"], 100),
-          topic("Reading messy files without losing your mind", ["article", "coding"], 100),
+          topic("Fractions on a number line", ["article", "quiz"], 100),
+          topic("Adding and subtracting fractions", ["article", "quiz"], 100),
+          topic("Multiplying and dividing fractions", ["article", "quiz"], 60),
         ],
       ),
       courseModule(
-        "pandas in practice",
-        "Reshaping, joining and aggregating real datasets.",
+        "Decimals and percentages",
+        "The same numbers wearing different clothes, and where you meet them.",
         [
-          topic("Indexing, selection and the SettingWithCopy trap", ["article", "coding"], 100),
-          topic("Group-by, pivot and window operations", ["article", "coding"], 70),
-          topic("Joins, and what to do about the rows that vanish", ["article", "quiz"], 45),
-          topic("Missing data: impute, drop, or model it", ["article", "coding"], 0),
+          topic("Decimals are fractions in disguise", ["article", "quiz"], 20),
+          topic("Percentages, discounts and marks", ["article", "quiz"], 0),
         ],
       ),
       courseModule(
-        "Statistics you cannot skip",
-        "Enough inference to know when a result means nothing.",
+        "Shapes and space",
+        "Measuring the world: angles, edges and the space inside them.",
         [
-          topic("Distributions and sampling", ["article", "quiz"], 30),
-          topic("Hypothesis testing and p-value misuse", ["article", "quiz"], 0),
-          topic("Correlation, causation and confounders", ["article"], 0),
-        ],
-      ),
-      courseModule(
-        "Machine learning foundations",
-        "Fit a model, then find out whether it generalises.",
-        [
-          topic("Train/test discipline and leakage", ["article", "coding"], 0),
-          topic("Regression and regularisation", ["article", "coding"], 0),
-          topic("Classification and the metric that fits the problem", ["article", "coding"], 0),
-          topic("Trees, forests and gradient boosting", ["article", "coding"], 0),
-          topic("Capstone: end-to-end prediction project", ["assignment"], 0),
+          topic("Angles and what triangles must obey", ["article", "quiz"], 0),
+          topic("Area and perimeter you can check", ["article", "assignment"], 0),
         ],
       ),
     ],
   },
   {
-    id: 203,
-    title: "Data Structures & Algorithms",
-    subtitle: "Interview-grade problem solving",
+    id: 302,
+    subject: "science",
+    title: "Matter, Motion and Living Things",
+    subtitle: "Why things are, move and grow",
     description:
-      "Pattern-first preparation for technical interviews. Rather than 500 unrelated problems, " +
-      "you learn the dozen patterns that generate them, and practise recognising which one a " +
-      "new question belongs to under time pressure.",
-    slug: "data-structures-and-algorithms",
-    difficulty: "Advanced",
-    durationHours: 72,
-    tags: ["Algorithms", "Problem Solving", "Interviews", "Complexity"],
+      "One year of science in three questions: what is everything made of, what makes it move, " +
+      "and what makes something alive. Each topic ends with an experiment you could actually run " +
+      "at a kitchen table.",
+    slug: "matter-motion-and-living-things",
+    difficulty: "Beginner",
+    durationHours: 28,
+    tags: ["Grade 7", "Physics", "Chemistry", "Biology"],
+    instructor: FACULTY[1],
+    enrolled: true,
+    accent: subjectAccent("science"),
+    dueInDays: null,
+    certificateThreshold: 70,
+    enrolledCount: 124,
+    rating: 4.8,
+    ratingCount: 91,
+    modules: [
+      courseModule(
+        "What everything is made of",
+        "Solids, liquids, gases, and what happens at the edges between them.",
+        [
+          topic("The three states of matter", ["article", "quiz"], 100),
+          topic("Melting, boiling and the energy behind them", ["article", "quiz"], 100),
+          topic("Mixtures, and how to pull them apart", ["article", "quiz"], 45),
+        ],
+      ),
+      courseModule(
+        "Forces and motion",
+        "Nothing moves or stops without a reason, and the reason has a name.",
+        [
+          topic("Push, pull and friction", ["article", "quiz"], 0),
+          topic("Speed, distance and time", ["article", "quiz"], 0),
+        ],
+      ),
+      courseModule(
+        "Living things",
+        "From one cell to a whole food chain.",
+        [
+          topic("Cells: the smallest living thing", ["article", "quiz"], 0),
+          topic("How plants make their own food", ["article", "quiz"], 0),
+          topic("Food chains and what happens when one link goes", ["article", "assignment"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 303,
+    subject: "english",
+    title: "Reading Closely, Writing Clearly",
+    subtitle: "Say what you mean, and catch what others mean",
+    description:
+      "Read a page and work out what it is really telling you, then write something a reader " +
+      "cannot misunderstand. Every writing task is short, and every one gets marked on whether " +
+      "it lands, not on how long it is.",
+    slug: "reading-closely-writing-clearly",
+    difficulty: "Beginner",
+    durationHours: 22,
+    tags: ["Grade 7", "Reading", "Writing", "Comprehension"],
+    instructor: FACULTY[2],
+    enrolled: true,
+    accent: subjectAccent("english"),
+    dueInDays: null,
+    certificateThreshold: 70,
+    enrolledCount: 121,
+    rating: 4.5,
+    ratingCount: 68,
+    modules: [
+      courseModule(
+        "Reading like a detective",
+        "The answer is on the page. Finding it is a skill you can practise.",
+        [
+          topic("Finding the main idea", ["article", "quiz"], 100),
+          topic("Reading between the lines", ["article", "quiz"], 30),
+          topic("What a character wants, and how you know", ["article", "quiz"], 0),
+        ],
+      ),
+      courseModule(
+        "Writing that carries",
+        "A paragraph that holds together, and an argument somebody might agree with.",
+        [
+          topic("Paragraphs that hold together", ["article", "assignment"], 0),
+          topic("Describing something so a reader sees it", ["article", "assignment"], 0),
+          topic("Making an argument, and being fair to the other side", ["article", "assignment"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 304,
+    subject: "social",
+    title: "Maps, Empires and Citizens",
+    subtitle: "Where we live, how we got here, and the rules we share",
+    description:
+      "Geography, history and civics as one story. Why people settled where they did, what " +
+      "happened when settlements grew into empires, and how a group of people decides anything " +
+      "at all.",
+    slug: "maps-empires-and-citizens",
+    difficulty: "Beginner",
+    durationHours: 24,
+    tags: ["Grade 7", "Geography", "History", "Civics"],
+    instructor: FACULTY[0],
+    enrolled: false,
+    accent: subjectAccent("social"),
+    dueInDays: null,
+    certificateThreshold: 70,
+    enrolledCount: 96,
+    rating: 4.4,
+    ratingCount: 52,
+    modules: [
+      courseModule(
+        "Reading the Earth",
+        "A map is an argument about what matters. Here is how to read one.",
+        [
+          topic("Maps, scale and what gets left out", ["article", "quiz"], 0),
+          topic("Climate, rivers and where people settle", ["article", "quiz"], 0),
+        ],
+      ),
+      courseModule(
+        "How we got here",
+        "The first cities, and what trade did to them.",
+        [
+          topic("The first cities and why they formed", ["article", "quiz"], 0),
+          topic("Empires, trade routes and the things that travelled", ["article", "quiz"], 0),
+        ],
+      ),
+      courseModule(
+        "Being a citizen",
+        "Rules, rights, and who gets to decide.",
+        [
+          topic("Rights, rules and the difference", ["article", "quiz"], 0),
+          topic("How a village governs itself", ["article", "assignment"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 305,
+    subject: "computing",
+    title: "Your First Programs",
+    subtitle: "Tell a computer exactly what to do",
+    description:
+      "Write real programs from the first lesson. A computer does precisely what you say and " +
+      "nothing you meant, which is frustrating for about a week and then becomes the most useful " +
+      "thing you know.",
+    slug: "your-first-programs",
+    difficulty: "Beginner",
+    durationHours: 30,
+    tags: ["Grade 7", "Programming", "Logic", "Problem solving"],
     instructor: INSTRUCTOR_PERSONA,
     enrolled: true,
-    accent: ["#f43f5e", "#f97316"],
-    dueInDays: null,
-    certificateThreshold: 75,
-    enrolledCount: 623,
-    rating: 4.9,
-    ratingCount: 297,
-    modules: [
-      courseModule(
-        "Complexity and correctness",
-        "Reasoning about cost before writing code.",
-        [
-          topic("Big-O, amortised cost and the constants that bite", ["article", "quiz"], 100),
-          topic("Proving a loop does what you think", ["article", "quiz"], 100),
-        ],
-      ),
-      courseModule(
-        "Arrays and strings",
-        "The two patterns behind most warm-up questions.",
-        [
-          topic("Two pointers", ["article", "coding"], 100),
-          topic("Sliding window", ["article", "coding"], 60),
-          topic("Prefix sums and difference arrays", ["article", "coding"], 0),
-        ],
-      ),
-      courseModule(
-        "Hashing, stacks and queues",
-        "Choosing the structure that makes the problem trivial.",
-        [
-          topic("Hash maps and frequency counting", ["article", "coding"], 0),
-          topic("Monotonic stacks", ["article", "coding"], 0),
-          topic("Deques and streaming maxima", ["article", "coding"], 0),
-        ],
-      ),
-      courseModule(
-        "Trees and graphs",
-        "Traversal as a default tool.",
-        [
-          topic("DFS and BFS as one idea", ["article", "coding"], 0),
-          topic("Binary search trees and balance", ["article", "coding"], 0),
-          topic("Topological sort and cycle detection", ["article", "coding"], 0),
-          topic("Shortest paths: BFS, Dijkstra", ["article", "coding"], 0),
-        ],
-      ),
-      courseModule(
-        "Dynamic programming",
-        "Finding the state, then the transition.",
-        [
-          topic("Memoisation to tabulation", ["article", "coding"], 0),
-          topic("Knapsack and subset patterns", ["article", "coding"], 0),
-          topic("Sequence DP: LIS, edit distance", ["article", "coding"], 0),
-          topic("Mock interview: two problems, 45 minutes", ["assignment"], 0),
-        ],
-      ),
-    ],
-  },
-  {
-    id: 204,
-    title: "Cloud Engineering with AWS",
-    subtitle: "Containers, pipelines and production",
-    description:
-      "Take an application you have written and make it survive contact with production: " +
-      "containerised, deployed, monitored, and cheap enough to keep running.",
-    slug: "cloud-engineering-with-aws",
-    difficulty: "Intermediate",
-    durationHours: 46,
-    tags: ["AWS", "Docker", "CI/CD", "Terraform", "Observability"],
-    instructor: FACULTY[1],
-    enrolled: false,
-    accent: ["#f59e0b", "#f43f5e"],
+    accent: subjectAccent("computing"),
     dueInDays: null,
     certificateThreshold: 70,
-    enrolledCount: 274,
-    rating: 4.6,
-    ratingCount: 98,
+    enrolledCount: 103,
+    rating: 4.9,
+    ratingCount: 87,
     modules: [
-      courseModule("Containers from first principles", "What an image actually is.", [
-        topic("Namespaces, layers and image size", ["article"], 0),
-        topic("Writing a Dockerfile that builds fast", ["article", "coding"], 0),
-      ]),
-      courseModule("Core AWS services", "The handful you will use on almost every project.", [
-        topic("IAM, and least privilege in practice", ["article", "quiz"], 0),
-        topic("Networking: VPC, subnets, security groups", ["article", "quiz"], 0),
-        topic("Compute: ECS, Lambda and when to choose which", ["article"], 0),
-        topic("Storage and databases: S3 and RDS", ["article", "quiz"], 0),
-      ]),
-      courseModule("Delivery and operations", "Deploying without holding your breath.", [
-        topic("Infrastructure as code with Terraform", ["article", "coding"], 0),
-        topic("Pipelines, rollbacks and blue/green", ["article"], 0),
-        topic("Monitoring, alerting and on-call reality", ["article", "quiz"], 0),
-        topic("Cost: the bill as an engineering problem", ["article", "assignment"], 0),
-      ]),
+      courseModule(
+        "Talking to a computer",
+        "What a program is, and the box that remembers things for you.",
+        [
+          topic("What a program actually is", ["article", "quiz"], 100),
+          topic("Variables: boxes with names", ["article", "coding"], 70),
+          topic("Getting input and showing output", ["article", "coding"], 0),
+        ],
+      ),
+      courseModule(
+        "Making decisions",
+        "Programs that do different things depending on what they find.",
+        [
+          topic("If, else, and asking a question", ["article", "coding"], 0),
+          topic("Loops: doing it again without writing it again", ["article", "coding"], 0),
+        ],
+      ),
+      courseModule(
+        "Building something",
+        "Enough pieces to make a program worth showing somebody.",
+        [
+          topic("Lists: keeping many things at once", ["article", "coding"], 0),
+          topic("Project: a quiz game that keeps score", ["assignment"], 0),
+        ],
+      ),
     ],
   },
   {
-    id: 205,
-    title: "SQL & Database Design",
-    subtitle: "Query like an engineer, model like an architect",
+    id: 306,
+    subject: "art",
+    title: "Colour, Shape and Making",
+    subtitle: "Look harder, then make something",
     description:
-      "Go past SELECT *. Write queries that stay fast as the table grows, and design schemas " +
-      "that do not need a migration every sprint.",
-    slug: "sql-and-database-design",
+      "Half looking and half making. You will learn why some colours fight and others agree, " +
+      "how to draw a thing rather than the idea of a thing, and then use both to make a final " +
+      "piece that is yours.",
+    slug: "colour-shape-and-making",
     difficulty: "Beginner",
-    durationHours: 32,
-    tags: ["SQL", "PostgreSQL", "Data Modelling", "Performance"],
+    durationHours: 18,
+    tags: ["Grade 7", "Drawing", "Colour", "Design"],
     instructor: FACULTY[2],
     enrolled: false,
-    accent: ["#10b981", "#0ea5e9"],
+    accent: subjectAccent("art"),
     dueInDays: null,
-    certificateThreshold: 65,
-    enrolledCount: 519,
-    rating: 4.5,
-    ratingCount: 203,
+    certificateThreshold: 60,
+    enrolledCount: 88,
+    rating: 4.7,
+    ratingCount: 45,
     modules: [
-      courseModule("Querying", "Getting exactly the rows you meant.", [
-        topic("Filtering, ordering and NULL semantics", ["article", "coding"], 0),
-        topic("Joins, and the rows you did not expect", ["article", "coding"], 0),
-        topic("Aggregation and HAVING", ["article", "coding"], 0),
-        topic("Window functions", ["article", "coding"], 0),
-      ]),
-      courseModule("Modelling", "Designing for the questions you will ask later.", [
-        topic("Keys, constraints and referential integrity", ["article", "quiz"], 0),
-        topic("Normalisation, and when to stop", ["article", "quiz"], 0),
-      ]),
-      courseModule("Performance", "Why the same query is fast here and slow there.", [
-        topic("Indexes and how the planner chooses", ["article", "coding"], 0),
-        topic("Reading an EXPLAIN plan", ["article", "coding"], 0),
-      ]),
+      courseModule(
+        "Seeing colour",
+        "Why some pairs of colours sing and others argue.",
+        [
+          topic("The colour wheel, and what sits opposite what", ["article", "quiz"], 0),
+          topic("Warm, cool, and the mood a palette sets", ["article", "assignment"], 0),
+        ],
+      ),
+      courseModule(
+        "Drawing what you see",
+        "Drawing the thing in front of you, not the symbol in your head.",
+        [
+          topic("Shape, proportion and measuring by eye", ["article", "assignment"], 0),
+          topic("Light, shadow and making something look solid", ["article", "assignment"], 0),
+        ],
+      ),
+      courseModule(
+        "Making something",
+        "Pattern, repetition, and a piece to finish.",
+        [
+          topic("Pattern and repetition", ["article", "assignment"], 0),
+          topic("Final piece: something only you would make", ["assignment"], 0),
+        ],
+      ),
     ],
   },
 ];

@@ -119,7 +119,7 @@ export default function AdaptiveCourseListPage() {
         eyebrow="Learn"
         title="Courses"
         description="AI-personalised courses that adapt to your level in real time - practice, get instant feedback, and level up."
-        accent="purple"
+        accent="brand"
         icon="mdi:book-education-outline"
         action={
           <HeaderActionButton icon="mdi:compass-outline" onClick={() => push("/adaptive-courses/catalog")}>

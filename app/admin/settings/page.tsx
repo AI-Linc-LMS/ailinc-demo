@@ -440,7 +440,7 @@ export default function AdminSettingsPage() {
         eyebrow="Admin"
         title="Settings"
         description="Manage your app logo, favicon, and login-page text. Colours are set platform-wide and are not editable per client."
-        accent="purple"
+        accent="brand"
         icon="mdi:cog-outline"
         action={
           <HeaderActionButton

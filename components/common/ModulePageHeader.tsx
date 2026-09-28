@@ -7,8 +7,18 @@ import { IconWrapper } from "@/components/common/IconWrapper";
 import { PageGuide } from "@/components/common/PageGuide";
 import { resolveGuide } from "@/lib/guide/registry";
 
-/** Accent tones - drive the icon badge, the ambient glow, and the solid CTA. */
+/**
+ * Accent tones - drive the icon badge, the ambient glow, and the solid CTA.
+ *
+ * `brand` is the school azure and is what a module header should use unless it
+ * has a reason not to. It exists because "purple" had quietly become the brand
+ * tone: six learner-facing headers passed accent="purple" not because the page
+ * was purple but because the product was. Repainting `purple` would have made the
+ * name lie and dragged every genuine purple with it, so the brand got its own
+ * entry and those call sites now say what they mean.
+ */
 const ACCENTS = {
+  brand: { a: "#4aa2f0", b: "#1b6fd4", glow: "rgba(27,111,212,0.42)" },
   indigo: { a: "#6366f1", b: "#4338ca", glow: "rgba(99,102,241,0.45)" },
   purple: { a: "#a855f7", b: "#7c3aed", glow: "rgba(168,85,247,0.45)" },
   pink: { a: "#ec4899", b: "#db2777", glow: "rgba(236,72,153,0.45)" },
