@@ -8,8 +8,14 @@
  *
  * Values are taken from the shipped student dashboard (components/dashboard/v2/*) and
  * ModulePageHeader rather than from the token file, because the two disagree:
- * --primary-500 is #a855f7 while the dashboard's violet is #7c3aed. Signing in should
- * look like the product you land in, so the dashboard wins.
+ * --primary-500 is the ramp's azure while the dashboard carries the deeper brand azure.
+ * Signing in should look like the product you land in, so the dashboard wins.
+ *
+ * SCHOOL EDITION: the violet family below was the adult palette (#7c3aed / #5b21b6 over a
+ * #140b2b night panel). It is azure now, matching FIXED_SCHOOL_PALETTE in
+ * lib/theme/normalizeThemeSettings.ts. The key names keep the word "violet" on purpose:
+ * renaming them would touch every auth component for no behaviour change, and the comment
+ * you are reading is cheaper than that diff. Treat them as "the brand accent".
  *
  * See DESIGN.md for the reasoning behind each value.
  */
@@ -19,17 +25,17 @@ export const AUTH = {
   inkMuted: "#475569",
   inkFaint: "#64748b",
 
-  canvas: "#fbfbfd",
+  canvas: "#f6faff",
   surface: "#ffffff",
   hairline: "#e6e8ef",
 
-  violet: "#7c3aed",
-  violetDeep: "#5b21b6",
-  violetSoft: "#f5f0ff",
+  violet: "#1b6fd4",
+  violetDeep: "#13498c",
+  violetSoft: "#eff7ff",
   pink: "#ec4899",
 
-  night: "#140b2b",
-  night2: "#1e1040",
+  night: "#10224a",
+  night2: "#17346e",
 
   error: "#dc2626",
   errorSoft: "#fef2f2",
@@ -38,10 +44,18 @@ export const AUTH = {
 /** 4px base rhythm. */
 export const SPACE = { xs: 8, sm: 12, md: 16, lg: 24, xl: 32, xxl: 48 } as const;
 
-export const RADIUS = 8;
+/**
+ * 14, not 8. School edition: corner radius is the cheapest and most legible signal that
+ * a product is meant for children, and this constant is read by every auth control.
+ * Still short of a pill, which remains a 2021 tell.
+ */
+export const RADIUS = 14;
 
-/** Everything except toggles. Pills are a 2021 tell. */
-export const CONTROL_HEIGHT = 44;
+/**
+ * 48, not 44. Younger hands and shared classroom tablets both want a bigger target;
+ * 48px is the WCAG 2.2 target-size minimum rather than the 44px Apple floor.
+ */
+export const CONTROL_HEIGHT = 48;
 
 export const EASE = "cubic-bezier(.175,.885,.32,1.1)";
 
