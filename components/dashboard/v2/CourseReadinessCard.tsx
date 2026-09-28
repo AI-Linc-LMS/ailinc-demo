@@ -42,7 +42,8 @@ export function CourseReadinessCard({
     : `/adaptive-courses/${active.id}`;
 
   return (
-    <Box sx={{ borderRadius: 4, p: { xs: 2, md: 2.5 }, mb: 2.5, color: "#fff", backgroundColor: "#0e1f45", backgroundImage: "linear-gradient(160deg, #17346e 0%, #0e1f45 100%)", boxShadow: "0 18px 40px -24px rgba(19,73,140,0.6)" }}>
+    // SCHOOL EDITION: light, for the same reason as TodayGoalPanel. See its note.
+    <Box sx={{ borderRadius: "26px", p: { xs: 2, md: 2.5 }, mb: 2.5, color: "#10224a", bgcolor: "#ffffff", border: "2px solid rgba(16,34,74,0.12)", boxShadow: "0 6px 0 0 rgba(16,34,74,0.06)" }}>
       {/* Header */}
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 1.75 }}>
         <Stack direction="row" spacing={1.25} alignItems="center">
@@ -51,7 +52,7 @@ export function CourseReadinessCard({
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>How you are getting on</Typography>
         </Stack>
-        <Typography sx={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.55)", display: { xs: "none", sm: "block" }, maxWidth: 240, textAlign: "right" }}>
+        <Typography sx={{ fontSize: "0.76rem", color: "#5b6b86", display: { xs: "none", sm: "block" }, maxWidth: 240, textAlign: "right" }}>
           Four things that show how you are getting on in each subject
         </Typography>
       </Stack>
@@ -67,12 +68,12 @@ export function CourseReadinessCard({
               <ButtonBase
                 key={c.id}
                 onClick={() => onSelect(c.id)}
-                sx={{ px: 1.5, py: 0.75, borderRadius: 999, gap: 0.6, fontSize: "0.82rem", fontWeight: 700, color: on ? "#fff" : "rgba(255,255,255,0.6)", bgcolor: on ? "rgba(255,255,255,0.14)" : "transparent", border: "1px solid", borderColor: on ? "rgba(255,255,255,0.2)" : "transparent" }}
+                sx={{ px: 1.5, py: 0.75, borderRadius: 999, gap: 0.6, fontSize: "0.82rem", fontWeight: 700, color: on ? "#10224a" : "#5b6b86", bgcolor: on ? "#eff7ff" : "transparent", border: "2px solid", borderColor: on ? "rgba(16,34,74,0.14)" : "transparent" }}
               >
                 <Box sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: BAND_STYLE[c.readiness.overall.band].bar }} />
                 {c.title}
                 {c.readiness.overall.percent != null && (
-                  <Box component="span" sx={{ color: "rgba(255,255,255,0.5)", fontWeight: 800 }}>{c.readiness.overall.percent}%</Box>
+                  <Box component="span" sx={{ color: "#5b6b86", fontWeight: 800 }}>{c.readiness.overall.percent}%</Box>
                 )}
               </ButtonBase>
             );
@@ -85,24 +86,24 @@ export function CourseReadinessCard({
         <Box sx={{ flexShrink: 0, textAlign: "center" }}>
           {/* Overlay confined to the ring box (150x150) so the % sits at the ring's centre */}
           <Box sx={{ position: "relative", width: 150, height: 150, mx: "auto" }}>
-            <AnimatedRing value={overall.percent ?? 0} size={150} strokeWidth={12} color="#4aa2f0" colorEnd="#6366f1" trackColor="rgba(255,255,255,0.12)" showValue={false} />
+            <AnimatedRing value={overall.percent ?? 0} size={150} strokeWidth={12} color="#4aa2f0" colorEnd="#6366f1" trackColor="rgba(16,34,74,0.10)" showValue={false} />
             <Box sx={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
               {overall.percent == null ? (
                 <>
-                  <Typography sx={{ fontWeight: 900, fontSize: "1.5rem", color: "rgba(255,255,255,0.9)", lineHeight: 1 }}>New</Typography>
-                  <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 1, color: "rgba(255,255,255,0.6)", mt: 0.4 }}>TO START</Typography>
+                  <Typography sx={{ fontFamily: "var(--font-family-display)", fontWeight: 800, fontSize: "1.6rem", color: "#10224a", lineHeight: 1 }}>New</Typography>
+                  <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 1, color: "#5b6b86", mt: 0.4 }}>TO START</Typography>
                 </>
               ) : (
                 <>
-                  <Typography sx={{ fontWeight: 900, fontSize: "2rem", color: "#fff", lineHeight: 1 }}>
+                  <Typography sx={{ fontFamily: "var(--font-family-display)", fontWeight: 800, fontSize: "2.1rem", color: "#10224a", lineHeight: 1 }}>
                     {overall.percent}<Box component="span" sx={{ fontSize: "1rem" }}>%</Box>
                   </Typography>
-                  <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 1, color: "rgba(255,255,255,0.6)", mt: 0.4 }}>READY</Typography>
+                  <Typography sx={{ fontSize: "0.62rem", fontWeight: 800, letterSpacing: 1, color: "#5b6b86", mt: 0.4 }}>READY</Typography>
                 </>
               )}
             </Box>
           </Box>
-          <Typography sx={{ mt: 1, fontSize: "0.78rem", fontWeight: 700, color: "rgba(255,255,255,0.7)" }}>{active.title}</Typography>
+          <Typography sx={{ mt: 1, fontSize: "0.82rem", fontWeight: 700, color: "#44536b" }}>{active.title}</Typography>
         </Box>
 
         <Box sx={{ flex: 1, width: "100%" }}>
@@ -110,21 +111,21 @@ export function CourseReadinessCard({
             .sort((a, b) => (active.readiness[b.key].percent ?? -1) - (active.readiness[a.key].percent ?? -1))
             .map((s) => {
             const cell = active.readiness[s.key];
-            return <SignalBar key={s.key} icon={s.icon} label={s.label} sub={s.sub} percent={cell.percent} band={cell.band} dark />;
+            return <SignalBar key={s.key} icon={s.icon} label={s.label} sub={s.sub} percent={cell.percent} band={cell.band} />;
           })}
         </Box>
       </Stack>
 
       {/* AI insight strip */}
       {(strongest || weakest) && (
-        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "center" }} justifyContent="space-between" sx={{ mt: 1.5, p: 1.75, borderRadius: 3, bgcolor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1.5} alignItems={{ sm: "center" }} justifyContent="space-between" sx={{ mt: 1.5, p: 1.75, borderRadius: 3, bgcolor: "#fff8e6", border: "2px solid rgba(16,34,74,0.10)" }}>
           <Stack direction="row" spacing={0.75} alignItems="flex-start" sx={{ minWidth: 0 }}>
             <Icon icon="mdi:star-four-points" width={16} color="#fde68a" style={{ flexShrink: 0, marginTop: 2 }} />
-            <Typography sx={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.5 }}>
-              In <b style={{ color: "#fff" }}>{active.title}</b> you&apos;re strongest at{" "}
-              {strongest && <Box component="span" sx={{ color: "#86efac", fontWeight: 700 }}>{strongest.skill} ({strongest.percent}%)</Box>}
+            <Typography sx={{ fontSize: "0.88rem", color: "#44536b", lineHeight: 1.5 }}>
+              In <b style={{ color: "#10224a" }}>{active.title}</b> you&apos;re strongest at{" "}
+              {strongest && <Box component="span" sx={{ color: "#15803d", fontWeight: 800 }}>{strongest.skill} ({strongest.percent}%)</Box>}
               {strongest && weakest && " and weakest at "}
-              {weakest && <Box component="span" sx={{ color: "#f0abfc", fontWeight: 700 }}>{weakest.skill} ({weakest.percent}%)</Box>}. {active.skillProfile.aiTip}
+              {weakest && <Box component="span" sx={{ color: "#a21caf", fontWeight: 800 }}>{weakest.skill} ({weakest.percent}%)</Box>}. {active.skillProfile.aiTip}
             </Typography>
           </Stack>
           <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #4aa2f0, #ec4899)" }}>

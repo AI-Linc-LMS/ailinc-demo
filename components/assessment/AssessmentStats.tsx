@@ -71,7 +71,7 @@ export function AssessmentStats({
                 fontWeight: 500,
               }}
             >
-              Total Assessments
+              Total tests
             </Typography>
           </Box>
         </Box>

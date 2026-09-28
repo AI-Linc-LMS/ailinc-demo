@@ -17,7 +17,8 @@ import {
 } from "@/lib/services/adaptive-course.service";
 import { useIsAdaptiveQuizEnabled } from "@/lib/contexts/ClientInfoContext";
 import { PageShell } from "@/components/common/PageShell";
-import { ModulePageHeader, HeaderActionButton } from "@/components/common/ModulePageHeader";
+import { SchoolPageHead, SchoolButton } from "@/components/school/SchoolUI";
+import { sceneSchoolDay } from "@/lib/demo/illustrations/scenes";
 import { ViewToggle, SegmentedTabs, SearchFilterBar, type ListView } from "@/components/common/list";
 import { Reveal } from "@/components/scorecard/shared";
 import { AdaptiveCourseCard } from "@/components/courses/AdaptiveCourseCard";
@@ -115,16 +116,20 @@ export default function AdaptiveCourseListPage() {
 
   return (
     <PageShell>
-      <ModulePageHeader
+      {/* SCHOOL EDITION: an illustrated header instead of ModulePageHeader.
+          That component opens every module page with a slab of near-black and a
+          glowing icon badge, which is the most adult element left on these pages
+          once the palette and the words had moved. */}
+      <SchoolPageHead
         eyebrow="Learn"
-        title="Courses"
-        description="Your subjects for this term. Each one works out what you already know and gives you the next thing to try."
-        accent="brand"
-        icon="mdi:book-education-outline"
+        title="My Subjects"
+        blurb="Everything you are learning this term. Each one works out what you already know, then gives you the next thing to try."
+        scene={sceneSchoolDay("ink")}
+        tint="#eff7ff"
         action={
-          <HeaderActionButton icon="mdi:compass-outline" onClick={() => push("/adaptive-courses/catalog")}>
-            Browse courses
-          </HeaderActionButton>
+          <SchoolButton icon="mdi:compass-outline" onClick={() => push("/adaptive-courses/catalog")}>
+            Find more
+          </SchoolButton>
         }
       />
 

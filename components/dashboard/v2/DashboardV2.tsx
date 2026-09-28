@@ -14,8 +14,12 @@ import {
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import type { LearnerDashboard } from "@/lib/types/dashboard";
-import { AiBriefingHero } from "./AiBriefingHero";
-import { StatCards } from "./StatCards";
+// SCHOOL EDITION: the briefing hero and the five-across stat row are replaced
+// by their kid-facing equivalents. The originals stay in the tree, untouched,
+// because the legacy dashboard below still renders for a tenant without the
+// adaptive feature and there is no reason to fork that path too.
+import { SchoolTodayHero } from "@/components/school/SchoolTodayHero";
+import { SchoolStats } from "@/components/school/SchoolStats";
 import { CourseReadinessCard } from "./CourseReadinessCard";
 import { SkillProfilePanel } from "./SkillProfilePanel";
 import { CertificatePanel } from "./CertificatePanel";
@@ -45,7 +49,7 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
   const { push } = useInstantNavigation();
   return (
     <Stack spacing={2.5}>
-      {data && <StatCards aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />}
+      {data && <SchoolStats aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />}
       <Box sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", border: "1px solid #eef2f7", bgcolor: "#faf9ff" }}>
         <Box sx={{ width: 56, height: 56, mx: "auto", mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", background: "linear-gradient(135deg,#1b6fd4,#4aa2f0)" }}>
           <Icon icon="mdi:rocket-launch-outline" width={28} color="#fff" />
@@ -116,11 +120,11 @@ export function DashboardV2() {
       <Box sx={{ minWidth: 0 }}>
         {data.briefing && (
           <Box data-tour-id="dash-briefing">
-            <AiBriefingHero briefing={data.briefing} profile={data.profile} />
+            <SchoolTodayHero briefing={data.briefing} profile={data.profile} />
           </Box>
         )}
         <Box data-tour-id="dash-stats">
-          <StatCards aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />
+          <SchoolStats aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />
         </Box>
         <Box data-tour-id="dash-courses">
           <CourseReadinessCard courses={data.courses} activeCourseId={activeCourse?.id ?? null} onSelect={setActiveCourseId} />

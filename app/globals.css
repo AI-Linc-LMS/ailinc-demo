@@ -114,16 +114,22 @@
      numeric data, and a cyan=proctored tone. Scoped-in by the assessment module;
      safe additive tokens (nothing else references them yet). */
   --canvas: #f2f7fe;
-  --gradient-ai: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  /* SCHOOL EDITION: azure to teal, not indigo to magenta.
+     These two variables are read by roughly 300 surfaces that name no colour in
+     their own file - the assessment hero, the "next up" band, every primary
+     action on the Tests page. Indigo-to-pink is the AI-product gradient of 2026,
+     and on a page a twelve year old opens to sit a maths paper it was the last
+     thing still signalling "enterprise software". */
+  --gradient-ai: linear-gradient(135deg, #1b6fd4 0%, #14b8a6 100%);
   --gradient-ai-soft: linear-gradient(135deg,
-    color-mix(in srgb, #4f46e5 14%, var(--card-bg) 86%) 0%,
-    color-mix(in srgb, #ec4899 12%, var(--card-bg) 88%) 100%);
+    color-mix(in srgb, #1b6fd4 14%, var(--card-bg) 86%) 0%,
+    color-mix(in srgb, #14b8a6 12%, var(--card-bg) 88%) 100%);
   /* Not reached by the theme system: `--ai-violet` alone is read by ~300 surfaces
      (AI composer heroes, the AI pills, empty states), none of which name a colour
-     in their own file. Indigo rather than the brand azure, so an AI moment still
-     reads as a distinct thing; the pink stays, because it is the one place the
-     product is allowed to be frivolous. */
-  --ai-violet: #4f46e5;
+     in their own file. It was indigo, one step off the brand, so an AI moment read
+     as a distinct thing. For children that distinction is not worth the discord:
+     it made the Tests page look like a different product from the Home page. */
+  --ai-violet: #1b6fd4;
   --ai-pink: #ec4899;
   /* 24px, not 18px. The single cheapest signal that a product is for children is
      how round its corners are, and this token is read by every card surface. */

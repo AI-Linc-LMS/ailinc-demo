@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Box, Typography, Skeleton, TextField, MenuItem } from "@mui/material";
 import { PageShell } from "@/components/common/PageShell";
-import { ModulePageHeader } from "@/components/common/ModulePageHeader";
+import { SchoolPageHead } from "@/components/school/SchoolUI";
+import { sceneCertificate } from "@/lib/demo/illustrations/scenes";
 import {
   assessmentService,
   Assessment,
@@ -172,12 +173,13 @@ export default function AssessmentsPage() {
 
   return (
     <PageShell>
-      <ModulePageHeader
+      {/* SCHOOL EDITION: see the note on the Subjects page. */}
+      <SchoolPageHead
         eyebrow="Learn"
-        title="Assessments"
-        description="Take your assigned quizzes and tests, then review your scores and feedback in one place."
-        accent="indigo"
-        icon="mdi:file-document-edit"
+        title="Tests"
+        blurb="Tests your teacher has set. Do them here, then come back to see how you did and what to look at again."
+        scene={sceneCertificate("ink")}
+        tint="#fff8e6"
       />
 
       <Box>

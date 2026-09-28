@@ -22,17 +22,22 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
 
   return (
     <Box
+      // SCHOOL EDITION: light, not a dark slab.
+      // This was near-black with a glow, which worked when every dashboard panel
+      // was dark. Once the greeting card above it became a bright illustrated
+      // surface, the two dark panels were the only things on the page that still
+      // looked like a console, and a child reads that contrast as "this bit is
+      // not for me".
       sx={{
-        borderRadius: 4,
+        borderRadius: "26px",
         p: { xs: 2, md: 2.5 },
-        color: "#fff",
-        backgroundColor: "#0e1f45",
-        backgroundImage: "linear-gradient(160deg, #17346e 0%, #0e1f45 100%)",
-        border: "1px solid rgba(74,162,240,0.18)",
-        boxShadow: "0 18px 40px -24px rgba(19,73,140,0.6)",
+        color: "#10224a",
+        bgcolor: "#e8fbef",
+        border: "2px solid rgba(16,34,74,0.12)",
+        boxShadow: "0 6px 0 0 rgba(16,34,74,0.06)",
       }}
     >
-      <Typography sx={{ fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.18em", color: "rgba(255,255,255,0.55)", mb: 1.5 }}>
+      <Typography sx={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.8px", color: "#15803d", mb: 1.5 }}>
         TODAY&apos;S GOAL
       </Typography>
 
@@ -43,14 +48,14 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
             value={percent}
             size={104}
             strokeWidth={9}
-            color="#34d399"
-            colorEnd="#22c55e"
-            trackColor="rgba(255,255,255,0.1)"
+            color="#4ade80"
+            colorEnd="#15803d"
+            trackColor="rgba(16,34,74,0.10)"
             showValue={false}
           />
           <Box sx={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <Typography sx={{ fontWeight: 900, fontSize: "1.5rem", lineHeight: 1 }}>{percent}%</Typography>
-            <Typography sx={{ fontSize: "0.66rem", color: "rgba(255,255,255,0.55)", mt: 0.25 }}>
+            <Typography sx={{ fontFamily: "var(--font-family-display)", fontWeight: 800, fontSize: "1.6rem", lineHeight: 1, color: "#10224a" }}>{percent}%</Typography>
+            <Typography sx={{ fontSize: "0.68rem", color: "#5b6b86", mt: 0.25 }}>
               {completedCount} of {totalCount}
             </Typography>
           </Box>
@@ -65,18 +70,18 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
                 <Icon
                   icon={g.done ? "mdi:check-circle" : "mdi:circle-outline"}
                   width={20}
-                  color={g.done ? "#34d399" : "rgba(255,255,255,0.28)"}
+                  color={g.done ? "#15803d" : "rgba(16,34,74,0.25)"}
                   style={{ flexShrink: 0 }}
                 />
                 <Box sx={{ minWidth: 0 }}>
                   <Typography
                     noWrap
-                    sx={{ fontSize: "0.9rem", fontWeight: 600, color: g.done ? "#fff" : "rgba(255,255,255,0.62)" }}
+                    sx={{ fontSize: "0.95rem", fontWeight: 700, color: g.done ? "#10224a" : "#5b6b86" }}
                   >
                     {g.label}
                   </Typography>
                   {showPractice && (
-                    <Typography sx={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.45)" }}>
+                    <Typography sx={{ fontSize: "0.72rem", color: "#5b6b86" }}>
                       {g.minutes} / {g.targetMinutes} min
                     </Typography>
                   )}
@@ -107,17 +112,17 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
                   ...(active
                     ? { background: "linear-gradient(135deg, #fb923c 0%, #ec4899 100%)", boxShadow: "0 8px 18px -10px rgba(236,72,153,0.6)" }
                     : d.isToday
-                      ? { border: "1.5px dashed rgba(74,162,240,0.6)", bgcolor: "rgba(255,255,255,0.03)" }
-                      : { bgcolor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.06)" }),
+                      ? { border: "2px dashed rgba(27,111,212,0.45)", bgcolor: "#ffffff" }
+                      : { bgcolor: "#ffffff", border: "2px solid rgba(16,34,74,0.08)" }),
                 }}
               >
                 {active ? (
                   <Icon icon="mdi:fire" width={24} color="#fff" />
                 ) : (
-                  <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: d.isToday ? "#4aa2f0" : "rgba(255,255,255,0.25)" }} />
+                  <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: d.isToday ? "#1b6fd4" : "rgba(16,34,74,0.2)" }} />
                 )}
               </Box>
-              <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.06em", color: d.isToday ? "#c4b5fd" : "rgba(255,255,255,0.45)" }}>
+              <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.06em", color: d.isToday ? "#1b6fd4" : "#5b6b86" }}>
                 {d.label}
               </Typography>
             </Box>

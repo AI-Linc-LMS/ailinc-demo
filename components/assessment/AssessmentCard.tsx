@@ -488,7 +488,7 @@ export const AssessmentCard: React.FC<AssessmentCardProps> = ({
                 icon="mdi:shield-check"
               />
             )}
-            {isManual && <StatusChip label="Manual eval" tone="info" />}
+            {isManual && <StatusChip label="Teacher marks this" tone="info" />}
             {isPsychometric && <StatusChip label="Psychometric" tone="ai" />}
             {assessment.is_paid && <StatusChip label="Paid" tone="neutral" />}
           </Box>

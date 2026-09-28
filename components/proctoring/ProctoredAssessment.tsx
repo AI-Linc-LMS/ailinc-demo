@@ -197,7 +197,7 @@ export function ProctoredAssessment({
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             }}
           >
-            {isInitializing ? "Initializing Camera..." : "Start Assessment"}
+            {isInitializing ? "Turning the camera on..." : "Start test"}
           </Button>
         </Paper>
       </Box>
