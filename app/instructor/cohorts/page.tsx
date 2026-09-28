@@ -119,7 +119,7 @@ export default function InstructorCohortsPage() {
         eyebrow="Teaching"
         title="My Cohorts"
         description="A batch is a group of students studying together. Open one to see its students, the courses it is doing, and its progress. Rosters and course mapping are set by your admin."
-        accent="purple"
+        accent="brand"
         icon="mdi:school-outline"
         action={
           <HeaderActionButton icon="mdi:download-outline" variant="ghost" onClick={exportCsv} disabled={cohorts.length === 0}>

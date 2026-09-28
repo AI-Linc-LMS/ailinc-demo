@@ -12,6 +12,7 @@
  */
 
 import { makeRng } from "../random";
+import { kidAvatar } from "../illustrations/kidAvatar";
 
 /** Up to two initials from a display name. */
 export function initialsOf(name: string): string {
@@ -45,46 +46,52 @@ function encodeSvg(svg: string): string {
 }
 
 /**
- * Free portrait photos, used as the actual profile picture for everyone.
+ * Profile pictures: drawn children and drawn grown-ups, never photographs.
  *
- * randomuser.me serves these specifically as free placeholder portraits, which
- * is why they are safe to point at rather than hosting our own. They are remote
- * URLs by request, so avatars do need connectivity — everything else in the demo
- * still runs with the network unplugged, and a portrait that fails to load falls
- * back to the initials avatar below rather than breaking the layout.
+ * This used to be a pool of adult photographs from randomuser.me. Two things were
+ * wrong with that for a school demo. The faces were adults, on a product whose
+ * learners are eleven to fourteen. And the obvious correction - photographs of
+ * real children - is one this repo will not make: a minor's likeness carries
+ * consent and licensing weight a sales demo has no business taking on.
  *
- * The pool is treated as ANONYMOUS: a person is mapped to a photo by hashing
- * their name across the whole pool. Photos are never picked from a person's name
- * in any other way — inferring anything about someone from their name is exactly
- * the assumption worth avoiding, and a hash sidesteps it entirely.
+ * So everyone is illustrated. See `lib/demo/illustrations/kidAvatar.ts` for the
+ * drawing and for the rule that nothing reads a name to decide how a person
+ * looks. This also removes the last remote asset in the product, so the demo now
+ * renders whole with the network unplugged rather than nearly so.
+ *
+ * The `slot` strings the roster passes ("women/12") are kept exactly as they
+ * were. They are no longer photo paths, just each character's authored, opaque
+ * look id, and keeping them means a character's appearance is stable across this
+ * change rather than every face in the demo being reshuffled.
  */
-const PORTRAIT_POOL: readonly string[] = [
-  ...Array.from({ length: 30 }, (_, i) => `https://randomuser.me/api/portraits/men/${i}.jpg`),
-  ...Array.from({ length: 30 }, (_, i) => `https://randomuser.me/api/portraits/women/${i}.jpg`),
-];
 
 /**
- * The portrait for an authored slot such as "women/12".
+ * The portrait for an authored slot.
  *
  * Preferred over `portraitFor` everywhere a person is part of the seed, because
- * the seed author chose that photo for that character. `portraitFor` remains for
- * anyone created at runtime, who has no authored portrait to use.
+ * the seed author chose that look for that character.
  */
-export function portraitAt(slot: string): string {
-  return `https://randomuser.me/api/portraits/${slot}.jpg`;
+export function portraitAt(slot: string, adult = false): string {
+  return kidAvatar(slot, 96, adult);
 }
 
 /** A stable portrait for a person, the same one everywhere they appear. */
-export function portraitFor(name: string): string {
-  const rng = makeRng(`portrait:${name}`);
-  return PORTRAIT_POOL[Math.floor(rng() * PORTRAIT_POOL.length)];
+export function portraitFor(name: string, adult = false): string {
+  return kidAvatar(name, 96, adult);
+}
+
+/** A grown-up portrait: teaching staff and administrators. */
+export function staffPortraitAt(slot: string): string {
+  return kidAvatar(slot, 96, true);
 }
 
 /**
- * A stable generated avatar data-URI.
+ * A stable generated initials avatar.
  *
- * Still used as the fallback when a portrait cannot load (offline, or the host
- * is unreachable), and for organisations via companyLogoFor.
+ * No longer a fallback for people - `portraitFor` returns a data URI now, so
+ * there is nothing left to fail. It stays for things that are not people:
+ * organisations via `companyLogoFor`, cohorts, and study groups, where a drawn
+ * face would be wrong.
  */
 export function avatarFor(name: string, size = 96): string {
   const rng = makeRng(`avatar:${name}`);

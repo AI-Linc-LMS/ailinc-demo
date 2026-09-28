@@ -25,7 +25,7 @@ export function PointsInfo({ size = 15, color = "#94a3b8" }: { size?: number; co
         size="small"
         onClick={open}
         aria-label="How points work"
-        sx={{ p: 0.2, color, "&:hover": { color: "#7c3aed", bgcolor: "transparent" } }}
+        sx={{ p: 0.2, color, "&:hover": { color: "#1b6fd4", bgcolor: "transparent" } }}
       >
         <Icon icon="mdi:information-outline" width={size} />
       </IconButton>
@@ -40,7 +40,7 @@ export function PointsInfo({ size = 15, color = "#94a3b8" }: { size?: number; co
       >
         <Box sx={{ p: 2 }}>
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.75 }}>
-            <Box sx={{ width: 26, height: 26, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #7c3aed, #a855f7)" }}>
+            <Box sx={{ width: 26, height: 26, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #1b6fd4, #4aa2f0)" }}>
               <Icon icon="mdi:star-four-points" width={15} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "0.88rem", color: "#0f172a" }}>How points work</Typography>
@@ -51,7 +51,7 @@ export function PointsInfo({ size = 15, color = "#94a3b8" }: { size?: number; co
           </Typography>
           <ButtonBase
             onClick={() => { close(); router.push("/points-system"); }}
-            sx={{ mt: 1.25, fontWeight: 800, fontSize: "0.8rem", color: "#7c3aed", gap: 0.4 }}
+            sx={{ mt: 1.25, fontWeight: 800, fontSize: "0.8rem", color: "#1b6fd4", gap: 0.4 }}
           >
             Know more about the point system <Icon icon="mdi:arrow-right" width={15} />
           </ButtonBase>

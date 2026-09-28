@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { assessmentService, type Assessment } from "@/lib/services/assessment.service";
 import { ModuleEmpty, ModuleHeader, ModulePanel, ModuleRowsSkeleton, Pill, fmtDateTime, timeUntil } from "./shared";
 
-const GRADIENT = "linear-gradient(135deg, #6366f1, #8b5cf6)";
+const GRADIENT = "linear-gradient(135deg, #6366f1, #4aa2f0)";
 
 function isSubmitted(a: Assessment): boolean {
   return a.status === "submitted" || a.status === "completed" || a.status === "finalized";

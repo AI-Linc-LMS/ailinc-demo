@@ -78,7 +78,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
     const dotPattern =
       "radial-gradient(circle at 1px 1px, rgba(90,70,160,0.07) 1px, transparent 0)";
     const lineMask =
-      "linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px)";
+      "linear-gradient(90deg, rgba(27,111,212,0.04) 1px, transparent 1px), linear-gradient(rgba(27,111,212,0.04) 1px, transparent 1px)";
 
     return (
       <Box
@@ -392,7 +392,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
         {/* Sidebar */}
         <Box
           sx={{
-            background: `linear-gradient(165deg, #0f0518 0%, #1a0a2e 40%, #12081f 100%)`,
+            background: `linear-gradient(165deg, #0e1f45 0%, #122a56 40%, #0e1f45 100%)`,
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -489,7 +489,7 @@ export const DynamicCertificate = forwardRef<HTMLDivElement, DynamicCertificateP
                   width: 36,
                   height: 36,
                   borderRadius: 1,
-                  background: `linear-gradient(135deg, ${accent}, #312e81)`,
+                  background: `linear-gradient(135deg, ${accent}, #1b3a7a)`,
                   flexShrink: 0,
                 }}
               />

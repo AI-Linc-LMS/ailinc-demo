@@ -145,7 +145,7 @@ export default function AdaptiveCourseCatalogPage() {
         eyebrow="Learn"
         title="Browse courses"
         description="Courses your organisation has opened for you to join. Enroll in one and it moves into My courses instantly."
-        accent="purple"
+        accent="brand"
         icon="mdi:compass-outline"
         action={
           <HeaderActionButton icon="mdi:book-education-outline" variant="ghost" onClick={() => push("/adaptive-courses")}>

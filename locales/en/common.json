@@ -51,7 +51,7 @@
   "navDesc": {
     "dashboard": "Your home base - progress, streak, and what to do next at a glance.",
     "courses": "Browse and continue your enrolled courses and learning tracks.",
-    "adaptiveCourses": "AI-personalised courses that adapt to your level in real time.",
+    "adaptiveCourses": "Your subjects for this term, one lesson at a time.",
     "assessments": "Take quizzes and tests, then review your results.",
     "mockInterview": "Practice AI-driven mock interviews with instant feedback.",
     "jobsV2": "Discover jobs matched to you and track your applications.",
@@ -291,7 +291,7 @@
     "forgotPassword": "Forgot Password",
     "email": "Email",
     "password": "Password",
-    "slogan": "Changing the way the world learns",
+    "slogan": "Learning that fits how you think",
     "orSignInWithEmail": "Or sign in with email",
     "keepMeLoggedIn": "Keep me logged in",
     "forgotPasswordLink": "Forgot password?",
@@ -371,7 +371,7 @@
     "seeYouSoon": "See you soon",
     "welcomeBack": "Welcome back",
     "createAccount": "Create your account",
-    "supporting": "Start from scratch, or from where you left off. Your path adapts as you go."
+    "supporting": "Pick up where you left off, or try something new today."
   },
   "dashboard": {
     "welcomeHello": "Hello {{name}}!",

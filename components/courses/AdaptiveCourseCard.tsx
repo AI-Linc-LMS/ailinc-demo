@@ -16,6 +16,13 @@ export function AdaptiveCourseCard({
   onOpen: () => void;
   onHover?: () => void;  // warm the destination route on hover/focus for instant open
 }) {
+  // The subject's colours when the API sent them, otherwise exactly the literals
+  // this card used before. The fallback IS the old value, so a tenant whose API
+  // does not send a subject renders byte-identical output to what it always did.
+  const from = course.subject_accent_from || "#6366f1";
+  const to = course.subject_accent_to || "#a855f7";
+  const ink = course.subject_ink || "#6366f1";
+
   return (
     <ButtonBase
       onClick={onOpen}
@@ -34,18 +41,22 @@ export function AdaptiveCourseCard({
         borderRadius: 3,
         p: 2.5,
         bgcolor: "var(--card-bg, #fff)",
+        // Declared on the card root so the meta row's icons inherit the subject's
+        // ink. A custom property resolves where it is DECLARED, so setting it on
+        // the icon itself would do nothing.
+        "--course-meta-ink": ink,
         border: "1px solid var(--border-default, #ececf1)",
         boxShadow: "0 1px 2px rgba(16,24,40,0.04), 0 10px 26px -22px rgba(16,24,40,0.18)",
         transition: "transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease",
         "&:hover": {
           transform: "translateY(-3px)",
-          borderColor: "color-mix(in srgb, #6366f1 40%, transparent)",
-          boxShadow: "0 20px 40px -26px rgba(99, 102, 241, 0.45)",
+          borderColor: `color-mix(in srgb, ${ink} 45%, transparent)`,
+          boxShadow: `0 20px 40px -26px color-mix(in srgb, ${ink} 50%, transparent)`,
         },
       }}
     >
       {/* Always render the image band (fallback gradient) so the header lines up. */}
-      <Box sx={{ width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, flexShrink: 0, background: "linear-gradient(135deg, color-mix(in srgb, #6366f1 14%, transparent), color-mix(in srgb, #a855f7 12%, transparent))" }}>
+      <Box sx={{ width: "100%", aspectRatio: "16 / 9", borderRadius: 2.5, overflow: "hidden", mb: 1.5, flexShrink: 0, background: `linear-gradient(135deg, color-mix(in srgb, ${from} 14%, transparent), color-mix(in srgb, ${to} 12%, transparent))` }}>
         {course.card_image_url && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -67,7 +78,7 @@ export function AdaptiveCourseCard({
       </Box>
 
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5 }}>
-        <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)", boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)" }}>
+        <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`, boxShadow: `0 14px 26px -14px color-mix(in srgb, ${to} 65%, transparent)` }}>
           <Icon icon="mdi:book-education-outline" width={22} />
         </Box>
         {/* The "Adaptive" chip that used to sit here is gone. It existed to tell
@@ -99,7 +110,7 @@ export function AdaptiveCourseCard({
 function Metric({ icon, label, value }: { icon: string; label: string; value: number }) {
   return (
     <Box sx={{ display: "inline-flex", alignItems: "center", gap: 0.6 }}>
-      <Icon icon={icon} width={16} style={{ color: "#6366f1" }} />
+      <Icon icon={icon} width={16} style={{ color: "var(--course-meta-ink, #6366f1)" }} />
       <Typography component="span" sx={{ fontWeight: 800, fontSize: "0.85rem" }}>{value}</Typography>
       <Typography component="span" sx={{ color: "text.secondary", fontSize: "0.78rem" }}>{label}</Typography>
     </Box>

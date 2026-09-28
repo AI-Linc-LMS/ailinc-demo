@@ -30,11 +30,11 @@ export function CourseReadinessCard({
     : `/adaptive-courses/${active.id}`;
 
   return (
-    <Box sx={{ borderRadius: 4, p: { xs: 2, md: 2.5 }, mb: 2.5, color: "#fff", backgroundColor: "#110b2e", backgroundImage: "linear-gradient(160deg, #1a1442 0%, #110b2e 100%)", boxShadow: "0 18px 40px -24px rgba(76,29,149,0.6)" }}>
+    <Box sx={{ borderRadius: 4, p: { xs: 2, md: 2.5 }, mb: 2.5, color: "#fff", backgroundColor: "#0e1f45", backgroundImage: "linear-gradient(160deg, #17346e 0%, #0e1f45 100%)", boxShadow: "0 18px 40px -24px rgba(19,73,140,0.6)" }}>
       {/* Header */}
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 1.75 }}>
         <Stack direction="row" spacing={1.25} alignItems="center">
-          <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1, #a855f7)" }}>
+          <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1, #4aa2f0)" }}>
             <Icon icon="mdi:target-variant" width={18} />
           </Box>
           <Typography sx={{ fontWeight: 800, fontSize: "1.15rem" }}>Course readiness</Typography>
@@ -73,7 +73,7 @@ export function CourseReadinessCard({
         <Box sx={{ flexShrink: 0, textAlign: "center" }}>
           {/* Overlay confined to the ring box (150x150) so the % sits at the ring's centre */}
           <Box sx={{ position: "relative", width: 150, height: 150, mx: "auto" }}>
-            <AnimatedRing value={overall.percent ?? 0} size={150} strokeWidth={12} color="#a855f7" colorEnd="#6366f1" trackColor="rgba(255,255,255,0.12)" showValue={false} />
+            <AnimatedRing value={overall.percent ?? 0} size={150} strokeWidth={12} color="#4aa2f0" colorEnd="#6366f1" trackColor="rgba(255,255,255,0.12)" showValue={false} />
             <Box sx={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
               {overall.percent == null ? (
                 <>
@@ -115,7 +115,7 @@ export function CourseReadinessCard({
               {weakest && <Box component="span" sx={{ color: "#f0abfc", fontWeight: 700 }}>{weakest.skill} ({weakest.percent}%)</Box>}. {active.skillProfile.aiTip}
             </Typography>
           </Stack>
-          <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #a855f7, #ec4899)" }}>
+          <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #4aa2f0, #ec4899)" }}>
             Fix it <Icon icon="mdi:arrow-right" width={16} />
           </ButtonBase>
         </Stack>

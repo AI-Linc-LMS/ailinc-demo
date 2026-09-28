@@ -115,7 +115,7 @@ export default function AdaptiveQuizListPage() {
             title="Adaptive Quizzes"
             subtitle="Each quiz adapts to you in real time - difficulty shifts as your confidence does, and results come with named misconceptions plus a 15-minute remediation path."
             icon="mdi:robot-happy-outline"
-            accent="purple"
+            accent="brand"
           />
 
           {stats.active + stats.archived > 0 && (
