@@ -69,16 +69,32 @@ export const focusRing = (buffer: string = AUTH.canvas) =>
 /** Drawn as a shadow, not a border, so focus causes zero layout shift. */
 export const hairlineRing = (color: string = AUTH.hairline) => `0 0 0 1px ${color}`;
 
-export const FONT = `var(--font-family-primary, 'Satoshi'), system-ui, sans-serif`;
+export const FONT = `var(--font-family-primary, 'Nunito'), system-ui, sans-serif`;
+
+/**
+ * The display face, for the tiers that are meant to be heard rather than read.
+ *
+ * A separate constant because MUI's `sx` wins over the `h1, h2, h3` rule in
+ * globals.css: these headings are Typography components carrying `fontFamily:
+ * FONT`, so the CSS rule never applied to them and the sign-in screen kept
+ * rendering its headline in the body face while the rest of the product had
+ * already moved.
+ */
+export const FONT_DISPLAY = `var(--font-family-display, 'Baloo 2'), var(--font-family-primary, 'Nunito'), system-ui, sans-serif`;
 
 /**
  * Type scale. Tracking tightens as size grows; the eyebrow tier moves the other way.
  * Those opposing directions do the hierarchy work a second typeface would be hired for.
  */
 export const TYPE = {
-  display: { fontSize: 44, lineHeight: 1.06, fontWeight: 500, letterSpacing: "-1.4px" },
-  title: { fontSize: 30, lineHeight: 1.15, fontWeight: 600, letterSpacing: "-0.6px" },
-  section: { fontSize: 20, lineHeight: 1.3, fontWeight: 600, letterSpacing: "-0.3px" },
+  // The display tiers invert the tracking the Satoshi scale used. Negative
+  // tracking is the right move on a grotesk and the wrong one on Baloo, whose
+  // round bowls collide when they are pulled together. Weight goes up to 700 for
+  // the same reason the globals.css heading rule does: Baloo at 500 looks lighter
+  // than Nunito at 500 beside it.
+  display: { fontSize: 44, lineHeight: 1.1, fontWeight: 700, letterSpacing: "0px" },
+  title: { fontSize: 30, lineHeight: 1.2, fontWeight: 700, letterSpacing: "0.2px" },
+  section: { fontSize: 20, lineHeight: 1.3, fontWeight: 600, letterSpacing: "0.2px" },
   body: { fontSize: 15, lineHeight: 1.5, fontWeight: 400, letterSpacing: 0 },
   label: { fontSize: 13, lineHeight: 1.4, fontWeight: 500, letterSpacing: 0 },
   eyebrow: { fontSize: 12, lineHeight: 1.4, fontWeight: 500, letterSpacing: "0.4px" },

@@ -2,7 +2,8 @@
 
 import { Box, Skeleton, Typography } from "@mui/material";
 import type { LoginHeroBrandingUi } from "@/lib/theme/authHeroBranding";
-import { AUTH, FONT, RADIUS, TYPE } from "./authTokens";
+import { AUTH, FONT, FONT_DISPLAY, RADIUS, TYPE } from "./authTokens";
+import { sceneSchoolDay } from "@/lib/demo/illustrations/scenes";
 
 interface AuthRightPanelDefaultProps {
   clientInfoLoading: boolean;
@@ -182,6 +183,40 @@ export function AuthRightPanelDefault({
         )}
       </Box>
 
+      {/* DEMO REPO ONLY: the school scene.
+          IN FLOW, not absolutely positioned, and BETWEEN the masthead and the
+          headline. Two things went wrong getting here. Absolutely positioned and
+          centred, it ran straight through the headline, because the panel is a
+          space-between column and its middle is exactly where the slogan sits.
+          Placed in flow but before the masthead, its flex:1 pushed the logo to the
+          foot of the panel. Order matters: masthead, scene, headline, name.
+
+          Drawn in the "light" tone: this is the one dark surface in the app, and a
+          navy outline disappears on it.
+
+          aria-hidden with an empty alt, because it is atmosphere. A screen reader
+          announcing "two children outside a school" in front of the sign-in form
+          is noise ahead of the only thing on this screen that matters. */}
+      <Box
+        aria-hidden
+        sx={{
+          position: "relative",
+          zIndex: 2,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flex: "1 1 auto",
+          minHeight: 0,
+          py: 2,
+        }}
+      >
+        <img
+          src={sceneSchoolDay("light")}
+          alt=""
+          style={{ width: "100%", maxWidth: 430, height: "auto", maxHeight: "100%" }}
+        />
+      </Box>
+
       <Box sx={{ position: "relative", zIndex: 2, maxWidth: 460 }}>
         {clientInfoLoading ? (
           <>
@@ -203,9 +238,9 @@ export function AuthRightPanelDefault({
             component="p"
             sx={{
               ...TYPE.display,
-              fontFamily: FONT,
+              fontFamily: FONT_DISPLAY,
               color: "#ffffff",
-              // Arabic joins cursively; negative tracking breaks the joins.
+              // Arabic joins cursively; tracking breaks the joins.
               '[dir="rtl"] &': { letterSpacing: "normal" },
             }}
           >

@@ -82,7 +82,10 @@ const THEME_SETTINGS: Record<string, string> = {
   // /public/fonts instead, so the demo needs no font CDN and renders identically
   // with the network unplugged.
   fontImportUrl: "",
-  loginHeroSlogan: "Learn with intent. Graduate job-ready.",
+  // Written for an eleven year old and the adult standing behind them. The adult
+  // demo's "Learn with intent. Graduate job-ready." is the single line that gave
+  // away who the product was built for.
+  loginHeroSlogan: "Big ideas start small. Let's begin.",
   loginHeroSloganFontSize: "30px",
   loginHeroSloganFontWeight: "600",
   loginHeroLogoMaxWidthPx: "230",
@@ -121,8 +124,8 @@ export const DEMO_CLIENT_INFO: ClientInfo = {
   live_proctoring_enabled: true,
   hide_available_courses_from_students: false,
 
-  certificate_signatory_name: "Dr. Priya Nair",
-  certificate_signatory_title: "Director of Programs, AI Linc",
+  certificate_signatory_name: "Priya Nair",
+  certificate_signatory_title: "Head Teacher, AI Linc Schools",
   certificate_signature_url: null,
 
   // The tenant is fully provisioned: a prospect must never land in the

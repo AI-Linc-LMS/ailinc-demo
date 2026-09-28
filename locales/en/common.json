@@ -291,7 +291,7 @@
     "forgotPassword": "Forgot Password",
     "email": "Email",
     "password": "Password",
-    "slogan": "Changing the way the world learns",
+    "slogan": "Learning that fits how you think",
     "orSignInWithEmail": "Or sign in with email",
     "keepMeLoggedIn": "Keep me logged in",
     "forgotPasswordLink": "Forgot password?",
@@ -371,7 +371,7 @@
     "seeYouSoon": "See you soon",
     "welcomeBack": "Welcome back",
     "createAccount": "Create your account",
-    "supporting": "Start from scratch, or from where you left off. Your path adapts as you go."
+    "supporting": "Pick up where you left off, or try something new today."
   },
   "dashboard": {
     "welcomeHello": "Hello {{name}}!",
