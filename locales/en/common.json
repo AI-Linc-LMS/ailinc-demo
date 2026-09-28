@@ -35,7 +35,15 @@
     "adaptiveCourses": "My Subjects",
     "adminTickets": "Ticket Management",
     "adaptiveQuizzes": "Quizzes",
-    "adminAdaptiveQuizzes": "Course Builder"
+    "adminAdaptiveQuizzes": "Course Builder",
+    "homework": "Homework",
+    "reportCard": "Report Card",
+    "timetable": "Timetable",
+    "attendanceSchool": "Attendance",
+    "schoolCalendar": "School Calendar",
+    "notices": "Notices",
+    "fees": "Fees",
+    "messages": "Messages"
   },
   "navSection": {
     "learn": "Learn",
@@ -46,7 +54,8 @@
     "assessments": "Assessments",
     "engagement": "Engagement",
     "communications": "Communications",
-    "settings": "Settings"
+    "settings": "Settings",
+    "school": "School"
   },
   "navDesc": {
     "dashboard": "Your week at a glance: what to do today and how you are doing.",
@@ -78,7 +87,15 @@
     "admin_scorecard": "Track student performance and readiness scorecards.",
     "admin_certificates": "Upload and manage course completion certificates.",
     "admin_jobs_v2": "Post jobs and curate opportunities for students.",
-    "admin_attendance": "Review attendance across live sessions and cohorts."
+    "admin_attendance": "Review attendance across live sessions and cohorts.",
+    "homework": "What is due, and when. Tick things off as you finish them.",
+    "reportCard": "Your marks for each subject, and what your teachers said.",
+    "timetable": "Which lesson is next, which room, and who is teaching it.",
+    "attendanceSchool": "The days you were in school, and the ones you missed.",
+    "schoolCalendar": "Trips, holidays, Sports Day and everything else coming up.",
+    "notices": "Messages for the whole school, newest first.",
+    "fees": "What has been paid and what is still to pay.",
+    "messages": "Notes between your teachers and home."
   },
   "certificatesUpload": {
     "heroBadge": "Admin · Storage",

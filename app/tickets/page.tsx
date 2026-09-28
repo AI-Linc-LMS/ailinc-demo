@@ -21,6 +21,8 @@ import {
   Chip,
 } from "@mui/material";
 import { PageShell } from "@/components/common/PageShell";
+import { SchoolPageHead, SchoolButton } from "@/components/school/SchoolUI";
+import { sceneSearch } from "@/lib/demo/illustrations/scenes";
 import {
   ModulePageHeader,
   HeaderActionButton,
@@ -162,19 +164,17 @@ export default function MyTicketsPage() {
 
   return (
     <PageShell>
-      <ModulePageHeader
-        eyebrow="Support"
-        title="My Tickets"
-        description="Raise support requests and track their status through to resolution."
-        accent="amber"
-        icon="mdi:ticket-confirmation-outline"
+      {/* SCHOOL EDITION: illustrated header. */}
+      <SchoolPageHead
+        eyebrow="Together"
+        title="Get Help"
+        blurb="Something broken rather than hard? A video that will not play, a name spelled wrong. Tell us here and it reaches the right person."
+        scene={sceneSearch("ink")}
+        tint="#fff8e6"
         action={
-          <HeaderActionButton
-            icon="mdi:plus"
-            onClick={() => setDialogOpen(true)}
-          >
-            New ticket
-          </HeaderActionButton>
+          <SchoolButton icon="mdi:plus" onClick={() => setDialogOpen(true)}>
+            Ask for help
+          </SchoolButton>
         }
       />
       <Paper

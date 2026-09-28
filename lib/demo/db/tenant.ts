@@ -48,6 +48,19 @@ const ENABLED_FEATURES = [
   "scorecard",
   "support",
 
+  // SCHOOL EDITION: the school-life modules. A learning platform covers what a
+  // child learns; a school also has to answer when the next lesson is, what is due
+  // on Thursday, whether they were marked present, what they got, and whether the
+  // trip money has been paid. These are new to this fork.
+  "school_timetable",
+  "school_homework",
+  "school_attendance",
+  "school_grades",
+  "school_announcements",
+  "school_fees",
+  "school_calendar",
+  "school_messages",
+
   // Instructor workspace
   "instructor",
 

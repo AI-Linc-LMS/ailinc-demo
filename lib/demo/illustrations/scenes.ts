@@ -313,9 +313,218 @@ export function sceneCertificate(tone: SceneTone = "ink"): string {
   );
 }
 
+/**
+ * Timetable: a wall clock beside a week grid.
+ *
+ * The grid is deliberately only five columns of three rows. A real timetable
+ * drawn at icon size turns into a texture, and the point of the drawing is to say
+ * "this is when things happen", not to be readable.
+ */
+export function sceneTimetable(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  const cells = [0, 1, 2, 3, 4]
+    .flatMap((c) =>
+      [0, 1, 2].map((r) => {
+        const fill = ["#83c2fa", "#4ade80", "#fb7185", "#fbbf24", "#e879f9", "#14b8a6"][(c + r * 2) % 6];
+        return `<rect x="${196 + c * 34}" y="${118 + r * 30}" width="26" height="22" rx="6" fill="${fill}"/>`;
+      }),
+    )
+    .join("");
+
+  return wrap(
+    `<circle cx="104" cy="150" r="58" fill="#ffffff"/>` +
+      `<circle cx="104" cy="150" r="58" ${L}/>` +
+      `<line x1="104" y1="150" x2="104" y2="116" ${L}/>` +
+      `<line x1="104" y1="150" x2="130" y2="164" ${L}/>` +
+      `<circle cx="104" cy="150" r="6" fill="${CORAL}"/>` +
+      `<rect x="182" y="92" width="190" height="130" rx="14" fill="#ffffff"/>` +
+      `<rect x="182" y="92" width="190" height="130" rx="14" ${L}/>` +
+      `<line x1="182" y1="112" x2="372" y2="112" ${L}/>` +
+      cells +
+      `<circle cx="196" cy="102" r="4" fill="${SUNSHINE}"/>` +
+      `<circle cx="210" cy="102" r="4" fill="${SUNSHINE}"/>` +
+      `<line x1="52" y1="238" x2="396" y2="238" ${L}/>`,
+    420,
+    260,
+  );
+}
+
+/** Homework: a book, a pencil and a tick. */
+export function sceneHomework(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+
+  return wrap(
+    `<rect x="96" y="70" width="170" height="150" rx="12" fill="#ffffff"/>` +
+      `<rect x="96" y="70" width="170" height="150" rx="12" ${L}/>` +
+      `<line x1="124" y1="70" x2="124" y2="220" ${L}/>` +
+      `<g stroke="${s}" stroke-width="4" stroke-linecap="round" opacity="0.35">` +
+      `<line x1="146" y1="104" x2="240" y2="104"/><line x1="146" y1="130" x2="240" y2="130"/>` +
+      `<line x1="146" y1="156" x2="212" y2="156"/></g>` +
+      `<g transform="rotate(38 300 150)">` +
+      `<rect x="288" y="74" width="24" height="106" rx="9" fill="${SUNSHINE}"/>` +
+      `<rect x="288" y="74" width="24" height="106" rx="9" ${L}/>` +
+      `<path d="M286 180 L314 180 L306 212 L294 212 Z" fill="${CORAL}"/>` +
+      `<path d="M286 180 L314 180 L306 212 L294 212 Z" ${L}/></g>` +
+      `<circle cx="150" cy="200" r="26" fill="#4ade80"/>` +
+      `<circle cx="150" cy="200" r="26" ${L}/>` +
+      `<path d="M138 200 L147 210 L163 190" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `<line x1="52" y1="238" x2="368" y2="238" ${L}/>`,
+    400,
+    260,
+  );
+}
+
+/** Attendance: a calendar with ticks, and a child putting their hand up. */
+export function sceneAttendance(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  const marks = [0, 1, 2, 3, 4, 5]
+    .map((i) => {
+      const x = 118 + (i % 3) * 46;
+      const y = 140 + Math.floor(i / 3) * 40;
+      const present = i !== 4;
+      return present
+        ? `<circle cx="${x}" cy="${y}" r="15" fill="#4ade80"/><circle cx="${x}" cy="${y}" r="15" fill="none" stroke="${s}" stroke-width="3.5"/>` +
+            `<path d="M${x - 7} ${y} L${x - 1} ${y + 6} L${x + 8} ${y - 6}" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`
+        : `<circle cx="${x}" cy="${y}" r="15" fill="#fbbf24"/><circle cx="${x}" cy="${y}" r="15" fill="none" stroke="${s}" stroke-width="3.5"/>`;
+    })
+    .join("");
+
+  return wrap(
+    `<rect x="84" y="78" width="164" height="144" rx="14" fill="#ffffff"/>` +
+      `<rect x="84" y="78" width="164" height="144" rx="14" ${L}/>` +
+      `<line x1="84" y1="112" x2="248" y2="112" ${L}/>` +
+      `<line x1="118" y1="62" x2="118" y2="88" ${L}/>` +
+      `<line x1="214" y1="62" x2="214" y2="88" ${L}/>` +
+      marks +
+      placeChild(318, 230, 0.66, kid(1, { pose: "wave", facing: "left", outline: s })) +
+      `<line x1="46" y1="230" x2="376" y2="230" ${L}/>`,
+    410,
+    252,
+  );
+}
+
+/** Announcements: a megaphone, with a noticeboard behind it. */
+export function sceneAnnounce(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+
+  return wrap(
+    `<rect x="70" y="72" width="160" height="126" rx="12" fill="#ffffff"/>` +
+      `<rect x="70" y="72" width="160" height="126" rx="12" ${L}/>` +
+      `<g stroke="${s}" stroke-width="4" stroke-linecap="round" opacity="0.3">` +
+      `<line x1="94" y1="106" x2="178" y2="106"/><line x1="94" y1="132" x2="204" y2="132"/>` +
+      `<line x1="94" y1="158" x2="160" y2="158"/></g>` +
+      `<circle cx="206" cy="90" r="7" fill="${CORAL}"/>` +
+      `<g transform="rotate(-16 300 140)">` +
+      `<path d="M252 124 L300 96 L300 184 L252 156 Z" fill="${SUNSHINE}"/>` +
+      `<path d="M252 124 L300 96 L300 184 L252 156 Z" ${L}/>` +
+      `<path d="M300 96 C340 100 340 180 300 184 Z" fill="${CORAL}"/>` +
+      `<path d="M300 96 C340 100 340 180 300 184 Z" ${L}/>` +
+      `<rect x="228" y="124" width="26" height="32" rx="8" fill="#ffffff"/>` +
+      `<rect x="228" y="124" width="26" height="32" rx="8" ${L}/></g>` +
+      `<g stroke="${SUNSHINE}" stroke-width="5" stroke-linecap="round">` +
+      `<line x1="352" y1="96" x2="372" y2="88"/><line x1="356" y1="130" x2="378" y2="130"/>` +
+      `<line x1="352" y1="164" x2="372" y2="172"/></g>` +
+      `<line x1="42" y1="216" x2="392" y2="216" ${L}/>`,
+    420,
+    240,
+  );
+}
+
+/** Fees: a coin jar and a receipt with a tick. */
+export function sceneFees(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+
+  return wrap(
+    `<path d="M104 118 L200 118 L192 212 A12 12 0 0 1 180 222 L124 222 A12 12 0 0 1 112 212 Z" fill="#83c2fa" opacity="0.5"/>` +
+      `<path d="M104 118 L200 118 L192 212 A12 12 0 0 1 180 222 L124 222 A12 12 0 0 1 112 212 Z" ${L}/>` +
+      `<rect x="96" y="102" width="112" height="20" rx="8" fill="#ffffff"/>` +
+      `<rect x="96" y="102" width="112" height="20" rx="8" ${L}/>` +
+      `<circle cx="140" cy="168" r="20" fill="${SUNSHINE}"/>` +
+      `<circle cx="140" cy="168" r="20" ${L}/>` +
+      `<circle cx="172" cy="190" r="16" fill="${SUNSHINE}"/>` +
+      `<circle cx="172" cy="190" r="16" ${L}/>` +
+      `<rect x="240" y="88" width="120" height="134" rx="10" fill="#ffffff"/>` +
+      `<rect x="240" y="88" width="120" height="134" rx="10" ${L}/>` +
+      `<g stroke="${s}" stroke-width="4" stroke-linecap="round" opacity="0.3">` +
+      `<line x1="262" y1="118" x2="338" y2="118"/><line x1="262" y1="142" x2="318" y2="142"/></g>` +
+      `<circle cx="300" cy="182" r="24" fill="#4ade80"/>` +
+      `<circle cx="300" cy="182" r="24" ${L}/>` +
+      `<path d="M289 182 L297 191 L312 173" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `<line x1="56" y1="238" x2="382" y2="238" ${L}/>`,
+    420,
+    260,
+  );
+}
+
+/** School calendar: a calendar page with a star on one day, and bunting. */
+export function sceneCalendar(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  const flags = [0, 1, 2, 3, 4]
+    .map((i) => {
+      const x = 74 + i * 62;
+      const c = ["#fb7185", "#fbbf24", "#4ade80", "#83c2fa", "#e879f9"][i];
+      return `<path d="M${x} 46 L${x + 26} 46 L${x + 13} 74 Z" fill="${c}"/><path d="M${x} 46 L${x + 26} 46 L${x + 13} 74 Z" fill="none" stroke="${s}" stroke-width="3.5"/>`;
+    })
+    .join("");
+
+  return wrap(
+    `<path d="M60 44 Q210 66 380 44" ${L}/>` +
+      flags +
+      `<rect x="132" y="96" width="176" height="144" rx="14" fill="#ffffff"/>` +
+      `<rect x="132" y="96" width="176" height="144" rx="14" ${L}/>` +
+      `<line x1="132" y1="132" x2="308" y2="132" ${L}/>` +
+      `<line x1="172" y1="80" x2="172" y2="106" ${L}/>` +
+      `<line x1="268" y1="80" x2="268" y2="106" ${L}/>` +
+      `<g fill="rgba(16,34,74,0.16)">` +
+      [0, 1, 2, 3, 4, 5, 6, 7]
+        .map((i) => `<rect x="${158 + (i % 4) * 40}" y="${150 + Math.floor(i / 4) * 36}" width="24" height="20" rx="6"/>`)
+        .join("") +
+      `</g>` +
+      `<circle cx="238" cy="204" r="26" fill="${SUNSHINE}"/>` +
+      `<circle cx="238" cy="204" r="26" ${L}/>` +
+      `<path d="M238 190 L243 201 L255 201 L245 208 L249 220 L238 213 L227 220 L231 208 L221 201 L233 201 Z" fill="${CORAL}"/>` +
+      `<line x1="70" y1="256" x2="370" y2="256" ${L}/>`,
+    420,
+    276,
+  );
+}
+
+/** Messages: two speech bubbles, a grown-up and a child. */
+export function sceneMessages(tone: SceneTone = "ink"): string {
+  const s = strokeFor(tone);
+  const L = `fill="none" stroke="${s}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+
+  return wrap(
+    `<path d="M70 70 L242 70 A14 14 0 0 1 256 84 L256 150 A14 14 0 0 1 242 164 L124 164 L96 190 L96 164 L70 164 A14 14 0 0 1 56 150 L56 84 A14 14 0 0 1 70 70 Z" fill="#83c2fa"/>` +
+      `<path d="M70 70 L242 70 A14 14 0 0 1 256 84 L256 150 A14 14 0 0 1 242 164 L124 164 L96 190 L96 164 L70 164 A14 14 0 0 1 56 150 L56 84 A14 14 0 0 1 70 70 Z" ${L}/>` +
+      `<g stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.85">` +
+      `<line x1="86" y1="100" x2="204" y2="100"/><line x1="86" y1="126" x2="166" y2="126"/></g>` +
+      `<path d="M300 118 L436 118 A14 14 0 0 1 450 132 L450 190 A14 14 0 0 1 436 204 L380 204 L352 230 L352 204 L300 204 A14 14 0 0 1 286 190 L286 132 A14 14 0 0 1 300 118 Z" fill="#ffffff"/>` +
+      `<path d="M300 118 L436 118 A14 14 0 0 1 450 132 L450 190 A14 14 0 0 1 436 204 L380 204 L352 230 L352 204 L300 204 A14 14 0 0 1 286 190 L286 132 A14 14 0 0 1 300 118 Z" ${L}/>` +
+      `<g stroke="${s}" stroke-width="5" stroke-linecap="round" opacity="0.35">` +
+      `<line x1="310" y1="146" x2="424" y2="146"/><line x1="310" y1="172" x2="384" y2="172"/></g>` +
+      `<circle cx="252" cy="212" r="7" fill="${SUNSHINE}"/>`,
+    480,
+    250,
+  );
+}
+
 /** Every scene, for the surfaces that pick one by name. */
 export const SCENES = {
   schoolDay: sceneSchoolDay,
+  timetable: sceneTimetable,
+  homework: sceneHomework,
+  attendance: sceneAttendance,
+  announce: sceneAnnounce,
+  fees: sceneFees,
+  calendar: sceneCalendar,
+  messages: sceneMessages,
   studyDesk: sceneStudyDesk,
   classroom: sceneClassroom,
   celebrate: sceneCelebrate,

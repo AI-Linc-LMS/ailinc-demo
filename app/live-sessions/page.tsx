@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { PageShell } from "@/components/common/PageShell";
+import { SchoolPageHead } from "@/components/school/SchoolUI";
+import { sceneClassroom } from "@/lib/demo/illustrations/scenes";
 import { AnimatedRing } from "@/components/scorecard/shared";
 import { LiveSessionsEmptyState } from "@/components/live-sessions/LiveSessionsEmptyState";
 import { LiveSessionsFeatureBlocked } from "@/components/live-sessions/LiveSessionsFeatureBlocked";
@@ -372,20 +374,16 @@ export default function LiveSessionsPage() {
 
   return (
     <PageShell>
-      {/* Header */}
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 3, gap: 2, flexWrap: "wrap" }}>
-        <Stack direction="row" spacing={1.75} alignItems="flex-start">
-          <Box sx={{ width: 52, height: 52, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "#fff", background: AI_GRAD }}>
-            <Icon icon="mdi:broadcast" width={26} />
-          </Box>
-          <Box>
-            <Typography sx={{ fontSize: "0.68rem", fontWeight: 800, letterSpacing: 1, color: "#7c3aed" }}>LEARN · LIVE</Typography>
-            <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.6rem", md: "2rem" }, lineHeight: 1.1 }}>Live Sessions</Typography>
-            <Typography sx={{ color: "text.secondary", fontSize: "0.9rem", maxWidth: 520, mt: 0.25 }}>
-              Join live classes, prepare before you arrive, and catch up on anything you missed with recordings and notes.
-            </Typography>
-          </Box>
-        </Stack>
+      {/* SCHOOL EDITION: the illustrated header, replacing a hand-rolled one whose
+          eyebrow was still literal violet. */}
+      <SchoolPageHead
+        eyebrow="Together"
+        title="Live Classes"
+        blurb="Lessons with your teacher and your class. Join from here, and catch up on any you missed."
+        scene={sceneClassroom("ink")}
+        tint="#eff7ff"
+      />
+      <Stack direction="row" justifyContent="flex-end" sx={{ mb: 3 }}>
         <Button onClick={syncAll}
           startIcon={<Icon icon="mdi:calendar-sync" width={18} />}
           sx={{ textTransform: "none", fontWeight: 700, borderRadius: 2.5, px: 2, py: 1, border: "1px solid var(--border-default)", color: "var(--font-primary)", bgcolor: "var(--card-bg)" }}>

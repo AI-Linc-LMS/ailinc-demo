@@ -24,6 +24,8 @@ import {
 } from "@mui/material";
 import { PageShell } from "@/components/common/PageShell";
 import { ModulePageHeader, HeaderActionButton } from "@/components/common/ModulePageHeader";
+import { SchoolPageHead, SchoolButton } from "@/components/school/SchoolUI";
+import { sceneTeamwork } from "@/lib/demo/illustrations/scenes";
 import { IconWrapper } from "@/components/common/IconWrapper";
 import { ThreadCard } from "@/components/community/ThreadCard";
 import { CreateThreadDialog } from "@/components/community/CreateThreadDialog";
@@ -678,19 +680,17 @@ export default function CommunityPage() {
 
   return (
     <PageShell>
-      <ModulePageHeader
-        eyebrow="Engage"
-        title="Community"
-        description="Ask your class a question, help somebody out, and show what you have made."
-        accent="emerald"
-        icon="mdi:forum"
+      {/* SCHOOL EDITION: illustrated header. */}
+      <SchoolPageHead
+        eyebrow="Together"
+        title="Class Group"
+        blurb="Ask your class a question, help somebody out, and show what you have made."
+        scene={sceneTeamwork("ink")}
+        tint="#e8fbef"
         action={
-          <HeaderActionButton
-            icon="mdi:plus"
-            onClick={() => setCreateDialogOpen(true)}
-          >
-            New post
-          </HeaderActionButton>
+          <SchoolButton icon="mdi:plus" onClick={() => setCreateDialogOpen(true)}>
+            Write a post
+          </SchoolButton>
         }
       />
       {/* Two-column layout - sidebar hidden below md */}
