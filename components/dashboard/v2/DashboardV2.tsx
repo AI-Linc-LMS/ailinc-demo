@@ -21,6 +21,7 @@ import type { LearnerDashboard } from "@/lib/types/dashboard";
 import { SchoolTodayHero } from "@/components/school/SchoolTodayHero";
 import { SchoolStats } from "@/components/school/SchoolStats";
 import { TodayLessonsPanel, HomeworkDuePanel } from "@/components/school/SchoolDayPanels";
+import { SchoolQuickTiles, NoticesPanel, ComingUpPanel } from "@/components/school/SchoolHomePanels";
 import { CourseReadinessCard } from "./CourseReadinessCard";
 import { SkillProfilePanel } from "./SkillProfilePanel";
 import { CertificatePanel } from "./CertificatePanel";
@@ -127,6 +128,10 @@ export function DashboardV2() {
         <Box data-tour-id="dash-stats">
           <SchoolStats aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />
         </Box>
+        {/* Attendance, notes from school, the next event and anything owed. Four
+            unrelated facts, so a row rather than a column: stacking unrelated
+            numbers invites a reader to look for a relationship that is not there. */}
+        <SchoolQuickTiles />
         <Box data-tour-id="dash-courses">
           <CourseReadinessCard courses={data.courses} activeCourseId={activeCourse?.id ?? null} onSelect={setActiveCourseId} />
         </Box>
@@ -164,6 +169,8 @@ export function DashboardV2() {
             Home page should answer before it answers anything about mastery. */}
         <TodayLessonsPanel />
         <HomeworkDuePanel />
+        <NoticesPanel />
+        <ComingUpPanel />
         {activeCourse?.certificate.enabled && <CertificatePanel course={activeCourse} />}
         {courseEnabled && <UpNextPanel items={data.crossCourseUpNext} />}
       </Stack>

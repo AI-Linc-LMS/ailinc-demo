@@ -128,8 +128,8 @@ export function CourseReadinessCard({
               {weakest && <Box component="span" sx={{ color: "#a21caf", fontWeight: 800 }}>{weakest.skill} ({weakest.percent}%)</Box>}. {active.skillProfile.aiTip}
             </Typography>
           </Stack>
-          <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #4aa2f0, #ec4899)" }}>
-            Fix it <Icon icon="mdi:arrow-right" width={16} />
+          <ButtonBase onClick={() => router.push(fixRoute)} sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, fontSize: "0.85rem", color: "white", gap: 0.5, background: "linear-gradient(135deg, #4aa2f0, #1b6fd4)", border: "2px solid rgba(16,34,74,0.18)" }}>
+            Have a go <Icon icon="mdi:arrow-right" width={16} />
           </ButtonBase>
         </Stack>
       )}
