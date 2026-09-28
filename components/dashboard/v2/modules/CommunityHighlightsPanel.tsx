@@ -8,7 +8,7 @@ import { communityService, type Thread } from "@/lib/services/community.service"
 import { avatarColor } from "../parts";
 import { ModuleEmpty, ModuleHeader, ModulePanel, ModuleRowsSkeleton } from "./shared";
 
-const GRADIENT = "linear-gradient(135deg, #4aa2f0, #ec4899)";
+const GRADIENT = "linear-gradient(135deg, #a855f7, #ec4899)";
 
 function netScore(t: Thread): number {
   return (t.upvotes ?? 0) - (t.downvotes ?? 0);
@@ -58,7 +58,7 @@ export function CommunityHighlightsPanel() {
                   </Box>
                   <Box sx={{ flex: 1, minWidth: 0 }}>
                     {t.is_pinned && (
-                      <Typography component="span" sx={{ fontSize: "0.62rem", fontWeight: 800, color: "#4aa2f0", mr: 0.5 }}>
+                      <Typography component="span" sx={{ fontSize: "0.62rem", fontWeight: 800, color: "#c026d3", mr: 0.5 }}>
                         <Icon icon="mdi:pin" width={11} style={{ verticalAlign: "-2px" }} /> PINNED
                       </Typography>
                     )}
@@ -66,8 +66,8 @@ export function CommunityHighlightsPanel() {
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.4 }}>
                       <Typography noWrap sx={{ fontSize: "0.68rem", color: "#94a3b8", fontWeight: 600, maxWidth: 96 }}>{name}</Typography>
                       <Stack direction="row" spacing={0.3} alignItems="center">
-                        <Icon icon="mdi:arrow-up-bold" width={13} color="#4aa2f0" />
-                        <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, color: "#1b6fd4" }}>{netScore(t)}</Typography>
+                        <Icon icon="mdi:arrow-up-bold" width={13} color="#a855f7" />
+                        <Typography sx={{ fontSize: "0.7rem", fontWeight: 800, color: "#7c3aed" }}>{netScore(t)}</Typography>
                       </Stack>
                       <Stack direction="row" spacing={0.3} alignItems="center">
                         <Icon icon="mdi:comment-outline" width={12} color="#94a3b8" />

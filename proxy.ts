@@ -95,14 +95,7 @@ export function proxy(request: NextRequest) {
     // editor silently never appears.
     pathname.startsWith("/monaco/") ||
     // Brand lockups live here and are needed on the SIGNED-OUT login screen.
-    pathname.startsWith("/logos/") ||
-    // Webfonts. This was missing, so /fonts/satoshi.css and every .woff2 under it
-    // 307'd to /login for a signed-out visitor and NO custom typeface loaded on
-    // the sign-in screen - the one screen every prospect sees first. It was
-    // invisible because the stack falls back to system-ui, which looks like a
-    // deliberate choice rather than a failure. Found when the browser warned that
-    // a preloaded font was never used.
-    pathname.startsWith("/fonts/")
+    pathname.startsWith("/logos/")
   ) {
     return NextResponse.next();
   }

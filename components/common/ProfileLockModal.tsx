@@ -58,7 +58,7 @@ export function ProfileLockModal({
             display: "grid",
             placeItems: "center",
             color: "white",
-            background: "linear-gradient(135deg, #1b6fd4, #ec4899)",
+            background: "linear-gradient(135deg, #7c3aed, #ec4899)",
           }}
         >
           <Icon icon="mdi:lock-outline" width={28} />
@@ -80,7 +80,7 @@ export function ProfileLockModal({
               bgcolor: "#eef2f7",
               "& .MuiLinearProgress-bar": {
                 borderRadius: 4,
-                background: "linear-gradient(90deg, #1b6fd4, #ec4899)",
+                background: "linear-gradient(90deg, #7c3aed, #ec4899)",
               },
             }}
           />
@@ -124,8 +124,8 @@ export function ProfileLockModal({
             fontSize: "0.92rem",
             color: "white",
             textTransform: "none",
-            background: "linear-gradient(135deg, #1b6fd4, #ec4899)",
-            "&:hover": { background: "linear-gradient(135deg, #13498c, #db2777)" },
+            background: "linear-gradient(135deg, #7c3aed, #ec4899)",
+            "&:hover": { background: "linear-gradient(135deg, #6d28d9, #db2777)" },
           }}
         >
           Complete profile

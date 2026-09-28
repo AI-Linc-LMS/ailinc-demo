@@ -31,25 +31,13 @@ export type { AuthoredTopic, AuthoredProblem, AuthoredQuestion, ReadingTier } fr
  * code-split an import they can see: `import(\`./course-${id}.ts\`)` either fails
  * to split or pulls in every match, which would defeat the point.
  */
-/**
- * SCHOOL EDITION: empty, and that is deliberate rather than an oversight.
- *
- * The five entries here loaded authored curriculum for the engineering courses
- * (201-205), which are no longer in the catalogue. Their files are still in the
- * tree - roughly 1.3MB of genuinely good writing on SQL semantics, React
- * rendering and the rest - and are kept rather than deleted so the school
- * curriculum can be written against them as a model, and so nothing is thrown
- * away that would be expensive to recover.
- *
- * They are NOT referenced, so the bundler emits no chunk for them and a visitor
- * downloads none of it.
- *
- * Until school curriculum is authored, topics fall through to the generated
- * fallback. That is a known gap and the next piece of work: `courseIsAuthored`
- * returning false is what routes a topic there, so adding a course here is the
- * only step needed once its file exists.
- */
-const LOADERS: Record<number, () => Promise<{ default: CourseCurriculum }>> = {};
+const LOADERS: Record<number, () => Promise<{ default: CourseCurriculum }>> = {
+  201: () => import("./course-201"),
+  202: () => import("./course-202"),
+  203: () => import("./course-203"),
+  204: () => import("./course-204"),
+  205: () => import("./course-205"),
+};
 
 /** Chunks already fetched. A second visit to a course must not re-parse it. */
 const cache = new Map<number, CourseCurriculum>();

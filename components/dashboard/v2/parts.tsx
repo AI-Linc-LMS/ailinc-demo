@@ -73,7 +73,7 @@ export function PanelCard({
 }
 
 export function SectionHeader({
-  icon, title, subtitle, gradient = "linear-gradient(135deg, #6366f1, #4aa2f0)", action,
+  icon, title, subtitle, gradient = "linear-gradient(135deg, #6366f1, #a855f7)", action,
 }: {
   icon: string; title: string; subtitle?: string; gradient?: string; action?: ReactNode;
 }) {
@@ -92,7 +92,7 @@ export function SectionHeader({
 }
 
 export function StatBox({
-  label, value, sub, subColor = "#94a3b8", icon, accent = "#1b6fd4", info,
+  label, value, sub, subColor = "#94a3b8", icon, accent = "#7c3aed", info,
 }: {
   label: string; value: ReactNode; sub?: ReactNode; subColor?: string; icon?: string; accent?: string; info?: ReactNode;
 }) {

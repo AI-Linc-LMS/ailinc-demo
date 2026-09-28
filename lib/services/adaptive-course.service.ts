@@ -161,18 +161,6 @@ export interface AdaptiveCourseListItem {
   video_count?: number;
   /** AI/admin card thumbnail; null when absent or hidden by the admin. */
   card_image_url?: string | null;
-  /**
-   * School subject and its palette, sent by the API rather than looked up on the
-   * client. A course is the same colour everywhere because one place decides it.
-   * Optional: a backend that does not send them leaves the card on its defaults.
-   */
-  subject?: string | null;
-  subject_label?: string | null;
-  /** School year, e.g. "Grade 7". Shown as a chip beside the difficulty. */
-  grade?: string | null;
-  subject_accent_from?: string | null;
-  subject_accent_to?: string | null;
-  subject_ink?: string | null;
   /** True when the admin has opened this course to student self-enrollment (catalog listing). */
   self_enroll_enabled?: boolean;
   updated_at: string;

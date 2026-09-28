@@ -20,7 +20,6 @@
     "check:lockfile": "node scripts/check-lockfile-platforms.mjs",
     "build:icons": "node scripts/build-icon-bundle.mjs",
     "build:fonts": "node scripts/fetch-fonts.mjs",
-    "build:fonts:school": "node scripts/fetch-school-fonts.mjs",
     "copy:monaco": "node scripts/copy-monaco.mjs",
     "prebuild": "node scripts/copy-monaco.mjs",
     "predev": "node scripts/copy-monaco.mjs"

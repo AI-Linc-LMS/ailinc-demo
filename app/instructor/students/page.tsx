@@ -446,7 +446,7 @@ export default function InstructorStudentsPage() {
         eyebrow="Teach"
         title="Student Reports"
         description="Progress, scores and engagement across the courses and cohorts you're assigned to."
-        accent="brand"
+        accent="purple"
         icon="mdi:chart-box-outline"
         action={
           <Stack direction="row" spacing={1}>

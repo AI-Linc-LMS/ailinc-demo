@@ -8,14 +8,8 @@
  *
  * Values are taken from the shipped student dashboard (components/dashboard/v2/*) and
  * ModulePageHeader rather than from the token file, because the two disagree:
- * --primary-500 is the ramp's azure while the dashboard carries the deeper brand azure.
- * Signing in should look like the product you land in, so the dashboard wins.
- *
- * SCHOOL EDITION: the violet family below was the adult palette (#7c3aed / #5b21b6 over a
- * #140b2b night panel). It is azure now, matching FIXED_SCHOOL_PALETTE in
- * lib/theme/normalizeThemeSettings.ts. The key names keep the word "violet" on purpose:
- * renaming them would touch every auth component for no behaviour change, and the comment
- * you are reading is cheaper than that diff. Treat them as "the brand accent".
+ * --primary-500 is #a855f7 while the dashboard's violet is #7c3aed. Signing in should
+ * look like the product you land in, so the dashboard wins.
  *
  * See DESIGN.md for the reasoning behind each value.
  */
@@ -25,17 +19,17 @@ export const AUTH = {
   inkMuted: "#475569",
   inkFaint: "#64748b",
 
-  canvas: "#f6faff",
+  canvas: "#fbfbfd",
   surface: "#ffffff",
   hairline: "#e6e8ef",
 
-  violet: "#1b6fd4",
-  violetDeep: "#13498c",
-  violetSoft: "#eff7ff",
+  violet: "#7c3aed",
+  violetDeep: "#5b21b6",
+  violetSoft: "#f5f0ff",
   pink: "#ec4899",
 
-  night: "#10224a",
-  night2: "#17346e",
+  night: "#140b2b",
+  night2: "#1e1040",
 
   error: "#dc2626",
   errorSoft: "#fef2f2",
@@ -44,18 +38,10 @@ export const AUTH = {
 /** 4px base rhythm. */
 export const SPACE = { xs: 8, sm: 12, md: 16, lg: 24, xl: 32, xxl: 48 } as const;
 
-/**
- * 14, not 8. School edition: corner radius is the cheapest and most legible signal that
- * a product is meant for children, and this constant is read by every auth control.
- * Still short of a pill, which remains a 2021 tell.
- */
-export const RADIUS = 14;
+export const RADIUS = 8;
 
-/**
- * 48, not 44. Younger hands and shared classroom tablets both want a bigger target;
- * 48px is the WCAG 2.2 target-size minimum rather than the 44px Apple floor.
- */
-export const CONTROL_HEIGHT = 48;
+/** Everything except toggles. Pills are a 2021 tell. */
+export const CONTROL_HEIGHT = 44;
 
 export const EASE = "cubic-bezier(.175,.885,.32,1.1)";
 
@@ -69,32 +55,16 @@ export const focusRing = (buffer: string = AUTH.canvas) =>
 /** Drawn as a shadow, not a border, so focus causes zero layout shift. */
 export const hairlineRing = (color: string = AUTH.hairline) => `0 0 0 1px ${color}`;
 
-export const FONT = `var(--font-family-primary, 'Nunito'), system-ui, sans-serif`;
-
-/**
- * The display face, for the tiers that are meant to be heard rather than read.
- *
- * A separate constant because MUI's `sx` wins over the `h1, h2, h3` rule in
- * globals.css: these headings are Typography components carrying `fontFamily:
- * FONT`, so the CSS rule never applied to them and the sign-in screen kept
- * rendering its headline in the body face while the rest of the product had
- * already moved.
- */
-export const FONT_DISPLAY = `var(--font-family-display, 'Baloo 2'), var(--font-family-primary, 'Nunito'), system-ui, sans-serif`;
+export const FONT = `var(--font-family-primary, 'Satoshi'), system-ui, sans-serif`;
 
 /**
  * Type scale. Tracking tightens as size grows; the eyebrow tier moves the other way.
  * Those opposing directions do the hierarchy work a second typeface would be hired for.
  */
 export const TYPE = {
-  // The display tiers invert the tracking the Satoshi scale used. Negative
-  // tracking is the right move on a grotesk and the wrong one on Baloo, whose
-  // round bowls collide when they are pulled together. Weight goes up to 700 for
-  // the same reason the globals.css heading rule does: Baloo at 500 looks lighter
-  // than Nunito at 500 beside it.
-  display: { fontSize: 44, lineHeight: 1.1, fontWeight: 700, letterSpacing: "0px" },
-  title: { fontSize: 30, lineHeight: 1.2, fontWeight: 700, letterSpacing: "0.2px" },
-  section: { fontSize: 20, lineHeight: 1.3, fontWeight: 600, letterSpacing: "0.2px" },
+  display: { fontSize: 44, lineHeight: 1.06, fontWeight: 500, letterSpacing: "-1.4px" },
+  title: { fontSize: 30, lineHeight: 1.15, fontWeight: 600, letterSpacing: "-0.6px" },
+  section: { fontSize: 20, lineHeight: 1.3, fontWeight: 600, letterSpacing: "-0.3px" },
   body: { fontSize: 15, lineHeight: 1.5, fontWeight: 400, letterSpacing: 0 },
   label: { fontSize: 13, lineHeight: 1.4, fontWeight: 500, letterSpacing: 0 },
   eyebrow: { fontSize: 12, lineHeight: 1.4, fontWeight: 500, letterSpacing: "0.4px" },

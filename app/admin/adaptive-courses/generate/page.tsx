@@ -275,7 +275,7 @@ function GenerateAdaptiveCourseInner() {
             title="Generate course"
             subtitle="Describe the course, or upload a curriculum CSV. Either way you get weeks, topics, and a quiz on every topic that gets harder or easier as the student answers."
             icon="mdi:auto-fix"
-            accent="brand"
+            accent="purple"
           />
 
           <Box

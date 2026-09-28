@@ -30,11 +30,7 @@ export const DEMO_CLIENT_ID = 101;
  * values (and the palette below) to re-skin the entire demo.
  */
 export const DEMO_TENANT = {
-  // "AI Linc Schools", not an invented school name. The demo runs as AI Linc's own
-  // brand (see the commit that moved it off "Meridian Institute of Technology"),
-  // and inventing a school risks colliding with a real one that a visiting
-  // headteacher might recognise as not theirs.
-  name: "AI Linc Schools",
+  name: "AI Linc",
   shortName: "AI Linc",
   slug: "ailinc",
   /** IANA zone. Drives live-session times shown across the app. */
@@ -65,21 +61,21 @@ export const DEMO_PERSONAS: readonly DemoPersona[] = [
     key: "student",
     email: "student@ailinc.com",
     label: "Student",
-    blurb: "Lessons, quizzes, live classes and your class group",
+    blurb: "Courses, assessments, mock interviews, jobs and community",
     icon: "mdi:school-outline",
   },
   {
     key: "instructor",
     email: "instructor@ailinc.com",
-    label: "Teacher",
-    blurb: "Your classes, marks, live lessons and how each child is doing",
+    label: "Instructor",
+    blurb: "Batches, gradebook, live sessions and student analytics",
     icon: "mdi:human-male-board",
   },
   {
     key: "admin",
     email: "admin@ailinc.com",
-    label: "Head Teacher",
-    blurb: "The whole school: pupils, staff, timetable, reports and branding",
+    label: "Administrator",
+    blurb: "Full institution control: people, content, branding and reporting",
     icon: "mdi:shield-crown-outline",
   },
 ] as const;
@@ -89,12 +85,8 @@ export const DEMO_PERSONAS: readonly DemoPersona[] = [
  * Bump the version suffix whenever the seed shape changes so a returning
  * visitor with a stale overlay gets a clean, coherent demo instead of a
  * half-migrated one.
- *
- * v2: the school edition. The seed changed shape in every direction - people,
- * courses, subjects - so a visitor holding a v1 overlay would have had mutations
- * pointing at courses that no longer exist.
  */
-export const DEMO_STORAGE_KEY = "ailinc-demo-state-v2";
+export const DEMO_STORAGE_KEY = "ailinc-demo-state-v1";
 
 /**
  * Simulated network latency, in milliseconds.

@@ -41,10 +41,6 @@ export function AdaptiveSectionShell({
 /** Bundle of accent values used by every AdaptiveSectionHero call. Mirrors the
  *  scorecard's per-section accent gradient convention. */
 export const ADAPTIVE_ACCENTS = {
-  // `brand` is the school azure, and is the default below. Same reasoning as the
-  // `brand` tone in ModulePageHeader: "purple" had become the brand tone by
-  // habit, and repainting it would make the name lie.
-  brand: { top: "#4aa2f0", bottom: "#1b6fd4" },
   indigo: { top: "#6366f1", bottom: "#4338ca" },
   purple: { top: "#a855f7", bottom: "#7c3aed" },
   pink: { top: "#ec4899", bottom: "#db2777" },

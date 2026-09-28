@@ -222,7 +222,7 @@ export default function AdaptiveArticleReaderPage() {
                 title={article.title}
                 subtitle={article.summary}
                 icon="mdi:book-open-variant"
-                accent="brand"
+                accent="purple"
               />
 
               {/* Reading level strip */}

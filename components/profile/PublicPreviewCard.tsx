@@ -82,7 +82,7 @@ export function PublicPreviewCard({
             backgroundImage: coverPhotoUrl ? `url(${coverPhotoUrl})` : undefined,
             background: coverPhotoUrl
               ? undefined
-              : "linear-gradient(135deg, #17346e 0%, #1559ae 55%, #1b6fd4 100%)",
+              : "linear-gradient(135deg, #271a5c 0%, #4c1d95 55%, #7c3aed 100%)",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -167,7 +167,7 @@ export function PublicPreviewCard({
                     placeItems: "center",
                     cursor: "pointer",
                     p: 0,
-                    "&:hover": { bgcolor: "#13498c" },
+                    "&:hover": { bgcolor: "#6d28d9" },
                     "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #fff, 0 0 0 4px ${PROFILE.violet}` },
                   }}
                 >
@@ -260,7 +260,7 @@ export function PublicPreviewCard({
               fontSize: "0.8125rem",
               cursor: "pointer",
               transition: "background .15s",
-              "&:hover": { bgcolor: "#e3f0ff" },
+              "&:hover": { bgcolor: "#ede9fe" },
               "&:focus-visible": { outline: "none", boxShadow: `0 0 0 2px #fff, 0 0 0 4px ${PROFILE.violet}` },
             }}
           >
@@ -351,7 +351,7 @@ export function PublicPreviewCard({
               borderRadius: 999,
               px: 3,
               bgcolor: PROFILE.violet,
-              "&:hover": { bgcolor: "#13498c" },
+              "&:hover": { bgcolor: "#6d28d9" },
             }}
           >
             {t("profile.save")}

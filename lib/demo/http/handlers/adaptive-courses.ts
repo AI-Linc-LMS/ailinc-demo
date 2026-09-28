@@ -24,7 +24,6 @@ import { overlay } from "../../db/overlay";
 import { isoDaysAgo } from "../../clock";
 import { seededInt, seededPick } from "../../random";
 import { peekTopic } from "../../db/curriculum";
-import { subjectOf } from "../../db/subjects";
 
 const MODULE = "adaptive-courses";
 
@@ -223,19 +222,8 @@ function listItem(course: DemoCourse) {
     article_count: counts.article,
     coding_count: counts.coding_problem,
     video_count: counts.video,
-    // The subject and its colours travel WITH the course, so the card can paint
-    // its badge in the subject's hue without importing anything from lib/demo.
-    // The alternative was a lookup table in the component, which would have put
-    // demo seed data inside components/ and broken the one boundary this fork
-    // keeps: only three files know demo mode exists.
-    subject: course.subject,
-    subject_label: subjectOf(course.subject).label,
-    grade: course.grade,
-    subject_accent_from: subjectOf(course.subject).from,
-    subject_accent_to: subjectOf(course.subject).to,
-    subject_ink: subjectOf(course.subject).ink,
-    // The drawn cover, with the same drawing as the documented fallback the card
-    // uses when an image cannot load.
+    // Real photograph, with the generated gradient as the documented fallback
+    // the card falls back to when the image cannot load.
     card_image_url: courseCover(course.id) || courseArt(course),
     card_image_fallback_url: courseArt(course),
     // Every course is open to self-enrolment so a prospect can enrol from the

@@ -23,7 +23,7 @@ export function AdaptiveSectionHero({
   chapter,
   title,
   subtitle,
-  accent = "brand",
+  accent = "purple",
   icon = "mdi:robot-happy-outline",
   rightSlot,
 }: AdaptiveSectionHeroProps) {

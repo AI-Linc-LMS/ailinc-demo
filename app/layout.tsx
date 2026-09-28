@@ -104,33 +104,6 @@ export default async function RootLayout({
             that arrives late is the most visible way for a prototype to look
             unfinished. Regenerate with `npm run build:fonts`. */}
         <link rel="stylesheet" href="/fonts/satoshi.css" />
-        {/* DEMO REPO ONLY: the school-edition faces, self-hosted for the same
-            reason as Satoshi above. Baloo 2 is the display face and Nunito is
-            body and UI; both are variable fonts, so these four files cover every
-            weight the app asks for. Regenerate with `npm run build:fonts:school`.
-
-            Preloaded because they are on the critical path for the very first
-            heading: `font-display: swap` would otherwise paint that heading in
-            the system fallback and reflow it, which is the exact "prototype looks
-            unfinished" tell the self-hosting is here to avoid. Only the `latin`
-            subsets are preloaded - latin-ext is a rounding error of the glyphs
-            this demo renders, and preloading a file the page never uses costs
-            bandwidth and logs a console warning. */}
-        <link rel="stylesheet" href="/fonts/school.css" />
-        <link
-          rel="preload"
-          href="/fonts/nunito-latin.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/baloo2-latin.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
       </head>
 
       <body className={`antialiased`} suppressHydrationWarning>

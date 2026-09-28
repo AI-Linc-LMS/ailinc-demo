@@ -158,7 +158,7 @@ export default function AdminCohortsPage() {
         eyebrow="People"
         title="Cohorts"
         description="Group students into cohorts and manage their journey."
-        accent="brand"
+        accent="purple"
         icon="mdi:account-group"
         action={
           <HeaderActionButton icon="mdi:plus" onClick={() => setCreateOpen(true)}>

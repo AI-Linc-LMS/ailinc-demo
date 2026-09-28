@@ -236,8 +236,8 @@ function LivePreview({
             p: 3,
             textAlign: "center",
             color: "#fff",
-            background: "radial-gradient(120% 90% at 50% 0%, #17346e 0%, #0e1f45 55%, #0e1f45 100%)",
-            border: "1px solid rgba(74,162,240,0.25)",
+            background: "radial-gradient(120% 90% at 50% 0%, #2a1150 0%, #14061f 55%, #0f0518 100%)",
+            border: "1px solid rgba(168,85,247,0.25)",
           }}
         >
           <Box sx={{ minHeight: 44, display: "flex", alignItems: "center", justifyContent: "center", mb: 1.5 }}>
@@ -278,7 +278,7 @@ function LivePreview({
               justifyContent: "center",
               fontWeight: 800,
               fontSize: "0.82rem",
-              background: "linear-gradient(135deg, #4aa2f0 0%, #ec4899 100%)",
+              background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
             }}
           >
             Sign in
@@ -440,7 +440,7 @@ export default function AdminSettingsPage() {
         eyebrow="Admin"
         title="Settings"
         description="Manage your app logo, favicon, and login-page text. Colours are set platform-wide and are not editable per client."
-        accent="brand"
+        accent="purple"
         icon="mdi:cog-outline"
         action={
           <HeaderActionButton
