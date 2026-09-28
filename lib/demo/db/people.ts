@@ -11,7 +11,7 @@
  * with enough international names to show the platform is not region-locked.
  */
 
-import { portraitAt, portraitFor } from "./avatar";
+import { portraitAt, portraitFor, staffPortraitAt } from "./avatar";
 import { DEMO_PERSONAS } from "../config";
 import { seededInt, seededPick } from "../random";
 
@@ -35,32 +35,42 @@ export interface DemoPerson {
   headline: string;
 }
 
+/**
+ * Class and section, not a university.
+ *
+ * The field is still called `college` because that is the name the production API
+ * gives it and renaming it here would diverge the demo's shape from the real
+ * contract for no gain. What it CARRIES is a school class, which is what every
+ * surface showing it now displays.
+ */
 const COLLEGES = [
-  "Indian Institute of Technology, Bombay",
-  "National Institute of Technology, Trichy",
-  "Delhi Technological University",
-  "Vellore Institute of Technology",
-  "BITS Pilani",
-  "Manipal Institute of Technology",
-  "PES University",
-  "SRM Institute of Science and Technology",
-  "Anna University",
-  "Amrita Vishwa Vidyapeetham",
-  "Jadavpur University",
-  "College of Engineering, Pune",
+  "Grade 6 - Section A",
+  "Grade 6 - Section B",
+  "Grade 7 - Section A",
+  "Grade 7 - Section B",
+  "Grade 7 - Section C",
+  "Grade 8 - Section A",
+  "Grade 8 - Section B",
 ] as const;
 
+/**
+ * What a child would actually write about themselves.
+ *
+ * The adult demo had "Preparing for product-based interviews" here. A headline is
+ * shown on profile cards and community hovers, so it is one of the most-read
+ * strings in the product and the fastest way to give the whole thing away.
+ */
 const HEADLINES = [
-  "Aspiring backend engineer",
-  "Full-stack learner | React + Node",
-  "Data science enthusiast",
-  "Preparing for product-based interviews",
-  "Cloud and DevOps track",
-  "Machine learning, one notebook at a time",
-  "Frontend developer in the making",
-  "CS undergrad | competitive programmer",
-  "Switching careers into tech",
-  "Python, SQL and everything in between",
+  "Loves fractions, tolerates decimals",
+  "Science club - built a volcano that worked",
+  "Reading every Percy Jackson book in order",
+  "Football at lunch, homework after",
+  "Can name every state capital",
+  "Learning to code my own game",
+  "Best handwriting in Section B",
+  "Quiz team - ask me about planets",
+  "Drawing comics in the back of my notebook",
+  "Chess club, Tuesdays and Thursdays",
 ] as const;
 
 /** Raw roster: only the parts that must be hand-authored to read as real. */
@@ -158,7 +168,7 @@ function buildPerson(
     email: slugEmail(first, last, id),
     phone: `+91 ${seededInt(`${seed}:phone`, 70000, 99999)}${seededInt(`${seed}:phone2`, 10000, 99999)}`,
     role,
-    profile_pic_url: portraitFor(fullName),
+    profile_pic_url: portraitFor(fullName, role !== "student"),
     college: seededPick(`${seed}:college`, COLLEGES),
     points: seededInt(`${seed}:points`, 420, 9800),
     streak: seededInt(`${seed}:streak`, 0, 46),
@@ -186,7 +196,7 @@ export const STUDENT_PERSONA: DemoPerson = buildPerson(1001, "Ananya", "Rao", "s
 
 export const INSTRUCTOR_PERSONA: DemoPerson = buildPerson(1002, "Vikram", "Menon", "instructor", {
   email: DEMO_PERSONAS[1].email,
-  profile_pic_url: portraitAt("men/70"),
+  profile_pic_url: staffPortraitAt("men/70"),
   college: "AI Linc",
   headline: "Senior Instructor | Backend Engineering and Systems",
   points: 0,
@@ -195,7 +205,7 @@ export const INSTRUCTOR_PERSONA: DemoPerson = buildPerson(1002, "Vikram", "Menon
 
 export const ADMIN_PERSONA: DemoPerson = buildPerson(1003, "Priya", "Nair", "admin", {
   email: DEMO_PERSONAS[2].email,
-  profile_pic_url: portraitAt("women/72"),
+  profile_pic_url: staffPortraitAt("women/72"),
   college: "AI Linc",
   headline: "Director of Programs",
   points: 0,
@@ -211,15 +221,15 @@ export const PERSONAS: readonly DemoPerson[] = [
 /** Additional teaching staff, for cohort assignment and live-session hosts. */
 export const FACULTY: readonly DemoPerson[] = [
   buildPerson(1101, "Ritu", "Kulkarni", "instructor", {
-    profile_pic_url: portraitAt("women/74"),
+    profile_pic_url: staffPortraitAt("women/74"),
     headline: "Instructor | Data Science and Analytics",
   }),
   buildPerson(1102, "Suresh", "Iyengar", "instructor", {
-    profile_pic_url: portraitAt("men/72"),
+    profile_pic_url: staffPortraitAt("men/72"),
     headline: "Instructor | Cloud and DevOps",
   }),
   buildPerson(1103, "Fatima", "Rizvi", "instructor", {
-    profile_pic_url: portraitAt("women/76"),
+    profile_pic_url: staffPortraitAt("women/76"),
     headline: "Instructor | Frontend Engineering",
   }),
 ];
