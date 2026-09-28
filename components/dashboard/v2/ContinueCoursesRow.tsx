@@ -8,7 +8,7 @@ import type { DashboardCourse } from "@/lib/types/dashboard";
 import { SectionHeader, daysLeft, fmtDate } from "./parts";
 
 const ACCENTS = [
-  { bar: "linear-gradient(90deg,#7c3aed,#a855f7)", btn: "linear-gradient(135deg,#7c3aed,#a855f7)" },
+  { bar: "linear-gradient(90deg,#1b6fd4,#4aa2f0)", btn: "linear-gradient(135deg,#1b6fd4,#4aa2f0)" },
   { bar: "linear-gradient(90deg,#6366f1,#3b82f6)", btn: "linear-gradient(135deg,#6366f1,#3b82f6)" },
   { bar: "linear-gradient(90deg,#10b981,#22c55e)", btn: "linear-gradient(135deg,#10b981,#22c55e)" },
   { bar: "linear-gradient(90deg,#f59e0b,#f97316)", btn: "linear-gradient(135deg,#f59e0b,#f97316)" },

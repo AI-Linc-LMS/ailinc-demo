@@ -47,7 +47,7 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
     <Stack spacing={2.5}>
       {data && <StatCards aggregate={data.aggregate} hideLeaderboard={hideLeaderboard} />}
       <Box sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, textAlign: "center", border: "1px solid #eef2f7", bgcolor: "#faf9ff" }}>
-        <Box sx={{ width: 56, height: 56, mx: "auto", mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", background: "linear-gradient(135deg,#7c3aed,#a855f7)" }}>
+        <Box sx={{ width: 56, height: 56, mx: "auto", mb: 2, borderRadius: "50%", display: "grid", placeItems: "center", background: "linear-gradient(135deg,#1b6fd4,#4aa2f0)" }}>
           <Icon icon="mdi:rocket-launch-outline" width={28} color="#fff" />
         </Box>
         <Typography sx={{ fontWeight: 800, fontSize: "1.15rem", color: "#0f172a" }}>Start your adaptive journey</Typography>
@@ -55,7 +55,7 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
           You&apos;re not in a course yet. Courses adjust to your skill level as you learn - pick one to begin.
         </Typography>
         <Button onClick={() => push("/adaptive-courses")} variant="contained" endIcon={<Icon icon="mdi:arrow-right" width={18} />}
-          sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 3, py: 1.1, background: "linear-gradient(135deg,#7c3aed,#db2777)" }}>
+          sx={{ textTransform: "none", fontWeight: 800, borderRadius: 2, px: 3, py: 1.1, background: "linear-gradient(135deg,#1b6fd4,#db2777)" }}>
           Browse courses
         </Button>
       </Box>

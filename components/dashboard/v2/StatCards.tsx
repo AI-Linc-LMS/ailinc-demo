@@ -38,9 +38,9 @@ export function StatCards({
       label="Total points"
       value={<TotalPointsValue total={a.totalPoints} />}
       sub={a.pointsThisWeek ? `+${a.pointsThisWeek} this week` : "Start earning"}
-      subColor={a.pointsThisWeek ? "#7c3aed" : "#94a3b8"}
+      subColor={a.pointsThisWeek ? "#1b6fd4" : "#94a3b8"}
       icon="mdi:star-four-points"
-      accent="#7c3aed"
+      accent="#1b6fd4"
       info={<PointsInfo size={13} />}
     />,
     <StatBox

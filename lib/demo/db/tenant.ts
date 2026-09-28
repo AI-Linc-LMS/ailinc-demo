@@ -35,9 +35,14 @@ const ENABLED_FEATURES = [
   // achieve it.
   "adaptive_quiz",
   "assessment",
-  "mock_interview",
-  "jobs_v2",
-  "resume",
+  // mock_interview, jobs_v2 and resume are deliberately OFF.
+  //
+  // They were the "Career" section of the sidebar: practise a job interview,
+  // browse openings, build a CV. A twelve year old has no CV and is not applying
+  // for a backend role, and leaving them on is the single loudest way the demo
+  // would tell a visiting headteacher that this product was built for somebody
+  // else. Switching the flags off is the product's own mechanism for this, so
+  // nothing is forked to achieve it.
   "live_sessions",
   "community_forum",
   "scorecard",
@@ -54,11 +59,12 @@ const ENABLED_FEATURES = [
   "admin_adaptive_quizzes",
   "admin_assessment",
   "admin_assessment_result",
-  "admin_mock_interview",
+  // admin_mock_interview and admin_jobs_v2 follow their learner-side flags off.
+  // An administrator managing a module no learner can reach is a dead end that a
+  // prospect WILL click on.
   "admin_live_sessions",
   "admin_scorecard",
   "admin_certificates",
-  "admin_jobs_v2",
   "admin_emails",
   "admin_notifications",
   "admin_tickets",

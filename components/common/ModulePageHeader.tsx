@@ -67,8 +67,8 @@ export function ModulePageHeader({
         color: "white",
         position: "relative",
         overflow: "hidden",
-        background: `radial-gradient(120% 130% at 8% 115%, ${tone.glow} 0%, rgba(124,58,237,0.22) 32%, rgba(15,10,40,0) 62%), linear-gradient(150deg, #241653 0%, #181040 55%, #100a2c 100%)`,
-        boxShadow: "0 24px 60px -30px rgba(76,29,149,0.7)",
+        background: `radial-gradient(120% 130% at 8% 115%, ${tone.glow} 0%, rgba(27,111,212,0.22) 32%, rgba(15,10,40,0) 62%), linear-gradient(150deg, #241653 0%, #122a56 55%, #0e1f45 100%)`,
+        boxShadow: "0 24px 60px -30px rgba(19,73,140,0.7)",
       }}
     >
       {/* faint dotted texture */}
@@ -191,8 +191,8 @@ export function HeaderActionButton({
         transition: "filter .15s, background .15s",
         ...(variant === "solid"
           ? {
-              background: "linear-gradient(135deg, #a855f7 0%, #ec4899 100%)",
-              boxShadow: "0 14px 30px -12px rgba(192,38,211,0.7)",
+              background: "linear-gradient(135deg, #4aa2f0 0%, #ec4899 100%)",
+              boxShadow: "0 14px 30px -12px rgba(74,162,240,0.7)",
               "&:hover": { filter: "brightness(1.06)" },
             }
           : {

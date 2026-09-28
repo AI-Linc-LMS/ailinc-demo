@@ -26,10 +26,10 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
         borderRadius: 4,
         p: { xs: 2, md: 2.5 },
         color: "#fff",
-        backgroundColor: "#110b2e",
-        backgroundImage: "linear-gradient(160deg, #1a1442 0%, #110b2e 100%)",
-        border: "1px solid rgba(168,85,247,0.18)",
-        boxShadow: "0 18px 40px -24px rgba(76,29,149,0.6)",
+        backgroundColor: "#0e1f45",
+        backgroundImage: "linear-gradient(160deg, #17346e 0%, #0e1f45 100%)",
+        border: "1px solid rgba(74,162,240,0.18)",
+        boxShadow: "0 18px 40px -24px rgba(19,73,140,0.6)",
       }}
     >
       <Typography sx={{ fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.18em", color: "rgba(255,255,255,0.55)", mb: 1.5 }}>
@@ -107,14 +107,14 @@ export function TodayGoalPanel({ goal }: { goal: TodayGoal }) {
                   ...(active
                     ? { background: "linear-gradient(135deg, #fb923c 0%, #ec4899 100%)", boxShadow: "0 8px 18px -10px rgba(236,72,153,0.6)" }
                     : d.isToday
-                      ? { border: "1.5px dashed rgba(168,85,247,0.6)", bgcolor: "rgba(255,255,255,0.03)" }
+                      ? { border: "1.5px dashed rgba(74,162,240,0.6)", bgcolor: "rgba(255,255,255,0.03)" }
                       : { bgcolor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.06)" }),
                 }}
               >
                 {active ? (
                   <Icon icon="mdi:fire" width={24} color="#fff" />
                 ) : (
-                  <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: d.isToday ? "#a855f7" : "rgba(255,255,255,0.25)" }} />
+                  <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: d.isToday ? "#4aa2f0" : "rgba(255,255,255,0.25)" }} />
                 )}
               </Box>
               <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.06em", color: d.isToday ? "#c4b5fd" : "rgba(255,255,255,0.45)" }}>
