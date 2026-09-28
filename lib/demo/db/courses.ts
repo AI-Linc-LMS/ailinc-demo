@@ -55,6 +55,15 @@ export interface DemoCourse {
    * by three surfaces agreeing to use the same hex.
    */
   subject: SubjectKey;
+  /**
+   * The school year this course is for.
+   *
+   * A separate field rather than a tag, because `learner.ts` turns the first five
+   * TAGS into the learner's tracked skill list. With "Grade 7" in there the skill
+   * profile reported "Grade 7: 51% mastery, Emerging", which is not a thing a
+   * child can get better at.
+   */
+  grade: string;
   title: string;
   subtitle: string;
   description: string;
@@ -163,6 +172,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 301,
     subject: "maths",
+    grade: "Grade 7",
     title: "Fractions, Decimals and Shapes",
     subtitle: "The number work Grade 7 is built on",
     description:
@@ -172,7 +182,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     slug: "fractions-decimals-and-shapes",
     difficulty: "Beginner",
     durationHours: 26,
-    tags: ["Grade 7", "Fractions", "Decimals", "Geometry"],
+    tags: ["Fractions", "Decimals", "Geometry"],
     instructor: FACULTY[0],
     enrolled: true,
     accent: subjectAccent("maths"),
@@ -212,6 +222,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 302,
     subject: "science",
+    grade: "Grade 7",
     title: "Matter, Motion and Living Things",
     subtitle: "Why things are, move and grow",
     description:
@@ -221,7 +232,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     slug: "matter-motion-and-living-things",
     difficulty: "Beginner",
     durationHours: 28,
-    tags: ["Grade 7", "Physics", "Chemistry", "Biology"],
+    tags: ["Physics", "Chemistry", "Biology"],
     instructor: FACULTY[1],
     enrolled: true,
     accent: subjectAccent("science"),
@@ -262,6 +273,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 303,
     subject: "english",
+    grade: "Grade 7",
     title: "Reading Closely, Writing Clearly",
     subtitle: "Say what you mean, and catch what others mean",
     description:
@@ -271,7 +283,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     slug: "reading-closely-writing-clearly",
     difficulty: "Beginner",
     durationHours: 22,
-    tags: ["Grade 7", "Reading", "Writing", "Comprehension"],
+    tags: ["Reading", "Writing", "Comprehension"],
     instructor: FACULTY[2],
     enrolled: true,
     accent: subjectAccent("english"),
@@ -304,6 +316,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 304,
     subject: "social",
+    grade: "Grade 7",
     title: "Maps, Empires and Citizens",
     subtitle: "Where we live, how we got here, and the rules we share",
     description:
@@ -313,7 +326,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     slug: "maps-empires-and-citizens",
     difficulty: "Beginner",
     durationHours: 24,
-    tags: ["Grade 7", "Geography", "History", "Civics"],
+    tags: ["Geography", "History", "Civics"],
     instructor: FACULTY[0],
     enrolled: false,
     accent: subjectAccent("social"),
@@ -352,6 +365,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 305,
     subject: "computing",
+    grade: "Grade 7",
     title: "Your First Programs",
     subtitle: "Tell a computer exactly what to do",
     description:
@@ -361,7 +375,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     slug: "your-first-programs",
     difficulty: "Beginner",
     durationHours: 30,
-    tags: ["Grade 7", "Programming", "Logic", "Problem solving"],
+    tags: ["Programming", "Logic", "Problem solving"],
     instructor: INSTRUCTOR_PERSONA,
     enrolled: true,
     accent: subjectAccent("computing"),
@@ -401,6 +415,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
   {
     id: 306,
     subject: "art",
+    grade: "Grade 7",
     title: "Colour, Shape and Making",
     subtitle: "Look harder, then make something",
     description:
@@ -410,7 +425,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     slug: "colour-shape-and-making",
     difficulty: "Beginner",
     durationHours: 18,
-    tags: ["Grade 7", "Drawing", "Colour", "Design"],
+    tags: ["Drawing", "Colour", "Design"],
     instructor: FACULTY[2],
     enrolled: false,
     accent: subjectAccent("art"),

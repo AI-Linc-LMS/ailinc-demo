@@ -230,6 +230,7 @@ function listItem(course: DemoCourse) {
     // keeps: only three files know demo mode exists.
     subject: course.subject,
     subject_label: subjectOf(course.subject).label,
+    grade: course.grade,
     subject_accent_from: subjectOf(course.subject).from,
     subject_accent_to: subjectOf(course.subject).to,
     subject_ink: subjectOf(course.subject).ink,

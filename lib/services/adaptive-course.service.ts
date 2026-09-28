@@ -168,6 +168,8 @@ export interface AdaptiveCourseListItem {
    */
   subject?: string | null;
   subject_label?: string | null;
+  /** School year, e.g. "Grade 7". Shown as a chip beside the difficulty. */
+  grade?: string | null;
   subject_accent_from?: string | null;
   subject_accent_to?: string | null;
   subject_ink?: string | null;

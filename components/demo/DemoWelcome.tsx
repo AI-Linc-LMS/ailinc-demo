@@ -23,6 +23,7 @@ import { useAuth } from "@/lib/auth/auth-context";
 import { useTour } from "@/components/community/TourProvider";
 import { DEMO_MODE, DEMO_TENANT } from "@/lib/demo/config";
 import { platformTour, welcomeCopy } from "@/lib/demo/tour";
+import { sceneClassroom } from "@/lib/demo/illustrations/scenes";
 
 /** sessionStorage, not localStorage: "this browser tab's visit", not "forever". */
 const SEEN_KEY = "ailinc-demo-welcome-seen";
@@ -135,29 +136,30 @@ export function DemoWelcome() {
             textAlign: "center",
           }}
         >
+          {/* The scene, not an icon badge.
+              This modal is the first thing every visitor sees after signing in,
+              and a compass rose in a gradient square says "software product". The
+              classroom says who the software is for, which is the one thing this
+              screen exists to communicate before anyone clicks anything.
+              aria-hidden with no alt: the heading below already says what this is,
+              and a screen reader describing the picture first would push the
+              actual message down. */}
           <Box
             aria-hidden
             component={motion.div}
-            initial={{ scale: 0.4, rotate: -25, opacity: 0 }}
-            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.08 }}
-            sx={{
-              width: 56,
-              height: 56,
-              mx: "auto",
-              mb: 2,
-              display: "grid",
-              placeItems: "center",
-              borderRadius: "14px",
-              background: "linear-gradient(135deg,#7c3aed,#a855f7)",
-              color: "#fff",
-            }}
+            initial={{ scale: 0.82, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.08 }}
+            sx={{ mx: "auto", mb: 1, width: "100%", maxWidth: 300 }}
           >
-            <Icon icon="mdi:compass-outline" width={30} />
+            {/* Plain <img>, not next/image: these are inline data URIs, which the
+                optimizer cannot improve and 400s on for some loaders. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={sceneClassroom("ink")} alt="" style={{ width: "100%", display: "block" }} />
           </Box>
 
           <Typography
-            sx={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.6px", color: "#7c3aed", textTransform: "uppercase" }}
+            sx={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.6px", color: "#1b6fd4", textTransform: "uppercase" }}
           >
             {DEMO_TENANT.shortName} product tour
           </Typography>
@@ -201,9 +203,9 @@ export function DemoWelcome() {
                 textTransform: "none",
                 fontSize: "0.95rem",
                 fontWeight: 600,
-                background: "linear-gradient(135deg,#7c3aed,#a855f7)",
+                background: "linear-gradient(135deg,#1b6fd4,#4aa2f0)",
                 boxShadow: "none",
-                "&:hover": { background: "linear-gradient(135deg,#6d28d9,#9333ea)", boxShadow: "none" },
+                "&:hover": { background: "linear-gradient(135deg,#13498c,#1b6fd4)", boxShadow: "none" },
               }}
             >
               Take the tour

@@ -210,6 +210,9 @@ export function AuthRightPanelDefault({
           py: 2,
         }}
       >
+        {/* Plain <img>, not next/image: an inline data URI, which the optimizer
+            cannot improve. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={sceneSchoolDay("light")}
           alt=""
