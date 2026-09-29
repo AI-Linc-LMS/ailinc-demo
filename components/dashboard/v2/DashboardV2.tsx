@@ -10,6 +10,7 @@ import { adaptiveJourneyService } from "@/lib/services/adaptive-journey.service"
 import {
   useHideLeaderboardView,
   useIsCourseEnabled,
+  useIsAdaptiveQuizEnabled,
 } from "@/lib/contexts/ClientInfoContext";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { useDashboardData } from "@/hooks/useDashboardData";
@@ -74,6 +75,15 @@ function EmptyAdaptiveDashboard({ data, hideLeaderboard }: { data: LearnerDashbo
 export function DashboardV2() {
   const hideLeaderboard = useHideLeaderboardView();
   const courseEnabled = useIsCourseEnabled();
+  /**
+   * Both panels below render ADAPTIVE course data and were gated on the LEGACY
+   * `course` flag, which this tenant deliberately has off: the adaptive module IS
+   * "My Subjects" here, so shipping both put two things called Courses in one
+   * sidebar. The result was that "Carry on where you left off" and "Up next" never
+   * appeared for any learner on this tenant, which is also part of why the left
+   * column ran short. Gated on the flag that matches the data they read.
+   */
+  const subjectsEnabled = useIsAdaptiveQuizEnabled() || courseEnabled;
 
   const [activeCourseId, setActiveCourseId] = useState<number | null>(null);
 
@@ -135,7 +145,7 @@ export function DashboardV2() {
         <Box data-tour-id="dash-courses">
           <CourseReadinessCard courses={data.courses} activeCourseId={activeCourse?.id ?? null} onSelect={setActiveCourseId} />
         </Box>
-        {courseEnabled && <ContinueCoursesRow courses={data.courses} />}
+        {subjectsEnabled && <ContinueCoursesRow courses={data.courses} />}
         {/* The leaderboard moved here from the right rail. The two columns were
             1197px against 2276px, which is what made the page look broken at the
             bottom: the left simply ran out while the right kept going. */}
@@ -172,7 +182,7 @@ export function DashboardV2() {
         <NoticesPanel />
         <ComingUpPanel />
         {activeCourse?.certificate.enabled && <CertificatePanel course={activeCourse} />}
-        {courseEnabled && <UpNextPanel items={data.crossCourseUpNext} />}
+        {subjectsEnabled && <UpNextPanel items={data.crossCourseUpNext} />}
       </Stack>
 
       {/* Full width, under both columns. As a rail item this was a narrow stack of
