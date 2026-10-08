@@ -306,11 +306,19 @@ for (const file of files) {
         }
       }
 
-      // Every node reachable from the start, or it is content nobody can see.
+      /* Every node reachable from the start, or it is content nobody can see.
+       *
+       * The pop happens BEFORE the search, not inside its predicate. Written as
+       * `find((x) => x.id === stack.pop())` the pop runs once per candidate
+       * node and drains the stack, so the walk stops after the first level and
+       * reports every deeper node as unreachable. It did exactly that on a
+       * three-node scenario whose links were correct, and it had been silently
+       * passing the earlier ones by luck rather than by working. */
       const seen = new Set([sc.start]);
       const stack = [sc.start];
       while (stack.length) {
-        const nd = (sc.nodes ?? []).find((x) => x.id === stack.pop());
+        const id = stack.pop();
+        const nd = (sc.nodes ?? []).find((x) => x.id === id);
         for (const c of nd?.choices ?? []) {
           if (c.next && !seen.has(c.next)) {
             seen.add(c.next);
