@@ -69,6 +69,7 @@ let practicalCount = 0;
 let invariantsRun = 0;
 let scenarioPaths = 0;
 let cardCount = 0;
+let derivationsRun = 0;
 
 for (const file of files) {
   const courseId = file.match(/\d+/)[0];
@@ -171,6 +172,51 @@ for (const file of files) {
           fail(ww, `cell ${c.row}:${c.col} declares derivedFrom but no methodMarks`);
         if (c.methodMarks != null && c.methodMarks > c.marks)
           fail(ww, `cell ${c.row}:${c.col} awards more method marks than full marks`);
+      }
+
+      /* A derivation that cannot reproduce its own cell's expected value is a
+       * dead check: the method marks it offers can never be earned by anybody,
+       * because the marker computes the derivation and compares it with what
+       * the learner typed. Run each one over the answer key and require that it
+       * lands on the expected figure. This caught four reducing-balance cells
+       * whose `product` derivation evaluated to the carrying amount rather than
+       * 30% of it. */
+      for (const c of w.cells ?? []) {
+        if (!c.derivedFrom) continue;
+        const keyOf = (ref) => {
+          const [r, col] = String(ref).split(":");
+          const row = (w.rows ?? []).find((x) => x.key === r);
+          const given = row?.given?.[col];
+          const marked = (w.cells ?? []).find((x) => x.row === r && x.col === col);
+          const raw = marked ? marked.expected : given;
+          if (raw == null || raw === "") return null;
+          const cleaned = String(raw).replace(/[,\s\u20B9]/g, "");
+          const v = Number(cleaned);
+          return Number.isFinite(v) ? v : null;
+        };
+        const parts = c.derivedFrom.from.map(keyOf);
+        if (parts.some((v) => v === null)) {
+          fail(ww, `cell ${c.row}:${c.col} derivation references a cell with no numeric answer`);
+          continue;
+        }
+        const op = c.derivedFrom.op;
+        const base =
+          op === "sum"
+            ? parts.reduce((a, b) => a + b, 0)
+            : op === "difference"
+              ? parts.reduce((a, b) => a - b)
+              : op === "product"
+                ? parts.reduce((a, b) => a * b, 1)
+                : parts.reduce((a, b) => (b === 0 ? NaN : a / b));
+        const got = base * (c.derivedFrom.factor ?? 1);
+        const want = Number(String(c.expected).replace(/[,\s\u20B9]/g, ""));
+        if (!Number.isFinite(got) || Math.abs(got - want) > 0.51) {
+          fail(
+            ww,
+            `cell ${c.row}:${c.col} derivation (${op}${c.derivedFrom.factor ? ` x ${c.derivedFrom.factor}` : ""}) yields ${got} but the expected answer is ${want}; its method marks can never be earned`,
+          );
+        }
+        derivationsRun++;
       }
 
       // Build the answer key as a learner's completed sheet would look, then run the
@@ -471,7 +517,7 @@ console.log(
   `topics ${topicCount} | questions ${questionCount} | problems ${problemCount} | tests executed ${testCount}`,
 );
 console.log(
-  `practicals ${practicalCount} | worksheet invariants run ${invariantsRun} | scenario graphs walked ${scenarioPaths} | deck cards ${cardCount}`,
+  `practicals ${practicalCount} | derivations run ${derivationsRun} | worksheet invariants run ${invariantsRun} | scenario graphs walked ${scenarioPaths} | deck cards ${cardCount}`,
 );
 if (problems.length) {
   console.error(`\n${problems.length} PROBLEM(S):`);

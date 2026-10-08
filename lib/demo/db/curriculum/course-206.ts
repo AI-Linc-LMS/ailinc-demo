@@ -937,6 +937,399 @@ const curriculum: CourseCurriculum = {
       },
     ],
   },
+  /* ===================================================================== */
+  5074: {
+    topicId: 5074,
+    title: "Accruals, prepayments and the matching principle",
+    summary:
+      "The bank statement tells you when money moved. The accounts have to say which period the cost belonged to, and those are rarely the same month.",
+    concepts: ["Accrual", "Prepayment", "Matching principle", "Accounting period", "Adjusting entry"],
+    glossary: {
+      Accrual: "An expense incurred in the period but not yet paid or invoiced at the period end.",
+      Prepayment: "An amount paid in advance for a benefit that falls in a later period.",
+      "Matching principle": "Expenses belong in the period of the revenue they helped earn, not the period they were paid.",
+      "Adjusting entry": "A year-end entry that moves a cost or an income into the period it belongs to.",
+      "Accounting period": "The span of time a set of accounts reports on, usually April to March in India.",
+      "Income received in advance": "Money taken for goods or services not yet delivered, which is a liability rather than revenue.",
+    },
+    body: {
+      Beginner: `<p>Your landlord asks for six months of rent in advance in March. You pay 90,000 rupees. Does your March accounts show a 90,000 rupee rent cost?</p>
+<p>No. Only one month of that rent belongs to March. The other five months belong to April onwards, so at the year end you split it: 15,000 goes into this year's rent expense and 75,000 sits on the balance sheet as something you have paid for but not yet used.</p>
+<p>The reverse happens too. If your electricity bill for March arrives in April, the cost is still a March cost. You used the electricity in March. So you add it to March's expenses even though you have not paid it, and show it as something you owe.</p>
+<p>The rule behind both is simple to say: put the cost in the period you actually used the thing. Paying early does not make it this year's cost, and paying late does not make it next year's.</p>`,
+      Intermediate: `<p>Cash movement and economic consumption are separate events, and the accrual basis records the second. The matching principle makes this concrete: a cost belongs in the period whose revenue it helped produce, which means the payment date is evidence of a transaction but not of its period.</p>
+<p>Two adjustments carry most of the work. An accrual recognises a cost incurred but unpaid: debit the expense, credit an accrued liability. A prepayment removes a cost paid but not yet consumed: debit a prepaid asset, credit the expense. Both are reversed or released in the following period as the benefit is taken or the bill is settled.</p>
+<p>The symmetric pair on the income side is often neglected and matters just as much. Accrued income is revenue earned but not yet invoiced, and it is an asset. Income received in advance is money taken for undelivered goods, and it is a liability rather than revenue, which is the entry that distinguishes a deposit from a sale.</p>
+<p>Scale matters here. Getting an accrual wrong by 40,000 rupees in a business making 3,00,000 of profit moves the reported figure by 13%, and since the adjustment reverses next period the error appears twice with opposite signs. That is why these entries are the first thing a reviewer tests and why a schedule supporting each one is worth keeping.</p>`,
+      Advanced: `<p>Accruals are where the accounts stop being a transcription of the bank statement and start being a set of judgements. Each adjusting entry is an estimate about an amount, a period, or both, and the distribution of those estimates is not random: management has an interest in the direction of each one. The standard checks therefore test the estimate rather than the arithmetic. Compare the accrual against the invoice that eventually arrived, look for expenses with no accrual in a month where the service plainly continued, and recompute prepayments on a time-apportionment basis.</p>
+<p>Cut-off is the sharper form of the same problem. A business that leaves its purchase ledger open for an extra week after year end pulls next year's costs into this year, and one that closes it early does the reverse. Neither action requires a false entry, only a choice about when to stop, which is why cut-off testing samples transactions either side of the period end and traces them to delivery dates rather than to invoice dates.</p>
+<p>The reversing-entry mechanism is worth understanding as a control rather than as bookkeeping. If every accrual is reversed on the first day of the new period, the actual invoice can be posted in full when it arrives without anyone having to remember what was estimated. The alternative, releasing accruals by hand against invoices, works until the person who made the estimate leaves, and it is a reliable source of expenses recognised twice.</p>
+<p>Deferred revenue carries the heaviest consequences of the four, because it sits at the boundary between a liability and a sale. A business that recognises annual subscription income on receipt reports a year of revenue in one month and nothing afterwards, which is both wrong and the single most common accounting failure among young subscription businesses.</p>`,
+      Expert: `<p>Under Ind AS 115 the accrual question is reframed: revenue follows the satisfaction of performance obligations, and the contract rather than the invoice becomes the unit of account. That change relocates the judgement from "which period" to "which obligations exist and when is each satisfied", and it makes the identification of distinct performance obligations the step where two competent preparers most often diverge. A bundled sale of equipment with twelve months of maintenance is one invoice and at least two obligations, one satisfied at a point in time and one over time.</p>
+<p>The expense side has no symmetric standard, which is itself instructive. There is no general expense recognition standard because expenses are recognised as a consequence of other decisions: asset derecognition, liability recognition under Ind AS 37, or the depletion of a prepaid right. The matching principle therefore survives as an organising intuition rather than as an enforceable rule, and the Conceptual Framework is explicit that matching cannot justify recognising an item that fails the definition of an asset or a liability. That ordering matters: definitions first, matching second.</p>
+<p>Provisions under Ind AS 37 are where the boundary is drawn. A present obligation arising from a past event, probable outflow, reliable estimate. Each limb excludes something practitioners want to accrue: a planned restructuring with no announcement has no present obligation, future operating losses have no past event, and a claim too uncertain to measure is disclosed rather than provided. The historical abuse this replaced was the big-bath provision, taken in a bad year and released into good ones to smooth reported earnings.</p>
+<p>Analytically, aggressive accrual policy leaves a signature. Accruals are the difference between accounting profit and operating cash flow, and a widening gap sustained over several periods is the single most studied earnings-quality indicator in the empirical literature. It is not proof of anything, because a growing business legitimately shows it, which is why the measure is read against revenue growth rather than alone.</p>`,
+    },
+    questions: [
+      {
+        n: 1,
+        question: "On 1 March a business pays 90,000 rupees for six months of rent. At the 31 March year end, the correct treatment is:",
+        options: [
+          "Rent expense 15,000 and a prepayment asset of 75,000",
+          "Rent expense 90,000, because the money has been paid",
+          "Rent expense nil and a prepayment of 90,000",
+          "Rent expense 15,000 and an accrued liability of 75,000",
+        ],
+        answer: 0,
+        explanation:
+          "One of the six months falls in this year, so 15,000 is this year's cost and the remaining 75,000 is a benefit still to come, which is an asset. The last option gets the split right but calls it a liability, when in fact the business has paid rather than owing.",
+        difficulty: "Medium",
+        skill: "Prepayment",
+      },
+      {
+        n: 2,
+        question: "A March electricity bill of 8,000 rupees arrives on 12 April, after the year end. It should be:",
+        options: [
+          "Accrued in March: debit Electricity, credit accrued liabilities",
+          "Recorded in April, because that is when the bill arrived",
+          "Ignored, because no cash moved in March",
+          "Split equally between March and April",
+        ],
+        answer: 0,
+        explanation:
+          "The electricity was consumed in March, so the cost belongs to March regardless of when the invoice or the payment follows. Waiting for the bill would understate March's expenses and overstate April's, and the adjustment reverses next period.",
+        difficulty: "Easy",
+        skill: "Accrual",
+      },
+      {
+        n: 3,
+        question: "A gym collects 24,000 rupees in March for a twelve month membership starting 1 April. In the March accounts this is:",
+        options: [
+          "A liability of 24,000, because nothing has been delivered yet",
+          "Revenue of 24,000, because the cash has been banked",
+          "Revenue of 2,000 and a liability of 22,000",
+          "An asset of 24,000 and no revenue",
+        ],
+        answer: 0,
+        explanation:
+          "The membership year has not begun, so the gym owes twelve months of service and has earned nothing. The whole amount is income received in advance. Option three would be right if the membership had started on 1 March, which is the detail that decides it.",
+        difficulty: "Hard",
+        skill: "Matching principle",
+      },
+      {
+        n: 4,
+        question: "Why is a reversing entry on the first day of the new period a useful habit?",
+        options: [
+          "The real invoice can then be posted in full without anyone recalling the estimate",
+          "It removes the need to make accruals at all",
+          "It prevents the trial balance from going out of balance",
+          "It converts the accrual into a prepayment automatically",
+        ],
+        answer: 0,
+        explanation:
+          "If the estimate is cleared automatically, the arriving invoice is just a normal posting. Releasing accruals by hand against invoices works until the person who made the estimate leaves, and it is a reliable way to recognise one expense twice.",
+        difficulty: "Hard",
+        skill: "Adjusting entry",
+      },
+      {
+        n: 5,
+        question: "Leaving the purchase ledger open for an extra week after the year end would:",
+        options: [
+          "Pull some of next year's costs into this year, overstating this year's expenses",
+          "Have no effect, since the invoices are dated correctly",
+          "Improve this year's reported profit",
+          "Only matter if the amounts are immaterial",
+        ],
+        answer: 0,
+        explanation:
+          "Costs relating to the new period get recorded in the old one, which overstates current expenses and understates current profit. No individual entry is false, which is precisely why cut-off is tested by tracing to delivery dates rather than by checking invoices.",
+        difficulty: "Medium",
+        skill: "Accounting period",
+      },
+    ],
+    worksheets: [
+      {
+        n: 1,
+        title: "Four year-end adjustments",
+        difficulty: "Medium",
+        brief: `<p>Sunrise Stationers closes its books on 31 March. The bookkeeper has drafted the figures but has made none of the year-end adjustments. For each item below, enter the amount that belongs in this year's profit and loss account, and the amount that should sit on the balance sheet, choosing whether it is an asset or a liability.</p>
+<ol>
+<li><strong>Rent.</strong> Paid 1,44,000 rupees on 1 January covering twelve months from that date.</li>
+<li><strong>Electricity.</strong> Bills paid during the year total 52,000 rupees. The March bill of 9,000 rupees arrived on 10 April and is unpaid.</li>
+<li><strong>Insurance.</strong> Paid 36,000 rupees on 1 October for a twelve month policy from that date.</li>
+<li><strong>Shop sublet.</strong> A tenant paid 60,000 rupees on 1 February for six months of sublet from that date. The whole amount was credited to Rent Received.</li>
+</ol>
+<p>Use whole months. The balance sheet column takes a positive figure in all four rows; the dropdown is where you say whether it is an asset or a liability.</p>`,
+        stubLabel: "Item",
+        columns: [
+          { key: "pl", label: "This year's P&L (₹)", type: "number", align: "right", flex: 1.2 },
+          { key: "bs", label: "Balance sheet (₹)", type: "number", align: "right", flex: 1.2 },
+          { key: "type", label: "Asset or liability", type: "select", options: ["Asset", "Liability"], flex: 1.3 },
+        ],
+        rows: [
+          { key: "rent", label: "1. Rent paid", given: { } },
+          { key: "elec", label: "2. Electricity" },
+          { key: "ins", label: "3. Insurance" },
+          { key: "sublet", label: "4. Rent received" },
+        ],
+        cells: [
+          {
+            row: "rent",
+            col: "pl",
+            expected: 36000,
+            marks: 2,
+            feedback:
+              "The twelve months run from 1 January, so only January, February and March fall in this year. Three months of 12,000 is 36,000.",
+          },
+          {
+            row: "rent",
+            col: "bs",
+            expected: 108000,
+            marks: 2,
+            feedback: "Nine months of the year remain unused, which is 1,08,000 of prepaid rent.",
+          },
+          { row: "rent", col: "type", expected: "Asset", marks: 1, feedback: "Rent paid for a period still to come is a benefit owed to you, so it is an asset." },
+          {
+            row: "elec",
+            col: "pl",
+            expected: 61000,
+            marks: 2,
+            feedback:
+              "The 52,000 actually paid plus the 9,000 March bill that was consumed this year but invoiced next. The cost follows consumption, not the invoice.",
+          },
+          { row: "elec", col: "bs", expected: 9000, marks: 2 },
+          { row: "elec", col: "type", expected: "Liability", marks: 1, feedback: "You have had the electricity and not paid for it, so you owe the amount: an accrued liability." },
+          {
+            row: "ins",
+            col: "pl",
+            expected: 18000,
+            marks: 2,
+            feedback: "October to March is six of the twelve months, so half of 36,000 belongs to this year.",
+          },
+          { row: "ins", col: "bs", expected: 18000, marks: 2 },
+          { row: "ins", col: "type", expected: "Asset", marks: 1 },
+          {
+            row: "sublet",
+            col: "pl",
+            expected: 20000,
+            marks: 2,
+            feedback:
+              "February and March are two of the six months, so 20,000 has been earned. The rest is money held for a service not yet given.",
+          },
+          { row: "sublet", col: "bs", expected: 40000, marks: 2 },
+          {
+            row: "sublet",
+            col: "type",
+            expected: "Liability",
+            marks: 1,
+            feedback:
+              "Four months of sublet are still owed to the tenant, so the 40,000 is income received in advance, which is a liability and not revenue.",
+          },
+        ],
+        invariants: [
+          {
+            key: "total-split",
+            label: "Nothing has been lost in the split",
+            kind: "column-total",
+            cols: ["pl"],
+            value: 135000,
+            marks: 3,
+            hint: "The four profit and loss figures should come to 1,35,000 in total. If they do not, one of the four has been apportioned over the wrong number of months, and the month count is the thing to re-check rather than the arithmetic.",
+          },
+        ],
+        hints: [
+          "Count months, not days, and count only the months that fall on or before 31 March. Three of these four periods straddle the year end.",
+          "Two of these are things you have paid for and not yet used, which makes them assets. One is something you have used and not paid for. One is money you have taken for a service you have not yet given.",
+          "Item 4 is the one that catches people. The whole 60,000 was credited to Rent Received, so you are correcting an overstatement of income: only February and March were earned, which is 20,000, and the other 40,000 is a liability to the tenant.",
+        ],
+        workedAnswer: `<table>
+<tr><th>Item</th><th class="num">P&amp;L</th><th class="num">Balance sheet</th><th>Classification</th></tr>
+<tr><td>Rent paid</td><td class="num">36,000</td><td class="num">1,08,000</td><td>Prepaid expense (asset)</td></tr>
+<tr><td>Electricity</td><td class="num">61,000</td><td class="num">9,000</td><td>Accrued expense (liability)</td></tr>
+<tr><td>Insurance</td><td class="num">18,000</td><td class="num">18,000</td><td>Prepaid expense (asset)</td></tr>
+<tr><td>Rent received</td><td class="num">20,000</td><td class="num">40,000</td><td>Income in advance (liability)</td></tr>
+<tr><td><strong>Total to P&amp;L</strong></td><td class="num"><strong>1,35,000</strong></td><td class="num"></td><td></td></tr>
+</table>
+<p><strong>The four adjusting entries.</strong> Debit Prepaid Rent 1,08,000, credit Rent Expense. Debit Electricity 9,000, credit Accrued Expenses. Debit Prepaid Insurance 18,000, credit Insurance. Debit Rent Received 40,000, credit Income Received in Advance.</p>
+<p><strong>Why item four is the dangerous one.</strong> The other three affect expenses, and getting one wrong moves profit by a few tens of thousands. Item four affects revenue, and treating the whole 60,000 as earned is the pattern that destroys young subscription businesses: a year of income recognised in the month it was collected, followed by eleven months reporting nothing while the service is actually being delivered. The liability is not a technicality, it is a genuine obligation to provide four more months of premises.</p>
+<p><strong>Every one of these reverses.</strong> On 1 April the prepaid rent becomes rent expense as the months are used, the accrued electricity is cleared by the arriving bill, and the deferred sublet income is earned month by month. If the entries are reversed automatically on day one of the new year, the real invoices can be posted in full without anyone needing to remember what was estimated, which is the habit that stops a cost being recognised twice.</p>`,
+        minutes: 24,
+        skills: ["Accrual", "Prepayment", "Matching principle"],
+      },
+    ],
+  },
+
+  /* ===================================================================== */
+  5075: {
+    topicId: 5075,
+    title: "Depreciation: straight line and written down value",
+    summary:
+      "An asset wears out whether or not you write anything down. Depreciation is the entry that admits it, and the method you pick changes every year's profit.",
+    concepts: ["Depreciation", "Straight line method", "Written down value", "Residual value", "Carrying amount"],
+    glossary: {
+      Depreciation: "The systematic allocation of an asset's cost over the periods that benefit from using it.",
+      "Straight line method": "An equal charge each year, computed on cost less residual value divided by useful life.",
+      "Written down value": "A fixed percentage applied each year to the reducing carrying amount, so the charge falls over time.",
+      "Residual value": "What the asset is expected to fetch at the end of its useful life with the business.",
+      "Carrying amount": "Cost less accumulated depreciation: the figure the asset appears at in the balance sheet.",
+      "Accumulated depreciation": "The running total of all depreciation charged on an asset since it was bought.",
+    },
+    body: {
+      Beginner: `<p>You buy a delivery van for 6,00,000 rupees. You will use it for five years and then sell it for about 1,00,000. Has the van cost you 6,00,000 this year?</p>
+<p>Not really. You have used up one fifth of it. The cost that genuinely belongs to this year is one fifth of what you will never get back, which is 6,00,000 minus 1,00,000, so 5,00,000 spread over five years: 1,00,000 a year. That annual charge is depreciation.</p>
+<p>There are two common ways to spread it. The straight line way charges the same amount every year, which is the 1,00,000 above. The written down value way charges a fixed percentage of whatever the van is currently worth in the books, so the charge is big in year one and gets smaller.</p>
+<p>Neither way is a guess about the van's market price. Depreciation is about spreading a cost you have already paid, not about valuing anything. The van does not become more depreciated because second-hand prices fell.</p>`,
+      Intermediate: `<p>Depreciation allocates the cost of a long-lived asset across the periods that benefit from it, which is the matching principle applied to something used over years rather than months. The entry is a debit to depreciation expense and a credit to accumulated depreciation, which is a contra-asset account rather than a reduction of the asset's cost, so the original cost and the wear on it stay separately visible.</p>
+<p>Straight line divides the depreciable amount, being cost less residual value, by the useful life. Written down value applies a fixed rate to the carrying amount each year, so the charge falls geometrically and the asset is never quite written off to zero. The two methods allocate the same total cost in different patterns, so neither is more accurate; the question is which pattern matches how the benefit is consumed.</p>
+<p>That gives a usable rule of thumb. A building or a fitting that delivers much the same service every year suits straight line. A computer or a vehicle that is most productive when new, and whose repair costs climb, suits reducing balance, because the combined charge of depreciation plus repairs stays more level across the asset's life.</p>
+<p>Three inputs are estimates, not facts: useful life, residual value and method. Changing any of them changes reported profit, and under Ind AS 16 each is reviewed at least annually, with a change treated as a change in estimate applied prospectively rather than by restating the past.</p>`,
+      Advanced: `<p>The written down value rate that fully depreciates an asset to its residual value over its life is determinable rather than conventional: r equals one minus the nth root of residual over cost. For the 6,00,000 van with a 1,00,000 residual over five years that is about 30.1%, which is why the published rates in Schedule II of the Companies Act are not round numbers. Reading those rates as arbitrary percentages obscures that each encodes an assumed life and residual.</p>
+<p>Component accounting is the part most often skipped and it changes the answer materially. Where parts of an asset have significantly different useful lives and costs that are significant relative to the whole, each is depreciated separately. An aircraft engine, a building's lifts, and a plant's refractory lining all have lives unrelated to the structure around them, and treating the asset as a single unit both understates early depreciation and converts a later replacement into a repair that should have been a derecognition.</p>
+<p>Depreciation and impairment are independent mechanisms and conflating them is a common error. Depreciation is a systematic allocation, indifferent to current value. Impairment under Ind AS 36 is a write-down to recoverable amount when the carrying amount is no longer supportable. An asset can be fully depreciated and still productive, or newly bought and already impaired, and the two tests answer different questions.</p>
+<p>Finally, note that depreciation never touches cash and tax rules rarely follow the accounts. In India the Income Tax Act prescribes block-of-assets written down value rates regardless of the book method, so the book charge and the tax charge differ by design, and the difference is a timing difference that produces deferred tax. A learner who assumes the two will agree spends a long time looking for an error that is not there.</p>`,
+      Expert: `<p>Treat the choice of method as an assertion about the consumption pattern of the asset's service potential, which is how Ind AS 16 frames it: the method shall reflect the pattern in which the asset's future economic benefits are expected to be consumed. That framing makes the unit-of-production method the conceptually cleanest where output is measurable, and it also makes the revenue-based method prohibited, since revenue reflects price and volume together rather than consumption. The prohibition was added precisely because revenue-based depreciation was being used to smooth margins.</p>
+<p>The deferred tax consequence is worth deriving rather than memorising. Where the tax written down value falls faster than the book carrying amount, the asset's tax base is lower than its carrying amount, giving a taxable temporary difference and a deferred tax liability under Ind AS 12. The liability unwinds over the asset's life as the book charge overtakes the tax charge, so a capital-intensive business in a growth phase accumulates deferred tax liabilities and one that has stopped investing releases them. Reading a rising deferred tax liability as a warning sign rather than as evidence of investment is a frequent analytical error.</p>
+<p>Component accounting interacts with derecognition in a way that catches preparers. If a component was never separately identified, replacing it has no carrying amount to remove, so the replacement either gets expensed, understating the asset, or capitalised on top of an undepreciated whole, double counting the part. Ind AS 16 addresses this by permitting the use of the replacement's cost as an indication of the replaced part's original cost, which is a pragmatic fiction and the only workable answer.</p>
+<p>On estimate revisions, the prospective treatment under Ind AS 8 has a governance consequence that is easy to miss. Extending a useful life reduces the annual charge immediately and never requires restating prior periods, so it is an available and entirely legal lever on reported profit. The control is not an accounting rule but disclosure plus a reviewer asking what changed about the asset, and life extensions concentrated in weak years are a recognised earnings-management signature.</p>`,
+    },
+    worksheets: [
+      {
+        n: 1,
+        title: "Depreciate the same van two ways",
+        difficulty: "Medium",
+        brief: `<p>Sunrise Stationers buys a delivery van on 1 April for <strong>6,00,000 rupees</strong>. It expects to use it for <strong>five years</strong> and then sell it for about <strong>1,00,000 rupees</strong>.</p>
+<p>Complete both schedules below for the first three years.</p>
+<p><strong>Left pair of columns, straight line.</strong> An equal charge each year on cost less residual value.</p>
+<p><strong>Right pair of columns, written down value at 30%.</strong> Thirty per cent of the carrying amount at the start of each year, so the charge falls as the carrying amount does. Round each figure to the nearest rupee.</p>
+<p>The closing carrying amount of one year is the opening figure of the next, so an error in year one travels down the column. The marker knows that: a figure that is right given your own earlier number keeps most of its marks.</p>`,
+        stubLabel: "Year",
+        columns: [
+          { key: "slc", label: "SLM charge (₹)", type: "number", align: "right", flex: 1.1 },
+          { key: "slv", label: "SLM carrying amount (₹)", type: "number", align: "right", flex: 1.3 },
+          { key: "wdc", label: "WDV charge (₹)", type: "number", align: "right", flex: 1.1 },
+          { key: "wdv", label: "WDV carrying amount (₹)", type: "number", align: "right", flex: 1.3 },
+        ],
+        rows: [
+          { key: "y0", label: "At purchase", given: { slc: "", slv: 600000, wdc: "", wdv: 600000 } },
+          { key: "y1", label: "Year 1" },
+          { key: "y2", label: "Year 2" },
+          { key: "y3", label: "Year 3" },
+        ],
+        cells: [
+          {
+            row: "y1",
+            col: "slc",
+            expected: 100000,
+            marks: 2,
+            feedback: "Cost 6,00,000 less residual 1,00,000 is 5,00,000, spread over five years: 1,00,000 a year.",
+          },
+          {
+            row: "y1",
+            col: "slv",
+            expected: 500000,
+            marks: 2,
+            derivedFrom: { op: "difference", from: ["y0:slv", "y1:slc"] },
+            methodMarks: 1,
+          },
+          {
+            row: "y1",
+            col: "wdc",
+            expected: 180000,
+            marks: 2,
+            feedback: "Thirty per cent of the full 6,00,000, because nothing has been written off yet. Residual value plays no part in the reducing balance charge.",
+          },
+          {
+            row: "y1",
+            col: "wdv",
+            expected: 420000,
+            marks: 2,
+            derivedFrom: { op: "difference", from: ["y0:wdv", "y1:wdc"] },
+            methodMarks: 1,
+          },
+          { row: "y2", col: "slc", expected: 100000, marks: 1, feedback: "Straight line means the same charge every year, so year two matches year one." },
+          {
+            row: "y2",
+            col: "slv",
+            expected: 400000,
+            marks: 2,
+            derivedFrom: { op: "difference", from: ["y1:slv", "y2:slc"] },
+            methodMarks: 1,
+          },
+          {
+            row: "y2",
+            col: "wdc",
+            expected: 126000,
+            marks: 2,
+            derivedFrom: { op: "product", from: ["y1:wdv"], factor: 0.3 },
+            methodMarks: 1,
+            feedback: "Thirty per cent of the 4,20,000 carried forward, not of the original cost. This is the step people get wrong.",
+          },
+          {
+            row: "y2",
+            col: "wdv",
+            expected: 294000,
+            marks: 2,
+            derivedFrom: { op: "difference", from: ["y1:wdv", "y2:wdc"] },
+            methodMarks: 1,
+          },
+          { row: "y3", col: "slc", expected: 100000, marks: 1 },
+          {
+            row: "y3",
+            col: "slv",
+            expected: 300000,
+            marks: 2,
+            derivedFrom: { op: "difference", from: ["y2:slv", "y3:slc"] },
+            methodMarks: 1,
+          },
+          {
+            row: "y3",
+            col: "wdc",
+            expected: 88200,
+            marks: 2,
+            derivedFrom: { op: "product", from: ["y2:wdv"], factor: 0.3 },
+            methodMarks: 1,
+          },
+          {
+            row: "y3",
+            col: "wdv",
+            expected: 205800,
+            marks: 2,
+            derivedFrom: { op: "difference", from: ["y2:wdv", "y3:wdc"] },
+            methodMarks: 1,
+          },
+        ],
+        invariants: [
+          {
+            key: "slm-total",
+            label: "Three years of straight line charges",
+            kind: "column-total",
+            cols: ["slc"],
+            value: 300000,
+            marks: 3,
+            hint: "Straight line charges the same figure every year, so three years should total exactly three times the annual charge. If this does not come to 3,00,000, the depreciable amount has probably been taken as the full cost rather than cost less residual value.",
+          },
+        ],
+        hints: [
+          "Straight line uses cost less residual value. Written down value ignores residual value entirely and works on the carrying amount.",
+          "For the reducing balance column, each year's charge is 30% of the figure in the carrying amount cell directly above it, not 30% of 6,00,000.",
+          "Year 2 written down value: 30% of 4,20,000 is 1,26,000, leaving 2,94,000. Year 3: 30% of 2,94,000 is 88,200, leaving 2,05,800. The charge falls every year, which is the whole point of the method.",
+        ],
+        workedAnswer: `<table>
+<tr><th>Year</th><th class="num">SLM charge</th><th class="num">SLM carrying</th><th class="num">WDV charge</th><th class="num">WDV carrying</th></tr>
+<tr><td>At purchase</td><td class="num"></td><td class="num">6,00,000</td><td class="num"></td><td class="num">6,00,000</td></tr>
+<tr><td>1</td><td class="num">1,00,000</td><td class="num">5,00,000</td><td class="num">1,80,000</td><td class="num">4,20,000</td></tr>
+<tr><td>2</td><td class="num">1,00,000</td><td class="num">4,00,000</td><td class="num">1,26,000</td><td class="num">2,94,000</td></tr>
+<tr><td>3</td><td class="num">1,00,000</td><td class="num">3,00,000</td><td class="num">88,200</td><td class="num">2,05,800</td></tr>
+</table>
+<p><strong>The same van, two profit figures.</strong> In year one the method choice changes the charge by 80,000 rupees, which for a small business is the difference between a good year and an average one. By year three the reducing balance charge has fallen below the straight line one. Neither schedule is more correct: both allocate a cost that has already been paid, and the total allocated over the asset's whole life is the same money.</p>
+<p><strong>Why 30% and not 20%.</strong> The rate that writes an asset down to its residual value over its life is one minus the nth root of residual divided by cost. Here that is one minus the fifth root of 1,00,000 over 6,00,000, which is about 30.1%. This is why the rates published in Schedule II of the Companies Act are never round figures: each one encodes an assumed life and an assumed residual, and reading them as arbitrary percentages hides what they are made of.</p>
+<p><strong>Which to choose.</strong> Match the pattern to how the benefit is consumed. The van is most useful when new and its repair bills climb with age, so reducing balance keeps the combined charge of depreciation plus repairs more level across the five years. A shop fitting that delivers the same service every year suits straight line. That is the actual test under Ind AS 16, which asks the method to reflect the pattern of consumption rather than to be conventional.</p>
+<p><strong>One thing this schedule will never agree with.</strong> Your tax computation. The Income Tax Act applies block-of-assets written down value rates regardless of the method in your books, so the two charges differ by design and the gap is a timing difference that produces deferred tax. Hunting for the error that reconciles them is a long and fruitless exercise.</p>`,
+        minutes: 26,
+        skills: ["Depreciation", "Straight line method", "Written down value"],
+      },
+    ],
+  },
 };
 
 export default curriculum;

@@ -185,6 +185,17 @@ export interface WorksheetDerivation {
   op: "sum" | "difference" | "product" | "quotient";
   /** Cell references as "row:col". */
   from: string[];
+  /**
+   * Multiplier applied to the result.
+   *
+   * Needed for any derivation that is a RATE rather than a combination of
+   * cells: a reducing-balance charge is 30% of the carrying amount above it,
+   * and without this the derivation evaluated to the carrying amount itself,
+   * never matched, and the method marks on that cell could not be earned by
+   * anybody. The validator now rejects a derivation that cannot reproduce its
+   * own expected value, because a check that cannot fire is not a check.
+   */
+  factor?: number;
 }
 
 export interface WorksheetCell {

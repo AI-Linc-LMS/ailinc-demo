@@ -156,7 +156,8 @@ function markCell(spec: WorksheetCell, entries: Entries) {
               : op === "product"
                 ? parts.reduce((a, b) => a * b, 1)
                 : parts.reduce((a, b) => (b === 0 ? NaN : a / b));
-        if (Number.isFinite(derived) && Math.abs(got - derived) <= Math.max(tol, 0.51)) {
+        const scaled = derived * (spec.derivedFrom.factor ?? 1);
+        if (Number.isFinite(scaled) && Math.abs(got - scaled) <= Math.max(tol, 0.51)) {
           return {
             ...base,
             verdict: "method" as const,
