@@ -120,6 +120,40 @@ export interface AdaptiveCourseAttachment {
   url: string;
 }
 
+/**
+ * A practical item as it appears on the lesson page.
+ *
+ * One summary shape for all eight practical kinds rather than eight near-copies.
+ * They differ in how they are graded, not in how they are listed, and the lesson
+ * page only needs enough to draw a row: what it is, how long it takes, and two
+ * or three facts that tell the learner whether to open it now. Anything
+ * kind-specific lives in `facts`, which the row renders as chips verbatim.
+ */
+export interface AdaptiveCoursePracticalSummary {
+  id: number;
+  kind:
+    | "worksheet"
+    | "scenario"
+    | "evidence"
+    | "lab"
+    | "deck"
+    | "speaking"
+    | "partid"
+    | "deliverable";
+  title: string;
+  /** One line under the title. */
+  detail: string;
+  /** Chips, already formatted. e.g. "12 cells", "4 hazard steps", "CEFR A1". */
+  facts: string[];
+  minutes: number;
+  target_skills: string[];
+  completed?: boolean;
+  /** Set when the kind is graded by a person rather than by the platform. */
+  human_graded?: boolean;
+  /** For decks: how many cards are due, which is the only number that matters. */
+  due_count?: number;
+}
+
 export interface AdaptiveCourseSubModule {
   id: number;
   order: number;
@@ -130,6 +164,8 @@ export interface AdaptiveCourseSubModule {
   coding_sets?: AdaptiveCourseCodingSet[];
   video_companions?: AdaptiveCourseVideoCompanionSummary[];
   attachments?: AdaptiveCourseAttachment[];
+  /** Worksheets, labs, evidence tasks and the rest. See the type above. */
+  practicals?: AdaptiveCoursePracticalSummary[];
 }
 
 export interface AdaptiveCourseModule {
@@ -213,7 +249,21 @@ export interface GeneratePracticeResult extends PracticeState {
 }
 
 // --- Points breakdown (per-content on-offer + earned) ---
-export type PointsKind = "quiz" | "coding" | "article" | "video";
+export type PointsKind =
+  | "quiz"
+  | "coding"
+  | "article"
+  | "video"
+  // Practical kinds carry their own points, so a course with no coding problem
+  // is not a course with nothing on offer. See practicals.service.ts.
+  | "worksheet"
+  | "scenario"
+  | "evidence"
+  | "lab"
+  | "deck"
+  | "speaking"
+  | "partid"
+  | "deliverable";
 
 export interface PointsBreakdownItem {
   kind: PointsKind;

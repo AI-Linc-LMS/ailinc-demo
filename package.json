@@ -22,7 +22,9 @@
     "build:fonts": "node scripts/fetch-fonts.mjs",
     "copy:monaco": "node scripts/copy-monaco.mjs",
     "prebuild": "node scripts/copy-monaco.mjs",
-    "predev": "node scripts/copy-monaco.mjs"
+    "predev": "node scripts/copy-monaco.mjs",
+    "check:practicals": "node scripts/check-practicals-render.mjs && node scripts/check-practicals-marking.mjs",
+    "check:vocational": "node scripts/check-vocational-courses.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",

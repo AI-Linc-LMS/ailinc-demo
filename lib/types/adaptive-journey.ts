@@ -28,7 +28,22 @@ export interface JourneyNodeView {
   unlockRule: UnlockRule;
   lockReason: string | null;
   isCalibration: boolean;
-  content?: { articles: number; quizzes: number; coding: number; videos: number } | null;
+  /**
+   * What is inside the node, by kind.
+   *
+   * `practicals` is the count of everything that is neither reading nor recall:
+   * worksheets, labs, evidence tasks, scenarios, decks, speaking tasks, part
+   * identification and deliverables. One number rather than eight because the
+   * board draws a chip, not a breakdown, and because a vocational course leads
+   * with "4 practicals" the way a programming course leads with "3 problems".
+   */
+  content?: {
+    articles: number;
+    quizzes: number;
+    coding: number;
+    videos: number;
+    practicals?: number;
+  } | null;
   itemCount: number;
   questionCount: number;
   proctored: boolean;

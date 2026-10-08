@@ -224,6 +224,37 @@ export const FACULTY: readonly DemoPerson[] = [
   }),
 ];
 
+/**
+ * Trade and language faculty.
+ *
+ * Separate from FACULTY because the vocational catalogue needs instructors whose
+ * credential is a trade licence or a teaching certification rather than a
+ * software title. A refrigeration course taught by "Instructor | Cloud and
+ * DevOps" is the kind of detail that tells a prospect the catalogue is dressing.
+ */
+export const TRADE_FACULTY: readonly DemoPerson[] = [
+  buildPerson(1201, "Anjali", "Deshpande", "instructor", {
+    profile_pic_url: portraitAt("women/78"),
+    headline: "Chartered Accountant | Practice and GST compliance",
+    college: "ICAI member, 14 years in practice",
+  }),
+  buildPerson(1202, "Mohan", "Prasad", "instructor", {
+    profile_pic_url: portraitAt("men/74"),
+    headline: "HVAC&R Trainer | Ex-service manager, 2,400 field calls",
+    college: "NSQF Level 4 assessor, RAC sector",
+  }),
+  buildPerson(1203, "Kerstin", "Bauer", "instructor", {
+    profile_pic_url: portraitAt("women/80"),
+    headline: "German Language Instructor | Goethe-certified, A1 to B2",
+    college: "Goethe-Institut certified examiner",
+  }),
+  buildPerson(1204, "Arvind", "Rathore", "instructor", {
+    profile_pic_url: portraitAt("men/76"),
+    headline: "Remote Pilot Instructor | DGCA certified, 900 logged hours",
+    college: "DGCA Remote Pilot Certificate, Small category",
+  }),
+];
+
 /** The learner body. Ids start at 2000 to stay clearly distinct from staff. */
 export const STUDENTS: readonly DemoPerson[] = ROSTER_NAMES.map(([first, last, portrait], i) =>
   buildPerson(2000 + i, first, last, "student", { profile_pic_url: portraitAt(portrait) }),
@@ -233,6 +264,7 @@ export const STUDENTS: readonly DemoPerson[] = ROSTER_NAMES.map(([first, last, p
 export const ALL_PEOPLE: readonly DemoPerson[] = [
   ...PERSONAS,
   ...FACULTY,
+  ...TRADE_FACULTY,
   ...STUDENTS,
 ];
 

@@ -445,6 +445,14 @@ defineRoutes(MODULE, {
         quizzes: topics.filter((t) => t.kinds.includes("quiz")).length,
         coding: topics.filter((t) => t.kinds.includes("coding")).length,
         assignments: topics.filter((t) => t.kinds.includes("assignment")).length,
+        // Hands-on items. Without this the four vocational courses reported
+        // "0 coding, 0 assignments" and looked like reading lists, which is the
+        // opposite of what they are.
+        practicals: topics.filter((t) =>
+          t.kinds.some((k) =>
+            ["worksheet", "scenario", "evidence", "lab", "deck", "speaking", "partid", "deliverable"].includes(k),
+          ),
+        ).length,
       },
     };
   },

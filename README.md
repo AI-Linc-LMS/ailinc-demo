@@ -102,6 +102,91 @@ string.
 
 ---
 
+## The vocational catalogue, and the eight proof primitives
+
+Courses 206 to 209 (Finance & Accounting, Air Conditioning, German, Drone
+Assembly) exist to answer a question the original five could not: what does this
+platform look like for a domain where competence is not a program a judge can
+run?
+
+Articles, quizzes and coding problems cover a programming course. They do not
+cover accounting, refrigeration, a language or a drone build, because in those
+domains the thing a learner must prove is a document produced correctly, a
+procedure performed safely, a sentence spoken, or a part named and fitted in the
+right order. So there are eight new content kinds, and they are **proof
+primitives** rather than content types.
+
+| Kind | What it assesses | Marked by |
+|---|---|---|
+| `worksheet` | A structured grid: journal, trial balance, BRS, thrust budget | Cell by cell, with tolerances and **method marks** |
+| `scenario` | Judgement under cost, as a branching run | The whole path; a safety breach caps the run |
+| `evidence` | Photo, video or audio of real work | **A person.** Returns no score |
+| `lab` | A gated procedure with hazard confirms and readings | Steps completed, readings in range |
+| `deck` | Spaced-repetition recall | Typed, with the schedule held server side |
+| `speaking` | Listening, reading aloud, spoken response | Per word, plus task completion |
+| `partid` | Hotspot identification, assembly order, terminal matching | Per part, naming what you confused it with |
+| `deliverable` | A document produced and submitted | **A person**, against a published rubric |
+
+### Where each piece lives
+
+| Path | Purpose |
+|---|---|
+| `lib/demo/db/curriculum/types.ts` | The authoring schema for all eight |
+| `lib/demo/db/curriculum/course-20{6,7,8,9}.ts` | The authored content |
+| `lib/demo/http/handlers/practicals.ts` | Serving and **marking**. This is the spec the real backend has to reproduce |
+| `lib/services/practicals.service.ts` | The client service, written as real product code |
+| `app/adaptive-courses/[courseId]/submodule/[submoduleId]/<kind>/[id]/` | One player per kind |
+| `components/practicals/` | Shared shell, rubric table, result panel, capture slot, SVG diagrams |
+
+### Three rules these surfaces hold to
+
+**The marking is real.** A worksheet is compared cell by cell with tolerances
+and method marks, a scenario is scored over its whole path, a lab's readings are
+checked against a range the browser never sees. A prospect *will* type a wrong
+number into the trial balance to see what happens, and a player that says
+"Correct!" regardless is the fastest way to lose the room.
+
+**Two kinds refuse to invent a score.** `evidence` and `deliverable` return
+`awaiting_review` with a named assessor and a date. A browser cannot judge a
+brazed joint, and a learner who later watches a number change stops believing
+every other number on the platform.
+
+**Answer keys are not shipped to the page.** Worksheet expected values, scenario
+destinations and lab reading ranges all stay on the server, even though this
+build has no server. A learner who can see "8 to 12" types 10.
+
+### Authoring content
+
+`node scripts/verify-curriculum.mjs [courseId]` is the gate, and it **executes**
+rather than inspects. It pours each worksheet's answer key into its own grid and
+runs its invariants over it, walks every scenario branch for reachability and
+termination, and runs every method-marks derivation to confirm it can reproduce
+its own cell. It found three real bugs that reading the files would not have:
+two sheets that declared their own answer keys unbalanced, and four cells
+offering method marks nobody could ever earn.
+
+Two authoring traps the types now document:
+
+- A row marked `subtotal` or `total` is **excluded from its column's sum**. A
+  balancing figure (balance c/d, gross profit c/d, net profit) is a line *in*
+  the column and must not be one, or the sheet declares itself unbalanced.
+- A `derivedFrom` that is a **rate** needs `factor`. `product` over one cell
+  evaluates to that cell, not to 30% of it.
+
+### Checking it still works
+
+```bash
+npm run check:practicals   # needs `npm run dev` running
+```
+
+Two harnesses, because rendering and marking are different claims.
+`check-practicals-render` asserts every player draws its own authored content;
+`check-practicals-marking` fills a worksheet perfectly and requires full marks,
+fills it again with a wrong first figure and requires the method marks to fire,
+walks a scenario to its ideal ending, and types a deck answer.
+
+---
+
 ## Adding an endpoint
 
 Most services in this codebase catch their own errors and return `[]`, so a **missing

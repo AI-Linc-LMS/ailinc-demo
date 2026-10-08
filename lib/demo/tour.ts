@@ -78,6 +78,26 @@ const STUDENT_TOUR: TourStep[] = [
     color: "#f97316",
   },
   {
+    route: "/adaptive-courses/206/submodule/5075/worksheet/1505075",
+    targetId: "practical-body",
+    title: "A working paper, marked cell by cell",
+    narration:
+      "Accounting cannot be assessed with multiple choice, because the job is producing the document. So this is a real working paper. It checks its own arithmetic as you type, it tells you which figure to go and look at rather than just saying unbalanced, and it awards method marks for a number that is right given your own earlier mistake, which is how an accounting paper is actually marked.",
+    placement: "right",
+    icon: "mdi:table-large",
+    color: "#0f766e",
+  },
+  {
+    route: "/adaptive-courses/207/submodule/5084/evidence/1705084",
+    targetId: "practical-body",
+    title: "Evidence of work done with your hands",
+    narration:
+      "Nobody has ever established that a technician can braze a sound joint by asking them four questions about brazing. So trade courses submit video and photographs of real work, against a rubric the learner reads before they start. Notice what the platform does not do: it does not invent a score. A person marks this one, and it says so.",
+    placement: "right",
+    icon: "mdi:camera-outline",
+    color: "#be123c",
+  },
+  {
     route: "/assessments",
     targetId: "assessments-grid",
     title: "Assessments",

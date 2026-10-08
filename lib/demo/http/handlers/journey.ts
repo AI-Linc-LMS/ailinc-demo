@@ -32,13 +32,35 @@ import { seededInt } from "../../random";
 
 const MODULE = "journey";
 
-/** Points a topic is worth, by the heaviest kind of work it contains. */
+/**
+ * Points a topic is worth, by the heaviest kind of work it contains.
+ *
+ * Ordered most demanding first, and the practical kinds sit where the work
+ * actually sits: a deliverable or an evidence task is assignment-grade, a
+ * worksheet is above a quiz. Before the practical kinds were listed here, every
+ * topic on the four vocational courses fell through to the 40-point floor, so a
+ * refrigeration lesson with a gated procedure and a filmed submission was worth
+ * less on the board than a topic with one multiple-choice quiz.
+ */
 function basePointsFor(topic: DemoTopic): number {
-  if (topic.kinds.includes("assignment")) return 150;
-  if (topic.kinds.includes("coding")) return 90;
-  if (topic.kinds.includes("quiz")) return 60;
+  const k = topic.kinds;
+  if (k.includes("assignment") || k.includes("deliverable")) return 150;
+  if (k.includes("evidence")) return 120;
+  if (k.includes("coding")) return 90;
+  if (k.includes("worksheet")) return 80;
+  if (k.includes("scenario")) return 70;
+  if (k.includes("quiz")) return 60;
+  if (k.includes("lab")) return 60;
+  if (k.includes("speaking")) return 55;
+  if (k.includes("partid")) return 45;
+  if (k.includes("deck")) return 30;
   return 40;
 }
+
+/** Kinds that count as hands-on work rather than reading or recall. */
+const PRACTICAL_KINDS = new Set<DemoTopic["kinds"][number]>([
+  "worksheet", "scenario", "evidence", "lab", "deck", "speaking", "partid", "deliverable",
+]);
 
 function contentCounts(topic: DemoTopic) {
   return {
@@ -46,6 +68,7 @@ function contentCounts(topic: DemoTopic) {
     quizzes: topic.kinds.filter((k) => k === "quiz").length,
     coding: topic.kinds.filter((k) => k === "coding").length,
     videos: topic.kinds.filter((k) => k === "video").length,
+    practicals: topic.kinds.filter((k) => PRACTICAL_KINDS.has(k)).length,
   };
 }
 
@@ -210,8 +233,14 @@ function wallet(course: DemoCourse): PointsWallet {
     .map((t, i) => {
       const base = basePointsFor(t);
       return {
-        activity_type: t.kinds.includes("coding") ? "coding" : t.kinds.includes("quiz") ? "quiz" : "article",
-        difficulty: t.kinds.includes("coding") ? "hard" : "medium",
+        activity_type: t.kinds.includes("coding")
+          ? "coding"
+          : t.kinds.find((k) => PRACTICAL_KINDS.has(k)) ??
+            (t.kinds.includes("quiz") ? "quiz" : "article"),
+        difficulty:
+          t.kinds.includes("coding") || t.kinds.includes("evidence") || t.kinds.includes("deliverable")
+            ? "hard"
+            : "medium",
         base,
         after_decay: base,
         correctness_factor: seededInt(`cf:${t.id}`, 70, 100) / 100,
