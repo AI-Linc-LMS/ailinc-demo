@@ -204,6 +204,178 @@ function questionById(session: QuizSession, mcqId: number): DemoMcq | null {
 }
 
 /** Whether the session has met either exit condition. */
+/**
+ * Record one answer and move the estimates.
+ *
+ * Pulled out of the answer route so the seeded-session builder can replay
+ * answers through the engine rather than hand-writing a plausible-looking
+ * session. A hand-written one drifts from the engine the first time scoring
+ * changes, and the results page then shows numbers the product cannot produce.
+ */
+function applyAnswer(
+  session: QuizSession,
+  question: DemoMcq,
+  selected: string,
+  timeMs: number,
+  confidence: number | null,
+  answeredAt: string,
+) {
+  const correct = selected === question.correct;
+  const { earned, base } = pointsFor(question, timeMs, correct);
+
+  const skill = question.skill;
+  const before = session.ability[skill] ?? 0;
+  // Move the estimate toward the answer, damped by how much evidence we already
+  // have for this skill, so later answers move it less than the first.
+  const evidence = session.answers.filter((a) => questionById(session, a.mcqId)?.skill === skill).length;
+  const step = 0.8 / (1 + evidence * 0.5);
+  const after = Number((before + (correct ? step : -step)).toFixed(3));
+
+  session.ability[skill] = after;
+  const priorSe = session.se[skill] ?? 1.0;
+  session.se[skill] = Number(Math.max(0.25, priorSe * 0.82).toFixed(3));
+
+  session.answers.push({
+    mcqId: question.id,
+    selected,
+    correct,
+    confidence,
+    timeMs,
+    pointsEarned: earned,
+    pointsBase: base,
+    answeredAt,
+  });
+
+  // Steer the next question.
+  session.targetDifficulty = correct
+    ? question.difficulty === "Easy"
+      ? "Medium"
+      : "Hard"
+    : question.difficulty === "Hard"
+      ? "Medium"
+      : "Easy";
+
+  return { correct, before, after, earned, base, skill };
+}
+
+/**
+ * Sessions a completed topic claims to have, but that nobody ever sat.
+ *
+ * A topic marked done in the seeded progress advertises
+ * `last_session_id: "sess-<topicId>"`, and the results link on the submodule
+ * page goes straight to it. No such session was ever created, so every one of
+ * those links landed on "Quiz session not found" - on a course the seed says
+ * the visitor has finished. Only quizzes actually taken in the browser, which
+ * get a `qs-` id, ever worked.
+ *
+ * Rather than drop the link or store a fixture, the session is built the first
+ * time it is asked for, by replaying real questions from the topic's own bank
+ * through `applyAnswer`. So the ability estimates, standard errors, points and
+ * difficulty steering on the results page are the ones the engine would have
+ * produced, and they stay right when the engine changes.
+ */
+const SEEDED_SESSION = /^sess-(\d+)$/;
+
+/** Config ids are topic ids offset by the namespace `topicForConfig` undoes. */
+const configForTopic = (topicId: number) => topicId + 200_000;
+
+function buildSeededSession(id: string, topicId: number): QuizSession | null {
+  const found = topicById(topicId);
+  if (!found) return null;
+
+  /**
+   * Only build what the product actually claims.
+   *
+   * `quizFor` advertises `sess-<topicId>` when the topic reads as done, which
+   * in the seed means progress 100 on a topic that has a quiz. Building one
+   * for any id of that shape would invent a completed attempt for a topic the
+   * visitor has never opened, which is a worse failure than the 404: the
+   * results page would show them a history they do not have. Every drone topic
+   * is seeded at 0 progress, so those ids should still 404.
+   */
+  if (found.topic.progress !== 100 || !found.topic.kinds.includes("quiz")) return null;
+
+  const session: QuizSession = {
+    id,
+    configId: configForTopic(topicId),
+    topicId,
+    courseId: found.course.id,
+    status: "active",
+    startedAt: isoDaysAgo(3, 10, 12),
+    completedAt: null,
+    askedIds: [],
+    answers: [],
+    hintsUsed: 0,
+    ability: {},
+    se: {},
+    targetDifficulty: "Medium",
+    pendingId: null,
+    servedAt: null,
+  };
+
+  for (let i = 0; i < MAX_QUESTIONS; i += 1) {
+    const question = selectQuestion(session);
+    if (!question) break;
+    session.askedIds.push(question.id);
+    // Seeded, not random: which questions this visitor missed has to be the
+    // same on every reload, or the results page rewrites its own history.
+    const correct = seededInt(`quiz:${topicId}:${question.id}:correct`, 0, 9) > 2;
+    // `correct` holds an option id, and options are objects, so the distractor
+    // is the first option whose id differs rather than the first that is not
+    // equal to the string.
+    const wrong = question.options.find((o) => o.id !== question.correct)?.id ?? question.correct;
+    applyAnswer(
+      session,
+      question,
+      correct ? question.correct : wrong,
+      seededInt(`quiz:${topicId}:${question.id}:ms`, 9_000, 48_000),
+      seededInt(`quiz:${topicId}:${question.id}:conf`, 2, 5),
+      isoDaysAgo(3, 10, 14 + i * 2),
+    );
+    if (isComplete(session)) break;
+  }
+
+  // An empty bank would otherwise produce a results page with no questions on
+  // it, which is a worse lie than the 404 this replaces.
+  if (session.answers.length === 0) return null;
+
+  session.status = "completed";
+  session.completedAt = isoDaysAgo(3, 10, 14 + session.answers.length * 2);
+  session.pendingId = null;
+  return saveSession(session);
+}
+
+/**
+ * Resolve a session id for the read paths, materialising a seeded one once.
+ *
+ * Async because the question bank needs the course chunk warm, exactly as the
+ * start route does. The write paths keep the strict sync lookup: there is
+ * nothing to answer, hint on or abandon in a session that is already finished.
+ */
+async function resolveSession(id: string): Promise<QuizSession> {
+  const existing = loadSession(id);
+  if (existing) return existing;
+
+  const match = SEEDED_SESSION.exec(id);
+  if (match) {
+    const topicId = Number(match[1]);
+    const found = topicById(topicId);
+    if (found) {
+      // A visitor who has just taken this quiz has a real session with a `qs-`
+      // id, but the submodule payload still advertises the `sess-` one. Hand
+      // back the genuine attempt rather than a fabricated one, or finishing a
+      // quiz and clicking through to the results would show someone else's.
+      const real = latestSessionFor(configForTopic(topicId));
+      if (real) return real;
+
+      await loadCourseCurriculum(found.course.id);
+      const built = buildSeededSession(id, topicId);
+      if (built) return built;
+    }
+  }
+  throw notFound("Quiz session not found");
+}
+
 function isComplete(session: QuizSession): boolean {
   const answered = session.answers.length;
   if (answered >= MAX_QUESTIONS) return true;
@@ -255,7 +427,10 @@ function sessionDetail(session: QuizSession) {
     responses: session.answers.map((answer, index) => {
       const q = questionById(session, answer.mcqId);
       return {
-        order_index: index + 1,
+        // 0-based. Every consumer renders `order_index + 1` and
+        // MisconceptionCallout keys its correctness map on the raw value, so
+        // emitting 1-based here numbered the question pills 2 to 7.
+        order_index: index,
         mcq: answer.mcqId,
         mcq_detail: {
           id: answer.mcqId,
@@ -382,8 +557,8 @@ defineRoutes(MODULE, {
     };
   },
 
-  "GET /adaptive-quiz/api/sessions/:sessionId/": (req) =>
-    sessionDetail(requireSession(req.params.sessionId)),
+  "GET /adaptive-quiz/api/sessions/:sessionId/": async (req) =>
+    sessionDetail(await resolveSession(req.params.sessionId)),
 
   "POST /adaptive-quiz/api/sessions/:sessionId/answer/": (req) => submitAnswer(req),
 
@@ -440,8 +615,8 @@ defineRoutes(MODULE, {
       });
   },
 
-  "GET /adaptive-quiz/api/sessions/:sessionId/remediation-progress/": (req) => {
-    const session = requireSession(req.params.sessionId);
+  "GET /adaptive-quiz/api/sessions/:sessionId/remediation-progress/": async (req) => {
+    const session = await resolveSession(req.params.sessionId);
     const wrong = session.answers.filter((a) => !a.correct).length;
     return {
       steps: [
@@ -454,8 +629,8 @@ defineRoutes(MODULE, {
   },
 
   /** A re-quiz seeded from a previous attempt, focused on what was missed. */
-  "POST /adaptive-quiz/api/sessions/:sessionId/requiz/": (req) => {
-    const source = requireSession(req.params.sessionId);
+  "POST /adaptive-quiz/api/sessions/:sessionId/requiz/": async (req) => {
+    const source = await resolveSession(req.params.sessionId);
     const session: QuizSession = {
       ...source,
       id: `qs-${nextDemoId("quiz")}`,
@@ -482,8 +657,7 @@ defineRoutes(MODULE, {
    * off-thread and the client polls; returning "ready" immediately is the honest
    * demo equivalent, since there is no worker to wait for.
    */
-  "POST /adaptive-quiz/api/sessions/:sessionId/narration/:section/": (req) =>
-    narration(req),
+  "POST /adaptive-quiz/api/sessions/:sessionId/narration/:section/": (req) => narration(req),
   "GET /adaptive-quiz/api/sessions/:sessionId/narration/:section/": (req) => narration(req),
 });
 
@@ -496,41 +670,15 @@ function submitAnswer(req: DemoRequest) {
   const question = questionById(session, mcqId);
   if (!question) throw badRequest({ detail: "Unknown question." });
 
-  const correct = selected === question.correct;
   const timeMs = Number(req.body?.time_ms ?? 0);
-  const { earned, base } = pointsFor(question, timeMs, correct);
-
-  const skill = question.skill;
-  const before = session.ability[skill] ?? 0;
-  // Move the estimate toward the answer, damped by how much evidence we already
-  // have for this skill, so later answers move it less than the first.
-  const evidence = session.answers.filter((a) => questionById(session, a.mcqId)?.skill === skill).length;
-  const step = 0.8 / (1 + evidence * 0.5);
-  const after = Number((before + (correct ? step : -step)).toFixed(3));
-
-  session.ability[skill] = after;
-  const priorSe = session.se[skill] ?? 1.0;
-  session.se[skill] = Number(Math.max(0.25, priorSe * 0.82).toFixed(3));
-
-  session.answers.push({
-    mcqId,
+  const { correct, before, after, earned, base, skill } = applyAnswer(
+    session,
+    question,
     selected,
-    correct,
-    confidence: req.body?.confidence ?? null,
     timeMs,
-    pointsEarned: earned,
-    pointsBase: base,
-    answeredAt: iso(new Date(nowMs())),
-  });
-
-  // Steer the next question.
-  session.targetDifficulty = correct
-    ? question.difficulty === "Easy"
-      ? "Medium"
-      : "Hard"
-    : question.difficulty === "Hard"
-      ? "Medium"
-      : "Easy";
+    req.body?.confidence ?? null,
+    iso(new Date(nowMs())),
+  );
 
   const complete = isComplete(session);
   let next: DemoMcq | null = null;
@@ -571,8 +719,35 @@ function submitAnswer(req: DemoRequest) {
   };
 }
 
-function narration(req: DemoRequest) {
-  const session = requireSession(req.params.sessionId);
+/**
+ * Per-skill mastery for the results heatmap, derived from the session's own
+ * ability and standard-error state rather than stored alongside it.
+ *
+ * `theta` runs about -3..3, so the percentage is that mapped onto 0..100 and
+ * clamped. `delta_pct` is null throughout because this demo keeps no prior
+ * attempt to compare against, which is exactly what the field means: the UI
+ * swaps the change chip for a "First attempt" badge.
+ */
+function skillMastery(session: QuizSession) {
+  return Object.keys(session.ability).map((skill) => {
+    const theta = session.ability[skill] ?? 0;
+    const pct = Math.max(0, Math.min(100, Math.round(((theta + 3) / 6) * 100)));
+    const band =
+      pct >= 85 ? "mastered" : pct >= 70 ? "proficient" : pct >= 50 ? "developing" : "emerging";
+    return {
+      skill,
+      theta,
+      se: session.se[skill] ?? 1,
+      mastery_pct: pct,
+      delta_pct: null,
+      previous_mastery_pct: null,
+      band,
+    };
+  });
+}
+
+async function narration(req: DemoRequest) {
+  const session = await resolveSession(req.params.sessionId);
   const section = req.params.section;
   const correct = session.answers.filter((a) => a.correct).length;
   const total = session.answers.length;
@@ -587,6 +762,20 @@ function narration(req: DemoRequest) {
     ),
   ];
 
+  /**
+   * Every section's payload is shaped to `AdaptiveAINarration` in
+   * lib/types/adaptive-quiz.ts, because the results page destructures those
+   * fields without guarding them.
+   *
+   * The previous shapes were invented and three of them were wrong. The
+   * headline left out `skill_mastery`, which the hook assigns straight to
+   * state and the page then reads `.length` on. Misconceptions returned
+   * `{skill, misconception, fix}` where the component reads `title`,
+   * `explanation` and `evidence_question_indices`, and crashed on the last
+   * one. Remediation returned a `{steps}` object where an array is expected.
+   * The results page was unreachable for every session, not only the seeded
+   * ones; the seeded ids 404'd first and hid it.
+   */
   const value =
     section === "headline"
       ? {
@@ -594,31 +783,72 @@ function narration(req: DemoRequest) {
           subtext: wrongSkills.length
             ? `The gaps clustered in ${wrongSkills.join(" and ")}.`
             : "No weak spots in this attempt. The next quiz will start harder.",
+          score_summary: {
+            correct,
+            total,
+            accuracy: total ? correct / total : 0,
+            time_total_ms: session.answers.reduce((sum, a) => sum + a.timeMs, 0),
+          },
+          skill_mastery: skillMastery(session),
+          target_outcome: null,
         }
       : section === "per_question"
         ? session.answers.map((answer, i) => {
             const q = questionById(session, answer.mcqId);
             return {
-              order: i + 1,
-              skill: q?.skill ?? "",
-              correct: answer.correct,
-              note: answer.correct
-                ? `Correct, and quickly enough to keep most of the points.`
-                : q?.explanation ?? "",
+              // Matches `order_index`, which the breakdown looks up by.
+              index: i,
+              rationale: q?.explanation ?? "",
+              correct_concept: q?.skill ?? "",
+              your_mistake: answer.correct
+                ? null
+                : `You chose an option that describes a related but different mechanism.`,
+              diagram_suggestion: null,
             };
           })
         : section === "misconceptions"
           ? wrongSkills.map((skill) => ({
-              skill,
-              misconception: `Your wrong answers on ${skill} picked the option that describes a related but different mechanism.`,
-              fix: `Re-read the ${skill} section of the lesson, then retry - that is usually one short session.`,
+              title: `${skill}: the neighbouring mechanism`,
+              // Positions of the answers that evidence this pattern, on the
+              // same 0-based footing as `order_index`, which the trail keys
+              // its correctness map on. An empty array is fine here; a missing
+              // one crashes the component.
+              evidence_question_indices: session.answers
+                .map((a, i) => (!a.correct && questionById(session, a.mcqId)?.skill === skill ? i : -1))
+                .filter((i) => i >= 0),
+              explanation: `Your wrong answers on ${skill} picked the option that describes a related but different mechanism.`,
+              fix: `Re-read the ${skill} section of the lesson, then retry. That is usually one short session.`,
             }))
-          : {
-              steps: [
-                { step: 1, content_type: "article", label: "Re-read the lesson section you missed" },
-                { step: 2, content_type: "quiz", label: "Re-quiz on just those skills" },
-              ],
-            };
+          : [
+              {
+                step: 1,
+                title: "Re-read the section you missed",
+                why: wrongSkills.length
+                  ? `The gaps were in ${wrongSkills.join(" and ")}.`
+                  : "A quick refresh before the next attempt.",
+                action_kind: "read",
+                target_skill: wrongSkills[0] ?? "",
+                est_minutes: 8,
+                content_type: "article",
+                course_id: session.courseId,
+                submodule_id: session.topicId,
+                article_id: session.topicId + 100_000,
+                content_id: null,
+              },
+              {
+                step: 2,
+                title: "Re-quiz on just those skills",
+                why: "A targeted second attempt is what moves the estimate.",
+                action_kind: "requiz",
+                target_skill: wrongSkills[0] ?? "",
+                est_minutes: 6,
+                content_type: "requiz",
+                course_id: session.courseId,
+                submodule_id: session.topicId,
+                article_id: null,
+                content_id: null,
+              },
+            ];
 
   return { section, status: "ready", value };
 }

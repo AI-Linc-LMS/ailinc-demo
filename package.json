@@ -27,7 +27,8 @@
     "check:vocational": "node scripts/check-vocational-courses.mjs",
     "check:live": "node scripts/check-live-deploy.mjs",
     "check:mobile": "node scripts/check-mobile-practicals.mjs",
-    "check:figures": "node scripts/check-article-figures.mjs"
+    "check:figures": "node scripts/check-article-figures.mjs",
+    "check:quiz-results": "node scripts/check-quiz-results.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",
