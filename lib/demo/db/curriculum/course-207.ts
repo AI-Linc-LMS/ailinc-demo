@@ -710,40 +710,193 @@ const curriculum: CourseCurriculum = {
       "Weighed-in charge": "Charging by measured mass to the manufacturer's figure, rather than by pressure.",
     },
     body: {
-      Beginner: `<p>Two numbers tell you most of what you need. Both are a difference between a temperature you measure and a temperature you look up on a chart.</p>
+      Beginner: `<p>Two numbers tell you most of what you need to know about a system. Both are a difference between a temperature you measure with a clamp and a temperature you look up on a chart.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="Where superheat and subcooling are measured on a split system">
+<rect x="36" y="70" width="344" height="232" rx="18" fill="currentColor" opacity="0.05"/>
+<rect x="620" y="70" width="344" height="232" rx="18" fill="currentColor" opacity="0.05"/>
+<text x="56" y="112" font-size="30" font-weight="800" fill="currentColor" opacity="0.6">INDOOR</text>
+<text x="640" y="112" font-size="30" font-weight="800" fill="currentColor" opacity="0.6">OUTDOOR</text>
+<path d="M62 150 h290 M62 190 h290 M62 230 h290 M62 270 h290" stroke="currentColor" opacity="0.28" stroke-width="12" stroke-linecap="round"/>
+<path d="M648 150 h290 M648 190 h290 M648 230 h290 M648 270 h290" stroke="currentColor" opacity="0.28" stroke-width="12" stroke-linecap="round"/>
+<path d="M380 160 H620" stroke="#c2410c" stroke-width="16" stroke-linecap="round"/>
+<path d="M566 160 l-26 -11 v22 z" fill="#c2410c"/>
+<text x="384" y="134" font-size="27" font-weight="800" fill="#c2410c">COLD VAPOUR</text>
+<path d="M620 256 H380" stroke="#0369a1" stroke-width="9" stroke-linecap="round"/>
+<path d="M432 256 l26 -10 v20 z" fill="#0369a1"/>
+<text x="384" y="296" font-size="27" font-weight="800" fill="#0369a1">WARM LIQUID</text>
+<circle cx="500" cy="160" r="17" fill="none" stroke="#c2410c" stroke-width="6"/>
+<path d="M500 177 L268 346" stroke="#c2410c" stroke-width="3" stroke-dasharray="7 7"/>
+<circle cx="500" cy="256" r="17" fill="none" stroke="#0369a1" stroke-width="6"/>
+<path d="M500 273 L732 346" stroke="#0369a1" stroke-width="3" stroke-dasharray="7 7"/>
+<rect x="36" y="348" width="432" height="188" rx="18" fill="#c2410c" opacity="0.1"/>
+<rect x="36" y="348" width="432" height="188" rx="18" fill="none" stroke="#c2410c" stroke-width="3"/>
+<text x="62" y="404" font-size="38" font-weight="800" fill="#c2410c">SUPERHEAT</text>
+<text x="62" y="446" font-size="27" fill="currentColor" opacity="0.85">pipe temperature minus</text>
+<text x="62" y="480" font-size="27" fill="currentColor" opacity="0.85">the boiling point</text>
+<text x="62" y="518" font-size="28" font-weight="800" fill="currentColor" opacity="0.6">normally 5 to 10 K</text>
+<rect x="532" y="348" width="432" height="188" rx="18" fill="#0369a1" opacity="0.1"/>
+<rect x="532" y="348" width="432" height="188" rx="18" fill="none" stroke="#0369a1" stroke-width="3"/>
+<text x="558" y="404" font-size="38" font-weight="800" fill="#0369a1">SUBCOOLING</text>
+<text x="558" y="446" font-size="27" fill="currentColor" opacity="0.85">condensing point minus</text>
+<text x="558" y="480" font-size="27" fill="currentColor" opacity="0.85">the pipe temperature</text>
+<text x="558" y="518" font-size="28" font-weight="800" fill="currentColor" opacity="0.6">normally 5 to 8 K</text>
+</svg>
+<figcaption><strong>Two clamps, two pipes, two different questions.</strong> Superheat is taken on the fat cold pipe leaving the indoor coil and tells you how well that coil is being fed. Subcooling is taken on the thin warm pipe leaving the outdoor coil and tells you whether there is enough liquid in the high side. Clamp to bare copper and give the probe a minute to settle: a probe resting against paint reads the air in the gap.</figcaption>
+</figure>
+<h3>How to work each one out</h3>
 <table>
 <tr><th></th><th>Superheat</th><th>Subcooling</th></tr>
-<tr><td>About</td><td>The indoor coil</td><td>The outdoor coil</td></tr>
+<tr><td>Measured on</td><td>The fat cold pipe</td><td>The thin warm pipe</td></tr>
+<tr><td>Tells you about</td><td>The indoor coil</td><td>The outdoor coil</td></tr>
 <tr><td>Work it out</td><td>Pipe temp minus boiling point</td><td>Condensing point minus pipe temp</td></tr>
-<tr><td>Normal</td><td>5 to 10 K</td><td>5 to 8 K</td></tr>
+<tr><td class="num">Normal</td><td class="num">5 to 10 K</td><td class="num">5 to 8 K</td></tr>
 </table>
-<div class="key-idea"><span class="callout-label">Read them as a pair</span><p>Both low usually means not enough refrigerant. High superheat with normal or high subcooling usually means something is blocking the flow. The two together separate faults that look identical on pressure alone.</p></div>`,
-      Intermediate: `<p>Each number localises a different part of the circuit, which is why taking one without the other wastes the visit. Superheat describes how well the evaporator is being fed. Subcooling describes whether there is enough liquid in the high side.</p>
-<h3>The four combinations</h3>
-<table>
-<tr><th>Superheat</th><th>Subcooling</th><th>Points at</th></tr>
-<tr><td>Low</td><td>Low</td><td>Overcharge, or a flooding expansion valve</td></tr>
-<tr><td>High</td><td>Low</td><td>Undercharge: the classic case</td></tr>
-<tr><td>High</td><td>Normal or high</td><td>A restriction: the condenser holds liquid that cannot get through</td></tr>
-<tr><td>Low</td><td>High</td><td>Overcharge with the condenser backed up</td></tr>
-</table>
-<div class="warning"><span class="callout-label">The row that gets misdiagnosed most expensively</span><p>The restriction. Pressures look like an undercharge, so refrigerant gets added, the condenser backs up further, head pressure climbs and the compressor is loaded harder. Subcooling is the one piece of evidence that separates the two, and it takes thirty seconds.</p></div>
+<div class="key-idea"><span class="callout-label">Read them as a pair, never one on its own</span><p>Both low usually means not enough refrigerant. High superheat with normal or high subcooling usually means something is blocking the flow. The two together separate faults that look identical on pressure alone, and that is the entire reason for taking both.</p></div>
+<h3>Getting the reading right</h3>
+<p>Clamp the probe to bare copper, not to insulation and not to paint. Strap it on properly and give it a minute to settle. A probe resting against a pipe reads the air in the gap, and four kelvin of error is the difference between a correct diagnosis and a replaced compressor.</p>
+<div class="warning"><span class="callout-label">One thing never to do</span><p>Do not add refrigerant because the suction pressure looks low. Two of the four faults on the next page are made worse by it, and none of them is a leak that has been found.</p></div>`,
+      Intermediate: `<p>Each number localises a different part of the circuit, which is why taking one without the other wastes the visit. Superheat describes how well the evaporator is being fed. Subcooling describes whether there is enough liquid in the high side. Plotted against each other they separate four faults that are indistinguishable on a gauge set.</p>
+<figure>
+<svg viewBox="0 0 1000 620" role="img" aria-label="The four combinations of superheat and subcooling and the fault each one indicates">
+<rect x="110" y="56" width="435" height="212" fill="#be123c" opacity="0.1"/>
+<rect x="545" y="56" width="435" height="212" fill="#b45309" opacity="0.1"/>
+<rect x="110" y="268" width="435" height="212" fill="#0369a1" opacity="0.1"/>
+<rect x="545" y="268" width="435" height="212" fill="#7c3aed" opacity="0.1"/>
+<text x="138" y="112" font-size="36" font-weight="800" fill="#be123c">UNDERCHARGE</text>
+<text x="138" y="156" font-size="26" fill="currentColor" opacity="0.85">Both ends starved.</text>
+<text x="138" y="190" font-size="26" font-weight="800" fill="currentColor" opacity="0.85">Find the leak first.</text>
+<text x="573" y="112" font-size="36" font-weight="800" fill="#b45309">RESTRICTION</text>
+<text x="573" y="156" font-size="26" fill="currentColor" opacity="0.85">Drier or valve blocked.</text>
+<text x="573" y="190" font-size="26" font-weight="800" fill="currentColor" opacity="0.85">Adding gas makes it worse.</text>
+<text x="138" y="384" font-size="36" font-weight="800" fill="#0369a1">FLOODING VALVE</text>
+<text x="138" y="428" font-size="26" fill="currentColor" opacity="0.85">Sensing bulb or valve.</text>
+<text x="138" y="462" font-size="26" font-weight="800" fill="currentColor" opacity="0.85">Liquid hits the compressor.</text>
+<text x="573" y="384" font-size="36" font-weight="800" fill="#7c3aed">OVERCHARGE</text>
+<text x="573" y="428" font-size="26" fill="currentColor" opacity="0.85">Condenser backed up.</text>
+<text x="573" y="462" font-size="26" font-weight="800" fill="currentColor" opacity="0.85">Recover it, never vent it.</text>
+<path d="M545 56 V480 M110 268 H980" stroke="currentColor" opacity="0.35" stroke-width="3"/>
+<rect x="110" y="56" width="870" height="424" fill="none" stroke="currentColor" opacity="0.35" stroke-width="3"/>
+<rect x="428" y="212" width="234" height="112" rx="14" fill="#0f766e"/>
+<text x="545" y="252" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">IN SPEC</text>
+<text x="545" y="284" font-size="26" font-weight="700" fill="#ffffff" opacity="0.9" text-anchor="middle">SH 5 to 10 K</text>
+<text x="545" y="310" font-size="26" font-weight="700" fill="#ffffff" opacity="0.9" text-anchor="middle">SC 5 to 8 K</text>
+<text x="96" y="72" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">HIGH</text>
+<text x="96" y="474" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">LOW</text>
+<text x="34" y="268" font-size="30" font-weight="800" fill="#c2410c" text-anchor="middle" transform="rotate(-90 34 268)">SUPERHEAT</text>
+<text x="110" y="522" font-size="26" font-weight="800" fill="currentColor" opacity="0.55">LOW</text>
+<text x="980" y="522" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">NORMAL OR HIGH</text>
+<text x="545" y="582" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">SUBCOOLING</text>
+</svg>
+<figcaption><strong>The whole diagnosis, on one chart.</strong> Pressure alone cannot separate the top two boxes, and they call for opposite actions: one needs refrigerant after a leak repair, the other needs a component replaced and is damaged by refrigerant. Subcooling is what tells them apart, and it is one clamp on one pipe. In spec is 5 to 10 K of superheat against 5 to 8 K of subcooling.</figcaption>
+</figure>
+<div class="stat-strip">
+<div class="stat"><strong>5 to 10 K</strong><span>Superheat, fixed orifice</span></div>
+<div class="stat"><strong>5 to 8 K</strong><span>Subcooling</span></div>
+<div class="stat"><strong>8 to 12 K</strong><span>Air split indoors</span></div>
+<div class="stat"><strong>&#177;0.5 bar</strong><span>Costs you 2&#8211;3 K</span></div>
+</div>
+<h3>The row that gets misdiagnosed most expensively</h3>
+<p>The restriction. Pressures look like an undercharge, so refrigerant gets added, the condenser backs up further, head pressure climbs and the compressor is loaded harder. The system now has two faults and the second one was yours.</p>
+<div class="warning"><span class="callout-label">Thirty seconds of evidence</span><p>Subcooling is the only reading that separates a restriction from an undercharge, and it is one clamp on one pipe. The fact that this fault is still common is a statement about habit rather than about difficulty.</p></div>
 <h3>On a fixed orifice system</h3>
-<p>Superheat is not controlled, so it swings with indoor load and outdoor ambient. A single figure is only interpretable alongside both, which is why the manufacturer's charging chart is indexed by those two conditions rather than giving one target.</p>`,
-      Advanced: `<p>The diagnostic power of the pair comes from them being nearly independent measurements of different circuit sections, so their joint distribution separates faults that are degenerate in either alone.</p>
-<div class="key-idea"><span class="callout-label">And that is also its limit</span><p>A fault moving both in the same direction, such as a severely fouled condenser in high ambient, produces a signature overlapping with overcharge and has to be resolved by a third observation, typically the condenser approach temperature.</p></div>
-<h3>A valve system inverts the inference</h3>
-<p>For a thermostatic or electronic expansion valve, superheat is a controlled variable. A valve holding superheat at setpoint tells you the valve is working and says almost nothing about charge, so charge on a valve system is judged primarily on subcooling. Conversely a superheat that will not come down points at the valve, its sensing bulb contact or its equalisation line, and adding refrigerant is a reliable way to flood it once the valve recovers.</p>
-<h3>Why charging by pressure is indefensible</h3>
-<p>Pressure is a function of load and ambient as well as charge. Weighed-in charging to the manufacturer's figure, after a proper evacuation, is the only method correct independently of the conditions on the day. Superheat and subcooling then confirm rather than determine.</p>
-<div class="warning"><span class="callout-label">The error budget at these magnitudes</span><p>A pressure reading off by half a bar shifts the derived saturation temperature two to three kelvin. On a five to ten kelvin band that is most of it. An analogue gauge and an uninsulated probe can comfortably generate four kelvin of error, which is the difference between a correct diagnosis and a replaced compressor.</p></div>`,
-      Expert: `<p>Formally the pair maps a fault space onto a two-dimensional observation space, and it works because the mapping is close to injective for common single faults.</p>
-<div class="warning"><span class="callout-label">The predictable failure</span><p>It degrades wherever two faults coexist, because the observation is the superposition and the inverse is no longer unique. A restricted drier on an undercharged system is the canonical trap, and the resolution is not a cleverer reading of the pair but an independent measurement, typically the temperature drop across the drier itself.</p></div>
-<h3>Adopt approach as a third coordinate</h3>
-<p>Condenser approach, the difference between saturated condensing temperature and entering air temperature, isolates heat rejection capability from the charge question entirely, since it is a function of surface, airflow and fouling rather than of mass. It converts several ambiguous two-coordinate signatures into unambiguous three-coordinate ones for the cost of one air temperature reading.</p>
-<h3>Glide correction must come first on blends</h3>
-<p>Superheat computed against a bubble point rather than a dew point is low by the glide for every reading, so a technician on R-407C sees an apparently flooding system across an entire fleet and concludes there is a design fault. Systematic errors are more dangerous than noisy ones precisely because repetition increases confidence.</p>
-<div class="field"><span class="callout-label">The economic case, for the customer conversation</span><p>Field studies consistently find a substantial fraction of installed splits operating outside their intended charge band, with capacity and efficiency penalties in the tens of per cent at the extremes, and the dominant cause is charge adjustment by pressure on the day. The visit that measures all three and then weighs the charge in costs perhaps thirty minutes more and removes the mechanism that produced the problem.</p></div>`,
+<p>Superheat is not controlled, so it swings with indoor load and outdoor ambient. A single figure is only interpretable alongside both, which is why the manufacturer's charging chart is indexed by those two conditions rather than giving you one target to aim at.</p>
+<h3>On a valve system the inference turns around</h3>
+<table>
+<tr><th>System</th><th>Judge charge on</th><th>Because</th></tr>
+<tr><td>Fixed orifice</td><td>Superheat, against the chart</td><td>Nothing is controlling it, so it reflects the charge</td></tr>
+<tr><td>Thermostatic or electronic valve</td><td>Subcooling</td><td>The valve holds superheat at setpoint whatever the charge</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Which has a practical consequence worth remembering</span><p>A valve holding superheat at setpoint tells you the valve is working and almost nothing about the charge. Chasing superheat on a valve system is chasing the valve's own regulation.</p></div>`,
+      Advanced: `<p>The diagnostic power of the pair comes from them being nearly independent measurements of different circuit sections, so their joint distribution separates faults that are degenerate in either alone. Understanding why starts on the pressure&#8211;enthalpy plane, where both quantities are literally the parts of the cycle that leave the saturation dome.</p>
+<figure>
+<svg viewBox="0 0 1000 640" role="img" aria-label="Pressure enthalpy diagram of the vapour compression cycle with superheat and subcooling marked">
+<path d="M330 520 Q 420 200 520 100 Q 660 220 880 520" fill="currentColor" opacity="0.07"/>
+<path d="M330 520 Q 420 200 520 100" fill="none" stroke="#0369a1" stroke-width="5"/>
+<path d="M520 100 Q 660 220 880 520" fill="none" stroke="#c2410c" stroke-width="5"/>
+<circle cx="520" cy="100" r="9" fill="currentColor"/>
+<text x="286" y="330" font-size="27" font-weight="800" fill="#0369a1" text-anchor="end">LIQUID</text>
+<text x="548" y="372" font-size="26" font-weight="800" fill="currentColor" opacity="0.5" text-anchor="middle">BOILING</text>
+<text x="898" y="330" font-size="27" font-weight="800" fill="#c2410c">VAPOUR</text>
+<path d="M400 220 H930" stroke="currentColor" stroke-width="6"/>
+<path d="M880 440 H400" stroke="currentColor" stroke-width="6"/>
+<path d="M880 440 L930 220" stroke="currentColor" stroke-width="6"/>
+<path d="M400 220 V440" stroke="currentColor" stroke-width="6" stroke-dasharray="11 8"/>
+<path d="M400 220 H476" stroke="#0369a1" stroke-width="14"/>
+<path d="M806 440 H880" stroke="#c2410c" stroke-width="14"/>
+<path d="M400 196 V170 H476 V196" fill="none" stroke="#0369a1" stroke-width="3"/>
+<text x="438" y="152" font-size="28" font-weight="800" fill="#0369a1" text-anchor="middle">SUBCOOLING</text>
+<path d="M806 464 V492 H880 V464" fill="none" stroke="#c2410c" stroke-width="3"/>
+<text x="843" y="528" font-size="28" font-weight="800" fill="#c2410c" text-anchor="middle">SUPERHEAT</text>
+<circle cx="880" cy="440" r="11" fill="#c2410c"/>
+<circle cx="930" cy="220" r="11" fill="currentColor"/>
+<circle cx="476" cy="220" r="11" fill="#0369a1"/>
+<circle cx="400" cy="220" r="11" fill="#0369a1"/>
+<circle cx="400" cy="440" r="11" fill="currentColor"/>
+<text x="640" y="204" font-size="26" font-weight="800" fill="currentColor" opacity="0.65" text-anchor="middle">CONDENSER</text>
+<text x="640" y="424" font-size="26" font-weight="800" fill="currentColor" opacity="0.65" text-anchor="middle">EVAPORATOR</text>
+<text x="958" y="330" font-size="26" font-weight="800" fill="currentColor" opacity="0.65" text-anchor="middle" transform="rotate(-78 958 330)">COMPRESSOR</text>
+<text x="374" y="330" font-size="26" font-weight="800" fill="currentColor" opacity="0.65" text-anchor="middle" transform="rotate(-90 374 330)">VALVE</text>
+<path d="M150 560 H960 M150 560 V80" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<text x="555" y="612" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle">HEAT CONTENT PER KILOGRAM</text>
+<text x="112" y="330" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 112 330)">PRESSURE</text>
+</svg>
+<figcaption><strong>Both numbers are the parts of the cycle that stick out of the dome.</strong> Inside the dome the refrigerant is changing state and its temperature is pinned to its pressure, so a thermometer there is only a worse pressure gauge. Outside it the two move independently, and the gap between what the clamp says and what the gauge implies is the measurement. These are the only two places on the circuit where a temperature carries information a gauge does not already have.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The reason a thermometer tells you anything at all</span><p>Inside the dome, temperature and pressure are not independent, so a clamp there is a second, worse pressure gauge. Outside it they are, and the gap between what the thermometer says and what the gauge implies is the measurement. Superheat and subcooling are not arbitrary conventions; they are the only two places on the circuit where a temperature carries information a gauge does not already have.</p></div>
+<h3>Where the pair genuinely fails</h3>
+<p>A fault moving both in the same direction, such as a severely fouled condenser in high ambient, produces a signature overlapping with overcharge, and it has to be resolved by a third observation.</p>
+<figure class="fig-photo">
+<img src="https://images.unsplash.com/photo-1698479603408-1a66a6d9e80f?w=1400&amp;q=72&amp;fm=jpg&amp;fit=crop" alt="A rooftop bank of condenser units with fans, casings and refrigerant pipework" loading="lazy"/>
+<figcaption><strong>Where subcooling is won and lost.</strong> Every unit on this roof rejects heat into air that the unit beside it has already warmed. Approach temperature, and therefore subcooling, is a property of this installation as much as of the charge in any one machine &#8212; which is why a reading that looks wrong here can be entirely correct for the circumstances.</figcaption>
+</figure>
+<h3>Adopt approach temperature as that third coordinate</h3>
+<p>Condenser approach, the difference between saturated condensing temperature and the air entering the coil, isolates heat rejection capability from the charge question entirely, because it is a function of surface area, airflow and fouling rather than of mass. It converts several ambiguous two-coordinate signatures into unambiguous three-coordinate ones for the cost of one air temperature reading.</p>
+<table>
+<tr><th>Approach</th><th>Reading</th><th>Means</th></tr>
+<tr><td class="num">8 to 14 K</td><td>Normal</td><td>The condenser is rejecting heat as designed</td></tr>
+<tr><td class="num">Over 20 K</td><td>Poor rejection</td><td>Fouled coil, failed fan, or recirculating its own discharge</td></tr>
+<tr><td class="num">Under 6 K</td><td>Suspiciously good</td><td>Low load, or the compressor is not pumping</td></tr>
+</table>
+<h3>Why charging by pressure cannot be defended</h3>
+<p>Pressure is a function of load and ambient as well as of charge, so the same system reads differently at nine in the morning and at three in the afternoon with nothing wrong. Weighed-in charging to the manufacturer's figure, after a proper evacuation, is the only method that is correct independently of the conditions on the day. Superheat and subcooling then confirm rather than determine.</p>
+<div class="warning"><span class="callout-label">The error budget at these magnitudes</span><p>A pressure reading off by half a bar shifts the derived saturation temperature by two to three kelvin. On a five to ten kelvin band that is most of it. An analogue gauge and an uninsulated probe can comfortably generate four kelvin between them, which is why a calibrated digital manifold is not an indulgence on this measurement.</p></div>`,
+      Expert: `<p>Formally the pair maps a fault space onto a two-dimensional observation space, and it works because the mapping is close to injective for common single faults. It degrades predictably wherever two faults coexist, because the observation is the superposition and the inverse is no longer unique.</p>
+<div class="warning"><span class="callout-label">The canonical trap</span><p>A restricted drier on an undercharged system. The resolution is not a cleverer reading of the pair but an independent measurement, typically the temperature drop across the drier itself, which is a property of that component and of nothing else.</p></div>
+<h3>Glide makes the measurement wrong before it is taken</h3>
+<p>A zeotropic blend does not evaporate at a single temperature. It begins at the bubble point and finishes at the dew point, and saturated vapour therefore leaves the coil at the higher of the two.</p>
+<figure>
+<svg viewBox="0 0 1000 580" role="img" aria-label="Temperature profile through an evaporator on a zeotropic blend showing glide and the error from using the bubble point">
+<path d="M190 460 H960 M190 460 V60" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<rect x="210" y="300" width="500" height="60" fill="#b45309" opacity="0.14"/>
+<path d="M190 360 H960" stroke="#0369a1" stroke-width="3" stroke-dasharray="9 7"/>
+<path d="M190 300 H960" stroke="#0f766e" stroke-width="3" stroke-dasharray="9 7"/>
+<text x="182" y="370" font-size="26" font-weight="800" fill="#0369a1" text-anchor="end">BUBBLE</text>
+<text x="182" y="310" font-size="26" font-weight="800" fill="#0f766e" text-anchor="end">DEW</text>
+<path d="M210 360 L710 300 L890 196" fill="none" stroke="#c2410c" stroke-width="8" stroke-linecap="round"/>
+<circle cx="210" cy="360" r="10" fill="#0369a1"/>
+<circle cx="710" cy="300" r="10" fill="#0f766e"/>
+<circle cx="890" cy="196" r="10" fill="#c2410c"/>
+<text x="228" y="278" font-size="26" font-weight="800" fill="#b45309">GLIDE &#183; boiling, and warming</text>
+<path d="M752 300 V196" stroke="#0f766e" stroke-width="5"/>
+<path d="M742 297 h20 M742 199 h20" stroke="#0f766e" stroke-width="5"/>
+<text x="776" y="238" font-size="28" font-weight="800" fill="#0f766e">TRUE 6 K</text>
+<text x="776" y="270" font-size="26" fill="currentColor" opacity="0.75">from the dew point</text>
+<path d="M934 360 V196" stroke="#be123c" stroke-width="5"/>
+<path d="M924 357 h20 M924 199 h20" stroke="#be123c" stroke-width="5"/>
+<text x="908" y="126" font-size="28" font-weight="800" fill="#be123c" text-anchor="end">READS 13 K</text>
+<text x="908" y="158" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">from the bubble point</text>
+<text x="210" y="502" font-size="26" font-weight="800" fill="currentColor" opacity="0.55">COIL INLET</text>
+<text x="950" y="502" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">SUCTION LINE</text>
+<text x="112" y="270" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 112 270)">TEMPERATURE</text>
+</svg>
+<figcaption><strong>A blend does not boil at one temperature, and on R-407C that is a seven kelvin trap.</strong> Reading the bubble point column of the chart instead of the dew point column adds the whole glide to every superheat figure you calculate. The system looks starved, refrigerant goes in, and the fault was the column.</figcaption>
+</figure>
+<p>So superheat referenced to the bubble point reads high by the whole glide on every reading, which on R-407C is around seven kelvin. A technician who has taken the wrong column off the chart sees an apparently starved evaporator across an entire fleet, adds refrigerant to correctly charged systems, and concludes the equipment has a design fault. Subcooling carries the mirror-image error: liquid leaves the condenser at the bubble point, so referencing it to the dew point overstates subcooling by the same amount.</p>
+<div class="key-idea"><span class="callout-label">Systematic error is more dangerous than noisy error</span><p>A random error shows up as scatter and invites a second reading. A systematic one is repeatable, and repeatability is what people use as evidence of correctness. The fleet-wide version of this mistake has been published more than once as an equipment problem.</p></div>
+<h3>Instrument error, treated properly</h3>
+<p>Both quantities are differences of two measurements, so their uncertainties add. A gauge accurate to one per cent of full scale at the top of its range is not accurate to one per cent at the suction pressure of a running split, and a surface probe adds a contact error that is a function of how well somebody strapped it on. Quoting a superheat to one decimal place from an analogue set is reporting precision the measurement does not have, and it drives decisions it cannot support.</p>
+<div class="field"><span class="callout-label">The economic case, for the customer conversation</span><p>Field studies consistently find a substantial fraction of installed splits running outside their intended charge band, with capacity and efficiency penalties in the tens of per cent at the extremes. The dominant cause is charge adjustment by pressure on the day. A visit that measures superheat, subcooling and approach, then weighs the charge in, costs perhaps thirty minutes more and removes the mechanism that produced the problem rather than resetting it until next season.</p></div>`,
     },
     worksheets: [
       {
