@@ -118,6 +118,10 @@ export function PracticalShell({
 
   return (
     <Box
+      // Anchor for the narrated tour. Without it the tour cannot stop on a
+      // practical, and the practicals are the part of this catalogue a
+      // prospect has not seen in any other LMS.
+      data-tour-id="practical-body"
       sx={{
         maxWidth: 1180,
         mx: "auto",
