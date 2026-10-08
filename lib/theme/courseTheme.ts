@@ -77,3 +77,23 @@ export function accentWash(theme?: Partial<CourseTheme> | null, pct = 7): string
   const { accent } = courseTheme(theme);
   return `color-mix(in srgb, ${accent[0]} ${pct}%, transparent)`;
 }
+
+/**
+ * The radial-mesh backdrop, in the course's colours.
+ *
+ * The adaptive module has a signature indigo-purple-pink mesh, which is right
+ * for a surface belonging to the module and wrong for one belonging to a
+ * course: it left the article reader the same pink wash for accounting and for
+ * refrigeration even after its badge had been themed. Same three blooms in the
+ * same three positions, so the shape of the module's identity survives while
+ * the colour follows the course.
+ */
+export function courseMesh(theme?: Partial<CourseTheme> | null): string[] {
+  const { accent } = courseTheme(theme);
+  const mid = `color-mix(in srgb, ${accent[0]} 50%, ${accent[1]})`;
+  return [
+    `radial-gradient(circle at 8% 0%, color-mix(in srgb, ${accent[0]} 22%, transparent) 0%, transparent 55%)`,
+    `radial-gradient(circle at 95% 5%, color-mix(in srgb, ${accent[1]} 18%, transparent) 0%, transparent 55%)`,
+    `radial-gradient(circle at 50% 110%, color-mix(in srgb, ${mid} 22%, transparent) 0%, transparent 60%)`,
+  ];
+}

@@ -14,6 +14,7 @@ import { AIBeacon } from "@/components/adaptive-quiz/shared/AIBeacon";
 import { AIPill } from "@/components/adaptive-quiz/shared/AIPill";
 import { AdaptiveArticleBody, type ArticleHeading } from "@/components/adaptive-quiz/article/AdaptiveArticleBody";
 import { useArticleNarration } from "@/lib/hooks/useArticleNarration";
+import { courseMesh, courseTheme } from "@/lib/theme/courseTheme";
 import {
   adaptiveCourseService,
   READING_TIERS,
@@ -68,6 +69,8 @@ export default function AdaptiveArticleReaderPage() {
   const completedRef = useRef(false);
   // Professional onyx narration (replaces robotic browser speechSynthesis).
   const narration = useArticleNarration(html);
+  // Falls back to the platform violet when the payload has no theme.
+  const theme = useMemo(() => courseTheme(article?.course_theme), [article?.course_theme]);
 
   useEffect(() => {
     if (!Number.isFinite(articleId)) return;
@@ -211,7 +214,7 @@ export default function AdaptiveArticleReaderPage() {
           Back to submodule
         </ButtonBase>
 
-        <AdaptiveSectionShell>
+        <AdaptiveSectionShell radialMesh={courseMesh(theme)}>
           {loading && <Typography sx={{ color: "text.secondary", textAlign: "center", py: 6 }}>Loading…</Typography>}
           {error && <Typography sx={{ color: "#ef4444", fontWeight: 700, textAlign: "center", py: 4 }}>{error}</Typography>}
 
@@ -222,13 +225,15 @@ export default function AdaptiveArticleReaderPage() {
                 title={article.title}
                 subtitle={article.summary}
                 icon="mdi:book-open-variant"
-                accent="purple"
+                // The course's own colour rather than the module's violet.
+                // This is the surface a learner spends the most time on.
+                tone={{ top: theme.accent[0], bottom: theme.accent[1] }}
               />
 
               {/* Reading level strip */}
               <Box sx={{ borderRadius: 4, p: { xs: 2, md: 2.5 }, mb: 2.5,
-                background: "linear-gradient(120deg, color-mix(in srgb, #6366f1 10%, var(--card-bg)) 0%, color-mix(in srgb, #ec4899 8%, var(--card-bg)) 100%)",
-                border: "1px solid color-mix(in srgb, #a855f7 20%, transparent)",
+                background: `linear-gradient(120deg, color-mix(in srgb, ${theme.accent[0]} 11%, var(--card-bg)) 0%, color-mix(in srgb, ${theme.accent[1]} 9%, var(--card-bg)) 100%)`,
+                border: `1px solid color-mix(in srgb, ${theme.accent[0]} 22%, transparent)`,
                 display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2, flexWrap: "wrap" }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0 }}>
                   <AIBeacon size={34} />

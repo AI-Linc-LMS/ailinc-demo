@@ -204,6 +204,9 @@ defineRoutes(MODULE, {
       concepts: body.concepts,
       glossary: body.glossary,
       explain_terms: Object.keys(body.glossary),
+      // The reader is the surface a learner spends the most time on, so it is
+      // the last place that should still be the platform violet.
+      course_theme: { accent: found.course.accent, icon: found.course.icon },
     };
   },
 

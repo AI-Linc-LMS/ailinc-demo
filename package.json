@@ -25,7 +25,8 @@
     "predev": "node scripts/copy-monaco.mjs",
     "check:practicals": "node scripts/check-practicals-render.mjs && node scripts/check-practicals-marking.mjs",
     "check:vocational": "node scripts/check-vocational-courses.mjs",
-    "check:live": "node scripts/check-live-deploy.mjs"
+    "check:live": "node scripts/check-live-deploy.mjs",
+    "check:mobile": "node scripts/check-mobile-practicals.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",

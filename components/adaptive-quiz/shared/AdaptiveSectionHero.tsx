@@ -9,6 +9,15 @@ interface AdaptiveSectionHeroProps {
   title: string;
   subtitle?: string;
   accent?: AdaptiveAccent;
+  /**
+   * Explicit colours, overriding `accent`.
+   *
+   * The named accents are the module's own palette, which is right for a
+   * surface that belongs to the module. A course-scoped surface belongs to its
+   * course, and its colour is authored with the course rather than chosen from
+   * a list of five.
+   */
+  tone?: { top: string; bottom: string };
   /** Iconify name shown in the gradient badge - pick something from MDI. */
   icon?: string;
   rightSlot?: ReactNode;
@@ -26,8 +35,9 @@ export function AdaptiveSectionHero({
   accent = "purple",
   icon = "mdi:robot-happy-outline",
   rightSlot,
+  tone: toneOverride,
 }: AdaptiveSectionHeroProps) {
-  const tone = ADAPTIVE_ACCENTS[accent];
+  const tone = toneOverride ?? ADAPTIVE_ACCENTS[accent];
   return (
     <SectionHero
       chapter={chapter}

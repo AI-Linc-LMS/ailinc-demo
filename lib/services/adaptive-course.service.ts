@@ -52,6 +52,8 @@ export interface AdaptiveArticleDetail {
   concepts: string[];
   glossary: Record<string, string>;
   explain_terms: string[];
+  /** The parent course's colour and motif. See lib/theme/courseTheme.ts. */
+  course_theme?: { accent: [string, string]; icon: string };
 }
 
 export interface ArticleTierResult {

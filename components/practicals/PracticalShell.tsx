@@ -127,8 +127,9 @@ export function PracticalShell({
         mx: "auto",
         px: { xs: 2, md: 3 },
         py: { xs: 2.5, md: 3.5 },
-        // Clearance for the sticky footer, or the last row of a sheet sits under it.
-        pb: footer ? { xs: 14, md: 13 } : { xs: 4, md: 6 },
+        // Clearance for the sticky footer, plus the bottom navigation beneath
+        // it on a phone, or the last row of a sheet sits under both.
+        pb: footer ? { xs: 22, md: 13 } : { xs: 12, md: 6 },
       }}
     >
       <Box
@@ -228,7 +229,17 @@ export function PracticalShell({
             position: "fixed",
             left: 0,
             right: 0,
-            bottom: 0,
+            /**
+             * Clear of the app's bottom navigation on a phone.
+             *
+             * That nav is `position: fixed; bottom: 0` at 64px plus its border,
+             * shown only below md, and this bar is z-index 1200 against its
+             * 1000. Sitting at bottom: 0 covered all six navigation items on
+             * every practical page on a phone, which is most of this audience:
+             * a technician filling in a procedure is standing next to the
+             * unit, not at a desk.
+             */
+            bottom: { xs: "65px", md: 0 },
             zIndex: 1200,
             px: { xs: 1.5, md: 3 },
             py: { xs: 1.25, md: 1.5 },
