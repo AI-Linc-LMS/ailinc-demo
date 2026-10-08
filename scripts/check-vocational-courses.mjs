@@ -18,10 +18,51 @@ const SEG = {
 // topic id ranges per course, from the seed order
 const COURSES = { 206: [5070, 5081], 207: [5082, 5093], 208: [5094, 5105], 209: [5106, 5117] };
 
+
+/**
+ * Navigate, tolerating a slow first compile.
+ *
+ * Next compiles a route on its first request in dev, and after a code change
+ * that can exceed Playwright's 30 second default on a cold route. A timeout
+ * there is a property of the dev server rather than of the page, so retry once
+ * with a longer budget before calling it broken. A genuinely broken page still
+ * fails, on its content rather than on its clock.
+ */
+async function goto(page, url) {
+  for (const timeout of [45000, 90000]) {
+    try {
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout });
+      return;
+    } catch (e) {
+      if (timeout === 90000) throw e;
+    }
+  }
+}
+
+/**
+ * Wait for the page to stop loading rather than sleeping a fixed interval.
+ *
+ * Every player shows a placeholder while it fetches ("Loading the brief…",
+ * "Warming up the voice…"). A fixed wait is a race against however long the
+ * dev server took to compile that route, and losing it reports a healthy page
+ * as broken on its content. Poll for the placeholder to clear instead.
+ */
+const LOADING = /Loading the|Warming up|Opening the|Setting the scene|Shuffling|Drawing the|Loading …|Loading\.\.\./i;
+
+async function settle(page, budgetMs = 15000) {
+  const until = Date.now() + budgetMs;
+  for (;;) {
+    const text = await page.evaluate(() => document.body.innerText).catch(() => "");
+    if (text.length > 300 && !LOADING.test(text)) return text;
+    if (Date.now() > until) return text;
+    await page.waitForTimeout(400);
+  }
+}
+
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
 const page = await ctx.newPage();
-await page.goto(`${BASE}/login`, { waitUntil: "domcontentloaded" });
+await goto(page, `${BASE}/login`);
 await page.waitForTimeout(2000);
 await page.getByRole("button", { name: /^Student/ }).click();
 await page.waitForTimeout(4500);
@@ -32,18 +73,16 @@ const fail = (what, why, head) => { broken++; console.log(`FAIL ${what}\n     ${
 
 for (const [cid, [lo, hi]] of Object.entries(COURSES)) {
   // course overview must render
-  await page.goto(`${BASE}/adaptive-courses/${cid}`, { waitUntil: "domcontentloaded" });
-  await page.waitForTimeout(2200);
-  let t = await page.evaluate(() => document.body.innerText);
+  await goto(page, `${BASE}/adaptive-courses/${cid}`);
+  let t = await settle(page);
   checked++;
   if (/Something went wrong|could not be found/i.test(t) || t.length < 1200)
     fail(`course ${cid} overview`, "did not render", t.slice(0, 160).replace(/\n+/g, " | "));
 
   for (let topic = lo; topic <= hi; topic++) {
     // lesson page: reveals which practicals exist
-    await page.goto(`${BASE}/adaptive-courses/${cid}/submodule/${topic}`, { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(1600);
-    t = await page.evaluate(() => document.body.innerText);
+    await goto(page, `${BASE}/adaptive-courses/${cid}/submodule/${topic}`);
+    t = await settle(page);
     checked++;
     if (/Something went wrong|could not be found/i.test(t))
       fail(`lesson ${cid}/${topic}`, "errored", t.slice(0, 160).replace(/\n+/g, " | "));
@@ -54,9 +93,8 @@ for (const [cid, [lo, hi]] of Object.entries(COURSES)) {
         lab: "PROCEDURE", deck: "RECALL", speaking: "SPEAKING", partid: "PARTS", deliverable: "DELIVERABLE" }[kind];
       if (!t.includes(label)) continue;
       const url = `${BASE}/adaptive-courses/${cid}/submodule/${topic}/${SEG[kind]}/${base + topic}`;
-      await page.goto(url, { waitUntil: "domcontentloaded" });
-      await page.waitForTimeout(1700);
-      const body = await page.evaluate(() => document.body.innerText);
+      await goto(page, url);
+      const body = await settle(page);
       checked++;
       if (/Something went wrong|could not be found|not found/i.test(body) || body.length < 420)
         fail(`${kind} ${cid}/${topic}`, `len ${body.length}`, body.slice(0, 200).replace(/\n+/g, " | "));
