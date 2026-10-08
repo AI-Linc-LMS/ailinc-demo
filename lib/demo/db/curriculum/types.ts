@@ -167,6 +167,16 @@ export interface WorksheetRow {
   /**
    * "entry" is a normal line, "subtotal" and "total" are ruled off and shown
    * bold, which is how an accounting working paper is actually read.
+   *
+   * IMPORTANT, and the source of two authoring bugs already: this field is not
+   * only presentation. A "subtotal" or "total" row is EXCLUDED from every
+   * column sum, because a column that included its own total would double it.
+   * So a balancing figure is not one of them. A balance carried down, a gross
+   * profit carried down and a net profit are all LINES IN the column, and they
+   * are precisely what makes the two sides rule off to the same number.
+   * Marking one as a subtotal removes it from the sum and the sheet then
+   * declares its own answer key unbalanced. Only a row that restates a figure
+   * already present in the column below it belongs here.
    */
   kind?: "entry" | "subtotal" | "total";
 }
