@@ -1004,23 +1004,183 @@ const curriculum: CourseCurriculum = {
       "Over-propping": "Fitting a propeller that loads the motor beyond what the system can supply, which overheats everything.",
     },
     body: {
-      Beginner: `<p>Motor, ESC and propeller have to be chosen as a set. The propeller decides how hard the motor has to work, the motor decides how much current it pulls, and the ESC has to be able to pass that current without cooking.</p>
-<p><strong>Kv</strong> is the motor's speed constant: revolutions per volt with nothing attached. High Kv means it wants to spin fast, so it suits a small propeller and a lower cell count. Low Kv wants to turn a bigger propeller more slowly on a higher cell count.</p>
-<p><strong>Prop numbers</strong> like 5x4.3x3 mean five inch diameter, 4.3 inch pitch, three blades. Bigger diameter, more pitch and more blades all mean more thrust and more current.</p>
-<p>The mistake to avoid is <strong>over-propping</strong>: fitting too much propeller for the motor and the ESC. It feels powerful for about thirty seconds and then the motors are too hot to touch and the ESCs start failing. Hot motors after a flight is the warning.</p>
-<p>Leave headroom on the ESC. If the combination pulls 35 amps at full throttle, a 35 amp ESC is not enough. Use the manufacturer's test data, find the peak current, and give yourself a real margin above it.</p>`,
-      Intermediate: `<p>These three components form a system and the published test data is what ties them together. A motor manufacturer tests each motor with a range of propellers on a range of cell counts and publishes thrust and current for each combination. That table is the design document, and choosing components without consulting it is guessing.</p>
-<p>Kv and cell count trade off directly, because the motor's unloaded speed is Kv multiplied by voltage. The same airframe can be built with a high Kv motor on 4S or a lower Kv motor on 6S and reach similar speeds, but the current differs: higher voltage at lower current is more efficient, because resistive losses go with the square of current. That is the engineering reason the hobby migrated from 4S to 6S.</p>
-<p>Propeller choice loads the motor. More diameter, more pitch or more blades each increase the torque required and therefore the current drawn at a given throttle. Over-propping is the failure mode: the system produces impressive thrust briefly and then overheats, because the loss is dissipated in the motor windings and the ESC MOSFETs.</p>
-<p>ESC selection should be based on the peak current from the test data with real headroom above it, and on the continuous rating rather than the burst rating. A burst rating describes a few seconds, and a quad at full throttle for a few seconds is a normal thing to do, not an exceptional one.</p>`,
-      Advanced: `<p>The motor's torque constant is the reciprocal of Kv in consistent units, so a low Kv motor produces more torque per amp. That is the physically meaningful statement, and it explains why low Kv suits large propellers: a large prop presents more torque load, and a motor with a higher torque constant supplies it at lower current. Kv is therefore a proxy for a torque constant, and treating it as a power rating leads directly to mismatched builds.</p>
-<p>Stator volume is the better first-order predictor of a motor's capability, since torque scales with the air gap area and the stator dimensions determine it. A 2207 and a 2306 have similar volumes and comparable capability despite different aspect ratios, with the taller narrower stator favouring torque and the shorter wider one favouring rotational speed. Comparing motors by Kv alone, across different stator sizes, is comparing nothing useful.</p>
-<p>Thermal limits rather than electrical ones usually bound these systems. Copper losses rise with the square of current and the heat has to leave through a small aluminium bell with limited airflow, so the practical constraint is the duty cycle rather than the instantaneous peak. A combination that is fine for a racing lap can cook on a long full-throttle climb, which is why the test data's current figures need interpreting alongside how the aircraft will be flown.</p>
-<p>ESC failure in these builds is predominantly thermal or desync related rather than a manufacturing problem. Desync is more likely with high Kv motors and aggressive timing, and it presents as a sudden loss of thrust on one arm with a distinctive sound. Diagnosing it requires the RPM telemetry that only bidirectional digital protocols provide, which is a practical argument for choosing those ESCs over cheaper analogue ones.</p>`,
-      Expert: `<p>The motor can be modelled adequately for design purposes as a back-EMF constant and a winding resistance, with torque proportional to current through the torque constant and back-EMF proportional to speed through its reciprocal. Efficiency peaks well below the maximum current, typically at a small fraction of stall torque, and the practical consequence is that a motor operated near its thermal limit is operating far from its efficiency peak. Designing for peak thrust and designing for endurance therefore pull in opposite directions through the same parameter.</p>
-<p>Propeller performance at these scales sits in a low Reynolds number regime, roughly tens of thousands, where laminar separation dominates and the aerofoil sections behave poorly relative to their full-scale counterparts. This is why small propeller figures of merit are low, why blade count beyond three gives diminishing returns through interference, and why pitch distribution matters more than the single pitch number printed on the hub.</p>
-<p>The system optimisation problem is genuinely multi-objective and the usual framing obscures it. Thrust, efficiency, thermal margin, responsiveness and noise are not simultaneously maximisable, and the hobby's preference for high Kv on small props optimises responsiveness at a substantial cost in efficiency, which is a legitimate choice for freestyle and an indefensible one for a survey aircraft. Making the objective explicit before choosing components is the actual engineering step, and it is the one usually skipped.</p>
-<p>On ESC design, the migration to digital protocols and bidirectional telemetry changed the diagnostic landscape more than the control landscape. RPM feedback enables the dynamic notch filtering that produced most of the last decade's improvement in flight quality, and it does so by letting the filter track the dominant noise source narrowly rather than attenuating a wide band. The phase cost of a narrow tracking notch is far lower than that of a broad low-pass, which is why the same airframe flies measurably better on the same gains.</p>`,
+      Beginner: `<p>The motor, the propeller and the battery have to be chosen as a set. Get one wrong and the others cannot compensate.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="How motor KV, cell count and propeller size have to be chosen together">
+<rect x="24" y="40" width="300" height="150" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="174" y="92" font-size="32" font-weight="800" fill="#7c3aed" text-anchor="middle">CELL COUNT</text>
+<text x="174" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">6S</text>
+<text x="174" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">sets the voltage</text>
+<path d="M330 115 H372" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M384 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="392" y="40" width="300" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="542" y="92" font-size="32" font-weight="800" fill="#0369a1" text-anchor="middle">MOTOR KV</text>
+<text x="542" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">1700 KV</text>
+<text x="542" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">lower, for 6S</text>
+<path d="M698 115 H740" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M752 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="760" y="40" width="216" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="868" y="92" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">PROP</text>
+<text x="868" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">5 inch</text>
+<text x="868" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">the load</text>
+<rect x="24" y="226" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="276" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">Raise any one of the three and current goes up.</text>
+<text x="500" y="320" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">High KV on a high cell count with a big prop is how</text>
+<text x="500" y="350" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">people melt a speed controller on the first flight.</text>
+<rect x="24" y="390" width="464" height="130" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="436" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">6S with 1700 KV</text>
+<text x="256" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">lower current, cooler,</text>
+<text x="256" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">thinner wiring</text>
+<rect x="512" y="390" width="464" height="130" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="744" y="436" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">4S with 2400 KV</text>
+<text x="744" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">similar speed, much</text>
+<text x="744" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">more current</text>
+</svg>
+<figcaption><strong>These three are one decision, not three.</strong> Roughly the same propeller speed can be reached from a high voltage with a low KV motor or a low voltage with a high KV motor, and the two routes draw very different currents for the same thrust. That is the whole reason the hobby moved to six cell packs.</figcaption>
+</figure>
+<h3>What the numbers mean</h3>
+<table>
+<tr><th>Marking</th><th>Means</th></tr>
+<tr><td>2207</td><td>Motor size: 22 mm wide, 7 mm tall</td></tr>
+<tr><td>1700 KV</td><td>Revolutions per volt, with no propeller on</td></tr>
+<tr><td>5 inch</td><td>Propeller diameter</td></tr>
+<tr><td>45 A</td><td>What the speed controller can pass</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Bigger propeller, more current</span><p>A larger or more aggressive propeller is harder work for the same motor, so it pulls more current. That current has to pass through the speed controller, so changing a propeller can overload a part you did not touch.</p></div>
+<div class="warning"><span class="callout-label">Match KV to the battery, not to ambition</span><p>A high KV motor on a high cell count spins beyond what the propeller can take and draws current that melts things. Low KV with more cells is the modern answer.</p></div>`,
+      Intermediate: `<p>Current is the thing all three choices move, and it is what actually fails. Thrust is pleasant to talk about; amperes are what burns components.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="How motor KV, cell count and propeller size have to be chosen together">
+<rect x="24" y="40" width="300" height="150" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="174" y="92" font-size="32" font-weight="800" fill="#7c3aed" text-anchor="middle">CELL COUNT</text>
+<text x="174" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">6S</text>
+<text x="174" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">sets the voltage</text>
+<path d="M330 115 H372" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M384 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="392" y="40" width="300" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="542" y="92" font-size="32" font-weight="800" fill="#0369a1" text-anchor="middle">MOTOR KV</text>
+<text x="542" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">1700 KV</text>
+<text x="542" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">lower, for 6S</text>
+<path d="M698 115 H740" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M752 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="760" y="40" width="216" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="868" y="92" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">PROP</text>
+<text x="868" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">5 inch</text>
+<text x="868" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">the load</text>
+<rect x="24" y="226" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="276" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">Raise any one of the three and current goes up.</text>
+<text x="500" y="320" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">High KV on a high cell count with a big prop is how</text>
+<text x="500" y="350" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">people melt a speed controller on the first flight.</text>
+<rect x="24" y="390" width="464" height="130" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="436" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">6S with 1700 KV</text>
+<text x="256" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">lower current, cooler,</text>
+<text x="256" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">thinner wiring</text>
+<rect x="512" y="390" width="464" height="130" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="744" y="436" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">4S with 2400 KV</text>
+<text x="744" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">similar speed, much</text>
+<text x="744" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">more current</text>
+</svg>
+<figcaption><strong>These three are one decision, not three.</strong> Roughly the same propeller speed can be reached from a high voltage with a low KV motor or a low voltage with a high KV motor, and the two routes draw very different currents for the same thrust. That is the whole reason the hobby moved to six cell packs.</figcaption>
+</figure>
+<h3>Picking a speed controller</h3>
+<p>Take the peak current the motor draws on your chosen propeller and cell count from the manufacturer's table, then add real headroom. A 45 A controller on a motor peaking at 40 A has almost none, and the peak in the table is a bench figure in free air.</p>
+<table>
+<tr><th>Peak motor current</th><th>Sensible controller</th></tr>
+<tr><td class="num">30 A</td><td class="num">45 A</td></tr>
+<tr><td class="num">40 A</td><td class="num">60 A</td></tr>
+<tr><td class="num">55 A</td><td class="num">80 A</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Why six cells won</span><p>The same power at a higher voltage is a lower current. Lower current means less heat in the controllers, thinner wiring and less voltage lost in the leads. Nothing about the aircraft got better except the arithmetic, and that was enough.</p></div>
+<div class="warning"><span class="callout-label">Propeller pitch is the hidden variable</span><p>Two 5 inch propellers can differ enormously in how hard they work the motor. Pitch and blade count both raise current, and swapping a two blade for a three blade of the same diameter is not a cosmetic change.</p></div>`,
+      Advanced: `<p>The relationships are not linear, which is why intuition built on one build transfers badly to the next.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="How motor KV, cell count and propeller size have to be chosen together">
+<rect x="24" y="40" width="300" height="150" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="174" y="92" font-size="32" font-weight="800" fill="#7c3aed" text-anchor="middle">CELL COUNT</text>
+<text x="174" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">6S</text>
+<text x="174" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">sets the voltage</text>
+<path d="M330 115 H372" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M384 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="392" y="40" width="300" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="542" y="92" font-size="32" font-weight="800" fill="#0369a1" text-anchor="middle">MOTOR KV</text>
+<text x="542" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">1700 KV</text>
+<text x="542" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">lower, for 6S</text>
+<path d="M698 115 H740" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M752 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="760" y="40" width="216" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="868" y="92" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">PROP</text>
+<text x="868" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">5 inch</text>
+<text x="868" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">the load</text>
+<rect x="24" y="226" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="276" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">Raise any one of the three and current goes up.</text>
+<text x="500" y="320" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">High KV on a high cell count with a big prop is how</text>
+<text x="500" y="350" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">people melt a speed controller on the first flight.</text>
+<rect x="24" y="390" width="464" height="130" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="436" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">6S with 1700 KV</text>
+<text x="256" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">lower current, cooler,</text>
+<text x="256" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">thinner wiring</text>
+<rect x="512" y="390" width="464" height="130" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="744" y="436" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">4S with 2400 KV</text>
+<text x="744" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">similar speed, much</text>
+<text x="744" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">more current</text>
+</svg>
+<figcaption><strong>These three are one decision, not three.</strong> Roughly the same propeller speed can be reached from a high voltage with a low KV motor or a low voltage with a high KV motor, and the two routes draw very different currents for the same thrust. That is the whole reason the hobby moved to six cell packs.</figcaption>
+</figure>
+<table>
+<tr><th>Change</th><th>Effect on thrust</th><th>Effect on current</th></tr>
+<tr><td>Prop diameter up</td><td>Rises sharply</td><td>Rises very sharply</td></tr>
+<tr><td>Pitch up</td><td>More speed, less static thrust</td><td>Rises</td></tr>
+<tr><td>Cell count up</td><td>Rises</td><td>Rises, at a lower amperage for the same power</td></tr>
+<tr><td>KV up</td><td>Rises</td><td>Rises sharply</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Efficiency lives in the propeller, not the motor</span><p>Motors are mostly similar in efficiency within a class. Moving a large mass of air slowly is more efficient than a small mass quickly, so endurance builds use the largest propeller the frame allows at the lowest practical speed. A racer deliberately does the opposite and pays for it in flight time.</p></div>
+<h3>Thermal limits are the real ceiling</h3>
+<p>A speed controller rated 45 A continuous means 45 A with airflow at a sensible ambient. Mounted under a battery tray with no airflow in forty degree heat, its real limit is lower, and nothing on the label says so. Touching the controllers after a flight is a crude but genuinely informative test.</p>`,
+      Expert: `<p>Electrically a brushless motor driven by a speed controller behaves close to a DC machine, which is why the simple relationships hold well enough to design with: speed tracks applied voltage, torque tracks current, and KV is the constant tying them together.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="How motor KV, cell count and propeller size have to be chosen together">
+<rect x="24" y="40" width="300" height="150" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="174" y="92" font-size="32" font-weight="800" fill="#7c3aed" text-anchor="middle">CELL COUNT</text>
+<text x="174" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">6S</text>
+<text x="174" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">sets the voltage</text>
+<path d="M330 115 H372" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M384 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="392" y="40" width="300" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="542" y="92" font-size="32" font-weight="800" fill="#0369a1" text-anchor="middle">MOTOR KV</text>
+<text x="542" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">1700 KV</text>
+<text x="542" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">lower, for 6S</text>
+<path d="M698 115 H740" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M752 115 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="760" y="40" width="216" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="868" y="92" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">PROP</text>
+<text x="868" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">5 inch</text>
+<text x="868" y="176" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">the load</text>
+<rect x="24" y="226" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="276" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">Raise any one of the three and current goes up.</text>
+<text x="500" y="320" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">High KV on a high cell count with a big prop is how</text>
+<text x="500" y="350" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">people melt a speed controller on the first flight.</text>
+<rect x="24" y="390" width="464" height="130" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="436" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">6S with 1700 KV</text>
+<text x="256" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">lower current, cooler,</text>
+<text x="256" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">thinner wiring</text>
+<rect x="512" y="390" width="464" height="130" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="744" y="436" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">4S with 2400 KV</text>
+<text x="744" y="478" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">similar speed, much</text>
+<text x="744" y="508" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">more current</text>
+</svg>
+<figcaption><strong>These three are one decision, not three.</strong> Roughly the same propeller speed can be reached from a high voltage with a low KV motor or a low voltage with a high KV motor, and the two routes draw very different currents for the same thrust. That is the whole reason the hobby moved to six cell packs.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The consequence worth internalising</span><p>KV and torque constant are reciprocals. A high KV motor spins faster per volt and produces less torque per ampere, so it must draw more current to turn the same propeller. The high current is not a side effect of choosing high KV; it is the same fact stated twice.</p></div>
+<h3>Desync, and why it is a controller problem rather than a motor one</h3>
+<p>A sensorless controller infers rotor position from the back EMF of the undriven winding. Under sharp throttle changes or at very low speed that estimate can be lost, the commutation falls out of step, and the motor stops producing useful torque while still drawing current. It presents as one corner dropping during an aggressive manoeuvre, and it is addressed in firmware and timing rather than by replacing the motor.</p>
+<h3>Where the published figures stop being true</h3>
+<table>
+<tr><th>Published</th><th>Measured in situ</th></tr>
+<tr><td>Static thrust on a stand</td><td>Lower in the aircraft's own downwash</td></tr>
+<tr><td>Continuous current rating</td><td>Lower without airflow</td></tr>
+<tr><td>KV at no load</td><td>Effectively lower under load</td></tr>
+</table>
+<div class="field"><span class="callout-label">So measure the one number that settles it</span><p>Total current at full throttle, on the finished aircraft, with a clamp meter or a logging controller. It validates the whole chain in one reading, and builders who take it routinely find it fifteen to twenty five per cent away from the sum of the table figures.</p></div>`,
     },
     parts: [
       {
@@ -1565,24 +1725,162 @@ const curriculum: CourseCurriculum = {
       "Work hardening": "Repeated flexing making copper brittle, which is why a wire breaks just outside a joint rather than at it.",
     },
     body: {
-      Beginner: `<p>The three things that make a solder joint work, in order of how often people get them wrong.</p>
-<p><strong>Heat the work, not the solder.</strong> Put the iron on the pad and the wire, wait a second, then feed solder into the joint so it melts on the work. Melting solder on the iron and dabbing it on is how you get a cold joint: it looks attached and it is not.</p>
-<p><strong>Use enough heat.</strong> A big pad on a PDB is a heatsink. A 30 watt iron at 300 degrees will sit there oxidising the pad without ever getting it hot enough. Use a decent iron at 350 to 380 and a chunky tip, and get in and out fast.</p>
-<p><strong>Tin both sides first.</strong> Pre-coat the pad and pre-coat the wire, then put them together and reheat. The solder flows and the joint is made in under two seconds.</p>
-<p>A good joint is <strong>shiny and slightly concave</strong>, like a tiny volcano. A bad one is <strong>dull, round and blobby</strong>. If it looks like a ball sitting on the pad, it is sitting on the pad.</p>
-<p>And one that is not about soldering at all: <strong>support the wire</strong>. A multirotor vibrates constantly, and an unsupported wire flexes at the joint until the copper goes brittle and snaps.</p>`,
-      Intermediate: `<p>Soldering is a metallurgical process rather than a gluing one. The solder forms an intermetallic layer with the copper, and that layer only forms if the work itself reaches temperature. Everything that goes wrong follows from failing to get the work hot enough, and the usual cause is an iron with too little thermal mass rather than too little wattage.</p>
-<p>Flux is what makes wetting possible by removing the oxide layer that forms instantly on heated copper. Cored solder carries some, and extra flux on a large pad is always worth it. A joint that will not take solder is almost always an oxidation problem rather than a temperature problem, and more heat makes it worse by accelerating the oxidation.</p>
-<p>Tinning both surfaces before joining them turns a difficult joint into a trivial one. Each surface is wetted separately where it is easy, and the final operation is just reflowing two already-wetted surfaces together, which takes a second or two rather than ten and avoids cooking the component.</p>
-<p>Strain relief is the part that distinguishes a joint that lasts. Copper work hardens under repeated flexing, so an unsupported wire fails just outside the joint where the stress concentrates. The mitigation is mechanical: a dab of hot glue over the joint, a cable tie a short distance away, or routing that prevents movement in the first place.</p>`,
-      Advanced: `<p>Joint quality is governed by the thickness of the intermetallic compound layer, and there is an optimum. Too little and the bond is weak; too much, from excessive temperature or dwell time, and the layer becomes brittle and the joint fails under vibration. This is the metallurgical reason that both an under-heated and an over-heated joint fail, and why the technique is to get hot fast and leave rather than to heat gently for longer.</p>
-<p>Lead-free solder has materially changed field practice. SAC alloys melt around 217 degrees against 183 for traditional tin-lead, wet less readily, and produce joints that are duller in appearance even when sound, which removes the visual cue many technicians rely on. Higher iron temperatures and more aggressive flux are needed, and judging a lead-free joint by the shininess of a tin-lead one produces a lot of unnecessary rework.</p>
-<p>Thermal mass rather than wattage is the specification that matters for an iron. A large pad on a four-layer PDB with internal ground planes pulls heat away rapidly, and an iron that cannot replace it fast enough never brings the work to temperature regardless of its rated power. This is why a temperature-controlled station with a chisel tip outperforms a higher-wattage pencil iron on exactly the joints that matter most.</p>
-<p>On inspection, the useful discipline is to test mechanically rather than visually. A gentle pull on the wire finds a cold joint that looks acceptable, and doing it at build time is far cheaper than discovering it as an in-flight failure. Combined with a continuity check and a resistance measurement across the high-current path, it catches essentially every joint-level defect before power is applied.</p>`,
-      Expert: `<p>The reliability of a solder joint under vibration is a fatigue problem, and the governing variables are the stress amplitude at the joint and the number of cycles. A multirotor presents a broadband excitation at motor fundamental frequencies and harmonics, continuously, for the life of the aircraft, so joints accumulate cycles orders of magnitude faster than in most electronics. Strain relief works by reducing the stress amplitude at the joint, which moves the joint along the fatigue curve rather than removing the loading.</p>
-<p>Intermetallic growth continues after assembly at a rate governed by temperature, so a joint operating hot ages faster. On a PDB carrying over a hundred amps the joints are themselves heat sources, and a marginal joint with elevated resistance heats more, grows its intermetallic layer faster and becomes more marginal. That positive feedback is why high-current joints fail progressively rather than suddenly, and why resistance measurement across the power path is a worthwhile preventive check.</p>
-<p>The flux residue question is genuinely contested and worth knowing both sides of. No-clean formulations are designed to leave a benign residue and in most applications removing it is unnecessary. In a high-humidity environment with high-voltage differentials across adjacent pads, residues can become conductive over time, and the conservative practice on anything carrying flight-critical current is to clean with isopropanol regardless. The cost is a few minutes and the failure it prevents is intermittent and nearly undiagnosable.</p>
-<p>Finally, the pull test deserves formalising rather than being left as a habit, because its value lies in the consistency of the force applied. A gentle tug that varies between joints finds the worst ones and passes marginal ones inconsistently. Builders who use a consistent, defined pull, even an informally calibrated one, detect a measurably higher proportion of weak joints, and that is one of the few quality improvements available at zero cost.</p>`,
+      Beginner: `<p>Every connection on this aircraft vibrates constantly. A joint that merely holds will come apart; a joint that is properly made will not.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A sound solder joint compared with a dry joint and a cold joint">
+<rect x="24" y="40" width="300" height="330" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="40" width="300" height="330" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M90 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M174 300 C 140 300, 120 244, 174 180 C 228 244, 208 300, 174 300 Z" fill="#0f766e" opacity="0.55"/>
+<path d="M174 100 v86" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="174" y="344" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">SOUND</text>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="#b45309" opacity="0.1"/>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
+<path d="M416 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<circle cx="500" cy="246" r="54" fill="#b45309" opacity="0.5"/>
+<path d="M500 100 v96" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="500" y="344" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">BALLED UP</text>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="#be123c" opacity="0.1"/>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<path d="M742 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M826 300 C 800 300, 788 258, 826 232 C 864 258, 852 300, 826 300 Z" fill="#be123c" opacity="0.45"/>
+<path d="M826 100 v110" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<path d="M800 222 h52" stroke="#be123c" stroke-width="5" stroke-dasharray="7 6"/>
+<text x="826" y="344" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">NOT WETTED</text>
+<text x="500" y="414" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">A sound joint is concave and shiny, and the solder</text>
+<text x="500" y="452" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">has flowed onto both metals rather than sitting on them.</text>
+<text x="500" y="496" font-size="27" fill="currentColor" opacity="0.75" text-anchor="middle">Heat the joint, then feed the solder. Never melt solder onto the iron.</text>
+</svg>
+<figcaption><strong>The middle and right joints will both pass a tug test and both fail from vibration.</strong> A ball of solder sitting on an unheated pad has made a mechanical contact and not a metallurgical one, which is exactly the failure that takes weeks to appear and happens in the air.</figcaption>
+</figure>
+<h3>The order that makes a good joint</h3>
+<table>
+<tr><th>Step</th><th>Why</th></tr>
+<tr><td>Tin the iron</td><td>A wetted tip carries heat; a dry one does not</td></tr>
+<tr><td>Heat the pad and wire together</td><td>Both metals must be hot enough to accept solder</td></tr>
+<tr><td>Feed solder into the joint</td><td>Not onto the iron</td></tr>
+<tr><td>Remove solder, then the iron</td><td>In that order</td></tr>
+<tr><td>Let it cool untouched</td><td>Moving it while it sets makes it grainy</td></tr>
+</table>
+<div class="warning"><span class="callout-label">The mistake almost everyone makes first</span><p>Melting solder on the iron and carrying it to the joint. The flux burns off on the way, the pad is cold, and the solder sits on top as a ball instead of flowing in.</p></div>
+<div class="key-idea"><span class="callout-label">Hotter is often safer</span><p>A tip that is too cool means dwelling on the joint, which puts more total heat into the board. Around 350 degrees for a moment beats 280 degrees for ten seconds.</p></div>`,
+      Intermediate: `<p>A sound joint is a metallurgical bond, not glue. The solder has to alloy with both surfaces, and that only happens if both surfaces reach temperature.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A sound solder joint compared with a dry joint and a cold joint">
+<rect x="24" y="40" width="300" height="330" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="40" width="300" height="330" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M90 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M174 300 C 140 300, 120 244, 174 180 C 228 244, 208 300, 174 300 Z" fill="#0f766e" opacity="0.55"/>
+<path d="M174 100 v86" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="174" y="344" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">SOUND</text>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="#b45309" opacity="0.1"/>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
+<path d="M416 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<circle cx="500" cy="246" r="54" fill="#b45309" opacity="0.5"/>
+<path d="M500 100 v96" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="500" y="344" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">BALLED UP</text>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="#be123c" opacity="0.1"/>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<path d="M742 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M826 300 C 800 300, 788 258, 826 232 C 864 258, 852 300, 826 300 Z" fill="#be123c" opacity="0.45"/>
+<path d="M826 100 v110" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<path d="M800 222 h52" stroke="#be123c" stroke-width="5" stroke-dasharray="7 6"/>
+<text x="826" y="344" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">NOT WETTED</text>
+<text x="500" y="414" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">A sound joint is concave and shiny, and the solder</text>
+<text x="500" y="452" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">has flowed onto both metals rather than sitting on them.</text>
+<text x="500" y="496" font-size="27" fill="currentColor" opacity="0.75" text-anchor="middle">Heat the joint, then feed the solder. Never melt solder onto the iron.</text>
+</svg>
+<figcaption><strong>The middle and right joints will both pass a tug test and both fail from vibration.</strong> A ball of solder sitting on an unheated pad has made a mechanical contact and not a metallurgical one, which is exactly the failure that takes weeks to appear and happens in the air.</figcaption>
+</figure>
+<h3>Reading a joint</h3>
+<table>
+<tr><th>Looks like</th><th>Is</th><th>Fix</th></tr>
+<tr><td>Shiny, concave, feathered edges</td><td>Sound</td><td>Nothing</td></tr>
+<tr><td>A ball sitting proud</td><td>Pad was cold</td><td>Reheat with flux until it flows</td></tr>
+<tr><td>Dull and grainy</td><td>Moved while cooling</td><td>Reheat and leave alone</td></tr>
+<tr><td>Solder on the wire only</td><td>Not wetted to the pad</td><td>More heat on the pad side</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Flux is not optional on a repair</span><p>Fresh solder carries its own flux, but a reheated joint has already burnt its. Adding flux is usually the difference between a joint that flows on the second attempt and one you keep cooking.</p></div>
+<div class="warning"><span class="callout-label">High current joints need more than a good shape</span><p>Battery leads carry a hundred amps. They need a large tip, a high temperature, and enough solder to fill the pad, and the iron that works on a signal wire will never heat that pad. Using it anyway produces exactly the joint in the middle of the diagram.</p></div>`,
+      Advanced: `<p>The failure mode that matters here is fatigue rather than conduction, and it is why a tug test is close to worthless as a verification.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A sound solder joint compared with a dry joint and a cold joint">
+<rect x="24" y="40" width="300" height="330" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="40" width="300" height="330" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M90 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M174 300 C 140 300, 120 244, 174 180 C 228 244, 208 300, 174 300 Z" fill="#0f766e" opacity="0.55"/>
+<path d="M174 100 v86" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="174" y="344" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">SOUND</text>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="#b45309" opacity="0.1"/>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
+<path d="M416 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<circle cx="500" cy="246" r="54" fill="#b45309" opacity="0.5"/>
+<path d="M500 100 v96" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="500" y="344" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">BALLED UP</text>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="#be123c" opacity="0.1"/>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<path d="M742 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M826 300 C 800 300, 788 258, 826 232 C 864 258, 852 300, 826 300 Z" fill="#be123c" opacity="0.45"/>
+<path d="M826 100 v110" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<path d="M800 222 h52" stroke="#be123c" stroke-width="5" stroke-dasharray="7 6"/>
+<text x="826" y="344" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">NOT WETTED</text>
+<text x="500" y="414" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">A sound joint is concave and shiny, and the solder</text>
+<text x="500" y="452" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">has flowed onto both metals rather than sitting on them.</text>
+<text x="500" y="496" font-size="27" fill="currentColor" opacity="0.75" text-anchor="middle">Heat the joint, then feed the solder. Never melt solder onto the iron.</text>
+</svg>
+<figcaption><strong>The middle and right joints will both pass a tug test and both fail from vibration.</strong> A ball of solder sitting on an unheated pad has made a mechanical contact and not a metallurgical one, which is exactly the failure that takes weeks to appear and happens in the air.</figcaption>
+</figure>
+<div class="warning"><span class="callout-label">A cold joint passes a tug test</span><p>Mechanical contact conducts and holds. What it does not do is survive thousands of vibration cycles, because the contact is an interface rather than an alloy and it works loose microscopically. The joint fails in flight, weeks later, and the inspection that passed it was not wrong about what it measured; it measured the wrong thing.</p></div>
+<h3>Strain relief is part of the joint</h3>
+<p>Solder wicks up a stranded wire and turns a short length of it rigid. The boundary between the stiffened section and the flexible wire is a stress concentration, and that is where a lead breaks. Securing the wire a few millimetres beyond the joint moves the flexing into the part of the wire designed for it.</p>
+<table>
+<tr><th>Technique</th><th>Why</th></tr>
+<tr><td>Heatshrink over the joint and onto the wire</td><td>Spreads the bend radius</td></tr>
+<tr><td>A dab of flexible adhesive</td><td>Damps the vibration at the pad</td></tr>
+<tr><td>Routing so the wire does not pull</td><td>Removes the load entirely</td></tr>
+</table>
+<h3>Lead free is harder, and worth knowing why</h3>
+<p>Lead free alloys melt higher, wet less readily and set with a duller finish, so the visual test shifts. A lead free joint that looks dull is not necessarily cold. If you learned on leaded solder, the first lead free board will have you reheating sound joints.</p>`,
+      Expert: `<p>The bond is an intermetallic layer formed between the solder and the base metal. Its thickness is the quality measure, and it is governed by temperature and time at temperature, which is why both too little heat and too much produce a weak joint by different mechanisms.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A sound solder joint compared with a dry joint and a cold joint">
+<rect x="24" y="40" width="300" height="330" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="40" width="300" height="330" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<path d="M90 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M174 300 C 140 300, 120 244, 174 180 C 228 244, 208 300, 174 300 Z" fill="#0f766e" opacity="0.55"/>
+<path d="M174 100 v86" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="174" y="344" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">SOUND</text>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="#b45309" opacity="0.1"/>
+<rect x="350" y="40" width="300" height="330" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
+<path d="M416 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<circle cx="500" cy="246" r="54" fill="#b45309" opacity="0.5"/>
+<path d="M500 100 v96" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<text x="500" y="344" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">BALLED UP</text>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="#be123c" opacity="0.1"/>
+<rect x="676" y="40" width="300" height="330" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<path d="M742 300 h168" stroke="currentColor" opacity="0.55" stroke-width="16" stroke-linecap="round"/>
+<path d="M826 300 C 800 300, 788 258, 826 232 C 864 258, 852 300, 826 300 Z" fill="#be123c" opacity="0.45"/>
+<path d="M826 100 v110" stroke="currentColor" opacity="0.7" stroke-width="14" stroke-linecap="round"/>
+<path d="M800 222 h52" stroke="#be123c" stroke-width="5" stroke-dasharray="7 6"/>
+<text x="826" y="344" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">NOT WETTED</text>
+<text x="500" y="414" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">A sound joint is concave and shiny, and the solder</text>
+<text x="500" y="452" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">has flowed onto both metals rather than sitting on them.</text>
+<text x="500" y="496" font-size="27" fill="currentColor" opacity="0.75" text-anchor="middle">Heat the joint, then feed the solder. Never melt solder onto the iron.</text>
+</svg>
+<figcaption><strong>The middle and right joints will both pass a tug test and both fail from vibration.</strong> A ball of solder sitting on an unheated pad has made a mechanical contact and not a metallurgical one, which is exactly the failure that takes weeks to appear and happens in the air.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Both ends of the range fail</span><p>Too cool and the intermetallic layer barely forms, giving the cold joint. Too hot or too long and the layer grows thick and brittle, and the joint cracks under vibration instead of flexing. The target is a short dwell at a sufficient temperature, which is the opposite of the careful, slow approach a nervous beginner adopts.</p></div>
+<h3>Thermal mass is the thing being managed</h3>
+<p>A ground plane is a heat sink, which is why a pad connected to one needs a larger tip rather than a longer dwell. Boards use thermal relief spokes on exactly those pads for this reason, and a pad that will not take solder is usually telling you about its copper connection rather than about your technique.</p>
+<h3>Inspection that actually predicts field life</h3>
+<table>
+<tr><th>Test</th><th>Detects</th><th>Misses</th></tr>
+<tr><td>Visual, magnified</td><td>Shape, wetting, cracks</td><td>Internal voids</td></tr>
+<tr><td>Tug test</td><td>Gross mechanical failure</td><td>Cold joints entirely</td></tr>
+<tr><td>Continuity</td><td>Open circuits</td><td>Everything marginal</td></tr>
+<tr><td>Resistance under load</td><td>High resistance joints</td><td>Little, and it is the useful one</td></tr>
+</table>
+<div class="field"><span class="callout-label">Which is why the lab for this topic asks for a pull test and a photograph</span><p>Not because the pull proves the joint, but because the photograph does. A magnified image of the fillet shows wetting, and wetting is the property that predicts whether the joint survives a season of vibration.</p></div>`,
     },
     labs: [
       {
@@ -1829,23 +2127,144 @@ const curriculum: CourseCurriculum = {
       "Anti-spark": "A connector or lead with a resistor that limits inrush, reducing connector erosion on larger builds.",
     },
     body: {
-      Beginner: `<p>The first time you connect a battery to a new build is the moment everything is at risk. A solder bridge you cannot see will put the full output of the pack through whatever is nearest, and a LiPo can deliver over a hundred amps without noticing.</p>
-<p>A <strong>smoke stopper</strong> fixes this. It is a lead with an incandescent bulb in series. If there is a short, the bulb lights brightly and limits the current to whatever the bulb passes, which is a few amps. Nothing is damaged and you have found your fault.</p>
-<p>What normal looks like: the bulb flashes briefly as the capacitors charge, then goes dark or dim. What a short looks like: the bulb lights brightly and stays lit.</p>
-<p>Before you even do that, check with a meter. Put it on continuity and test between the positive and negative pads. There should be <strong>no</strong> beep. If there is, you have a bridge and you can find it with your eyes instead of with a battery.</p>
-<p>And check the capacitor. Electrolytic capacitors have a <strong>negative stripe</strong> down one side, and fitting one backwards makes it vent or burst. It is the one component on the board where getting it the wrong way round is dramatic.</p>`,
-      Intermediate: `<p>The smoke stopper is the single highest-value step in a build because of what it protects relative to what it costs. Two minutes and a bulb, against a flight controller, four ESCs and possibly the pack. The logic is a detection point: a fault that would propagate to every connected component is instead contained as a diagnostic event.</p>
-<p>Sequence the checks from cheapest to most expensive. Visual inspection under magnification for bridges and stray strands. Continuity test between the rails with a meter. Then current-limited power-up. Then, only once all three pass, connect the battery directly. Each step catches a class of fault more cheaply than the one after it.</p>
-<p>Reading the bulb takes a little practice. A brief flash as the capacitors charge is normal and expected: that is inrush, the same phenomenon that produces the spark when you plug in a battery. A bulb that lights brightly and stays lit is a dead short. A bulb that glows dimly and steadily is a partial short or an unusually high quiescent draw, and it is worth investigating rather than ignoring.</p>
-<p>Capacitor polarity deserves its own check because the failure is energetic. The negative stripe goes to the negative pad, and a reversed electrolytic heats and vents, sometimes violently. On a board that may be inside a carbon frame next to a LiPo, that is not a minor error.</p>`,
-      Advanced: `<p>Inrush current is worth understanding rather than merely tolerating, because it explains several things builders find confusing. Connecting a pack to a discharged capacitor bank is close to connecting it to a short for a few milliseconds, and the resulting current is bounded only by the pack's internal resistance and the lead inductance. That is the spark, it is normal, and it erodes connector contacts over time, which is why larger builds use anti-spark leads with a series resistor to pre-charge the capacitors.</p>
-<p>The bulb's behaviour as a limiter is non-linear in a useful way. A cold filament has low resistance, so it passes enough current to charge the capacitors quickly, and as it heats its resistance rises sharply, limiting a sustained fault to a safe value. That characteristic is precisely what makes an incandescent bulb better for this job than a fixed resistor, and it is also why an LED replacement will not do.</p>
-<p>Partial shorts are the fault class the test is best at and a meter is worst at. A few strands of copper bridging to a ground plane may show as a resistance too high to trip a continuity beeper and low enough to dissipate serious power under load, and the bulb's steady dim glow reveals exactly that. Builders who skip straight from the meter to a battery miss this one.</p>
-<p>On the high-current path generally, the relevant discipline after the smoke stopper is thermal. Run the aircraft briefly on the bench with props off, then feel the PDB, the ESCs and the battery lead. Anything noticeably warm at low load has a resistance problem, and that is a joint to remake before it becomes a progressive failure in flight.</p>`,
-      Expert: `<p>The current-limited first power-up is an instance of a general reliability principle: insert a detection point before an irreversible commitment, sized so that the fault energy is bounded. The value of such a point is the fault probability times the difference in consequence between containment and propagation, and for a first build that product is large because first-build short probability is genuinely high and the propagated consequence is the whole electronics set. No other two-minute step in the build has a comparable expected value.</p>
-<p>The bulb's suitability follows from its positive temperature coefficient. Tungsten resistance rises by roughly an order of magnitude from cold to operating temperature, giving a soft start into a capacitive load and a hard limit into a resistive fault. Selecting the wattage sets the limit: a 12 W bulb on a 22 V system limits at a few hundred milliamps once hot, enough to reveal a fault and far too little to damage anything.</p>
-<p>Electrolytic capacitor reversal is an energetic failure because the dielectric is formed electrochemically and reverse bias degrades it, producing gas and heat rapidly. Modern capacitors have scored vents to direct the failure, which makes them safer and not safe, and the relevant point for a builder is that the component is one of very few on the board where orientation error is immediately destructive rather than merely non-functional.</p>
-<p>A final note on inrush and connector life that builders underestimate. Each unmitigated connection event erodes a small amount of contact material, and the cumulative effect over hundreds of cycles raises contact resistance, which raises heating, which accelerates erosion. Anti-spark pre-charging is therefore not about the visual spark but about the long-run resistance of the highest-current joint in the aircraft, and on a build drawing over a hundred amps that joint is the one with the least margin.</p>`,
+      Beginner: `<p>The first time a new build gets power is the moment a wiring mistake destroys something. There is a two minute test that makes that almost impossible.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="A current limiting lamp wired in series between the battery and the aircraft">
+<rect x="24" y="110" width="200" height="130" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="124" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">BATTERY</text>
+<text x="124" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">4S pack</text>
+<path d="M224 175 H334" stroke="#be123c" stroke-width="8"/>
+<circle cx="400" cy="175" r="62" fill="#b45309" opacity="0.28"/>
+<circle cx="400" cy="175" r="62" fill="none" stroke="#b45309" stroke-width="5"/>
+<path d="M378 196 h44 M384 206 h32" stroke="#b45309" stroke-width="5"/>
+<text x="400" y="186" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">LAMP</text>
+<path d="M466 175 H576" stroke="#be123c" stroke-width="8"/>
+<rect x="576" y="110" width="200" height="130" rx="16" fill="#0369a1" opacity="0.16"/>
+<text x="676" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">AIRCRAFT</text>
+<text x="676" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">no props</text>
+<text x="400" y="286" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">in series, on the positive lead</text>
+<rect x="24" y="320" width="464" height="104" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="362" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">Dim or dark</text>
+<text x="256" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">no short. Proceed.</text>
+<rect x="512" y="320" width="464" height="104" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="362" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">Bright</text>
+<text x="744" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">a short. Disconnect.</text>
+</svg>
+<figcaption><strong>The lamp is the fuse you can read.</strong> A short circuit that would otherwise dump a hundred amps through a board instead lights a bulb, because the filament limits the current to what the lamp draws. It costs almost nothing and it is the single highest-value habit in building.</figcaption>
+</figure>
+<h3>What a smoke stopper is</h3>
+<p>An ordinary filament lamp wired into the positive battery lead. If the aircraft has a short, the lamp lights brightly and almost no current reaches the boards. If there is no short, the lamp stays dim and the aircraft powers up normally.</p>
+<div class="key-idea"><span class="callout-label">Before the first power-up, always</span><p>Propellers off. Check the battery polarity twice. Connect through the lamp, not directly.</p></div>
+<div class="warning"><span class="callout-label">A reversed battery lead kills everything at once</span><p>Flight controller, speed controllers and receiver, in a fraction of a second. Nothing on the aircraft protects against it, which is why the check happens before the connector goes in and not after.</p></div>`,
+      Intermediate: `<p>A current limited first power-up converts the most expensive mistake in building into a visible, harmless one.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="A current limiting lamp wired in series between the battery and the aircraft">
+<rect x="24" y="110" width="200" height="130" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="124" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">BATTERY</text>
+<text x="124" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">4S pack</text>
+<path d="M224 175 H334" stroke="#be123c" stroke-width="8"/>
+<circle cx="400" cy="175" r="62" fill="#b45309" opacity="0.28"/>
+<circle cx="400" cy="175" r="62" fill="none" stroke="#b45309" stroke-width="5"/>
+<path d="M378 196 h44 M384 206 h32" stroke="#b45309" stroke-width="5"/>
+<text x="400" y="186" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">LAMP</text>
+<path d="M466 175 H576" stroke="#be123c" stroke-width="8"/>
+<rect x="576" y="110" width="200" height="130" rx="16" fill="#0369a1" opacity="0.16"/>
+<text x="676" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">AIRCRAFT</text>
+<text x="676" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">no props</text>
+<text x="400" y="286" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">in series, on the positive lead</text>
+<rect x="24" y="320" width="464" height="104" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="362" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">Dim or dark</text>
+<text x="256" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">no short. Proceed.</text>
+<rect x="512" y="320" width="464" height="104" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="362" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">Bright</text>
+<text x="744" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">a short. Disconnect.</text>
+</svg>
+<figcaption><strong>The lamp is the fuse you can read.</strong> A short circuit that would otherwise dump a hundred amps through a board instead lights a bulb, because the filament limits the current to what the lamp draws. It costs almost nothing and it is the single highest-value habit in building.</figcaption>
+</figure>
+<h3>Reading the lamp</h3>
+<table>
+<tr><th>Lamp</th><th>Means</th><th>Do</th></tr>
+<tr><td>Dark or very dim</td><td>Normal standby draw</td><td>Carry on</td></tr>
+<tr><td>Bright, stays bright</td><td>A short across the supply</td><td>Disconnect and find it</td></tr>
+<tr><td>Bright, then dims</td><td>Capacitors charging, then normal</td><td>Normal, carry on</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Why the lamp works</span><p>A filament is a resistance. In series with a short it drops nearly the whole battery voltage and limits current to whatever the lamp draws, which is an amp or two rather than a hundred. The energy that would have vaporised a track becomes light and heat in a bulb that costs very little.</p></div>
+<h3>The checks that go with it</h3>
+<p>Before power, inspect for solder bridges and stray strands under magnification, confirm polarity at the connector, and confirm no propellers. After power, check the regulated rails are present and that nothing is getting warm. A component that heats with no command given is a fault, not a feature.</p>
+<div class="warning"><span class="callout-label">Capacitors on the power lead are not decoration</span><p>The low ESR capacitor across the battery input absorbs the voltage spikes that switching controllers generate. Builds that omit it see unexplained resets and dead speed controllers, and the part costs almost nothing.</p></div>`,
+      Advanced: `<p>The failure this prevents is energetic rather than merely expensive. A lithium polymer pack into a dead short delivers hundreds of amps, and the limiting factor is the wiring rather than the battery.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="A current limiting lamp wired in series between the battery and the aircraft">
+<rect x="24" y="110" width="200" height="130" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="124" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">BATTERY</text>
+<text x="124" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">4S pack</text>
+<path d="M224 175 H334" stroke="#be123c" stroke-width="8"/>
+<circle cx="400" cy="175" r="62" fill="#b45309" opacity="0.28"/>
+<circle cx="400" cy="175" r="62" fill="none" stroke="#b45309" stroke-width="5"/>
+<path d="M378 196 h44 M384 206 h32" stroke="#b45309" stroke-width="5"/>
+<text x="400" y="186" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">LAMP</text>
+<path d="M466 175 H576" stroke="#be123c" stroke-width="8"/>
+<rect x="576" y="110" width="200" height="130" rx="16" fill="#0369a1" opacity="0.16"/>
+<text x="676" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">AIRCRAFT</text>
+<text x="676" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">no props</text>
+<text x="400" y="286" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">in series, on the positive lead</text>
+<rect x="24" y="320" width="464" height="104" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="362" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">Dim or dark</text>
+<text x="256" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">no short. Proceed.</text>
+<rect x="512" y="320" width="464" height="104" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="362" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">Bright</text>
+<text x="744" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">a short. Disconnect.</text>
+</svg>
+<figcaption><strong>The lamp is the fuse you can read.</strong> A short circuit that would otherwise dump a hundred amps through a board instead lights a bulb, because the filament limits the current to what the lamp draws. It costs almost nothing and it is the single highest-value habit in building.</figcaption>
+</figure>
+<table>
+<tr><th>Without a limiter</th><th>With one</th></tr>
+<tr><td>Hundreds of amps into the fault</td><td>One or two amps</td></tr>
+<tr><td>Vaporised track or wire</td><td>A glowing bulb</td></tr>
+<tr><td>Secondary damage across the stack</td><td>None</td></tr>
+<tr><td>Possible pack fire</td><td>None</td></tr>
+</table>
+<h3>Inrush is not a fault</h3>
+<p>Bulk capacitance charging at connection draws a large momentary current, which is the spark you see on a direct connection and the brief flash on the lamp. It is also what erodes connector contacts over time, and it is the reason anti-spark connectors and plug-in resistors exist on larger packs.</p>
+<div class="key-idea"><span class="callout-label">Bring up subsystems in order</span><p>Power first through the limiter, then the regulated rails measured, then the flight controller alone, then the receiver bind, then motors with props off. Each stage is reversible and each failure is attributable. Connecting everything and powering up once gives you a dead aircraft and no information about which part did it.</p></div>`,
+      Expert: `<p>This is the same discipline as any staged commissioning: constrain the energy available until the system has demonstrated it is not faulty, and only then remove the constraint.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="A current limiting lamp wired in series between the battery and the aircraft">
+<rect x="24" y="110" width="200" height="130" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="124" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">BATTERY</text>
+<text x="124" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">4S pack</text>
+<path d="M224 175 H334" stroke="#be123c" stroke-width="8"/>
+<circle cx="400" cy="175" r="62" fill="#b45309" opacity="0.28"/>
+<circle cx="400" cy="175" r="62" fill="none" stroke="#b45309" stroke-width="5"/>
+<path d="M378 196 h44 M384 206 h32" stroke="#b45309" stroke-width="5"/>
+<text x="400" y="186" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">LAMP</text>
+<path d="M466 175 H576" stroke="#be123c" stroke-width="8"/>
+<rect x="576" y="110" width="200" height="130" rx="16" fill="#0369a1" opacity="0.16"/>
+<text x="676" y="166" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">AIRCRAFT</text>
+<text x="676" y="206" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">no props</text>
+<text x="400" y="286" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">in series, on the positive lead</text>
+<rect x="24" y="320" width="464" height="104" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="362" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">Dim or dark</text>
+<text x="256" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">no short. Proceed.</text>
+<rect x="512" y="320" width="464" height="104" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="362" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">Bright</text>
+<text x="744" y="402" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">a short. Disconnect.</text>
+</svg>
+<figcaption><strong>The lamp is the fuse you can read.</strong> A short circuit that would otherwise dump a hundred amps through a board instead lights a bulb, because the filament limits the current to what the lamp draws. It costs almost nothing and it is the single highest-value habit in building.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The lamp as a non-linear current limiter</span><p>A cold filament has low resistance and heats rapidly as current passes, so resistance rises with fault current. It is self-adjusting: a hard short gets a hot, high resistance filament, while a healthy aircraft's modest draw leaves it cool and nearly transparent. A fixed resistor cannot do both, which is why the humble bulb is still the right tool.</p></div>
+<h3>What it does not protect against</h3>
+<table>
+<tr><th>Fault</th><th>Caught?</th></tr>
+<tr><td>Short across the supply</td><td>Yes</td></tr>
+<tr><td>Reversed polarity</td><td>Partly; damage is limited but not always prevented</td></tr>
+<tr><td>Wrong signal wiring</td><td>No, it is not a power fault</td></tr>
+<tr><td>A marginal joint</td><td>No, it only appears under full current</td></tr>
+</table>
+<p>So it is one layer. Polarity is still checked by eye, signal wiring is still verified against the diagram, and joints are still inspected before this stage rather than after.</p>
+<h3>Why experienced builders keep doing it</h3>
+<p>The expected cost is trivially favourable. The test costs two minutes and a bulb; the event it prevents costs a stack and a day. Even at a low probability of a wiring error per build, nobody who has replaced one flight controller for a solder bridge skips it again, and the ones who have never done it are the ones still arguing that they are careful enough not to need it.</p>
+<div class="field"><span class="callout-label">Make it physically easy</span><p>A lamp soldered permanently into a short lead with the right connectors on both ends lives in the toolbox and takes seconds to use. A test that requires building the rig each time is a test that gets skipped on the evening you are nearly finished, which is precisely the evening you make the mistake.</p></div>`,
     },
     labs: [
       {
@@ -2085,24 +2504,143 @@ const curriculum: CourseCurriculum = {
       "Props off": "The rule that no motor is spun with blades attached until every direction and output is confirmed.",
     },
     body: {
-      Beginner: `<p>Four things, in this order, all with the propellers off.</p>
-<p><strong>Orientation.</strong> The flight controller has an arrow printed on it and it must point forward. If your frame made you mount it rotated, tell the software: there is a board alignment setting in degrees. Get this wrong and the aircraft corrects in the wrong direction, which is immediate and violent.</p>
-<p><strong>Motor numbering.</strong> Spin each motor one at a time from the configurator and watch which one turns. Betaflight numbers from the <strong>rear left</strong>, not from the front, and assuming otherwise is the single most common first-build error.</p>
-<p><strong>Motor direction.</strong> Two motors spin one way and two the other, diagonally paired. Check each one against the diagram in your software. If one is wrong you can either swap any two of its three motor wires, or reverse it in software, and both work.</p>
-<p><strong>Binding and failsafe.</strong> Pair the receiver to your transmitter, then check that the throttle goes to zero when you switch the transmitter off. Test it on the bench, props off, before the first flight.</p>
-<p>Then calibrate the accelerometer with the aircraft on a level surface, and only then put the propellers on.</p>`,
-      Intermediate: `<p>These four settings are the interface between the software's model of the aircraft and the physical machine, and every one of them fails loudly rather than subtly. That is actually a mercy: a wrong board orientation does not produce a slightly odd aircraft, it produces one that flips on arming, so the fault is unmistakable if you find it on the bench.</p>
-<p>Board alignment exists because frames frequently require the flight controller to be mounted rotated to clear a connector or to route a cable. The software setting compensates, and it must match reality exactly. A 90 degree error makes the aircraft correct roll with pitch, which is immediate and unrecoverable.</p>
-<p>Motor numbering is a convention rather than a physical fact, and the convention is not intuitive. Betaflight numbers from the rear left and proceeds anticlockwise viewed from above. Builders who assume front-left-first wire their ESCs in good faith to the wrong outputs, and the result is an aircraft that responds to a roll command with a yaw.</p>
-<p>Direction is set per motor and must follow the diagonal pattern the software expects. Reversing a motor is either a wire swap or a software setting with modern digital ESCs, and both are equally valid. What is not valid is correcting a wrong direction by reversing the propeller, which produces thrust in the right direction and the wrong torque reaction, and yaw control is then inverted.</p>`,
-      Advanced: `<p>The reason these errors are catastrophic rather than degraded is that the controller is a feedback loop, and an orientation or numbering error inverts the sign of the feedback. A correctly signed loop corrects a disturbance; an inverted one amplifies it, so the aircraft departs within a fraction of a second of arming. This is also why there is no partial version of the fault and why bench verification is non-negotiable.</p>
-<p>Accelerometer calibration establishes the board's zero attitude and should be done on a surface known to be level, with the aircraft in its flying configuration including the battery. Calibrating on a sloped bench produces an aircraft that drifts persistently in angle mode and requires continuous trim, which is often misdiagnosed as a centre of gravity problem or a motor imbalance.</p>
-<p>Failsafe configuration deserves more attention than it receives because its default is not always safe. The aircraft must do something defined when the link is lost, and for a line-of-sight freestyle build that is almost always a throttle cut, since a return-to-home without GPS is meaningless. Testing it means arming on the bench with props off and switching the transmitter off, which is both the only real test and the one most often skipped.</p>
-<p>Motor output protocol and ESC configuration interact with this process in ways that catch builders. A digital protocol requires no throttle calibration, while an analogue one does, and a build with mismatched protocol settings produces one motor spinning up before the others or motors that do not respond at all. Checking the protocol matches between the flight controller and the ESCs is part of this setup rather than a separate task.</p>`,
-      Expert: `<p>Formally, the board alignment setting is a rotation applied to the gyroscope and accelerometer readings before they enter the estimator, so an incorrect alignment introduces a systematic rotation between the measured and actual body frames. The resulting closed loop is unstable for alignment errors approaching ninety degrees, which is why the failure is binary. Smaller alignment errors, for instance a board mounted a few degrees off square, degrade performance measurably without causing departure, and they show up as cross-coupling between roll and pitch responses.</p>
-<p>Motor mixing takes the controller's demanded roll, pitch, yaw and throttle and distributes them across the four outputs through a mix matrix determined by geometry. An output numbering error permutes the columns of that matrix, which generically produces a matrix that is not a valid mix for any physical configuration, hence departure. This is why the fault cannot be trimmed out and why the correct response is always to fix the mapping rather than to adjust gains.</p>
-<p>The yaw authority consequence of a reversed propeller is worth stating precisely, since it is the error builders most often rationalise. Yaw is produced by differential reaction torque between the clockwise and anticlockwise pairs, so reversing a propeller on an unreversed motor leaves thrust correct and the torque sign wrong, which breaks the yaw mix while leaving hover apparently functional. The aircraft hovers and will not hold heading, and the cause is invisible to anyone inspecting thrust.</p>
-<p>Finally, on failsafe, there is a design argument for preferring throttle cut over any smarter behaviour on a line-of-sight aircraft without redundant navigation. A failsafe that attempts to fly introduces a mode in which an aircraft with a failed link is under autonomous control with no supervision, and the failure modes of that mode are worse than a controlled fall from the altitude a line-of-sight aircraft typically occupies. The reasoning inverts for a BVLOS platform with redundant GPS, and knowing which regime you are in is the actual competence.</p>`,
+      Beginner: `<p>The flight controller has to know which way it is facing and which motor is which. Both are settings, and both are wrong by default on some builds.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The arrow on the flight controller must point the way the configuration says it does">
+<rect x="60" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="60" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="240" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE BOARD</text>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="#0369a1" opacity="0.2"/>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="none" stroke="#0369a1" stroke-width="4"/>
+<path d="M240 300 V196" stroke="#be123c" stroke-width="9"/>
+<path d="M240 170 l-20 32 h40 z" fill="#be123c"/>
+<text x="240" y="366" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">printed arrow</text>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="760" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE CONFIG</text>
+<text x="760" y="200" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Yaw offset</text>
+<text x="760" y="258" font-size="44" font-weight="800" fill="#0369a1" text-anchor="middle">90 degrees</text>
+<text x="760" y="320" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">if the board is turned</text>
+<text x="760" y="356" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">to clear a connector</text>
+<path d="M430 225 H568" stroke="#be123c" stroke-width="6" stroke-dasharray="12 9"/>
+<text x="500" y="202" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">must agree</text>
+<rect x="60" y="420" width="880" height="80" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="470" font-size="29" font-weight="800" fill="currentColor" text-anchor="middle">Disagree, and the aircraft corrects the wrong axis.</text>
+</svg>
+<figcaption><strong>Boards are routinely mounted turned, to get the USB socket somewhere reachable.</strong> That is fine as long as the yaw offset in the configuration says so. If it does not, the aircraft is perfectly stable about axes that are not the ones you are flying, and it will flip on the first stick input.</figcaption>
+</figure>
+<h3>Three things to set before anything else</h3>
+<table>
+<tr><th>Setting</th><th>What goes wrong if it is off</th></tr>
+<tr><td>Board orientation</td><td>The aircraft flips the moment you move a stick</td></tr>
+<tr><td>Motor order</td><td>It corrects the wrong corner and flips on arming</td></tr>
+<tr><td>Motor direction</td><td>It fights itself and will not lift</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Props off for all of this</span><p>Every one of these checks involves spinning motors, and every one of them exists because something might be wired wrongly. Those two facts together are why the propellers come off first.</p></div>
+<div class="key-idea"><span class="callout-label">The configurator shows you the truth</span><p>Tilt the aircraft and watch the model on screen tilt the same way. If it rolls when you pitch, the orientation is wrong, and no amount of tuning will fix it.</p></div>`,
+      Intermediate: `<p>Orientation and motor mapping are verified, not assumed. Both have a test that takes under a minute and both failures are violent.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The arrow on the flight controller must point the way the configuration says it does">
+<rect x="60" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="60" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="240" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE BOARD</text>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="#0369a1" opacity="0.2"/>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="none" stroke="#0369a1" stroke-width="4"/>
+<path d="M240 300 V196" stroke="#be123c" stroke-width="9"/>
+<path d="M240 170 l-20 32 h40 z" fill="#be123c"/>
+<text x="240" y="366" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">printed arrow</text>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="760" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE CONFIG</text>
+<text x="760" y="200" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Yaw offset</text>
+<text x="760" y="258" font-size="44" font-weight="800" fill="#0369a1" text-anchor="middle">90 degrees</text>
+<text x="760" y="320" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">if the board is turned</text>
+<text x="760" y="356" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">to clear a connector</text>
+<path d="M430 225 H568" stroke="#be123c" stroke-width="6" stroke-dasharray="12 9"/>
+<text x="500" y="202" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">must agree</text>
+<rect x="60" y="420" width="880" height="80" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="470" font-size="29" font-weight="800" fill="currentColor" text-anchor="middle">Disagree, and the aircraft corrects the wrong axis.</text>
+</svg>
+<figcaption><strong>Boards are routinely mounted turned, to get the USB socket somewhere reachable.</strong> That is fine as long as the yaw offset in the configuration says so. If it does not, the aircraft is perfectly stable about axes that are not the ones you are flying, and it will flip on the first stick input.</figcaption>
+</figure>
+<h3>Verifying in order</h3>
+<table>
+<tr><th>Check</th><th>Test</th><th>Pass looks like</th></tr>
+<tr><td>Orientation</td><td>Tilt the aircraft, watch the on-screen model</td><td>It moves the same way you did</td></tr>
+<tr><td>Motor order</td><td>Spin each output in turn from the configurator</td><td>The corner the software names is the one that spins</td></tr>
+<tr><td>Direction</td><td>Watch each motor against the diagram</td><td>Diagonals match</td></tr>
+<tr><td>Stick mapping</td><td>Move each stick, watch the receiver tab</td><td>The right channel moves, the right way</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Reversing a motor is a software change now</span><p>On modern speed controllers direction is set in the configurator, not by swapping two of the three motor wires. Swapping wires still works, but doing it on one motor and the software on another is how a build ends up with two corrections that cancel confusingly.</p></div>
+<div class="warning"><span class="callout-label">A board turned to reach the USB socket is normal</span><p>It is also the single most common cause of a first-flight flip, because the yaw offset gets forgotten. If the socket points sideways, the configuration has to say ninety degrees.</p></div>`,
+      Advanced: `<p>The controller is running a loop that assumes its sensed axes are the aircraft's axes. Everything in setup is about making that assumption true before the loop is given authority.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The arrow on the flight controller must point the way the configuration says it does">
+<rect x="60" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="60" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="240" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE BOARD</text>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="#0369a1" opacity="0.2"/>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="none" stroke="#0369a1" stroke-width="4"/>
+<path d="M240 300 V196" stroke="#be123c" stroke-width="9"/>
+<path d="M240 170 l-20 32 h40 z" fill="#be123c"/>
+<text x="240" y="366" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">printed arrow</text>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="760" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE CONFIG</text>
+<text x="760" y="200" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Yaw offset</text>
+<text x="760" y="258" font-size="44" font-weight="800" fill="#0369a1" text-anchor="middle">90 degrees</text>
+<text x="760" y="320" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">if the board is turned</text>
+<text x="760" y="356" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">to clear a connector</text>
+<path d="M430 225 H568" stroke="#be123c" stroke-width="6" stroke-dasharray="12 9"/>
+<text x="500" y="202" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">must agree</text>
+<rect x="60" y="420" width="880" height="80" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="470" font-size="29" font-weight="800" fill="currentColor" text-anchor="middle">Disagree, and the aircraft corrects the wrong axis.</text>
+</svg>
+<figcaption><strong>Boards are routinely mounted turned, to get the USB socket somewhere reachable.</strong> That is fine as long as the yaw offset in the configuration says so. If it does not, the aircraft is perfectly stable about axes that are not the ones you are flying, and it will flip on the first stick input.</figcaption>
+</figure>
+<h3>Why the failure is immediate and total</h3>
+<p>If the yaw offset is ninety degrees out, a roll disturbance is sensed as pitch. The controller applies a pitch correction, which the airframe experiences as a roll disturbance, which it corrects as pitch. The loop is now positive feedback rather than negative, and the aircraft departs within a fraction of a second of arming.</p>
+<div class="key-idea"><span class="callout-label">Which is why a flip on arming is diagnostic</span><p>It almost always means orientation or motor mapping, and almost never means tuning. A pilot who responds by lowering the gains is treating a sign error as a magnitude problem, and the aircraft will keep flipping with softer timing.</p></div>
+<h3>Sensor alignment and vibration</h3>
+<p>Gyro calibration assumes the aircraft is still and level, so calibrating on a windy day or on a soft surface bakes in an offset. Soft mounting the stack isolates the sensor from frame vibration, and the filters that compensate for what remains cost phase margin, which is why a mechanically clean build tunes better than a noisy one that has been filtered into submission.</p>`,
+      Expert: `<p>Treat setup as establishing the coordinate transform between the sensor frame and the body frame, and the rest follows from that one idea.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The arrow on the flight controller must point the way the configuration says it does">
+<rect x="60" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="60" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="240" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE BOARD</text>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="#0369a1" opacity="0.2"/>
+<rect x="150" y="150" width="180" height="180" rx="14" fill="none" stroke="#0369a1" stroke-width="4"/>
+<path d="M240 300 V196" stroke="#be123c" stroke-width="9"/>
+<path d="M240 170 l-20 32 h40 z" fill="#be123c"/>
+<text x="240" y="366" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">printed arrow</text>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="currentColor" opacity="0.06"/>
+<rect x="580" y="60" width="360" height="330" rx="20" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="760" y="110" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">THE CONFIG</text>
+<text x="760" y="200" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Yaw offset</text>
+<text x="760" y="258" font-size="44" font-weight="800" fill="#0369a1" text-anchor="middle">90 degrees</text>
+<text x="760" y="320" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">if the board is turned</text>
+<text x="760" y="356" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">to clear a connector</text>
+<path d="M430 225 H568" stroke="#be123c" stroke-width="6" stroke-dasharray="12 9"/>
+<text x="500" y="202" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">must agree</text>
+<rect x="60" y="420" width="880" height="80" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="470" font-size="29" font-weight="800" fill="currentColor" text-anchor="middle">Disagree, and the aircraft corrects the wrong axis.</text>
+</svg>
+<figcaption><strong>Boards are routinely mounted turned, to get the USB socket somewhere reachable.</strong> That is fine as long as the yaw offset in the configuration says so. If it does not, the aircraft is perfectly stable about axes that are not the ones you are flying, and it will flip on the first stick input.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Orientation is a rotation, not a preference</span><p>The yaw offset is a rotation matrix applied to sensor output. It only takes values that correspond to how the board is physically mounted, which is why offering it as a free parameter misleads: there is exactly one correct value for a given installation and every other value is a sign or axis error waiting to happen.</p></div>
+<h3>Mixer tables are where frame shape enters</h3>
+<p>The mapping from desired roll, pitch and yaw torques to four motor outputs is the mixer, and it encodes arm geometry. A standard X quad uses a symmetric mixer; a stretched or hybrid frame does not, and using the default on an asymmetric frame produces an aircraft that is subtly coupled in a way no tuning removes.</p>
+<h3>Where the setup order comes from</h3>
+<table>
+<tr><th>Stage</th><th>Depends on</th></tr>
+<tr><td>Orientation</td><td>Nothing; it is first</td></tr>
+<tr><td>Motor map and direction</td><td>Orientation being right</td></tr>
+<tr><td>Receiver and modes</td><td>Nothing, but needed before arming</td></tr>
+<tr><td>Rates and filtering</td><td>Everything above being correct</td></tr>
+<tr><td>PID tuning</td><td>All of it, plus a flyable aircraft</td></tr>
+</table>
+<div class="field"><span class="callout-label">Which is why tuning advice is usually wasted on a new build</span><p>Most aircraft described as untunable have an error in one of the first three rows. Working the list in order costs ten minutes and eliminates the entire class of problems that tuning cannot reach.</p></div>`,
     },
     parts: [
       {
@@ -2344,25 +2882,127 @@ const curriculum: CourseCurriculum = {
       "Control surface check": "Confirming each stick produces the expected response, which on a multirotor means watching the motor outputs.",
     },
     body: {
-      Beginner: `<p>The same checks, every flight, in the same order. Not just after a build.</p>
-<p><strong>Battery.</strong> Right cell count for this aircraft, not puffed or damaged, and resting voltage sensible. A 6S pack in a 4S build destroys everything instantly, and it only takes one distracted moment.</p>
-<p><strong>Props.</strong> Each one tight, each one the right way round for its motor. This is the commonest reason a first flight does not work, and it takes ten seconds to check.</p>
-<p><strong>Airframe.</strong> Arms tight, nothing loose, nothing rubbing, battery strapped so it cannot shift. A battery that moves in flight changes the centre of gravity mid-manoeuvre.</p>
-<p><strong>Controls.</strong> Transmitter on first, always, before the aircraft. Check each stick moves the right output in the right direction.</p>
-<p><strong>Failsafe.</strong> You tested it on the bench with props off. If anything in the radio setup has changed since, test it again.</p>
-<p>Then arm it, hover at knee height for ten seconds, and listen. Most problems announce themselves in those ten seconds, and at that height nothing is damaged.</p>`,
-      Intermediate: `<p>The reason to use a fixed sequence rather than a general look-over is that attention is unreliable and a list is not. Experienced pilots do not skip checks because they are confident, they use the list precisely because confidence is what makes people skip things.</p>
-<p>Transmitter on before the aircraft, and off after, is a rule with a specific reason: powering the aircraft first means it may see no link and enter failsafe, or worse see a spurious signal. The same ordering applies at the end of the session.</p>
-<p>Arming checks in the firmware are a safety feature and disabling them to get airborne is the behaviour that most reliably precedes an incident. A refusal to arm is the aircraft telling you something: the accelerometer is not calibrated, the throttle is not at zero, the angle is too steep, the receiver is not reporting. Each is a real condition and each has a fix.</p>
-<p>The hover at knee height is the cheapest diagnostic in aviation. Ten seconds at a metre reveals an imbalance, a wrong direction, a loose prop, a vibration problem and a drift, and all of them are survivable at that altitude. Pilots who climb straight out discover the same faults where the aircraft has time to accelerate into something.</p>`,
-      Advanced: `<p>Failsafe design is a decision rather than a default, and the right answer depends on the operation. For a line-of-sight aircraft without reliable GPS, throttle cut is correct: a failsafe that attempts to fly puts an unsupervised aircraft under autonomous control with no navigation, and the failure modes of that are worse than a controlled descent from the altitude such aircraft typically occupy. For a GPS-equipped platform operating beyond visual line of sight, return to home is correct for the same reason inverted.</p>
-<p>Testing the failsafe is not optional and it is not satisfied by reading the setting. The test is to arm with props off, switch the transmitter off, and observe. Receivers differ in how they signal loss of link, and a receiver configured to hold its last values rather than to report the failure will leave the aircraft at whatever throttle it last saw, which is the worst possible outcome and is invisible in the configuration screen.</p>
-<p>The pre-flight list's value lies in its invariance. Research on checklist use in aviation and in surgery consistently finds that the benefit comes from the discipline of completion rather than from the individual items, and that the dominant failure mode is partial completion under time pressure. The practical implication for a hobbyist is to make the list short enough that it is always completed rather than comprehensive enough to be impressive.</p>
-<p>On propellers specifically, the failure is worth understanding. A loose propeller on an accelerating motor can unscrew itself, and the self-tightening thread direction only holds under acceleration, not under deceleration. That is why a prop that survived a flight can leave during a descent, and why they are checked by hand every single time rather than when they feel loose.</p>`,
-      Expert: `<p>The arming check set in modern firmware constitutes a lightweight interlock system, and each check maps to a specific hazard: throttle position to inadvertent spool-up, angle to a departure from an unrecoverable attitude, receiver status to a flyaway, and sensor calibration to an inverted feedback sign. Disabling checks to get airborne removes the interlock without removing the hazard, which is the textbook definition of a defeated safety device and is treated as such in every regulated aviation context.</p>
-<p>Failsafe behaviour has an interesting interaction with radio protocol. Modern digital links report link quality continuously and can distinguish degradation from loss, which enables a graduated response: a warning at reduced quality and a failsafe at loss. Older systems present a binary, and the gap between them is where a flyaway lives, since an aircraft at the edge of range may oscillate between states. Configuring a failsafe delay long enough to ride out a momentary dropout and short enough to act on a genuine loss is a real tuning problem with no universally correct answer.</p>
-<p>The low hover is diagnostically rich in a way that is worth making explicit, because it exercises the full control loop at low energy. Vibration shows as motor noise and as a visible shimmer, control sign errors show as an immediate departure, imbalance shows as drift requiring constant correction, and a weak motor shows as a yaw bias. Each of these is a different fault with a different fix, and all of them present within a few seconds at an altitude where the consequence is a scratched frame.</p>
-<p>Finally, there is a documented human factors pattern worth naming. Incident analyses across aviation consistently find that checks are most often omitted when the operator is interrupted mid-sequence, and the mitigation is to restart the list rather than to resume it. For a hobbyist at a flying field, interruption is constant, and adopting the restart rule is a cheap import from a domain that learned it expensively.</p>`,
+      Beginner: `<p>The pre-flight exists because the cheapest moment to find a fault is before the propellers are turning.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The chain of conditions that must all be true before an aircraft will arm">
+<rect x="24" y="40" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="82" font-size="28" font-weight="800" fill="currentColor">Throttle at minimum</text>
+<rect x="24" y="118" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="160" font-size="28" font-weight="800" fill="currentColor">Receiver has a signal</text>
+<rect x="24" y="196" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="238" font-size="28" font-weight="800" fill="currentColor">Aircraft close enough to level</text>
+<rect x="24" y="274" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="316" font-size="28" font-weight="800" fill="currentColor">Gyroscope calibrated and still</text>
+<rect x="24" y="352" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="394" font-size="28" font-weight="800" fill="currentColor">Battery above the arming threshold</text>
+<rect x="24" y="438" width="952" height="94" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">A refusal to arm is a report, not an obstacle.</text>
+<text x="500" y="518" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Read which check failed before you change anything.</text>
+</svg>
+<figcaption><strong>Every one of these has to be true at once, and the controller will tell you which one is not.</strong> Pilots who disable arming checks to get airborne have removed the only thing that was going to mention the failed receiver or the uncalibrated gyro before the aircraft left the ground.</figcaption>
+</figure>
+<h3>Before every flight</h3>
+<table>
+<tr><th>Check</th><th>Looking for</th></tr>
+<tr><td>Propellers</td><td>Cracks, chips, tight nuts, correct direction</td></tr>
+<tr><td>Frame</td><td>Loose arm screws, cracks in the carbon</td></tr>
+<tr><td>Battery</td><td>Charged, not puffed, strap tight</td></tr>
+<tr><td>Antennas</td><td>Attached, not pinched under a strap</td></tr>
+<tr><td>Area</td><td>People, animals, obstacles, a way out</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Test the failsafe on the ground</span><p>With propellers off, switch the transmitter off and confirm the aircraft disarms. A failsafe that has never been tested is a setting, not a safety feature.</p></div>
+<div class="key-idea"><span class="callout-label">Arm last, and away from people</span><p>Battery in, stand clear, then arm. The order matters because an aircraft that arms unexpectedly does so with its propellers at your hands.</p></div>`,
+      Intermediate: `<p>Arming checks are a chain of conditions, and the controller refusing to arm is giving you a diagnosis for free.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The chain of conditions that must all be true before an aircraft will arm">
+<rect x="24" y="40" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="82" font-size="28" font-weight="800" fill="currentColor">Throttle at minimum</text>
+<rect x="24" y="118" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="160" font-size="28" font-weight="800" fill="currentColor">Receiver has a signal</text>
+<rect x="24" y="196" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="238" font-size="28" font-weight="800" fill="currentColor">Aircraft close enough to level</text>
+<rect x="24" y="274" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="316" font-size="28" font-weight="800" fill="currentColor">Gyroscope calibrated and still</text>
+<rect x="24" y="352" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="394" font-size="28" font-weight="800" fill="currentColor">Battery above the arming threshold</text>
+<rect x="24" y="438" width="952" height="94" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">A refusal to arm is a report, not an obstacle.</text>
+<text x="500" y="518" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Read which check failed before you change anything.</text>
+</svg>
+<figcaption><strong>Every one of these has to be true at once, and the controller will tell you which one is not.</strong> Pilots who disable arming checks to get airborne have removed the only thing that was going to mention the failed receiver or the uncalibrated gyro before the aircraft left the ground.</figcaption>
+</figure>
+<h3>What each refusal is telling you</h3>
+<table>
+<tr><th>Refusal</th><th>Usually means</th></tr>
+<tr><td>Throttle not low</td><td>Trim or a mis-set endpoint on the transmitter</td></tr>
+<tr><td>No receiver signal</td><td>Not bound, or the transmitter model is wrong</td></tr>
+<tr><td>Not level</td><td>Genuinely not level, or a bad gyro calibration</td></tr>
+<tr><td>Gyro not calibrated</td><td>It moved during calibration</td></tr>
+<tr><td>Low battery</td><td>The pack, or a sagging connection</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Never disable an arming check to get airborne</span><p>Each one is a condition somebody learned to check the hard way. Turning them off does not fix the condition; it removes the only notification that it exists.</p></div>
+<h3>Failsafe behaviour has to be chosen deliberately</h3>
+<p>What should the aircraft do when the link drops? For a small build without GPS, cutting the motors immediately is usually the safest answer, because an aircraft that keeps flying without control is worse than one that falls where it was. With reliable GPS, a return to home is better. The wrong choice is leaving the default without knowing what it is.</p>`,
+      Advanced: `<p>Pre-flight discipline is the cheapest risk control available, and the reason it is written down is that memory degrades exactly when workload rises.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The chain of conditions that must all be true before an aircraft will arm">
+<rect x="24" y="40" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="82" font-size="28" font-weight="800" fill="currentColor">Throttle at minimum</text>
+<rect x="24" y="118" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="160" font-size="28" font-weight="800" fill="currentColor">Receiver has a signal</text>
+<rect x="24" y="196" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="238" font-size="28" font-weight="800" fill="currentColor">Aircraft close enough to level</text>
+<rect x="24" y="274" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="316" font-size="28" font-weight="800" fill="currentColor">Gyroscope calibrated and still</text>
+<rect x="24" y="352" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="394" font-size="28" font-weight="800" fill="currentColor">Battery above the arming threshold</text>
+<rect x="24" y="438" width="952" height="94" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">A refusal to arm is a report, not an obstacle.</text>
+<text x="500" y="518" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Read which check failed before you change anything.</text>
+</svg>
+<figcaption><strong>Every one of these has to be true at once, and the controller will tell you which one is not.</strong> Pilots who disable arming checks to get airborne have removed the only thing that was going to mention the failed receiver or the uncalibrated gyro before the aircraft left the ground.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">A checklist is for the day you are distracted</span><p>Nobody forgets to check propellers on a calm morning with time in hand. They forget on the third flight, in a hurry, with somebody watching. That is precisely the flight the written list is for, and it is why reciting it from memory does not substitute.</p></div>
+<h3>Layered failsafe</h3>
+<table>
+<tr><th>Layer</th><th>Covers</th></tr>
+<tr><td>Receiver failsafe</td><td>Loss of radio link</td></tr>
+<tr><td>Flight controller failsafe</td><td>Loss of valid receiver data</td></tr>
+<tr><td>Low voltage behaviour</td><td>Pack exhaustion</td></tr>
+<tr><td>Geofence, where fitted</td><td>Straying beyond a boundary</td></tr>
+</table>
+<p>They are independent and they fail independently, which is the point. A receiver whose failsafe is set to hold last position defeats the controller's failsafe entirely, because the controller never sees the signal stop.</p>
+<div class="warning"><span class="callout-label">That combination is the one to check for</span><p>Hold-last-position on the receiver plus cut-on-failsafe on the controller gives an aircraft that flies away at its last commanded throttle. Both settings look sensible on their own.</p></div>`,
+      Expert: `<p>The useful frame is that each check is a barrier, and incidents happen when several are absent at once rather than when one fails.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The chain of conditions that must all be true before an aircraft will arm">
+<rect x="24" y="40" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="82" font-size="28" font-weight="800" fill="currentColor">Throttle at minimum</text>
+<rect x="24" y="118" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="160" font-size="28" font-weight="800" fill="currentColor">Receiver has a signal</text>
+<rect x="24" y="196" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="238" font-size="28" font-weight="800" fill="currentColor">Aircraft close enough to level</text>
+<rect x="24" y="274" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="316" font-size="28" font-weight="800" fill="currentColor">Gyroscope calibrated and still</text>
+<rect x="24" y="352" width="952" height="66" rx="13" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="394" font-size="28" font-weight="800" fill="currentColor">Battery above the arming threshold</text>
+<rect x="24" y="438" width="952" height="94" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">A refusal to arm is a report, not an obstacle.</text>
+<text x="500" y="518" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Read which check failed before you change anything.</text>
+</svg>
+<figcaption><strong>Every one of these has to be true at once, and the controller will tell you which one is not.</strong> Pilots who disable arming checks to get airborne have removed the only thing that was going to mention the failed receiver or the uncalibrated gyro before the aircraft left the ground.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Why near misses matter more than accidents</span><p>A near miss is a barrier that held with nothing behind it. Treating one as a success rather than as information is how an organisation arrives at the accident with the same configuration it had all along. Recording them is cheap and it is the only data most small operations will ever have.</p></div>
+<h3>Normalisation of deviance, concretely</h3>
+<p>The first skipped check is deliberate and reasoned: a short flight, a familiar aircraft, obvious conditions. Nothing happens, so the shortcut is reinforced, and the new baseline shifts. Nothing happens again. The gap between the written procedure and the actual one widens until an event lands in it, and the investigation finds that nobody decided to be unsafe at any point. This is the dominant mechanism in small-operator incidents and it is a social process rather than a technical one.</p>
+<h3>Making the right thing the easy thing</h3>
+<table>
+<tr><th>Instead of</th><th>Do</th></tr>
+<tr><td>A remembered list</td><td>A card on the case lid</td></tr>
+<tr><td>Checking the failsafe occasionally</td><td>Making it step one of the first flight of the day</td></tr>
+<tr><td>Relying on discipline</td><td>Ordering the kit so the check is unavoidable</td></tr>
+</table>
+<div class="field"><span class="callout-label">The designed-in version</span><p>Store the propellers separately from the aircraft. Fitting them becomes a deliberate act that happens at the field, which makes a props-on bench power-up physically awkward rather than merely discouraged. Controls built into the physical arrangement survive the hurried day; controls that rely on remembering do not.</p></div>`,
     },
     labs: [
       {
@@ -2611,24 +3251,173 @@ const curriculum: CourseCurriculum = {
       "Nano category": "Aircraft at or below 250 g all up weight, which carry the lightest obligations.",
     },
     body: {
-      Beginner: `<p>The rules changed substantially in 2021 and became much more workable. The old regime is what most online advice still describes, so check the date on anything you read.</p>
-<p><strong>Weight decides your category.</strong> Nano is 250 g or less and carries the lightest obligations. Micro is up to 2 kg. Small is up to 25 kg. Most five inch builds land in micro, because a 550 g aircraft is comfortably over 250 g.</p>
-<p><strong>Register the aircraft.</strong> Above nano you need a UIN, obtained through the Digital Sky portal. It is per aircraft, not per pilot.</p>
-<p><strong>Get the pilot certificate.</strong> Above nano you need a Remote Pilot Certificate from an authorised training organisation. Nano aircraft flown below the stated height are exempt.</p>
-<p><strong>Check the zone before you fly.</strong> Digital Sky shows an airspace map in green, yellow and red. Green below the stated altitude needs no permission. Yellow needs air traffic clearance. Red is prohibited.</p>
-<p>And the rules that apply everywhere regardless: daylight, within visual line of sight, below the altitude limit for your zone, not over crowds, and not near an airport.</p>`,
-      Intermediate: `<p>The Drone Rules 2021 replaced the 2018 UAS Rules and substantially liberalised the regime, abolishing a long list of approvals and raising the coverage of green zones. The practical consequence is that recreational flying in most of India is legal and straightforward, and most of the discouraging advice online predates the change.</p>
-<p>Category by all up weight determines the obligations, and all up weight means the complete aircraft including battery and propellers. The 250 g nano threshold matters disproportionately because it is the line below which registration and pilot certification fall away, which is why so many commercial products are built to just under it.</p>
-<p>Registration is per airframe through Digital Sky and produces a UIN that must be displayed. The Remote Pilot Certificate is per person, obtained through a DGCA-authorised remote pilot training organisation, and the training is a matter of days rather than months.</p>
-<p>Airspace classification is the check to run before every flight at an unfamiliar location, because zones change and an area that was green last year may not be. Green below the stated altitude requires no permission, yellow requires clearance from air traffic control, and red is prohibited without specific central government approval. The boundary around an airport is the one that catches people, because it extends considerably further than most expect.</p>`,
-      Advanced: `<p>The regulatory architecture is worth understanding structurally because it explains what is and is not required. The rules distinguish by weight and by operation rather than by purpose, so the recreational and commercial distinction that dominates informal discussion is largely absent: a 600 g aircraft requires the same registration and certification whether it is flown for fun or for payment. What differs by purpose is insurance and, for some work, additional permissions.</p>
-<p>The No Permission No Takeoff mechanism, which required a digital permission for every flight, was a central feature of the 2018 regime and its software enforcement has been substantially relaxed. The current position relies more on zone compliance and on operator responsibility, which places a greater burden on the pilot to check rather than on the aircraft to refuse. A pilot who assumes the aircraft will stop them is operating on the old model.</p>
-<p>Insurance is mandated for certain operations and is in any case the practical constraint on anything commercial, since a client will require it. Third party liability for an aircraft operating over people is the exposure that matters, and the premium is modest relative to the risk. A pilot flying for payment without it is uninsurable after the fact.</p>
-<p>Enforcement is real and has been exercised, particularly around airports and sensitive installations, and the penalties under the Aircraft Act are substantial. The practical risk for a hobbyist is less the deliberate violation than the inadvertent one: flying in a yellow zone believing it was green, or near a temporary restriction imposed for an event. Checking Digital Sky each time is cheap and is the mitigation.</p>`,
-      Expert: `<p>India's framework sits within a broader international convergence on risk-based rather than purpose-based regulation, following the direction taken by EASA and the FAA. The underlying logic is that the hazard is a function of kinetic energy, operating environment and population exposure rather than of whether money changed hands, and the weight categories are a crude proxy for the first of these. The SORA methodology used elsewhere formalises the same reasoning for operations outside the standard categories.</p>
-<p>The 250 g threshold recurs across jurisdictions and its basis is a ground impact energy argument: below roughly that mass, terminal kinetic energy falls under thresholds associated with serious head injury in the available literature. The threshold is therefore not arbitrary, though the underlying studies carry substantial uncertainty and the figure is better understood as a regulatory convention informed by evidence than as a hard physical boundary.</p>
-<p>Beyond visual line of sight operation is the frontier and the constraint is detect-and-avoid rather than aircraft capability. An aircraft that cannot sense conflicting traffic cannot be safely integrated into uncontrolled airspace at scale, which is why BVLOS approvals remain case by case and corridor based. The technical approaches, ground-based surveillance, cooperative electronic conspicuity and onboard sense-and-avoid, carry very different cost and coverage profiles, and the regulatory posture reflects which are available.</p>
-<p>Finally, the Unmanned Aircraft System Traffic Management concept, which India is developing alongside other jurisdictions, is the long-run answer to density rather than to individual risk. The architecture separates strategic deconfliction before flight from tactical deconfliction during it, and the regulatory implication is that routine operations in dense airspace will eventually require participation in such a system rather than discretionary compliance with zone maps. A pilot entering the field now should expect the obligations to shift from map-checking toward continuous digital participation.</p>`,
+      Beginner: `<p>Flying legally in India is mostly three questions: how heavy is it, where are you, and are you registered.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Indian drone weight categories from nano to large">
+<rect x="24" y="60" width="180" height="300" rx="14" fill="#0f766e" opacity="0.18"/>
+<text x="114" y="110" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">NANO</text>
+<text x="114" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">up to</text>
+<text x="114" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">250 g</text>
+<rect x="216" y="60" width="180" height="300" rx="14" fill="#0369a1" opacity="0.18"/>
+<text x="306" y="110" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">MICRO</text>
+<text x="306" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">250 g to</text>
+<text x="306" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">2 kg</text>
+<text x="306" y="250" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">a 5 inch</text>
+<text x="306" y="284" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">build is</text>
+<text x="306" y="318" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">here</text>
+<rect x="408" y="60" width="180" height="300" rx="14" fill="#b45309" opacity="0.18"/>
+<text x="498" y="110" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">SMALL</text>
+<text x="498" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">2 to</text>
+<text x="498" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">25 kg</text>
+<rect x="600" y="60" width="180" height="300" rx="14" fill="#7c3aed" opacity="0.18"/>
+<text x="690" y="110" font-size="30" font-weight="800" fill="#7c3aed" text-anchor="middle">MEDIUM</text>
+<text x="690" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">25 to</text>
+<text x="690" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="792" y="60" width="184" height="300" rx="14" fill="#be123c" opacity="0.18"/>
+<text x="884" y="110" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">LARGE</text>
+<text x="884" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">over</text>
+<text x="884" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="24" y="392" width="952" height="124" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">Weight is all up weight, including the battery and the camera.</text>
+<text x="500" y="486" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Which is why a 249 gram aircraft is a deliberate design target.</text>
+</svg>
+<figcaption><strong>The categories are set by all up weight, and the boundaries carry real consequences.</strong> A typical five inch build sits in micro. What each category requires changes, so the figure is a map of the boundaries rather than a statement of current obligations: check the Digital Sky portal for what applies on the day you fly.</figcaption>
+</figure>
+<h3>The categories</h3>
+<p>They are set by all up weight, the aircraft exactly as it flies. A typical five inch build is in the micro category.</p>
+<table>
+<tr><th>Category</th><th>All up weight</th></tr>
+<tr><td>Nano</td><td class="num">up to 250 g</td></tr>
+<tr><td>Micro</td><td class="num">250 g to 2 kg</td></tr>
+<tr><td>Small</td><td class="num">2 to 25 kg</td></tr>
+<tr><td>Medium</td><td class="num">25 to 150 kg</td></tr>
+<tr><td>Large</td><td class="num">over 150 kg</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Zones, in traffic light colours</span><p>Green means fly and log it. Yellow means you need permission first. Red means do not fly. The airspace map on the Digital Sky portal is the authority, and it changes.</p></div>
+<div class="warning"><span class="callout-label">Rules change; this page does not</span><p>Treat everything here as the shape of the system rather than as today's requirements, and check the portal before you fly.</p></div>`,
+      Intermediate: `<p>The weight boundaries matter because obligations attach to them, which is why a 249 gram aircraft is a deliberate engineering target rather than a coincidence.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Indian drone weight categories from nano to large">
+<rect x="24" y="60" width="180" height="300" rx="14" fill="#0f766e" opacity="0.18"/>
+<text x="114" y="110" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">NANO</text>
+<text x="114" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">up to</text>
+<text x="114" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">250 g</text>
+<rect x="216" y="60" width="180" height="300" rx="14" fill="#0369a1" opacity="0.18"/>
+<text x="306" y="110" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">MICRO</text>
+<text x="306" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">250 g to</text>
+<text x="306" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">2 kg</text>
+<text x="306" y="250" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">a 5 inch</text>
+<text x="306" y="284" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">build is</text>
+<text x="306" y="318" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">here</text>
+<rect x="408" y="60" width="180" height="300" rx="14" fill="#b45309" opacity="0.18"/>
+<text x="498" y="110" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">SMALL</text>
+<text x="498" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">2 to</text>
+<text x="498" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">25 kg</text>
+<rect x="600" y="60" width="180" height="300" rx="14" fill="#7c3aed" opacity="0.18"/>
+<text x="690" y="110" font-size="30" font-weight="800" fill="#7c3aed" text-anchor="middle">MEDIUM</text>
+<text x="690" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">25 to</text>
+<text x="690" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="792" y="60" width="184" height="300" rx="14" fill="#be123c" opacity="0.18"/>
+<text x="884" y="110" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">LARGE</text>
+<text x="884" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">over</text>
+<text x="884" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="24" y="392" width="952" height="124" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">Weight is all up weight, including the battery and the camera.</text>
+<text x="500" y="486" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Which is why a 249 gram aircraft is a deliberate design target.</text>
+</svg>
+<figcaption><strong>The categories are set by all up weight, and the boundaries carry real consequences.</strong> A typical five inch build sits in micro. What each category requires changes, so the figure is a map of the boundaries rather than a statement of current obligations: check the Digital Sky portal for what applies on the day you fly.</figcaption>
+</figure>
+<h3>What generally attaches to a flight</h3>
+<table>
+<tr><th>Item</th><th>What it is</th></tr>
+<tr><td>Unique identification number</td><td>Registration for the aircraft, from the portal</td></tr>
+<tr><td>Remote pilot certificate</td><td>Pilot qualification, from an authorised organisation</td></tr>
+<tr><td>Airspace permission</td><td>Needed for a yellow zone, before the flight</td></tr>
+<tr><td>Insurance</td><td>Commonly required for commercial work</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Which of these you need depends on category and purpose</span><p>Nano aircraft and purely recreational flying attract lighter obligations than commercial work on a heavier aircraft. The combination is what determines your position, so look up both rather than one.</p></div>
+<div class="warning"><span class="callout-label">Permission has a lead time</span><p>A yellow zone application is not instant and it can be refused. A client who wants a shoot on Saturday needs to hear about that on Monday, not on Friday evening, which is the main reason this topic sits before the planning deliverable rather than after it.</p></div>`,
+      Advanced: `<p>The regulatory structure is risk-proportionate: obligations scale with the energy the aircraft carries and with the exposure of the people underneath it.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Indian drone weight categories from nano to large">
+<rect x="24" y="60" width="180" height="300" rx="14" fill="#0f766e" opacity="0.18"/>
+<text x="114" y="110" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">NANO</text>
+<text x="114" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">up to</text>
+<text x="114" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">250 g</text>
+<rect x="216" y="60" width="180" height="300" rx="14" fill="#0369a1" opacity="0.18"/>
+<text x="306" y="110" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">MICRO</text>
+<text x="306" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">250 g to</text>
+<text x="306" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">2 kg</text>
+<text x="306" y="250" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">a 5 inch</text>
+<text x="306" y="284" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">build is</text>
+<text x="306" y="318" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">here</text>
+<rect x="408" y="60" width="180" height="300" rx="14" fill="#b45309" opacity="0.18"/>
+<text x="498" y="110" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">SMALL</text>
+<text x="498" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">2 to</text>
+<text x="498" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">25 kg</text>
+<rect x="600" y="60" width="180" height="300" rx="14" fill="#7c3aed" opacity="0.18"/>
+<text x="690" y="110" font-size="30" font-weight="800" fill="#7c3aed" text-anchor="middle">MEDIUM</text>
+<text x="690" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">25 to</text>
+<text x="690" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="792" y="60" width="184" height="300" rx="14" fill="#be123c" opacity="0.18"/>
+<text x="884" y="110" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">LARGE</text>
+<text x="884" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">over</text>
+<text x="884" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="24" y="392" width="952" height="124" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">Weight is all up weight, including the battery and the camera.</text>
+<text x="500" y="486" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Which is why a 249 gram aircraft is a deliberate design target.</text>
+</svg>
+<figcaption><strong>The categories are set by all up weight, and the boundaries carry real consequences.</strong> A typical five inch build sits in micro. What each category requires changes, so the figure is a map of the boundaries rather than a statement of current obligations: check the Digital Sky portal for what applies on the day you fly.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Why 250 grams</span><p>It is approximately where impact energy from a credible fall stops being likely to cause serious injury. The threshold is not arbitrary and it is broadly consistent internationally, which is why so many consumer aircraft are specified at 249 grams.</p></div>
+<h3>Where operators get caught</h3>
+<table>
+<tr><th>Mistake</th><th>Why it happens</th></tr>
+<tr><td>Weighing without the battery or camera</td><td>Puts the aircraft a category lower on paper</td></tr>
+<tr><td>Assuming last month's zone</td><td>Classifications are revised</td></tr>
+<tr><td>Treating a hobby flight as exempt when paid</td><td>Payment usually changes the category of operation</td></tr>
+<tr><td>Flying beyond visual line of sight</td><td>Needs specific approval almost everywhere</td></tr>
+</table>
+<h3>Record keeping is part of compliance</h3>
+<p>Dates, locations, aircraft, pilot, duration and any incident. It is the evidence that an operation is being run rather than improvised, it is the first thing requested after any event, and it cannot be reconstructed afterwards with any credibility.</p>`,
+      Expert: `<p>Compliance is a commercial capability rather than an overhead, and it is worth being explicit about why.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Indian drone weight categories from nano to large">
+<rect x="24" y="60" width="180" height="300" rx="14" fill="#0f766e" opacity="0.18"/>
+<text x="114" y="110" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">NANO</text>
+<text x="114" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">up to</text>
+<text x="114" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">250 g</text>
+<rect x="216" y="60" width="180" height="300" rx="14" fill="#0369a1" opacity="0.18"/>
+<text x="306" y="110" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">MICRO</text>
+<text x="306" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">250 g to</text>
+<text x="306" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">2 kg</text>
+<text x="306" y="250" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">a 5 inch</text>
+<text x="306" y="284" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">build is</text>
+<text x="306" y="318" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">here</text>
+<rect x="408" y="60" width="180" height="300" rx="14" fill="#b45309" opacity="0.18"/>
+<text x="498" y="110" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">SMALL</text>
+<text x="498" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">2 to</text>
+<text x="498" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">25 kg</text>
+<rect x="600" y="60" width="180" height="300" rx="14" fill="#7c3aed" opacity="0.18"/>
+<text x="690" y="110" font-size="30" font-weight="800" fill="#7c3aed" text-anchor="middle">MEDIUM</text>
+<text x="690" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">25 to</text>
+<text x="690" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="792" y="60" width="184" height="300" rx="14" fill="#be123c" opacity="0.18"/>
+<text x="884" y="110" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">LARGE</text>
+<text x="884" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">over</text>
+<text x="884" y="192" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">150 kg</text>
+<rect x="24" y="392" width="952" height="124" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">Weight is all up weight, including the battery and the camera.</text>
+<text x="500" y="486" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Which is why a 249 gram aircraft is a deliberate design target.</text>
+</svg>
+<figcaption><strong>The categories are set by all up weight, and the boundaries carry real consequences.</strong> A typical five inch build sits in micro. What each category requires changes, so the figure is a map of the boundaries rather than a statement of current obligations: check the Digital Sky portal for what applies on the day you fly.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The asymmetry that decides it</span><p>An operator who can produce a registration, a certificate, a permission reference and a flight log wins work that an operator who cannot will never be offered. Corporate clients and insurers ask for exactly those four things, and the cost of having them is far below the value of the contracts that require them.</p></div>
+<h3>Where the regime is heading</h3>
+<p>The direction of travel internationally is toward remote identification, so an aircraft broadcasts its identity and position to anyone with a receiver, and toward traffic management systems that handle deconfliction at low level. Both favour operators who are already registered and already logging, and both make unregistered flying progressively more visible rather than less.</p>
+<h3>The refusal is part of the job</h3>
+<p>Some requested flights cannot be flown legally, and the professional answer is to say so and propose the alternative. Documenting that you identified the constraint protects you if somebody else flies the job and it goes wrong, and it is the single clearest signal to a client that the rest of your work is done properly.</p>
+<div class="field"><span class="callout-label">What to keep, as a minimum</span><p>Registration certificate, pilot certificate, insurance schedule, a permission reference for each controlled flight, and a flight log with dates, locations and durations. Five documents, all of them small, and together they are the difference between an operation and a hobby that invoices.</p></div>`,
     },
     questions: [
       {
@@ -2777,23 +3566,137 @@ const curriculum: CourseCurriculum = {
       "Operational limitations": "The conditions under which you will not fly, decided in advance rather than on the day.",
     },
     body: {
-      Beginner: `<p>Before any flight that is not in your own back garden, write three things down.</p>
-<p><strong>Where and when.</strong> Exact location, date, time, and how high you intend to go. Check the zone on Digital Sky for that exact spot, because zones are not uniform across a city.</p>
-<p><strong>What could go wrong and who it would affect.</strong> People below, roads, buildings, livestock, other aircraft. Then what you will do about each: a different takeoff point, a time of day with fewer people, a spotter, a lower altitude.</p>
-<p><strong>What would make you not fly.</strong> Decide the wind limit, the visibility limit and the battery limit now, in the calm, rather than on the day with a client watching.</p>
-<p>And the part nobody teaches: <strong>be ready to say no</strong>. A client will ask you to fly over a crowd, or closer to a building than you should, or in a red zone, and usually they will not know they are asking for something illegal. Explaining why, and offering what you can do instead, is part of the job.</p>`,
-      Intermediate: `<p>A flight plan is a document rather than an intention, and writing it down changes the decisions it contains. Location to a coordinate, date and window, maximum altitude, category and registration of the aircraft, pilot certificate number, airspace classification checked on the day, and the limits under which you will abandon the flight.</p>
-<p>The risk assessment should identify the hazard, the people exposed, and the mitigation, and the most effective mitigations are nearly always about where and when rather than about equipment. Moving the takeoff point, choosing an hour with fewer people, and planning a flight path that never crosses a road achieve more than any onboard system.</p>
-<p>Setting operational limitations in advance is the single most useful professional habit in this field, because the pressure on the day is real and it is specifically designed to erode them. A wind limit decided in a quiet room is a limit; a wind limit decided while a client watches the clock is a negotiation.</p>
-<p>Refusal is a skill with a structure: state what cannot be done, state why in terms of the rule rather than your preference, and offer the nearest thing that is possible. Most clients asking for an illegal flight do not know it is illegal, and a pilot who can explain the constraint and propose an alternative keeps the relationship and the licence.</p>`,
-      Advanced: `<p>Risk assessment in this domain borrows usefully from the SORA approach used in European regulation, which separates ground risk from air risk and treats mitigation as reducing one or the other. Ground risk is a function of population density under the flight path and of the aircraft's impact energy; air risk is a function of the airspace and of other traffic. Framing a job this way makes the mitigations obvious, since each one addresses a specific term.</p>
-<p>The human factors dimension is where the field's incidents concentrate. Analyses of commercial drone incidents repeatedly find a recognisable pattern: a pilot operating at the edge of their limits under schedule pressure, having already made one accommodation, making a second. The first accommodation is the critical one, because it reframes the limits as negotiable and every subsequent decision starts from the new position.</p>
-<p>The defence is structural rather than motivational. Limits written down before the job, a stated abort criterion, and a habit of stating the limits to the client at the point of quoting rather than at the point of flying. A client who has been told in writing that the flight does not happen above a given wind speed is far less likely to push when it is reached, and the pilot has not had to defend the limit under pressure.</p>
-<p>On refusal specifically, there is a commercial argument worth internalising. A pilot who has visibly declined an unsafe job is more credible on every subsequent one, and the client who pushed hardest usually respects it afterwards. The pilot who accepts is the one who carries the liability when something goes wrong, and the client's instruction is not a defence.</p>`,
-      Expert: `<p>The liability structure is the part that is usually misunderstood and it is worth being precise. The remote pilot is the commander of the aircraft and carries the operational responsibility, and a client's instruction does not transfer it. Contractual indemnities between the operator and the client do not affect liability to a third party injured on the ground, and insurance will decline a claim arising from an operation outside the permitted envelope. The pilot who flies an illegal flight at a client's request therefore holds the entire downside.</p>
-<p>Risk assessment methodology has converged on the ground-risk and air-risk decomposition because the two have different mitigations and different residual uncertainties. Ground risk is comparatively tractable: population density is estimable, impact energy is calculable, and mitigations such as containment and operational volume reduction are verifiable. Air risk is harder because the traffic population is partly uncooperative and partly unobservable, which is why airspace classification does so much of the work in the regulations.</p>
-<p>Normalisation of deviance is the specific failure mode this topic exists to counter, and its mechanism is well documented across safety-critical industries. A deviation that produces no bad outcome is interpreted as evidence that the margin was excessive, the limit is implicitly revised, and the cycle repeats until a deviation coincides with an unfavourable condition. The countermeasure that works is not exhortation but structural: limits recorded in advance, deviations recorded when they occur, and periodic review of the record, which makes the drift visible in a way that no individual decision is.</p>
-<p>Finally, the professional posture that distinguishes a sustainable operator is treating the flight plan as a record rather than as preparation. A plan written, retained and compared against what actually happened accumulates into evidence of competence, supports an insurance claim, and answers a regulator's question months later. A pilot with a file of plans and logs is in an entirely different position from one with a memory and a card full of footage.</p>`,
+      Beginner: `<p>Planning a flight means answering a few questions before you leave, not working them out at the site.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The planning questions that must all be answered before a flight is a go">
+<rect x="24" y="40" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="84" font-size="29" font-weight="800" fill="currentColor">What zone is it, and on what date did I check?</text>
+<rect x="24" y="124" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="168" font-size="29" font-weight="800" fill="currentColor">Who is underneath, and can I keep clear of them?</text>
+<rect x="24" y="208" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="252" font-size="29" font-weight="800" fill="currentColor">What is the weather doing in my window?</text>
+<rect x="24" y="292" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="336" font-size="29" font-weight="800" fill="currentColor">Where does it go if a motor stops?</text>
+<rect x="24" y="386" width="464" height="140" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="256" y="440" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">ALL FOUR</text>
+<text x="256" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">answered in writing</text>
+<text x="256" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">then it is a go</text>
+<rect x="512" y="386" width="464" height="140" rx="16" fill="#be123c" opacity="0.16"/>
+<text x="744" y="440" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">ANY ONE</text>
+<text x="744" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">unanswered</text>
+<text x="744" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">it is not a go yet</text>
+</svg>
+<figcaption><strong>The fourth question is the one that gets skipped, and it is the one that decides where the wreckage lands.</strong> A flight path planned so that a lost motor puts the aircraft over an empty car park rather than over the guests is the difference between an incident and an injury, and it costs nothing but thinking about it beforehand.</figcaption>
+</figure>
+<h3>What to settle beforehand</h3>
+<table>
+<tr><th>Question</th><th>Where the answer comes from</th></tr>
+<tr><td>Which zone is this?</td><td>The airspace map, checked on the day</td></tr>
+<tr><td>Who will be underneath?</td><td>Looking at the site, and asking the client</td></tr>
+<tr><td>What will the weather do?</td><td>A forecast for your window, not for the day</td></tr>
+<tr><td>What are my limits?</td><td>Decided in advance, written down</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Decide your limits when you are calm</span><p>Wind speed, visibility, light and battery. A number chosen at home is a limit. A number chosen at the site with a client waiting is a negotiation, and you will lose it.</p></div>
+<div class="warning"><span class="callout-label">Never fly directly over people</span><p>Not over a crowd, not over the one person who walked into shot. If the flight only works by flying over people, the flight does not work.</p></div>`,
+      Intermediate: `<p>A plan is only useful if it is specific enough that somebody else could fly it, which is also the standard the deliverable for this topic is marked against.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The planning questions that must all be answered before a flight is a go">
+<rect x="24" y="40" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="84" font-size="29" font-weight="800" fill="currentColor">What zone is it, and on what date did I check?</text>
+<rect x="24" y="124" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="168" font-size="29" font-weight="800" fill="currentColor">Who is underneath, and can I keep clear of them?</text>
+<rect x="24" y="208" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="252" font-size="29" font-weight="800" fill="currentColor">What is the weather doing in my window?</text>
+<rect x="24" y="292" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="336" font-size="29" font-weight="800" fill="currentColor">Where does it go if a motor stops?</text>
+<rect x="24" y="386" width="464" height="140" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="256" y="440" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">ALL FOUR</text>
+<text x="256" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">answered in writing</text>
+<text x="256" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">then it is a go</text>
+<rect x="512" y="386" width="464" height="140" rx="16" fill="#be123c" opacity="0.16"/>
+<text x="744" y="440" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">ANY ONE</text>
+<text x="744" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">unanswered</text>
+<text x="744" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">it is not a go yet</text>
+</svg>
+<figcaption><strong>The fourth question is the one that gets skipped, and it is the one that decides where the wreckage lands.</strong> A flight path planned so that a lost motor puts the aircraft over an empty car park rather than over the guests is the difference between an incident and an injury, and it costs nothing but thinking about it beforehand.</figcaption>
+</figure>
+<h3>Ground risk and air risk are separate problems</h3>
+<table>
+<tr><th></th><th>Ground risk</th><th>Air risk</th></tr>
+<tr><td>Who is exposed</td><td>People and property below</td><td>Other aircraft</td></tr>
+<tr><td>Mitigated by</td><td>Distance, barriers, the chosen path</td><td>Altitude limits, timing, permission</td></tr>
+<tr><td>Fails when</td><td>The crowd moves unexpectedly</td><td>You assumed the zone</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Plan the failure, not just the flight</span><p>Where does the aircraft go if a motor stops here? If the honest answer is into the seated guests, the path is wrong regardless of how good the shot is. Designing the route so that a failure lands somewhere empty is the single most effective mitigation available, and it is free.</p></div>
+<div class="warning"><span class="callout-label">Write the abort criteria down before you fly</span><p>Wind above a figure, visibility below a figure, anyone entering the area, any unexpected behaviour. Criteria written in advance get used. Criteria invented mid-flight get argued with.</p></div>`,
+      Advanced: `<p>The plan is also the record. If anything happens, it is the document that shows the flight was considered rather than improvised, and it cannot be written afterwards with any credibility.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The planning questions that must all be answered before a flight is a go">
+<rect x="24" y="40" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="84" font-size="29" font-weight="800" fill="currentColor">What zone is it, and on what date did I check?</text>
+<rect x="24" y="124" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="168" font-size="29" font-weight="800" fill="currentColor">Who is underneath, and can I keep clear of them?</text>
+<rect x="24" y="208" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="252" font-size="29" font-weight="800" fill="currentColor">What is the weather doing in my window?</text>
+<rect x="24" y="292" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="336" font-size="29" font-weight="800" fill="currentColor">Where does it go if a motor stops?</text>
+<rect x="24" y="386" width="464" height="140" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="256" y="440" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">ALL FOUR</text>
+<text x="256" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">answered in writing</text>
+<text x="256" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">then it is a go</text>
+<rect x="512" y="386" width="464" height="140" rx="16" fill="#be123c" opacity="0.16"/>
+<text x="744" y="440" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">ANY ONE</text>
+<text x="744" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">unanswered</text>
+<text x="744" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">it is not a go yet</text>
+</svg>
+<figcaption><strong>The fourth question is the one that gets skipped, and it is the one that decides where the wreckage lands.</strong> A flight path planned so that a lost motor puts the aircraft over an empty car park rather than over the guests is the difference between an incident and an injury, and it costs nothing but thinking about it beforehand.</figcaption>
+</figure>
+<table>
+<tr><th>Section</th><th>Must contain</th></tr>
+<tr><td>Location</td><td>Coordinates, not a place name</td></tr>
+<tr><td>Airspace</td><td>Classification and the date it was checked</td></tr>
+<tr><td>Aircraft</td><td>Registration, category, weight as flown</td></tr>
+<tr><td>Pilot</td><td>Certificate number</td></tr>
+<tr><td>Window</td><td>Date and times, not just a day</td></tr>
+<tr><td>Limits</td><td>Numbers, with abort criteria</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Site survey before the day where it matters</span><p>Obstructions, overhead lines, the surface you will take off from, where people will be, and where the nearest hospital is. A survey the morning of a wedding is not a survey; it is a hope that the site is as described.</p></div>
+<h3>Refusing well is a professional skill</h3>
+<p>Saying a job cannot be flown as requested is not losing the work. Explaining why, and proposing the version that can be flown, is usually what wins it, because the client hears somebody who knows the constraints rather than somebody inventing obstacles.</p>`,
+      Expert: `<p>Specific operations risk assessment is the formal version of all this: characterise the ground and air risk, apply mitigations, and show the residual risk is acceptable. Small operations do not need the full apparatus, but the logic is the same and borrowing it improves an ordinary plan.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The planning questions that must all be answered before a flight is a go">
+<rect x="24" y="40" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="84" font-size="29" font-weight="800" fill="currentColor">What zone is it, and on what date did I check?</text>
+<rect x="24" y="124" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="168" font-size="29" font-weight="800" fill="currentColor">Who is underneath, and can I keep clear of them?</text>
+<rect x="24" y="208" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="252" font-size="29" font-weight="800" fill="currentColor">What is the weather doing in my window?</text>
+<rect x="24" y="292" width="952" height="70" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="336" font-size="29" font-weight="800" fill="currentColor">Where does it go if a motor stops?</text>
+<rect x="24" y="386" width="464" height="140" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="256" y="440" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">ALL FOUR</text>
+<text x="256" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">answered in writing</text>
+<text x="256" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">then it is a go</text>
+<rect x="512" y="386" width="464" height="140" rx="16" fill="#be123c" opacity="0.16"/>
+<text x="744" y="440" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">ANY ONE</text>
+<text x="744" y="486" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">unanswered</text>
+<text x="744" y="514" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">it is not a go yet</text>
+</svg>
+<figcaption><strong>The fourth question is the one that gets skipped, and it is the one that decides where the wreckage lands.</strong> A flight path planned so that a lost motor puts the aircraft over an empty car park rather than over the guests is the difference between an incident and an injury, and it costs nothing but thinking about it beforehand.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Mitigations are not equal</span><p>A barrier that physically prevents access beats a briefing that asks people to stay back, which beats a plan that assumes they will. Rank mitigations by whether they survive somebody not cooperating, because on the day somebody will not.</p></div>
+<h3>The containment question</h3>
+<p>What is the largest area the aircraft could reach if control were lost, and is that area acceptable? It is a harder question than the planned path and it is the one that actually bounds the risk. An aircraft with a working geofence and a tested failsafe has a smaller containment area than an identical one without, and that difference is what the mitigations are buying.</p>
+<h3>Why the written plan outlives the flight</h3>
+<table>
+<tr><th>Reader</th><th>What they want from it</th></tr>
+<tr><td>A second pilot</td><td>Enough to fly it without calling you</td></tr>
+<tr><td>The client</td><td>Confidence, and the constraints stated early</td></tr>
+<tr><td>An insurer</td><td>Evidence the risk was assessed</td></tr>
+<tr><td>An investigator</td><td>What was known and decided beforehand</td></tr>
+</table>
+<div class="field"><span class="callout-label">Write it for the investigator</span><p>It is the most demanding of the four readers and the only one who turns up when things have gone wrong. A plan that satisfies them satisfies the other three automatically, and the extra effort is perhaps twenty minutes.</p></div>`,
     },
     scenarios: [
       {
@@ -3060,24 +3963,159 @@ const curriculum: CourseCurriculum = {
       "Motor saturation": "A motor commanded beyond full output, visible in the log, which means the controller ran out of authority.",
     },
     body: {
-      Beginner: `<p>Your first hover is a test, not a flight. Go to about a metre, hold it there, and watch and listen for ten seconds.</p>
-<p><strong>What you are checking:</strong> does it hold roughly still, does it sound smooth, does it drift steadily in one direction, is any motor noticeably hotter than the others when you land?</p>
-<p>If it drifts, do not just trim it out on the transmitter. A persistent drift has a cause: the accelerometer was calibrated on a slope, the battery is not centred, a motor is weak, or a prop is damaged. Trimming hides it and the cause is still there.</p>
-<p>When you crash, and you will, <strong>stop before you tidy up</strong>. Take photographs where it landed. Note which way it was pointing and what you were doing. Then download the blackbox log before you change anything.</p>
-<p>Repairing destroys the evidence. The broken arm tells you what broke on impact, which is almost never why it came down.</p>
-<p>And one habit worth forming now: <strong>land and check motor temperatures after every early flight</strong>. A motor warmer than the others is working harder, which means a bent shaft, a damaged prop or a failing bearing, and it is far cheaper to find on the ground.</p>`,
-      Intermediate: `<p>The low hover is the highest-information manoeuvre available because it exercises the entire control loop at minimal energy. Vibration shows as audible noise and a visible shimmer, a control sign error shows as immediate departure, imbalance shows as a drift needing constant correction, and a weak motor shows as a yaw bias. Four different faults, four distinguishable signatures, all within ten seconds at an altitude where the consequence is a scratch.</p>
-<p>Drift should be diagnosed rather than trimmed. The causes are a short list: accelerometer calibration performed on a surface that was not level, a battery mounted off centre, a motor producing less thrust than its neighbours, a damaged or unbalanced propeller, or a bent motor shaft from a previous landing. Each has a specific check, and offsetting the sticks conceals all of them while consuming control authority that is then unavailable for disturbance rejection.</p>
-<p>After a crash the discipline is to treat the site as evidence. Photograph where it landed and its orientation, note what you were doing and what you heard, and download the blackbox log before touching anything. The log holds gyro traces, motor outputs and stick inputs at high rate, and it usually answers the question that the wreckage cannot.</p>
-<p>The key distinction in crash analysis is between what broke on impact and what caused the descent. A snapped arm is almost always the former. The log shows whether a motor output saturated, whether the gyro showed a departure before any input, whether the link was lost, or whether the aircraft simply ran out of thrust.</p>`,
-      Advanced: `<p>Blackbox analysis has a small number of characteristic signatures worth learning because they cover most incidents. A motor output pinned at maximum with the aircraft still rotating is control saturation, meaning the controller ran out of authority, which points at an underpowered build, a failed motor or an extreme attitude. A sudden step in one motor's output with a corresponding gyro spike points at a desync or a mechanical failure of that arm. A gyro trace that departs with no preceding stick input and no motor anomaly points at an orientation or mixing error.</p>
-<p>Loss of link appears distinctly, as inputs freezing or going to failsafe values while the aircraft continues under control, and distinguishing it from a transmitter problem requires the receiver's link quality trace. This is the specific reason to log link quality: without it, a flyaway and a radio failure are indistinguishable after the fact, and they have completely different remedies.</p>
-<p>Vibration shows in the log as broadband noise on the gyro traces, and its frequency content identifies the source. Noise at the motor fundamental points at an unbalanced propeller or a bent shaft; noise at higher harmonics points at a bearing; noise correlated with throttle rather than with a fixed frequency points at a frame resonance. The spectral view is therefore more useful than the time view for this class of problem.</p>
-<p>Post-crash inspection should precede repair and should be systematic: check each motor for shaft runout by spinning it by hand, check each propeller for damage and balance, check every solder joint on the arm that took the impact, and check the frame for delamination at the bolt holes. Carbon fibre fails in ways that are not visible, and an arm that looks intact after an impact can fail in flight next time.</p>`,
-      Expert: `<p>The blackbox log is effectively a flight data recorder at a sample rate higher than most manned aviation equivalents, and treating incident analysis with the corresponding seriousness is the single largest difference between a pilot who improves and one who repeats failures. The analytic discipline is the same as elsewhere: establish the timeline, identify the first anomalous sample, and reason forward rather than backward from the outcome.</p>
-<p>Control saturation deserves particular attention because it is both common and commonly misread. When a motor output reaches its limit the control loop is open for that axis, integral terms wind up, and the recovery when authority returns is characteristically violent. The visible crash is often this recovery rather than the original disturbance, which means the proximate cause in the wreckage and the root cause in the log can be several seconds apart.</p>
-<p>On the hover as a diagnostic, the information-theoretic argument is that the manoeuvre places the system at an operating point where all four control axes are active with small inputs, so the loop's behaviour is observable without the nonlinearities that dominate at high rates. This is why faults that are invisible in aggressive flight, where everything is saturated and noisy anyway, present clearly at a hover.</p>
-<p>Finally, there is an argument for treating logs as a corpus rather than as individual incidents. A pilot who retains logs accumulates a baseline for their own aircraft: normal vibration levels, normal motor output balance, normal hover throttle. Deviation from that baseline is detectable long before it causes a failure, which converts crash analysis into condition monitoring. Almost nobody does this, and it is available at zero marginal cost to anyone already logging.</p>`,
+      Beginner: `<p>The first flight is a test, not a display. Keep it low, keep it short, and change one thing at a time.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="What the pattern of damage after a crash tells you about the cause">
+<rect x="24" y="40" width="464" height="212" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="56" y="92" font-size="30" font-weight="800" fill="#b45309">All four props broken</text>
+<text x="56" y="142" font-size="27" fill="currentColor" opacity="0.85">evenly, blades snapped</text>
+<text x="56" y="186" font-size="28" font-weight="800" fill="currentColor">It was still flying</text>
+<text x="56" y="226" font-size="27" fill="currentColor" opacity="0.8">when it hit. Pilot or power.</text>
+<rect x="512" y="40" width="464" height="212" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="544" y="92" font-size="30" font-weight="800" fill="#be123c">One prop intact</text>
+<text x="544" y="142" font-size="27" fill="currentColor" opacity="0.85">three broken</text>
+<text x="544" y="186" font-size="28" font-weight="800" fill="currentColor">That motor had stopped</text>
+<text x="544" y="226" font-size="27" fill="currentColor" opacity="0.8">before impact. Find out why.</text>
+<rect x="24" y="276" width="464" height="212" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="328" font-size="30" font-weight="800" fill="#0369a1">Nothing broken</text>
+<text x="56" y="378" font-size="27" fill="currentColor" opacity="0.85">it came down flat</text>
+<text x="56" y="422" font-size="28" font-weight="800" fill="currentColor">Power was cut</text>
+<text x="56" y="462" font-size="27" fill="currentColor" opacity="0.8">Failsafe, or a brown-out.</text>
+<rect x="512" y="276" width="464" height="212" rx="16" fill="#7c3aed" opacity="0.13"/>
+<text x="544" y="328" font-size="30" font-weight="800" fill="#7c3aed">One arm sheared</text>
+<text x="544" y="378" font-size="27" fill="currentColor" opacity="0.85">props otherwise fine</text>
+<text x="544" y="422" font-size="28" font-weight="800" fill="currentColor">A structural failure</text>
+<text x="544" y="462" font-size="27" fill="currentColor" opacity="0.8">Check the other three arms.</text>
+<text x="500" y="536" font-size="28" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Photograph it where it lands, before you pick it up.</text>
+</svg>
+<figcaption><strong>The wreckage is evidence, and picking it up destroys most of it.</strong> Which propellers broke and which did not separates a motor that stopped in the air from one that was running at impact, and that single distinction sends you to completely different parts of the aircraft.</figcaption>
+</figure>
+<h3>The first two minutes</h3>
+<table>
+<tr><th>Step</th><th>Looking for</th></tr>
+<tr><td>Arm, throttle up slowly</td><td>Does it try to tip? Disarm if so.</td></tr>
+<tr><td>Hover at knee height</td><td>Does it drift one way consistently?</td></tr>
+<tr><td>Land and feel the motors</td><td>Any one hotter than the others?</td></tr>
+<tr><td>Check every screw</td><td>Vibration finds the loose ones</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Consistent drift is trim, not wind</span><p>If it always pulls the same way in still air, the aircraft needs levelling in the configurator. If it wanders differently each time, that is wind or a vibration problem.</p></div>
+<div class="warning"><span class="callout-label">A tip on take-off means stop</span><p>Do not try harder with more throttle. It is almost always motor order or orientation, and a second attempt breaks propellers rather than discovering anything new.</p></div>`,
+      Intermediate: `<p>Early flights are about collecting information, so fly them in a way that produces information: short, low, one change at a time, and a check between each.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="What the pattern of damage after a crash tells you about the cause">
+<rect x="24" y="40" width="464" height="212" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="56" y="92" font-size="30" font-weight="800" fill="#b45309">All four props broken</text>
+<text x="56" y="142" font-size="27" fill="currentColor" opacity="0.85">evenly, blades snapped</text>
+<text x="56" y="186" font-size="28" font-weight="800" fill="currentColor">It was still flying</text>
+<text x="56" y="226" font-size="27" fill="currentColor" opacity="0.8">when it hit. Pilot or power.</text>
+<rect x="512" y="40" width="464" height="212" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="544" y="92" font-size="30" font-weight="800" fill="#be123c">One prop intact</text>
+<text x="544" y="142" font-size="27" fill="currentColor" opacity="0.85">three broken</text>
+<text x="544" y="186" font-size="28" font-weight="800" fill="currentColor">That motor had stopped</text>
+<text x="544" y="226" font-size="27" fill="currentColor" opacity="0.8">before impact. Find out why.</text>
+<rect x="24" y="276" width="464" height="212" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="328" font-size="30" font-weight="800" fill="#0369a1">Nothing broken</text>
+<text x="56" y="378" font-size="27" fill="currentColor" opacity="0.85">it came down flat</text>
+<text x="56" y="422" font-size="28" font-weight="800" fill="currentColor">Power was cut</text>
+<text x="56" y="462" font-size="27" fill="currentColor" opacity="0.8">Failsafe, or a brown-out.</text>
+<rect x="512" y="276" width="464" height="212" rx="16" fill="#7c3aed" opacity="0.13"/>
+<text x="544" y="328" font-size="30" font-weight="800" fill="#7c3aed">One arm sheared</text>
+<text x="544" y="378" font-size="27" fill="currentColor" opacity="0.85">props otherwise fine</text>
+<text x="544" y="422" font-size="28" font-weight="800" fill="currentColor">A structural failure</text>
+<text x="544" y="462" font-size="27" fill="currentColor" opacity="0.8">Check the other three arms.</text>
+<text x="500" y="536" font-size="28" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Photograph it where it lands, before you pick it up.</text>
+</svg>
+<figcaption><strong>The wreckage is evidence, and picking it up destroys most of it.</strong> Which propellers broke and which did not separates a motor that stopped in the air from one that was running at impact, and that single distinction sends you to completely different parts of the aircraft.</figcaption>
+</figure>
+<h3>Reading what the aircraft is telling you</h3>
+<table>
+<tr><th>Symptom</th><th>Usually</th></tr>
+<tr><td>Fast shaking, a buzz</td><td>Vibration: a damaged prop or a bent shaft</td></tr>
+<tr><td>Slow wallowing</td><td>Gains too low, or a loose stack mount</td></tr>
+<tr><td>One motor hot</td><td>That corner is working harder: bent arm or a dragging bearing</td></tr>
+<tr><td>Drifts one way in still air</td><td>Accelerometer needs levelling</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Propeller balance is worth the five minutes</span><p>Most hover vibration is one propeller. Swapping props is a faster diagnostic than any amount of filter tuning, and it is the first thing to try rather than the last.</p></div>
+<div class="warning"><span class="callout-label">Hot is a measurement you can take with a finger</span><p>Warm is normal. Too hot to hold means that corner is drawing far more current than the others, and flying it again will destroy the motor or the controller.</p></div>`,
+      Advanced: `<p>A crash is the most information the aircraft will ever give you, and most of it is destroyed in the first thirty seconds by picking everything up.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="What the pattern of damage after a crash tells you about the cause">
+<rect x="24" y="40" width="464" height="212" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="56" y="92" font-size="30" font-weight="800" fill="#b45309">All four props broken</text>
+<text x="56" y="142" font-size="27" fill="currentColor" opacity="0.85">evenly, blades snapped</text>
+<text x="56" y="186" font-size="28" font-weight="800" fill="currentColor">It was still flying</text>
+<text x="56" y="226" font-size="27" fill="currentColor" opacity="0.8">when it hit. Pilot or power.</text>
+<rect x="512" y="40" width="464" height="212" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="544" y="92" font-size="30" font-weight="800" fill="#be123c">One prop intact</text>
+<text x="544" y="142" font-size="27" fill="currentColor" opacity="0.85">three broken</text>
+<text x="544" y="186" font-size="28" font-weight="800" fill="currentColor">That motor had stopped</text>
+<text x="544" y="226" font-size="27" fill="currentColor" opacity="0.8">before impact. Find out why.</text>
+<rect x="24" y="276" width="464" height="212" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="328" font-size="30" font-weight="800" fill="#0369a1">Nothing broken</text>
+<text x="56" y="378" font-size="27" fill="currentColor" opacity="0.85">it came down flat</text>
+<text x="56" y="422" font-size="28" font-weight="800" fill="currentColor">Power was cut</text>
+<text x="56" y="462" font-size="27" fill="currentColor" opacity="0.8">Failsafe, or a brown-out.</text>
+<rect x="512" y="276" width="464" height="212" rx="16" fill="#7c3aed" opacity="0.13"/>
+<text x="544" y="328" font-size="30" font-weight="800" fill="#7c3aed">One arm sheared</text>
+<text x="544" y="378" font-size="27" fill="currentColor" opacity="0.85">props otherwise fine</text>
+<text x="544" y="422" font-size="28" font-weight="800" fill="currentColor">A structural failure</text>
+<text x="544" y="462" font-size="27" fill="currentColor" opacity="0.8">Check the other three arms.</text>
+<text x="500" y="536" font-size="28" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Photograph it where it lands, before you pick it up.</text>
+</svg>
+<figcaption><strong>The wreckage is evidence, and picking it up destroys most of it.</strong> Which propellers broke and which did not separates a motor that stopped in the air from one that was running at impact, and that single distinction sends you to completely different parts of the aircraft.</figcaption>
+</figure>
+<h3>The order that preserves evidence</h3>
+<table>
+<tr><th>Step</th><th>Why</th></tr>
+<tr><td>Photograph where it lies</td><td>Orientation and scatter show the attitude at impact</td></tr>
+<tr><td>Note which props broke</td><td>Separates a stopped motor from a running one</td></tr>
+<tr><td>Disconnect the battery</td><td>Safety, and it stops the log</td></tr>
+<tr><td>Download the blackbox log</td><td>The only record of what the controller saw</td></tr>
+<tr><td>Then recover the parts</td><td>Everything above is gone once you do</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The log usually contains the answer</span><p>Motor outputs, gyro traces and voltage at the moment of loss distinguish a desync, a brown-out and a pilot input, and those three look identical from the ground. A build without logging enabled throws that away before every flight.</p></div>
+<h3>Fix the cause, not the damage</h3>
+<p>Replacing the broken arm and flying again is treating the symptom. If a motor stopped, the arm is a consequence, and the same thing will happen on the next flight with a new arm fitted.</p>`,
+      Expert: `<p>Treat every crash as a small investigation with a written conclusion, because the alternative is accumulating repairs without ever learning anything.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="What the pattern of damage after a crash tells you about the cause">
+<rect x="24" y="40" width="464" height="212" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="56" y="92" font-size="30" font-weight="800" fill="#b45309">All four props broken</text>
+<text x="56" y="142" font-size="27" fill="currentColor" opacity="0.85">evenly, blades snapped</text>
+<text x="56" y="186" font-size="28" font-weight="800" fill="currentColor">It was still flying</text>
+<text x="56" y="226" font-size="27" fill="currentColor" opacity="0.8">when it hit. Pilot or power.</text>
+<rect x="512" y="40" width="464" height="212" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="544" y="92" font-size="30" font-weight="800" fill="#be123c">One prop intact</text>
+<text x="544" y="142" font-size="27" fill="currentColor" opacity="0.85">three broken</text>
+<text x="544" y="186" font-size="28" font-weight="800" fill="currentColor">That motor had stopped</text>
+<text x="544" y="226" font-size="27" fill="currentColor" opacity="0.8">before impact. Find out why.</text>
+<rect x="24" y="276" width="464" height="212" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="328" font-size="30" font-weight="800" fill="#0369a1">Nothing broken</text>
+<text x="56" y="378" font-size="27" fill="currentColor" opacity="0.85">it came down flat</text>
+<text x="56" y="422" font-size="28" font-weight="800" fill="currentColor">Power was cut</text>
+<text x="56" y="462" font-size="27" fill="currentColor" opacity="0.8">Failsafe, or a brown-out.</text>
+<rect x="512" y="276" width="464" height="212" rx="16" fill="#7c3aed" opacity="0.13"/>
+<text x="544" y="328" font-size="30" font-weight="800" fill="#7c3aed">One arm sheared</text>
+<text x="544" y="378" font-size="27" fill="currentColor" opacity="0.85">props otherwise fine</text>
+<text x="544" y="422" font-size="28" font-weight="800" fill="currentColor">A structural failure</text>
+<text x="544" y="462" font-size="27" fill="currentColor" opacity="0.8">Check the other three arms.</text>
+<text x="500" y="536" font-size="28" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Photograph it where it lands, before you pick it up.</text>
+</svg>
+<figcaption><strong>The wreckage is evidence, and picking it up destroys most of it.</strong> Which propellers broke and which did not separates a motor that stopped in the air from one that was running at impact, and that single distinction sends you to completely different parts of the aircraft.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Separate the sequence from the cause</span><p>The sequence is what happened: a motor stopped, the aircraft rolled, it hit the ground. The cause is why the motor stopped. Repairing the aircraft addresses the sequence and leaves the cause in place, which is how an operator ends up with a recurring unexplained failure that is actually the same fault six times.</p></div>
+<h3>What the common causes look like in a log</h3>
+<table>
+<tr><th>Cause</th><th>Signature</th></tr>
+<tr><td>Desync</td><td>One motor output saturates while the others compensate</td></tr>
+<tr><td>Brown-out</td><td>Voltage collapses and the log simply stops</td></tr>
+<tr><td>Failsafe</td><td>Receiver data stops before any motor change</td></tr>
+<tr><td>Structural</td><td>Sudden attitude change with motors still commanded normally</td></tr>
+<tr><td>Pilot input</td><td>Stick positions explain the attitude throughout</td></tr>
+</table>
+<h3>Confirmation bias is the real adversary</h3>
+<p>The temptation after a crash is to find the first plausible explanation and stop. Logs are useful precisely because they can contradict you, so form the hypothesis before opening the log and then look for what would disprove it. An investigation that only ever confirms what the pilot already thought is not an investigation.</p>
+<div class="field"><span class="callout-label">Keep a one-page record per event</span><p>Date, aircraft, what happened, what the log showed, what was changed. Five lines each. After a dozen flights the pattern in those pages is worth more than any individual diagnosis, and it is the only way a small operation ever learns that its real problem is one supplier's speed controllers.</p></div>`,
     },
     scenarios: [
       {
