@@ -173,11 +173,41 @@ Two authoring traps the types now document:
 - A `derivedFrom` that is a **rate** needs `factor`. `product` over one cell
   evaluates to that cell, not to 30% of it.
 
+### Per-course identity
+
+Every course carries an `accent` pair and an `icon` in its seed, served as a
+`theme` on each course-scoped payload and resolved through
+`lib/theme/courseTheme.ts`. The course hero, the lesson board, the article
+reader and the catalogue card badge all take it, so a refrigeration course and
+an accounting course are not the same violet screen with different words.
+
+This is **not** tenant theming. The platform still pins its palette per tenant
+(`normalizeThemeSettings.ts`); a course accent is one level down, authored with
+the course and varying within a tenant. The old violet is the fallback, so a
+payload without a theme renders exactly as it did before.
+
+### The lesson board
+
+Steps are sized by what they cost rather than listed as equal rows. Whatever
+comes next takes the full width and says what it is; evidence tasks and
+deliverables take a full row and are labelled as assessor marked; worksheets,
+labs, scenarios and part tasks take half; short and completed steps stay
+compact. A trailing half-width card is widened so it never sits beside an empty
+column.
+
 ### Checking it still works
 
 ```bash
 npm run check:practicals   # needs `npm run dev` running
+npm run check:vocational   # all 123 pages across the four courses
+npm run check:mobile       # Pixel 7 viewport, overflow + bottom-nav clearance
+npm run check:live         # the deployed site, including its marking
 ```
+
+`check:mobile` exists because two real bugs were invisible at desktop width: a
+sticky action bar covering all six bottom-navigation items, and horizontal
+overflow. Both render perfectly in a 1440px screenshot. Any of these can be
+pointed at the deployed site with `BASE_URL=https://… npm run check:mobile`.
 
 Two harnesses, because rendering and marking are different claims.
 `check-practicals-render` asserts every player draws its own authored content;
