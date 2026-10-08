@@ -839,8 +839,29 @@ const curriculum: CourseCurriculum = {
         title: "Draw up a trial balance that will not balance",
         difficulty: "Medium",
         brief: `<p>These are the closing ledger balances of Hemant Traders at 30 April. Put each one in the debit or the credit column according to what kind of account it is.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="Which kinds of account carry a debit balance and which carry a credit balance">
+<rect x="30" y="40" width="450" height="380" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="30" y="40" width="450" height="380" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="255" y="104" font-size="42" font-weight="800" fill="#0f766e" text-anchor="middle">DEBIT</text>
+<text x="255" y="146" font-size="26" font-weight="700" fill="currentColor" opacity="0.6" text-anchor="middle">what the business HAS or SPENDS</text>
+<text x="70" y="212" font-size="32" font-weight="800" fill="currentColor">Assets</text>
+<text x="70" y="264" font-size="32" font-weight="800" fill="currentColor">Expenses</text>
+<text x="70" y="316" font-size="32" font-weight="800" fill="currentColor">Drawings</text>
+<text x="70" y="382" font-size="26" fill="currentColor" opacity="0.7">Bank, Furniture, Rent, Purchases</text>
+<rect x="520" y="40" width="450" height="380" rx="18" fill="#7c3aed" opacity="0.1"/>
+<rect x="520" y="40" width="450" height="380" rx="18" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<text x="745" y="104" font-size="42" font-weight="800" fill="#7c3aed" text-anchor="middle">CREDIT</text>
+<text x="745" y="146" font-size="26" font-weight="700" fill="currentColor" opacity="0.6" text-anchor="middle">where the money CAME FROM</text>
+<text x="560" y="212" font-size="32" font-weight="800" fill="currentColor">Liabilities</text>
+<text x="560" y="264" font-size="32" font-weight="800" fill="currentColor">Income</text>
+<text x="560" y="316" font-size="32" font-weight="800" fill="currentColor">Capital</text>
+<text x="560" y="382" font-size="26" fill="currentColor" opacity="0.7">Trade Payables, Sales, Capital</text>
+</svg>
+<figcaption><strong>Drawings is the one that catches people.</strong> It sits on the debit side even though it belongs to the owner, because it reduces capital and capital is a credit balance. A reduction in a credit balance is a debit.</figcaption>
+</figure>
 <table>
-<tr><th>Account</th><th class="num">Balance (₹)</th></tr>
+<tr><th>Account</th><th class="num">Balance (&#8377;)</th></tr>
 <tr><td>Bank</td><td class="num">1,55,000</td></tr>
 <tr><td>Purchases</td><td class="num">60,000</td></tr>
 <tr><td>Sales</td><td class="num">45,000</td></tr>
@@ -850,7 +871,9 @@ const curriculum: CourseCurriculum = {
 <tr><td>Drawings</td><td class="num">12,000</td></tr>
 <tr><td>Capital</td><td class="num">2,00,000</td></tr>
 </table>
-<p>Then answer the question in the last row: having balanced, how much of your books has this proved to be correct? Enter the figure in rupees.</p>`,
+<div class="key-idea"><span class="callout-label">How this sheet is marked</span><p>One mark per balance placed in the right column, and further marks on the two totals. The totals carry method marks, so a total that is correct given the figures you actually entered still earns most of them even where a balance above it went to the wrong side. Accounting is marked on method, and so is this.</p></div>
+<p>Then answer the question in the last row. Having balanced, how many rupees of your books has this exercise proved to be correct? Enter the figure in rupees.</p>
+<div class="warning"><span class="callout-label">That last row is the point of the whole task</span><p>It is not a trick and it is not arithmetic. Think about what the two columns agreeing actually demonstrates, and then about everything that could be wrong in a set of books while they still agree.</p></div>`,
         stubLabel: "Account",
         columns: [
           { key: "dr", label: "Debit (₹)", type: "number", align: "right" },
@@ -918,21 +941,53 @@ const curriculum: CourseCurriculum = {
           "Drawings is the one that trips people. It reduces the owner's stake, so it carries a debit balance even though capital carries a credit one.",
           "For the last row, think about what the test actually measures. It compares two totals that were constructed from entries that each summed to zero, so agreement is guaranteed by the method and carries no information about whether any entry named the right account.",
         ],
-        workedAnswer: `<table>
-<tr><th>Account</th><th class="num">Debit</th><th class="num">Credit</th></tr>
+        workedAnswer: `<h3>The completed trial balance</h3>
+<table>
+<tr><th>Account</th><th class="num">Debit (&#8377;)</th><th class="num">Credit (&#8377;)</th></tr>
 <tr><td>Bank</td><td class="num">1,55,000</td><td class="num"></td></tr>
 <tr><td>Purchases</td><td class="num">60,000</td><td class="num"></td></tr>
+<tr><td>Sales</td><td class="num"></td><td class="num">45,000</td></tr>
 <tr><td>Rent Expense</td><td class="num">18,000</td><td class="num"></td></tr>
 <tr><td>Furniture</td><td class="num">35,000</td><td class="num"></td></tr>
-<tr><td>Drawings</td><td class="num">12,000</td><td class="num"></td></tr>
-<tr><td>Sales</td><td class="num"></td><td class="num">45,000</td></tr>
 <tr><td>Trade Payables</td><td class="num"></td><td class="num">35,000</td></tr>
+<tr><td>Drawings</td><td class="num">12,000</td><td class="num"></td></tr>
 <tr><td>Capital</td><td class="num"></td><td class="num">2,00,000</td></tr>
-<tr><td><strong>Total</strong></td><td class="num"><strong>2,80,000</strong></td><td class="num"><strong>2,80,000</strong></td></tr>
+<tr><th>Totals</th><th class="num">2,80,000</th><th class="num">2,80,000</th></tr>
 </table>
-<p><strong>The last row is zero, and that is the lesson of the topic.</strong> The two totals were built from entries that were each constructed to sum to zero. Agreement is therefore a property of the method, not a finding about the books. Four whole classes of error survive it intact.</p>
-<p>Suppose the 18,000 had been the electricity bill and you posted it to Rent Expense. Both columns still reach 2,80,000. Suppose you had never recorded the 35,000 furniture purchase at all: both columns fall to 2,45,000 and still agree. Suppose you had treated the furniture as Purchases: profit drops by 35,000, the balance sheet loses an asset, and the trial balance notices nothing.</p>
-<p><strong>What would have caught each one.</strong> The electricity misposting is found by someone reading the expense accounts and recognising that the rent is a round monthly figure. The omission is found by reconciling to the supplier's statement, because Modern Furnishers will still think they are owed 35,000. The capitalisation error is found by a policy that says anything over a threshold with a life beyond the year goes to the asset register. None of the three is an arithmetic control, and that is why a set of books is reviewed rather than merely totalled.</p>`,
+<div class="worked"><span class="callout-label">The two that are worth checking</span><p>Purchases is an expense, so it is a debit even though it sounds like something you now own. Drawings is a debit because it reduces capital, and capital is a credit balance, so a reduction in it carries the opposite sign.</p></div>
+<h3>And the last row is zero</h3>
+<figure>
+<svg viewBox="0 0 1000 620" role="img" aria-label="Errors a trial balance catches compared with errors it cannot catch">
+<rect x="30" y="40" width="450" height="420" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="30" y="40" width="450" height="420" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="255" y="104" font-size="38" font-weight="800" fill="#0f766e" text-anchor="middle">IT CATCHES</text>
+<text x="70" y="176" font-size="28" font-weight="700" fill="currentColor">One side posted</text>
+<text x="70" y="240" font-size="28" font-weight="700" fill="currentColor">Wrong amount, one side</text>
+<text x="70" y="304" font-size="28" font-weight="700" fill="currentColor">Addition error</text>
+<text x="70" y="368" font-size="28" font-weight="700" fill="currentColor">Balance on the wrong side</text>
+<text x="255" y="428" font-size="26" fill="currentColor" opacity="0.65" text-anchor="middle">anything that breaks the arithmetic</text>
+<rect x="520" y="40" width="450" height="420" rx="18" fill="#be123c" opacity="0.1"/>
+<rect x="520" y="40" width="450" height="420" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<text x="745" y="104" font-size="38" font-weight="800" fill="#be123c" text-anchor="middle">IT MISSES</text>
+<text x="560" y="176" font-size="28" font-weight="700" fill="currentColor">Left out completely</text>
+<text x="560" y="240" font-size="28" font-weight="700" fill="currentColor">Right side, wrong account</text>
+<text x="560" y="304" font-size="28" font-weight="700" fill="currentColor">Two errors cancelling</text>
+<text x="560" y="368" font-size="28" font-weight="700" fill="currentColor">Both entries reversed</text>
+<text x="745" y="428" font-size="26" fill="currentColor" opacity="0.65" text-anchor="middle">the arithmetic still works perfectly</text>
+<rect x="30" y="500" width="940" height="88" rx="16" fill="currentColor" opacity="0.07"/>
+<text x="500" y="556" font-size="34" font-weight="800" fill="currentColor" text-anchor="middle">Balanced proves the arithmetic, not the truth.</text>
+</svg>
+<figcaption><strong>This is why the last row of the sheet asks for a rupee figure and the answer is zero.</strong> A trial balance that balances has proved that every entry was posted to two sides with the same number on each. It has proved nothing at all about whether those were the right two accounts, or whether the transaction happened.</figcaption>
+</figure>
+<p>Both columns come to 2,80,000, and that agreement proves exactly one thing: every entry was posted to two sides with the same number on each. It is a check on the arithmetic of double entry and on nothing else.</p>
+<table>
+<tr><th>If this happened</th><th>Does the trial balance still balance?</th></tr>
+<tr><td>A sale of 10,000 was never entered at all</td><td>Yes. Both sides are missing, so both columns are short by the same amount.</td></tr>
+<tr><td>Rent was debited to Furniture</td><td>Yes. A debit is still a debit; it is in the wrong account.</td></tr>
+<tr><td>Bank was overstated by 5,000 and Sales by 5,000</td><td>Yes. The two errors cancel.</td></tr>
+<tr><td>A payment was credited to Bank and debited to the supplier the wrong way round</td><td>Yes. Both entries are reversed, so the columns are undisturbed.</td></tr>
+</table>
+<div class="field"><span class="callout-label">Which is why the rest of the course exists</span><p>If a balanced trial balance proved the books, there would be no need for bank reconciliation, no need to confirm balances with suppliers, and no need for an audit. Every one of those procedures exists to test something the trial balance cannot see. A balanced trial balance is the start of the checking, not the end of it.</p></div>`,
         minutes: 20,
         skills: ["Trial balance", "Error of principle", "Compensating error"],
       },

@@ -2187,8 +2187,57 @@ const curriculum: CourseCurriculum = {
         level: "CEFR A2",
         lang: "de-DE",
         prompt: `<p>You are at the counter. Handle the whole interaction in German.</p>
-<p>The official speaks quickly and asks closed questions, which is normal. Most of this task is comprehension rather than production: your sentences are short and his questions are the hard part.</p>
-<p>If you do not catch something, say so. <strong>Wie bitte?</strong> or <strong>Können Sie das bitte wiederholen?</strong> Using them is normal and costs you nothing. Freezing costs you the appointment.</p>`,
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The four stages of the counter exchange at a registration office">
+<rect x="24" y="40" width="226" height="300" rx="16" fill="#7c3aed" opacity="0.1"/>
+<rect x="24" y="40" width="226" height="300" rx="16" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<circle cx="70" cy="90" r="25" fill="#7c3aed"/>
+<text x="70" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+<text x="48" y="168" font-size="30" font-weight="800" fill="currentColor">Guten Tag</text>
+<text x="48" y="226" font-size="25" fill="currentColor" opacity="0.8">Greet, then say</text>
+<text x="48" y="260" font-size="25" fill="currentColor" opacity="0.8">why you are here.</text>
+<text x="48" y="312" font-size="24" font-weight="800" fill="#7c3aed">Ich moechte mich anmelden</text>
+<rect x="274" y="40" width="226" height="300" rx="16" fill="#0369a1" opacity="0.1"/>
+<rect x="274" y="40" width="226" height="300" rx="16" fill="none" stroke="#0369a1" stroke-width="3"/>
+<circle cx="320" cy="90" r="25" fill="#0369a1"/>
+<text x="320" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
+<text x="298" y="168" font-size="30" font-weight="800" fill="currentColor">Papiere</text>
+<text x="298" y="226" font-size="25" fill="currentColor" opacity="0.8">Hand over the</text>
+<text x="298" y="260" font-size="25" fill="currentColor" opacity="0.8">documents asked for.</text>
+<text x="298" y="312" font-size="24" font-weight="800" fill="#0369a1">Hier, bitte schoen</text>
+<rect x="524" y="40" width="226" height="300" rx="16" fill="#b45309" opacity="0.1"/>
+<rect x="524" y="40" width="226" height="300" rx="16" fill="none" stroke="#b45309" stroke-width="3"/>
+<circle cx="570" cy="90" r="25" fill="#b45309"/>
+<text x="570" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
+<text x="548" y="168" font-size="30" font-weight="800" fill="currentColor">Fragen</text>
+<text x="548" y="226" font-size="25" fill="currentColor" opacity="0.8">Closed questions,</text>
+<text x="548" y="260" font-size="25" fill="currentColor" opacity="0.8">asked fast.</text>
+<text x="548" y="312" font-size="24" font-weight="800" fill="#b45309">Seit wann wohnen Sie da?</text>
+<rect x="774" y="40" width="202" height="300" rx="16" fill="#0f766e" opacity="0.1"/>
+<rect x="774" y="40" width="202" height="300" rx="16" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="820" cy="90" r="25" fill="#0f766e"/>
+<text x="820" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
+<text x="798" y="168" font-size="30" font-weight="800" fill="currentColor">Abschluss</text>
+<text x="798" y="226" font-size="25" fill="currentColor" opacity="0.8">Take the paper,</text>
+<text x="798" y="260" font-size="25" fill="currentColor" opacity="0.8">then thank them.</text>
+<text x="798" y="312" font-size="24" font-weight="800" fill="#0f766e">Vielen Dank</text>
+<rect x="24" y="394" width="952" height="130" rx="16" fill="#be123c" opacity="0.12"/>
+<text x="500" y="446" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">When you lose the thread, say so.</text>
+<text x="500" y="492" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Wie bitte? &#183; Koennen Sie das bitte wiederholen?</text>
+</svg>
+<figcaption><strong>Four moves, and only two of them need sentences you compose.</strong> Stages one and four are fixed phrases you can have ready. Stage three is comprehension under time pressure, which is the hard part, and asking for a repeat is a normal move at that counter rather than an admission of failure.</figcaption>
+</figure>
+<p>The official speaks quickly and asks closed questions, which is normal. Most of this task is comprehension rather than production: your sentences are short, and the difficulty is catching theirs.</p>
+<h3>Have these ready before you start</h3>
+<table>
+<tr><th>You will be asked</th><th>You answer with</th></tr>
+<tr><td>Why you are here</td><td>Ich moechte mich anmelden</td></tr>
+<tr><td>Since when you have lived there</td><td>Seit dem ersten Maerz</td></tr>
+<tr><td>Whether you have the landlord confirmation</td><td>Ja, hier ist die Wohnungsgeberbestaetigung</td></tr>
+<tr><td>Your date of birth</td><td>The date, said as a date and not spelled out</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Asking for a repeat is part of the task, not a failure of it</span><p><strong>Wie bitte?</strong> and <strong>Koennen Sie das bitte wiederholen?</strong> are what native speakers say at that counter too. Using one of them and then answering correctly scores better than guessing at a question you did not catch, and the rubric is written that way on purpose.</p></div>
+<div class="warning"><span class="callout-label">The trap is answering the question you expected</span><p>The official may ask something off the script, and a confident answer to a question that was not asked is the most common way this goes wrong. If the reply does not fit, you misheard. Ask again.</p></div>`,
         turns: [
           {
             speaker: "Sachbearbeiter",

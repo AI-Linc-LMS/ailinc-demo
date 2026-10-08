@@ -1310,9 +1310,53 @@ const curriculum: CourseCurriculum = {
       {
         n: 1,
         title: "Prove dead, on camera, in the right order",
-        brief: `<p>Film yourself performing the three-step proving-dead sequence and discharging a capacitor, on a system you have permission to work on or on a training rig.</p>
-<p>The order is the assessment. Prove the tester, test the circuit, prove the tester again. An assessor cannot tell from a photograph whether you proved your tester afterwards, which is exactly why this one is a continuous video.</p>
-<p><strong>If you do not have access to a live rig</strong>, a de-energised training board with a proving unit is acceptable, but say so in your note. Claiming a live test you did not do is the one thing that fails this outright.</p>`,
+        brief: `<p>Film yourself performing the three-step proving-dead sequence and discharging a capacitor, on a system you have permission to work on.</p>
+<p>The order is the assessment. Prove the tester, test the circuit, prove the tester again. An assessor cannot tell from a photograph whether you proved the tester afterwards, which is exactly why this is filmed and why it is filmed in one take.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="A rejected capture compared with an accepted one">
+<rect x="30" y="40" width="450" height="300" rx="16" fill="currentColor" opacity="0.07"/>
+<rect x="30" y="40" width="450" height="300" rx="16" fill="none" stroke="#be123c" stroke-width="5"/>
+<rect x="160" y="130" width="190" height="120" rx="12" fill="none" stroke="currentColor" stroke-width="6" opacity="0.7"/>
+<rect x="184" y="156" width="142" height="44" rx="6" fill="currentColor" opacity="0.25"/>
+<text x="255" y="302" font-size="28" font-weight="700" fill="currentColor" opacity="0.7" text-anchor="middle">a meter, and nothing else</text>
+<circle cx="440" cy="76" r="26" fill="#be123c"/>
+<path d="M430 66 l20 20 M450 66 l-20 20" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+<text x="30" y="402" font-size="36" font-weight="800" fill="#be123c">REJECTED</text>
+<text x="30" y="446" font-size="26" fill="currentColor" opacity="0.8">Which circuit? Whose meter?</text>
+<text x="30" y="482" font-size="26" fill="currentColor" opacity="0.8">Taken when? Nothing here</text>
+<text x="30" y="518" font-size="26" fill="currentColor" opacity="0.8">answers any of that.</text>
+<rect x="520" y="40" width="450" height="300" rx="16" fill="currentColor" opacity="0.07"/>
+<rect x="520" y="40" width="450" height="300" rx="16" fill="none" stroke="#0f766e" stroke-width="5"/>
+<rect x="556" y="90" width="150" height="104" rx="10" fill="none" stroke="currentColor" stroke-width="6" opacity="0.7"/>
+<path d="M578 142 h106" stroke="currentColor" stroke-width="6" opacity="0.7"/>
+<text x="631" y="222" font-size="24" font-weight="700" fill="currentColor" opacity="0.75" text-anchor="middle">isolator, locked</text>
+<rect x="744" y="110" width="170" height="104" rx="10" fill="none" stroke="currentColor" stroke-width="6" opacity="0.7"/>
+<rect x="766" y="134" width="126" height="38" rx="5" fill="currentColor" opacity="0.25"/>
+<text x="829" y="242" font-size="24" font-weight="700" fill="currentColor" opacity="0.75" text-anchor="middle">meter, reading</text>
+<rect x="596" y="256" width="300" height="56" rx="8" fill="#0f766e" opacity="0.25"/>
+<text x="746" y="294" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">YOUR ID + TODAY</text>
+<circle cx="930" cy="76" r="26" fill="#0f766e"/>
+<path d="M918 76 l9 10 l16 -20" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="520" y="402" font-size="36" font-weight="800" fill="#0f766e">ACCEPTED</text>
+<text x="520" y="446" font-size="26" fill="currentColor" opacity="0.8">One unbroken shot holding the</text>
+<text x="520" y="482" font-size="26" fill="currentColor" opacity="0.8">isolator, the meter, the reading</text>
+<text x="520" y="518" font-size="26" fill="currentColor" opacity="0.8">and your written id together.</text>
+</svg>
+<figcaption><strong>The difference is not photography, it is evidence.</strong> A clip that cuts between the isolator and the meter proves two things happened, not that they happened to the same circuit in that order. Keep all of it in one take, and write your enrolment id and today's date on paper in the frame.</figcaption>
+</figure>
+<h3>What the third step is for</h3>
+<div class="warning"><span class="callout-label">This is the step people skip, and it is the one that kills</span><p>A tester that has failed silently reads zero volts on a live circuit, which is indistinguishable from a correctly isolated one. Proving it on a known source afterwards is what turns your reading into evidence. Without it you have not tested the circuit, you have tested nothing and believed it.</p></div>
+<h3>What has to be visible, and when</h3>
+<table>
+<tr><th>Moment</th><th>In frame</th></tr>
+<tr><td>Before anything</td><td>Your written enrolment id and today's date, held still and readable</td></tr>
+<tr><td>Isolation</td><td>The isolator in the off position, with your lock and tag on it</td></tr>
+<tr><td>Each of the three steps</td><td>The tester, the probes and the display, all in one unbroken shot</td></tr>
+<tr><td>Capacitor</td><td>The discharge resistor across the terminals, then the meter confirming it is down</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">One take, no cuts</span><p>A clip edited between the isolator and the meter proves two things happened. It does not prove they happened to the same circuit, in that order, on the day you say. The continuity is the evidence, so a shaky single take beats a polished edit here.</p></div>
+<div class="warning"><span class="callout-label">Not with a screwdriver</span><p>Shorting a capacitor with a blade welds the tip, pits the terminals and throws metal. A submission showing that is marked down on safe working regardless of how correct the rest of the sequence was.</p></div>
+<p><strong>If you do not have access to a live rig</strong>, a de-energised training board with a proving unit is acceptable, but say so in your note. Claiming a live circuit you did not have is the one thing that fails this outright.</p>`,
         captures: [
           {
             key: "lock",
@@ -2270,8 +2314,31 @@ const curriculum: CourseCurriculum = {
         nodes: [
           {
             id: "n1",
-            situation: `<p>First call of the day. A two year old 1.5 ton split in a first floor flat. The customer says it stopped cooling properly about a week ago and has got steadily worse.</p>
-<p>You switch it on. The indoor fan runs and the air coming out is weak and only slightly cool. The outdoor unit is running: compressor and fan both going.</p>`,
+            situation: `<p>First call of the day. A two year old 1.5 ton split in a first floor flat. The customer says it stopped cooling properly about a week ago and has got worse since.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="Four service calls booked across one morning">
+<path d="M60 240 H940" stroke="currentColor" opacity="0.3" stroke-width="6"/>
+<circle cx="150" cy="240" r="24" fill="#0f766e"/>
+<text x="150" y="190" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">09:00</text>
+<text x="150" y="304" font-size="27" font-weight="700" fill="currentColor" opacity="0.8" text-anchor="middle">Not cooling</text>
+<text x="150" y="338" font-size="25" fill="currentColor" opacity="0.6" text-anchor="middle">first floor flat</text>
+<circle cx="382" cy="240" r="24" fill="currentColor" opacity="0.45"/>
+<text x="382" y="190" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">10:30</text>
+<text x="382" y="304" font-size="27" font-weight="700" fill="currentColor" opacity="0.8" text-anchor="middle">Service due</text>
+<circle cx="614" cy="240" r="24" fill="currentColor" opacity="0.45"/>
+<text x="614" y="190" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">11:30</text>
+<text x="614" y="304" font-size="27" font-weight="700" fill="currentColor" opacity="0.8" text-anchor="middle">Noisy unit</text>
+<circle cx="846" cy="240" r="24" fill="currentColor" opacity="0.45"/>
+<text x="846" y="190" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">12:30</text>
+<text x="846" y="304" font-size="27" font-weight="700" fill="currentColor" opacity="0.8" text-anchor="middle">Water dripping</text>
+<rect x="60" y="40" width="880" height="92" rx="16" fill="#b45309" opacity="0.16"/>
+<text x="500" y="98" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">In the van: two capacitors, and no second compressor.</text>
+<text x="500" y="408" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">Overrun the first call and the other three move to tomorrow.</text>
+</svg>
+<figcaption><strong>The clock is a character in this scenario.</strong> Every choice costs minutes, rupees or a return visit, and the running tally is shown as you go. The pressure to fix it now, with what is on the van, is exactly what the decision tree is there to protect you from.</figcaption>
+</figure>
+<p>The indoor unit is running and blowing air. The outdoor unit is running. Nothing is obviously broken, nothing is leaking, and nobody has touched it.</p>
+<p>You have two capacitors in the van and three more jobs after this one.</p>`,
             prompt: "What do you check first?",
             choices: [
               {
@@ -2807,8 +2874,30 @@ const curriculum: CourseCurriculum = {
           {
             n: 7,
             title: "Stand the vacuum and read the curve, not the endpoint",
-            detail:
-              "<p>Valve off the pump and watch the micron gauge for at least ten minutes.</p><p>A reading that rises and then plateaus is moisture still coming off and reaching equilibrium: keep pumping, or break the vacuum with dry nitrogen and repeat. A reading that rises steadily and does not plateau is a leak, and no amount of further pumping will fix it.</p><p>Reading only the final number collapses those two very different diagnoses into one.</p>",
+            detail: `<p>Close the valve between the pump and the system, and leave the micron gauge reading. Watch it for fifteen minutes and record the shape, not just the final number.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Three vacuum decay curves after the pump is valved off and what each one means">
+<path d="M190 470 H960 M190 470 V50" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M190 392 H960" stroke="currentColor" opacity="0.45" stroke-width="3" stroke-dasharray="10 8"/>
+<text x="182" y="402" font-size="27" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="end">500</text>
+<path d="M210 404 C 400 402, 700 398, 920 400" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+<path d="M210 404 C 360 340, 470 306, 920 300" fill="none" stroke="#b45309" stroke-width="8" stroke-linecap="round"/>
+<path d="M210 404 C 420 330, 680 210, 920 92" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>
+<text x="330" y="452" font-size="30" font-weight="800" fill="#0f766e">DRY AND TIGHT</text>
+<text x="330" y="276" font-size="30" font-weight="800" fill="#b45309">MOISTURE LEFT</text>
+<text x="620" y="160" font-size="30" font-weight="800" fill="#be123c">A LEAK</text>
+<text x="330" y="500" font-size="26" fill="currentColor" opacity="0.7">holds: charge it</text>
+<text x="330" y="246" font-size="26" fill="currentColor" opacity="0.7">rises, then settles: keep pulling</text>
+<text x="620" y="130" font-size="26" fill="currentColor" opacity="0.7">rises and never settles</text>
+<text x="210" y="536" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">PUMP VALVED OFF</text>
+<text x="950" y="536" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">15 MINUTES</text>
+<text x="104" y="260" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 104 260)">MICRONS</text>
+</svg>
+<figcaption><strong>Reaching 500 microns proves the pump works. Only the decay after valve-off proves the system.</strong> The amber curve is water still boiling off, and more pump time or a nitrogen break will finish it. The red curve is air coming in, and no amount of pump time will ever fix it.</figcaption>
+</figure>
+<p>A reading of 500 microns with the pump running tells you only that the pump and your hoses are capable of 500 microns. The system itself is still connected to a machine that is actively hiding whatever it is doing. Valving off is what asks the system the question.</p>
+<div class="warning"><span class="callout-label">Do not average the three</span><p>These are three different conclusions, not three points on a scale. Moisture is finished by more pump time or by breaking the vacuum with dry nitrogen and pulling again. A leak is not, and continuing to pump on a leaking system wastes an hour and then charges refrigerant into something that will lose it.</p></div>
+<p>If it rises and settles, pull again. If it rises without settling, stop: the repair has not held, and the next step is a nitrogen pressure test rather than more vacuum.</p>`,
             hazard: {
               level: "warning",
               text: "Do not break a vacuum with air or with oxygen. Use dry nitrogen only. Introducing oxygen into a system containing oil at pressure creates a genuine explosion hazard.",
