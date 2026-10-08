@@ -491,6 +491,24 @@ const curriculum: CourseCurriculum = {
 <p>When cash comes in, cash grows, and cash is an asset, so it goes on the left. When you pay rent, rent is an expense, so rent goes on the left, and cash is going down, so cash goes on the right this time.</p>
 <div class="warning"><span class="callout-label">Skip the acronyms</span><p>You will be offered mnemonics that promise to do this for you. They work until the first unusual transaction and then they fail silently, which is worse than not having a rule. The two-sided rule above never fails.</p></div>`,
       Intermediate: `<p>Debit and credit are positional labels: debit is the left column of an account and credit is the right. The confusion they cause is almost entirely a vocabulary problem, because a bank uses the words from its own books rather than yours.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="Debit and credit as the left and right of the accounting equation">
+<rect x="24" y="40" width="464" height="170" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="100" font-size="38" font-weight="800" fill="#0f766e" text-anchor="middle">DEBIT = LEFT</text>
+<text x="256" y="152" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Assets, Expenses, Drawings</text>
+<text x="256" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">what the business has or spends</text>
+<rect x="512" y="40" width="464" height="170" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="744" y="100" font-size="38" font-weight="800" fill="#7c3aed" text-anchor="middle">CREDIT = RIGHT</text>
+<text x="744" y="152" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Liabilities, Income, Capital</text>
+<text x="744" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">where the money came from</text>
+<rect x="24" y="244" width="952" height="176" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="296" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">This is not a rule to memorise.</text>
+<text x="500" y="344" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Assets sit on the left of the equation and the things that</text>
+<text x="500" y="380" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">fund them sit on the right. Debit is the left column.</text>
+<text x="500" y="414" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The mnemonic is the equation, written sideways.</text>
+</svg>
+<figcaption><strong>Drawings is the entry that catches people.</strong> It sits on the debit side even though it belongs to the owner, because it reduces capital and capital is a credit balance. A reduction in a credit balance is a debit.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Derived, not memorised</span><p>Assets sit on the left of the accounting identity, so they increase with a left-side entry. Liabilities and equity sit on the right, so they increase with a right-side entry. Income increases equity, which puts it on the right; expenses reduce equity, which puts them on the left.</p></div>
 <h3>Five categories, one derivation</h3>
 <table>
@@ -757,6 +775,22 @@ const curriculum: CourseCurriculum = {
 <div class="worked"><span class="callout-label">A page that adds up</span><p>If the left adds to 90,000 and the right to 55,000, the account has 35,000 left over on the debit side. That is the balance.</p></div>
 <div class="field"><span class="callout-label">The habit that prevents most errors</span><p>Tick each journal line as you post it. Almost every mistake at this stage is a line posted twice or not at all, and a tick stops both.</p></div>`,
       Intermediate: `<p>Posting is a transformation from one ordering to another. The journal is chronological, which makes it the evidential record. The ledger is organised by account, which makes it the analytical record, and it is the only form from which a balance can be read.</p>
+<figure>
+<svg viewBox="0 0 1000 420" role="img" aria-label="A journal entry becoming two ledger postings">
+<rect x="24" y="40" width="952" height="96" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="88" font-size="29" font-weight="800" fill="#0369a1" text-anchor="middle">JOURNAL, in date order</text>
+<text x="500" y="124" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">2 Apr   Furniture Dr 35,000   Bank Cr 35,000</text>
+<path d="M330 148 L240 200 M670 148 L760 200" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<rect x="24" y="210" width="464" height="130" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="258" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">FURNITURE ACCOUNT</text>
+<text x="256" y="308" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Debit side: 35,000</text>
+<rect x="512" y="210" width="464" height="130" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="744" y="258" font-size="28" font-weight="800" fill="#7c3aed" text-anchor="middle">BANK ACCOUNT</text>
+<text x="744" y="308" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Credit side: 35,000</text>
+<text x="500" y="396" font-size="28" font-weight="800" fill="currentColor" opacity="0.8" text-anchor="middle">Same transaction, now filed twice by account instead of once by date.</text>
+</svg>
+<figcaption><strong>The ledger is not a second record; it is the same record sorted differently.</strong> The journal answers what happened on a date, the ledger answers what this account has done. Posting is purely re-filing, which is why a posting error never changes the total of anything.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Why the rule is so rigid</span><p>Nothing is recalculated and nothing is flipped. Because each journal entry summed to zero, the whole ledger sums to zero too, so any imbalance you later find is a posting error rather than a thinking error.</p></div>
 <h3>Balancing an account</h3>
 <p>Total both columns, write the difference on the smaller side as "balance carried down", and bring the same figure in on the opposite side as the next period's opening balance. The double appearance is not duplication: one occurrence closes this period, the other opens the next.</p>
@@ -906,6 +940,23 @@ const curriculum: CourseCurriculum = {
 <h3>What it is for</h3>
 <p>Treat it as a spell-check, not a proof-read. It finds one specific kind of error, and it is silent about several others.</p>`,
       Intermediate: `<p>A trial balance tests exactly one property: that the sum of debit balances equals the sum of credit balances. Because every journal entry is constructed to sum to zero, the aggregate must too, and a difference is proof of a mechanical failure somewhere in posting or totalling.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="What a balanced trial balance proves and what it does not">
+<rect x="24" y="40" width="464" height="170" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="96" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">IT PROVES</text>
+<text x="256" y="148" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Every entry went to</text>
+<text x="256" y="186" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">two sides, same amount</text>
+<rect x="512" y="40" width="464" height="170" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="744" y="96" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">IT DOES NOT PROVE</text>
+<text x="744" y="148" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">That they were the</text>
+<text x="744" y="186" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">right two accounts</text>
+<rect x="24" y="244" width="952" height="176" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="298" font-size="32" font-weight="800" fill="#b45309" text-anchor="middle">Balanced proves the arithmetic, not the truth.</text>
+<text x="500" y="350" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">An omitted transaction, a wrong account, two errors that</text>
+<text x="500" y="386" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">cancel and a reversed entry all balance perfectly.</text>
+</svg>
+<figcaption><strong>If a balanced trial balance proved the books, there would be no need for bank reconciliation or an audit.</strong> Every one of those procedures exists to test something this check cannot see, which makes it the start of the checking rather than the end.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">It detects asymmetry, nothing else</span><p>Anything that breaks the left-right symmetry shows up. Anything that preserves it does not, however wrong the entry is.</p></div>
 <h3>What it catches, and what walks past it</h3>
 <table>
@@ -1251,6 +1302,23 @@ const curriculum: CourseCurriculum = {
 </table>
 <p>The first is a prepayment, the second an accrual. Both exist because the month you pay and the month you use are different months.</p>`,
       Intermediate: `<p>Cash movement and economic consumption are separate events, and the accrual basis records the second. The matching principle makes this concrete: a cost belongs in the period whose revenue it helped produce, which means the payment date is evidence of a transaction but not of its period.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="An expense paid in one period but belonging to another">
+<rect x="24" y="40" width="952" height="100" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="90" font-size="29" font-weight="800" fill="#0369a1" text-anchor="middle">Rent of 36,000 paid on 1 January for the year</text>
+<text x="500" y="128" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Year end is 31 March</text>
+<rect x="24" y="170" width="232" height="120" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="140" y="222" font-size="29" font-weight="800" fill="#0f766e" text-anchor="middle">THIS YEAR</text>
+<text x="140" y="268" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">9,000</text>
+<rect x="280" y="170" width="696" height="120" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="628" y="222" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">NEXT YEAR, a prepayment</text>
+<text x="628" y="268" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">27,000</text>
+<rect x="24" y="324" width="952" height="96" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="368" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">The payment date is not the expense date.</text>
+<text x="500" y="404" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The period it covers is what decides.</text>
+</svg>
+<figcaption><strong>An accrual is the same idea in the other direction: used but not yet paid for.</strong> Both exist so that a year's profit is the result of that year's activity rather than an accident of when invoices happened to be settled.</figcaption>
+</figure>
 <h3>The four adjustments</h3>
 <table>
 <tr><th>Name</th><th>Situation</th><th>Entry</th><th>It is a</th></tr>
@@ -1498,6 +1566,21 @@ const curriculum: CourseCurriculum = {
 </table>
 <div class="field"><span class="callout-label">What depreciation is not</span><p>It is not a guess about the van's market price. It spreads a cost you have already paid. The van does not become more depreciated because second-hand prices fell.</p></div>`,
       Intermediate: `<p>Depreciation allocates the cost of a long-lived asset across the periods that benefit from it, which is the matching principle applied to something used over years rather than months.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="Straight line depreciation compared with reducing balance on the same asset">
+<path d="M130 380 H950 M130 380 V50" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M150 90 L900 330" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+<path d="M150 90 C 360 250, 560 310, 900 348" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>
+<text x="560" y="214" font-size="28" font-weight="800" fill="#0f766e">straight line</text>
+<text x="300" y="300" font-size="28" font-weight="800" fill="#be123c">reducing balance</text>
+<text x="150" y="424" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">BOUGHT</text>
+<text x="940" y="424" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">YEAR 5</text>
+<text x="86" y="220" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 86 220)">VALUE</text>
+<rect x="130" y="418" width="820" height="36" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="540" y="446" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">Same asset, same total cost, different profit each year.</text>
+</svg>
+<figcaption><strong>Both methods write off the same amount over the life of the asset.</strong> What differs is the timing, so the choice changes reported profit year by year and nets to nothing overall. That is exactly why the method has to be disclosed and applied consistently.</figcaption>
+</figure>
 <h3>The entry, and why it uses a contra account</h3>
 <p>Debit depreciation expense, credit accumulated depreciation. Accumulated depreciation is a contra-asset rather than a reduction of the asset's cost, so the original cost and the wear on it stay separately visible.</p>
 <h3>Which pattern suits which asset</h3>
@@ -1693,6 +1776,23 @@ const curriculum: CourseCurriculum = {
 <p>Across all your customers you know from experience that some proportion never pays, even though you cannot yet say which ones. For that you make a provision: a cushion against the total, which reduces the receivables figure without accusing any particular customer.</p>
 <div class="field"><span class="callout-label">When somebody pays after a write-off</span><p>It happens. Record the receipt as income in the year it arrives rather than quietly undoing the write-off, because the write-off was a reasonable judgement at the time.</p></div>`,
       Intermediate: `<p>A write-off is specific and a provision is general, and keeping them apart matters because they answer different questions.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="A specific bad debt compared with a general provision">
+<rect x="24" y="40" width="464" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="256" y="96" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">BAD DEBT</text>
+<text x="256" y="148" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">This customer, this</text>
+<text x="256" y="186" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">amount, gone</text>
+<rect x="512" y="40" width="464" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="744" y="96" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">PROVISION</text>
+<text x="744" y="148" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Some of the rest will</text>
+<text x="744" y="186" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">not pay, on past form</text>
+<rect x="24" y="254" width="952" height="166" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="306" font-size="29" font-weight="800" fill="#0f766e" text-anchor="middle">One is a fact. The other is an estimate.</text>
+<text x="500" y="352" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Which is why a provision is where judgement enters the</text>
+<text x="500" y="388" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">accounts, and why it attracts attention in an audit.</text>
+</svg>
+<figcaption><strong>A provision is the first place in these books where the number is chosen rather than counted.</strong> That makes it the first place profit can be managed, which is the real reason the basis for it has to be stated and applied the same way every year.</figcaption>
+</figure>
 <table>
 <tr><th></th><th>Write-off</th><th>Provision</th></tr>
 <tr><td>Scope</td><td>One named receivable</td><td>The remaining portfolio</td></tr>
@@ -1964,6 +2064,26 @@ const curriculum: CourseCurriculum = {
 <p>Start with that gross profit and take off everything else: rent, salaries, electricity, depreciation. What is left is net profit, and that is the figure people mean when they ask how the business did.</p>
 <div class="warning"><span class="callout-label">Closing stock appears twice, and both are right</span><p>Once reducing your cost of goods in the trading account, and once as an asset on the balance sheet. The goods are both not-yet-a-cost and still-owned, which are two different statements saying two true things.</p></div>`,
       Intermediate: `<p>The trading account isolates trading margin from overhead, which is why it is kept separate rather than folded into one statement.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="From sales down to net profit, and what each stage subtracts">
+<rect x="24" y="40" width="952" height="78" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="90" font-size="29" font-weight="800" fill="currentColor">Sales</text>
+<text x="944" y="90" font-size="29" font-weight="800" fill="currentColor" text-anchor="end">4,50,000</text>
+<rect x="24" y="130" width="952" height="78" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="56" y="180" font-size="29" font-weight="800" fill="currentColor">less Cost of goods sold</text>
+<text x="944" y="180" font-size="29" font-weight="800" fill="currentColor" text-anchor="end">2,70,000</text>
+<rect x="24" y="220" width="952" height="78" rx="16" fill="#0f766e" opacity="0.2"/>
+<text x="56" y="270" font-size="29" font-weight="800" fill="#0f766e">GROSS PROFIT</text>
+<text x="944" y="270" font-size="29" font-weight="800" fill="#0f766e" text-anchor="end">1,80,000</text>
+<rect x="24" y="310" width="952" height="78" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="360" font-size="29" font-weight="800" fill="currentColor">less Expenses</text>
+<text x="944" y="360" font-size="29" font-weight="800" fill="currentColor" text-anchor="end">1,10,000</text>
+<rect x="24" y="400" width="952" height="52" rx="16" fill="#7c3aed" opacity="0.22"/>
+<text x="56" y="436" font-size="29" font-weight="800" fill="#7c3aed">NET PROFIT</text>
+<text x="944" y="436" font-size="29" font-weight="800" fill="#7c3aed" text-anchor="end">70,000</text>
+</svg>
+<figcaption><strong>Two profits, and they answer different questions.</strong> Gross profit asks whether you buy and sell at a sensible margin. Net profit asks whether the business as a whole is worth running. A healthy gross and a negative net is a cost problem, not a pricing one.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Why the split earns its keep</span><p>A fall in profit can be attributed either to margin or to overhead, and those have entirely different remedies.</p></div>
 <h3>Getting to gross profit</h3>
 <table>
@@ -2266,6 +2386,23 @@ const curriculum: CourseCurriculum = {
 <p>The bank took 900 rupees of charges and paid you 1,200 of interest, and you only found out by reading the statement. Those are real transactions you have not recorded.</p>
 <div class="warning"><span class="callout-label">The output of a reconciliation is the second pile</span><p>Missing it is why some cash books are permanently a few thousand rupees out.</p></div>`,
       Intermediate: `<p>A reconciliation explains the gap between two records of the same account maintained by two parties with different information. The business knows about cheques it has issued and deposits it has made; the bank knows about charges, interest, standing instructions and dishonoured cheques. Neither record is wrong.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="Why the bank statement and the cash book disagree">
+<rect x="24" y="40" width="464" height="110" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="256" y="88" font-size="29" font-weight="800" fill="#0369a1" text-anchor="middle">CASH BOOK</text>
+<text x="256" y="130" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">1,55,000</text>
+<rect x="512" y="40" width="464" height="110" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="744" y="88" font-size="29" font-weight="800" fill="#7c3aed" text-anchor="middle">BANK STATEMENT</text>
+<text x="744" y="130" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">1,62,400</text>
+<rect x="24" y="180" width="952" height="70" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="226" font-size="28" font-weight="800" fill="currentColor">Cheques issued but not yet presented</text>
+<rect x="24" y="264" width="952" height="70" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="310" font-size="28" font-weight="800" fill="currentColor">Deposits made but not yet cleared</text>
+<rect x="24" y="348" width="952" height="70" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="56" y="394" font-size="28" font-weight="800" fill="currentColor">Charges the bank knows about and you do not</text>
+</svg>
+<figcaption><strong>The first two are timing and correct themselves. The third is information you did not have.</strong> That is the part of a reconciliation that is not bookkeeping tidiness: it is the only routine control most small businesses run against their own records being incomplete.</figcaption>
+</figure>
 <h3>Four recurring categories, split in two</h3>
 <table>
 <tr><th>Item</th><th>Type</th><th>Action</th></tr>
@@ -2451,6 +2588,28 @@ const curriculum: CourseCurriculum = {
 <p>Intra-state sales carry CGST and SGST, half each; inter-state sales carry IGST at the full rate. And you can only claim credit if your supplier actually filed and paid.</p>
 <div class="warning"><span class="callout-label">Which means</span><p>A cheap invoice from a supplier who does not file is not cheap at all.</p></div>`,
       Intermediate: `<p>GST is a destination-based consumption tax levied at each stage with credit for tax paid at earlier stages, so the cumulative burden lands on the final consumer and no business bears tax on its inputs.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="How input tax credit works through a supply chain">
+<rect x="24" y="40" width="300" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="92" font-size="28" font-weight="800" fill="#0369a1" text-anchor="middle">YOU BUY</text>
+<text x="174" y="140" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">1,00,000 + 18,000</text>
+<text x="174" y="176" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">input tax</text>
+<rect x="350" y="40" width="300" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="92" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">YOU SELL</text>
+<text x="500" y="140" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">1,50,000 + 27,000</text>
+<text x="500" y="176" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">output tax</text>
+<rect x="676" y="40" width="300" height="150" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="826" y="92" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">YOU PAY</text>
+<text x="826" y="140" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">9,000</text>
+<text x="826" y="176" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">the difference</text>
+<rect x="24" y="224" width="952" height="196" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="278" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">You remit tax on the value you added, not on the sale.</text>
+<text x="500" y="330" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Which is why the credit only exists if your supplier actually</text>
+<text x="500" y="366" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">declared the sale. Their compliance becomes your cost.</text>
+<text x="500" y="408" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">That is the whole design, and the whole risk.</text>
+</svg>
+<figcaption><strong>Input tax credit makes every business a check on its suppliers.</strong> A supplier who does not file leaves you holding a credit you cannot claim, which is why vendor compliance is a finance question rather than a procurement one.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">The accounting consequence</span><p>Output and input GST are liability and asset accounts, not income and expense. A business that routes GST through its profit and loss account overstates both revenue and purchases by the tax.</p></div>
 <h3>Place of supply, not location of parties</h3>
 <p>For goods it is generally where the goods are delivered; for services there is a general rule with a long list of exceptions covering immovable property, events, transport and online services.</p>
@@ -2635,6 +2794,23 @@ const curriculum: CourseCurriculum = {
 <p>For an intra-state sale the rate splits in half: an 18% item carries 9% CGST and 9% SGST. So a 7,00,000 rupee group at 18% gives 63,000 of CGST and 63,000 of SGST, not 1,26,000 of one thing.</p>
 <div class="warning"><span class="callout-label">Then subtract credit head by head</span><p>You cannot use SGST credit to pay CGST. You can be sitting on credit and still have to pay cash.</p></div>`,
       Intermediate: `<p>GSTR-3B is a summary, which means every figure in it has to be derivable from something underneath it. Invoices are grouped by rate slab, the taxable value of each group totalled, and the rate applied to each group separately.</p>
+<figure>
+<svg viewBox="0 0 1000 420" role="img" aria-label="Working out a month's net tax liability">
+<rect x="24" y="40" width="952" height="78" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="90" font-size="29" font-weight="800" fill="currentColor">Output tax on sales</text>
+<text x="944" y="90" font-size="29" font-weight="800" fill="currentColor" text-anchor="end">27,000</text>
+<rect x="24" y="130" width="952" height="78" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="180" font-size="29" font-weight="800" fill="currentColor">less Input credit available</text>
+<text x="944" y="180" font-size="29" font-weight="800" fill="currentColor" text-anchor="end">18,000</text>
+<rect x="24" y="220" width="952" height="78" rx="16" fill="#be123c" opacity="0.2"/>
+<text x="56" y="270" font-size="29" font-weight="800" fill="#be123c">PAYABLE IN CASH</text>
+<text x="944" y="270" font-size="29" font-weight="800" fill="#be123c" text-anchor="end">9,000</text>
+<rect x="24" y="310" width="952" height="96" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="356" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">Credit blocked or supplier not filed?</text>
+<text x="500" y="392" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Then the cash figure rises, and the margin falls.</text>
+</svg>
+<figcaption><strong>The liability is a subtraction, so every rupee of credit you cannot claim is a rupee of cash out.</strong> Reconciling your purchase register against what suppliers have actually declared is therefore a margin activity, not an administrative one.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">The check the return cannot perform for you</span><p>That the slab-wise taxable values add back to the month's turnover from the books. If they do not, an invoice has been dropped or allocated to the wrong slab.</p></div>
 <h3>Credit is claimed head by head</h3>
 <p>Utilisation follows a mandated order with IGST credit exhausted first, and cross-utilisation between CGST and SGST prohibited. A business whose purchases are mostly inter-state and whose sales are mostly intra-state accumulates IGST credit and pays CGST and SGST, and the balances are not interchangeable.</p>
@@ -2907,6 +3083,25 @@ const curriculum: CourseCurriculum = {
 <p>A supplier nobody has heard of. Payments just under the limit that would need a second signature. A bookkeeper who never takes leave and gets uncomfortable when someone else opens the ledger. Lots of suspiciously round numbers.</p>
 <div class="warning"><span class="callout-label">None of those proves anything</span><p>Each is a reason to ask a question, and the question is the control. Most frauds that run for years ran because the anomaly was visible and nobody wanted the awkward conversation.</p></div>`,
       Intermediate: `<p>The usual framing is the fraud triangle: pressure, opportunity and rationalisation. Only one of those is within an employer's control, which is why the practical emphasis sits on opportunity, and opportunity is created overwhelmingly by concentration of duties rather than by weak people.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="The separation of duties that stops a fictitious supplier">
+<rect x="24" y="40" width="300" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="92" font-size="28" font-weight="800" fill="#0369a1" text-anchor="middle">WHO APPROVES</text>
+<text x="174" y="146" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">a new supplier</text>
+<rect x="350" y="40" width="300" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="92" font-size="28" font-weight="800" fill="#0f766e" text-anchor="middle">WHO RECEIVES</text>
+<text x="500" y="146" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">the goods</text>
+<rect x="676" y="40" width="300" height="150" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="826" y="92" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">WHO PAYS</text>
+<text x="826" y="146" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">the invoice</text>
+<rect x="24" y="224" width="952" height="196" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="280" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">Three different people.</text>
+<text x="500" y="332" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">One person holding two of these can invent a supplier.</text>
+<text x="500" y="368" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Holding all three needs no cleverness at all.</text>
+<text x="500" y="410" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The control is the separation, not the paperwork.</text>
+</svg>
+<figcaption><strong>Most procurement fraud is not sophisticated; it is one person holding two roles.</strong> Small organisations concentrate duties by necessity, which is why a compensating control, such as the owner reviewing new supplier approvals personally, matters more there than a thicker policy.</figcaption>
+</figure>
 <h3>Three red flags worth memorising, because they are cheap to check</h3>
 <table>
 <tr><th>Flag</th><th>What it suggests</th></tr>

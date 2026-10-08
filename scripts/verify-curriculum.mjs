@@ -545,9 +545,34 @@ console.log(
 const MIN_FONT_UNITS = 26;
 let figureCount = 0;
 
+/**
+ * Every vocational topic carries a figure on the tier a learner lands on.
+ *
+ * The four trade courses were added with no images at all, and the first
+ * complaint about them was that an article looked basic. The default tier is
+ * Intermediate, so that is the one that has to carry something visual; a
+ * diagram on the Expert tier is a diagram almost nobody sees.
+ */
+const VOCATIONAL = [206, 207, 208, 209];
+
 for (const file of files) {
   const src = fs.readFileSync(path.join(DIR, file), "utf8");
   const where = file.replace(".ts", "");
+  const courseId = Number(file.match(/\d+/)[0]);
+
+  if (VOCATIONAL.includes(courseId)) {
+    const topics = [...src.matchAll(/^  (\d{4}): \{$/gm)].map((m) => ({
+      id: m[1],
+      at: m.index,
+    }));
+    for (const [i, t] of topics.entries()) {
+      const body = src.slice(t.at, i + 1 < topics.length ? topics[i + 1].at : src.length);
+      const tier = /(      Intermediate: `)([\s\S]*?)(`,\n)/.exec(body);
+      if (!tier || !/<figure/.test(tier[2])) {
+        fail(where, `topic ${t.id} has no figure on the Intermediate tier, which is the one learners land on`);
+      }
+    }
+  }
 
   for (const [, caption] of src.matchAll(/<figure[^>]*>([\s\S]*?)<\/figure>/g)) {
     if (!/<figcaption>/.test(caption)) {

@@ -47,6 +47,33 @@ const curriculum: CourseCurriculum = {
 <h3>What gauges are really asking</h3>
 <p>Two questions: is the pressure difference there, and is the refrigerant changing state where it is supposed to. Almost every fault you will meet is one of those two going wrong.</p>`,
       Intermediate: `<p>The cycle has two pressures and two state changes, and everything else is plumbing. The refrigerant is a transport medium, not a consumable, and in a sealed system it is never used up.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="The four components of the refrigeration cycle and what each one does to the refrigerant">
+<rect x="24" y="40" width="222" height="170" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="135" y="96" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">COMPRESSOR</text>
+<text x="135" y="148" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">raises pressure</text>
+<text x="135" y="186" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">and temperature</text>
+<rect x="266" y="40" width="222" height="170" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="377" y="96" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">CONDENSER</text>
+<text x="377" y="148" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">rejects heat</text>
+<text x="377" y="186" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">gas becomes liquid</text>
+<rect x="508" y="40" width="222" height="170" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="619" y="96" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">VALVE</text>
+<text x="619" y="148" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">drops pressure</text>
+<text x="619" y="186" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">and temperature</text>
+<rect x="750" y="40" width="226" height="170" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="863" y="96" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">EVAPORATOR</text>
+<text x="863" y="148" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">absorbs heat</text>
+<text x="863" y="186" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">liquid becomes gas</text>
+<path d="M135 240 V282 H863 V240" fill="none" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<path d="M135 228 l-14 24 h28 z" fill="currentColor" opacity="0.45"/>
+<rect x="24" y="310" width="952" height="150" rx="16" fill="#b45309" opacity="0.12"/>
+<text x="500" y="360" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">Nothing is created or consumed. The same refrigerant</text>
+<text x="500" y="400" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">goes round carrying heat from inside to outside.</text>
+<text x="500" y="442" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">An air conditioner moves heat. It does not make cold.</text>
+</svg>
+<figcaption><strong>Two of these change pressure and two change state, and that alternation is the whole cycle.</strong> Faults almost always sit at one of the four, and naming which one a symptom belongs to is most of a diagnosis.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Saturation is what makes a gauge reading mean something</span><p>At any given pressure a refrigerant has one temperature at which it changes state. Measure the pressure, read the saturation temperature off the chart, compare it with the actual pipe temperature, and the difference tells you which state the refrigerant is actually in.</p></div>
 <h3>Two numbers, two different questions</h3>
 <table>
@@ -273,6 +300,24 @@ const curriculum: CourseCurriculum = {
 <h3>The rule that applies on every call</h3>
 <div class="key-idea"><span class="callout-label">You cannot just top up</span><p>Find the leak and fix it first. Adding gas to a leaking system is putting money and refrigerant into the atmosphere, and in most places it is illegal.</p></div>`,
       Intermediate: `<p>Refrigerants divide into single component fluids and blends, and the difference shows up in your readings. A single component fluid such as R-32 has one saturation temperature at a given pressure. A zeotropic blend boils and condenses over a range, and that spread is the glide.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="Refrigerants compared on glide, flammability and global warming potential">
+<rect x="24" y="40" width="464" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="96" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">R-32</text>
+<text x="56" y="146" font-size="27" font-weight="800" fill="currentColor">No glide, single component</text>
+<text x="56" y="186" font-size="27" font-weight="800" fill="currentColor">Mildly flammable, lower GWP</text>
+<rect x="512" y="40" width="464" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="744" y="96" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">R-407C</text>
+<text x="544" y="146" font-size="27" font-weight="800" fill="currentColor">About 7 K of glide</text>
+<text x="544" y="186" font-size="27" font-weight="800" fill="currentColor">Blend, charge as liquid</text>
+<rect x="24" y="250" width="952" height="210" rx="16" fill="#be123c" opacity="0.12"/>
+<text x="500" y="300" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">A blend separates if you charge it as vapour.</text>
+<text x="500" y="346" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">The lighter component leaves the cylinder first, so what goes</text>
+<text x="500" y="382" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">in is no longer the refrigerant on the label.</text>
+<text x="500" y="432" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Cylinder inverted, liquid out, always.</text>
+</svg>
+<figcaption><strong>Glide and flammability are the two properties that changed how the job is done.</strong> A blend needs the right chart column and liquid charging; a mildly flammable refrigerant needs ventilation, no ignition sources and a charge limit for the room it serves.</figcaption>
+</figure>
 <h3>Glide changes how you calculate</h3>
 <table>
 <tr><th>Measurement</th><th>Read against</th></tr>
@@ -435,6 +480,10 @@ const curriculum: CourseCurriculum = {
 <p>Connect the hoses, crack the yellow hose at the manifold for a moment to let refrigerant push the air out, then tighten. A second of gas is far cheaper than a contaminated system.</p>
 <div class="field"><span class="callout-label">And let it settle</span><p>Read the gauges with the unit running and stable. A system that has been off for ten minutes shows equalised pressures that tell you nothing about how it is working.</p></div>`,
       Intermediate: `<p>A manifold is two gauges, two valves and three hoses, and the valves do only one thing: connect the centre hose to one side or the other. The gauges read whatever the ports read whether the valves are open or shut, which is the point most beginners misunderstand and the reason you never need to open a valve just to take a reading.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/332nd_Expeditionary_CE_Squadron_HVAC-R_operations_%289305714%29.jpg/1280px-332nd_Expeditionary_CE_Squadron_HVAC-R_operations_%289305714%29.jpg" alt="A gloved technician connecting a digital manifold gauge set with red, blue and yellow hoses to the service ports of a split system outdoor unit" loading="lazy"/>
+<figcaption><strong>Red to the high side, blue to the low side, yellow to whatever you are doing next.</strong> Note the gloves and the open electrical panel: this is a live unit, and the two jobs happening on it belong to different parts of this course.<span class="credit">Photo: U.S. Air Force, Senior Airman Grace Turpin. Public domain, via Wikimedia Commons</span></figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Non-condensables are the one contaminant you introduce yourself</span><p>Air trapped in a hose enters when you open to the centre line, and because it never condenses it accumulates at the top of the condenser, reducing the effective surface and raising head pressure. The symptom is high discharge pressure with normal subcooling, and no amount of charge adjustment will fix it.</p></div>
 <h3>Accuracy deserves more respect than it gets</h3>
 <p>Superheat is a difference between a measured temperature and a saturation temperature derived from a measured pressure, so both instrument errors propagate. An analogue gauge off by half a bar can shift the derived saturation temperature by two or three kelvin, which on a target superheat of eight kelvin is most of the band. That is why digital manifolds have displaced analogue ones for anything diagnostic.</p>
@@ -1175,6 +1224,28 @@ const curriculum: CourseCurriculum = {
 <div class="warning"><span class="callout-label">Why the third step exists</span><p>A tester that failed silently reads zero volts on a live circuit, which looks exactly like a safely isolated one. Skipping it is the exact way people die believing they checked.</p></div>
 <div class="warning"><span class="callout-label">And one specific to this trade</span><p>A capacitor holds a charge after the power is off. It can throw you across a room. Discharge it through a resistor before you touch its terminals.</p></div>`,
       Intermediate: `<p>Isolation means creating a secure point of disconnection, and switching off is not isolation because a switch can be operated by somebody else. Isolate at a point that can be locked, lock it with a personal lock, tag it with your name and the time, and keep the only key on your person.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="The three step prove dead sequence">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<circle cx="86" cy="96" r="26" fill="#0f766e"/><text x="86" y="107" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+<text x="56" y="162" font-size="29" font-weight="800" fill="currentColor">Prove the tester</text>
+<text x="56" y="200" font-size="26" fill="currentColor" opacity="0.8">on a known source</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#0369a1" opacity="0.14"/>
+<circle cx="412" cy="96" r="26" fill="#0369a1"/><text x="412" y="107" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
+<text x="382" y="162" font-size="29" font-weight="800" fill="currentColor">Test the circuit</text>
+<text x="382" y="200" font-size="26" fill="currentColor" opacity="0.8">at the point of work</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<circle cx="738" cy="96" r="26" fill="#be123c"/><text x="738" y="107" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
+<text x="708" y="162" font-size="29" font-weight="800" fill="currentColor">Prove it again</text>
+<text x="708" y="200" font-size="26" fill="currentColor" opacity="0.8">it could have failed</text>
+<rect x="24" y="254" width="952" height="186" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="306" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">Step three is the one people skip.</text>
+<text x="500" y="356" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">A tester that failed silently reads zero volts on a live circuit,</text>
+<text x="500" y="392" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">which looks exactly like a correctly isolated one.</text>
+<text x="500" y="428" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Without it you tested nothing and believed it.</text>
+</svg>
+<figcaption><strong>Three steps, in this order, every time.</strong> The sequence exists because a measuring instrument can fail between two readings, and the only way to know it did not is to ask it a question you already know the answer to.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Proving dead establishes a state at an instant; work happens over an interval</span><p>Everything between those two facts is managed by the lock. That is why a proving-dead test without securing the isolation is close to worthless, and why the test is repeated after any break in the work.</p></div>
 <h3>Use the right instrument</h3>
 <p>A two-pole tester rather than a non-contact pen. Non-contact detectors respond to field rather than to potential: they can read nothing on a live conductor inside a steel enclosure, or something on a dead one lying beside a live cable.</p>
@@ -1487,6 +1558,27 @@ const curriculum: CourseCurriculum = {
 <p>Measure resistance between each pair. The highest reading is between run and start, and the terminal not involved in that reading is common.</p>
 <div class="warning"><span class="callout-label">All of this with the power isolated</span><p>Locked, proved dead, and the capacitor discharged first.</p></div>`,
       Intermediate: `<p>A single phase induction motor cannot start on its own because a single alternating field produces no rotating torque. The run capacitor creates a phase shift in the start winding current, and the two out-of-phase fields produce rotation.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="Motor terminal resistance readings and how they identify the common terminal">
+<rect x="24" y="40" width="952" height="150" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="96" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">Three readings: 2.1, 5.4 and 7.5 ohms</text>
+<text x="500" y="150" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">2.1 + 5.4 = 7.5, so the sum rule holds</text>
+<rect x="24" y="220" width="300" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="174" y="272" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">COMMON</text>
+<text x="174" y="326" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">shared by the</text>
+<text x="174" y="358" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">two smaller</text>
+<rect x="350" y="220" width="300" height="150" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="500" y="272" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">RUN</text>
+<text x="500" y="326" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">lower reading</text>
+<text x="500" y="358" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">2.1 ohms</text>
+<rect x="676" y="220" width="300" height="150" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="826" y="272" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">START</text>
+<text x="826" y="326" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">higher reading</text>
+<text x="826" y="358" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">5.4 ohms</text>
+<text x="500" y="428" font-size="28" font-weight="800" fill="currentColor" opacity="0.8" text-anchor="middle">If they do not add up, the motor is faulty, not mislabelled.</text>
+</svg>
+<figcaption><strong>Arithmetic, not markings.</strong> Terminal labels are routinely obscured by oil, corrosion or a previous repair, and the sum rule works regardless. A violation of it is a condemned motor rather than a terminal you have identified wrongly, which saves measuring it again.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">Which explains the symptom exactly</span><p>A motor with a failed capacitor hums, draws locked rotor current and trips on overload. It will often start if you spin it by hand, because it needs the asymmetry only to begin.</p></div>
 <h3>Contactors fail in two distinct ways, and the test differs</h3>
 <table>
@@ -1726,6 +1818,23 @@ const curriculum: CourseCurriculum = {
 <h3>Find it by halving</h3>
 <p>Measure in the middle of the chain. If voltage is there, the break is further along. If it is not, the break is behind you. Each measurement removes half of what is left, so eight components take three or four readings instead of eight.</p>`,
       Intermediate: `<p>A control circuit is a series chain from one side of the control transformer, through every safety and demand device, to the contactor coil and back. Reading it on a diagram means following one line and listing what interrupts it.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="Halving a series control circuit to find the open device in three readings instead of eight">
+<rect x="24" y="40" width="952" height="120" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="90" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">Eight devices in series, nothing reaching the coil</text>
+<text x="500" y="138" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">1 - 2 - 3 - 4 - 5 - 6 - 7 - 8</text>
+<rect x="24" y="188" width="464" height="110" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="256" y="232" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">One at a time</text>
+<text x="256" y="276" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">up to 8 readings</text>
+<rect x="512" y="188" width="464" height="110" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="744" y="232" font-size="29" font-weight="800" fill="#0f766e" text-anchor="middle">Halving</text>
+<text x="744" y="276" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">3 readings</text>
+<rect x="24" y="324" width="952" height="106" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="368" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">The open device reads full control voltage across itself.</text>
+<text x="500" y="408" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Every closed one reads near zero. It announces itself.</text>
+</svg>
+<figcaption><strong>Measure in the middle, and each reading removes half of what is left.</strong> Experienced technicians often look asymmetric doing this because they are minimising effort rather than count: an accessible terminal block gets probed before the true midpoint buried in a harness.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">The reading that tells you the most</span><p>Voltage across an open device in a series circuit is full control voltage, because the open device drops everything. Voltage across a closed device is near zero. So the open contact announces itself: it is the only one reading 24 volts across its own terminals.</p></div>
 <h3>Halving, in practice</h3>
 <p>Eight devices, with power at the start and nothing at the coil. Measure at device four. Live there, the fault is in five to eight. Dead, it is in one to four. Three readings isolate it.</p>
@@ -2010,6 +2119,25 @@ const curriculum: CourseCurriculum = {
 <h3>Start with the code</h3>
 <p>The unit tells you what it thinks is wrong. Look that code up in the service manual for that model. Most codes point at a sensor or a supply problem rather than at the board.</p>`,
       Intermediate: `<p>An inverter converts the incoming AC to DC, then synthesises a variable frequency AC to drive the compressor. Capacity follows demand rather than cycling, which is where the efficiency comes from, and it means the system has a computer in it that logs and reports.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="What an inverter fault code usually turns out to be">
+<rect x="24" y="40" width="952" height="100" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="104" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">The code names a circuit, not a culprit</text>
+<rect x="24" y="170" width="464" height="110" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="256" y="214" font-size="29" font-weight="800" fill="#0f766e" text-anchor="middle">Sensor fault</text>
+<text x="256" y="258" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">usually the thermistor</text>
+<rect x="512" y="170" width="464" height="110" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="744" y="214" font-size="29" font-weight="800" fill="#0369a1" text-anchor="middle">Communication</text>
+<text x="744" y="258" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">usually the cable</text>
+<rect x="24" y="306" width="464" height="110" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="256" y="350" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">Overcurrent</text>
+<text x="256" y="394" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">usually mechanical</text>
+<rect x="512" y="306" width="464" height="110" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="744" y="350" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">Board fault</text>
+<text x="744" y="394" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">the minority of cases</text>
+</svg>
+<figcaption><strong>Most boards returned under warranty test good.</strong> Each one is a part cost, a return cost and a second visit, and almost all of it is avoided by measuring the sensor the code named before condemning the board that reported it.</figcaption>
+</figure>
 <div class="key-idea"><span class="callout-label">The diagnostic consequence</span><p>The unit has already done a lot of the work. Error codes and stored history should be the first thing you read, before any instrument comes out, because they often identify the circuit directly.</p></div>
 <h3>What a code actually tells you</h3>
 <table>
@@ -2184,6 +2312,28 @@ const curriculum: CourseCurriculum = {
 <h3>Before you leave</h3>
 <p>Measure the air temperature in and out of the indoor unit. Eight to twelve degrees of difference is normal. That number is your proof the unit is working, and it is what you write on the report.</p>`,
       Intermediate: `<p>Each question in the tree is chosen to split the fault space, not to test a component. A question that eliminates half the possibilities is worth more than one that confirms a hunch, and that is the whole design principle.</p>
+<figure>
+<svg viewBox="0 0 1000 460" role="img" aria-label="Air temperature split across the indoor coil and what each band means">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="174" y="96" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">Under 6 K</text>
+<text x="174" y="150" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">refrigerant side</text>
+<text x="174" y="190" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">charge, restriction</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="96" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">8 to 12 K</text>
+<text x="500" y="150" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">roughly normal</text>
+<text x="500" y="190" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">record it and move on</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="826" y="96" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">Over 14 K</text>
+<text x="826" y="150" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">airflow is low</text>
+<text x="826" y="190" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">filter, fan, coil</text>
+<rect x="24" y="254" width="952" height="186" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="304" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">A big split is not good news.</text>
+<text x="500" y="352" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Capacity is airflow times split, so reduced airflow raises</text>
+<text x="500" y="388" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">the split and lowers the cooling actually delivered.</text>
+<text x="500" y="428" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">A blocked filter gives an impressively cold trickle.</text>
+</svg>
+<figcaption><strong>Settle airflow before the gauges come out.</strong> A refrigerant diagnosis made on a starved coil is uninterpretable, which is why this reading comes first even though it is the cheapest one to take.</figcaption>
+</figure>
 <h3>The split-temperature test is the single most informative reading</h3>
 <table>
 <tr><th>Split across the indoor coil</th><th>Means</th></tr>
@@ -2476,6 +2626,20 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">Two tools, two jobs</span><p>An electronic detector finds roughly where. Bubble solution confirms exactly which joint. Use the detector to narrow it down, then the bubbles to be certain before you cut anything.</p></div>
 <div class="warning"><span class="callout-label">Never vent refrigerant to the air</span><p>Recover it into a cylinder. It is a legal requirement, and for many refrigerants one kilogram does the climate damage of driving for months.</p></div>`,
       Intermediate: `<p>Leak detection is a sequence that narrows from the whole system to one joint, and each step costs more than the one before it, which is the reason for the order.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="Leak detection narrowing from the whole system to one joint">
+<rect x="24" y="40" width="952" height="70" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="86" font-size="28" font-weight="800" fill="currentColor">1. Oil traces, free, and oil marks the escape path</text>
+<rect x="24" y="124" width="952" height="70" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="170" font-size="28" font-weight="800" fill="currentColor">2. Electronic detector, slowly, underneath the joint</text>
+<rect x="24" y="208" width="952" height="70" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="254" font-size="28" font-weight="800" fill="currentColor">3. Bubbles on the suspect joint, to be certain</text>
+<rect x="24" y="292" width="952" height="70" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="56" y="338" font-size="28" font-weight="800" fill="currentColor">4. Nitrogen, held and timed, to prove the repair</text>
+<text x="500" y="408" font-size="28" font-weight="800" fill="currentColor" opacity="0.8" text-anchor="middle">Each step costs more than the one above it. That is the order.</text>
+</svg>
+<figcaption><strong>A held pressure test cannot be read without a temperature.</strong> Nitrogen pressure falls with ambient, so an overnight drop of a few degrees looks exactly like a small leak. Record both at the start and at the end or the test means nothing.</figcaption>
+</figure>
 <h3>The sequence</h3>
 <table>
 <tr><th>Step</th><th>Finds</th></tr>
@@ -2754,6 +2918,27 @@ const curriculum: CourseCurriculum = {
 <p>A gauge needle resting on zero means nothing. You need a micron gauge, and you are aiming for 500 microns or lower, held after the pump is valved off.</p>
 <div class="warning"><span class="callout-label">Weigh the charge, do not guess it</span><p>Scales, the nameplate figure, plus the manufacturer's allowance for extra pipe length. Charging by pressure gives a different answer on a different day.</p></div>`,
       Intermediate: `<p>Each step has a measurable endpoint, and that is what separates a procedure from a ritual.</p>
+<figure>
+<svg viewBox="0 0 1000 420" role="img" aria-label="The three measured endpoints of recovery, evacuation and charging">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="174" y="96" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">RECOVER</text>
+<text x="174" y="152" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">weigh what</text>
+<text x="174" y="190" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">came out</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="96" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">EVACUATE</text>
+<text x="500" y="152" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">under 500 microns</text>
+<text x="500" y="190" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">and it holds</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="826" y="96" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">CHARGE</text>
+<text x="826" y="152" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">weigh it in</text>
+<text x="826" y="190" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">plus line length</text>
+<rect x="24" y="254" width="952" height="146" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="304" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">Below 500 microns water cannot stay liquid.</text>
+<text x="500" y="350" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">That is the point of the target. Moisture left behind becomes</text>
+<text x="500" y="386" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">acid, and acid takes the compressor windings years later.</text>
+</svg>
+<figcaption><strong>Hose bore matters more than pump size.</strong> The conductance of the connection path sets the pump-down time, so short wide hoses with the cores removed turn an hour into fifteen minutes with the same pump.</figcaption>
+</figure>
 <h3>The endpoints</h3>
 <table>
 <tr><th>Step</th><th>Done when</th></tr>
@@ -3087,6 +3272,28 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">Say what you did not do</span><p>A customer who discovers an uncleaned coil next month assumes you missed it. Written down, the same fact is a recommendation they chose to defer.</p></div>
 <div class="warning"><span class="callout-label">Promise only what you fixed</span><p>Replacing a capacitor does not warrant the compressor. Saying so at the door costs a sentence; not saying so costs an argument.</p></div>`,
       Intermediate: `<p>The handover manages the gap between what was repaired and what the customer believes was repaired, and almost every dispute in this trade lives in that gap.</p>
+<figure>
+<svg viewBox="0 0 1000 440" role="img" aria-label="The four elements of a service report that make it defensible">
+<rect x="24" y="40" width="464" height="160" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="256" y="96" font-size="29" font-weight="800" fill="#0369a1" text-anchor="middle">EVIDENCE</text>
+<text x="256" y="148" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Capacitor measured 31,</text>
+<text x="256" y="184" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">rated 45</text>
+<rect x="512" y="40" width="464" height="160" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="744" y="96" font-size="29" font-weight="800" fill="#0f766e" text-anchor="middle">ACTION</text>
+<text x="744" y="148" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Replaced, confirmed</text>
+<text x="744" y="184" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">starting</text>
+<rect x="24" y="228" width="464" height="160" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="256" y="284" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">PROOF</text>
+<text x="256" y="336" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Supply 14 C,</text>
+<text x="256" y="372" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">return 25 C</text>
+<rect x="512" y="228" width="464" height="160" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="744" y="284" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">OUT OF SCOPE</text>
+<text x="744" y="336" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Condenser needs</text>
+<text x="744" y="372" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">cleaning, quoted</text>
+<text x="500" y="424" font-size="28" font-weight="800" fill="currentColor" opacity="0.8" text-anchor="middle">Four lines, one page, and almost unarguable.</text>
+</svg>
+<figcaption><strong>The fourth box is the one that prevents the argument.</strong> A customer who finds an uncleaned coil next month assumes you missed it. Written down, the same fact is a recommendation they chose to defer.</figcaption>
+</figure>
 <h3>Three things to separate explicitly</h3>
 <table>
 <tr><th>Separate</th><th>Because</th></tr>
