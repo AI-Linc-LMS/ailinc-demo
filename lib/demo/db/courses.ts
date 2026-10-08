@@ -143,6 +143,18 @@ const COVERS: Record<number, string> = {
   204: "photo-1544197150-b99a580bb7a8",
   // Cabled server racks in a data centre.
   205: "photo-1558494949-ef010cbdcc31",
+  // A handwritten ledger with ruled columns, a desk calculator and pens.
+  206: "photo-1642043175009-5997b3a078d8",
+  // A rooftop bank of condenser units: fans, casings and refrigerant pipework.
+  207: "photo-1698479603408-1a66a6d9e80f",
+  // A Berlin street direction sign reading Reichstag, Charlottenburg, Tegel.
+  // Chosen over a Reichstag-and-flag shot, which reads as Germany the state
+  // rather than as the language, and carries a political framing a language
+  // course does not want.
+  208: "photo-1777907162183-ceb4a95f6216",
+  // An FPV quadcopter mid-build: carbon frame, flight controller stack, ESC
+  // wiring, motors and props.
+  209: "photo-1774553988130-ccda57774818",
 };
 
 /** The cover photo for a course, or "" when none is mapped. */
@@ -676,7 +688,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     durationHours: 70,
     tags: ["UAV", "Multirotor", "DGCA", "Soldering", "Flight controller"],
     instructor: TRADE_FACULTY[3],
-    enrolled: false,
+    enrolled: true,
     accent: ["#4338ca", "#818cf8"],
     icon: "mdi:quadcopter",
     dueInDays: null,

@@ -28,6 +28,45 @@ const PAGES = [
   ["fraud scenario", "/adaptive-courses/206/submodule/5081/scenario/1605081", ["nobody has heard of", "Vidarbha"]],
 ];
 
+/**
+ * Navigate, tolerating a slow first compile.
+ *
+ * Next compiles a route on its first request in dev, and under load that can
+ * exceed Playwright's 30 second default on a cold route. A timeout there is a
+ * property of the dev server, not of the page, so retry once with a longer
+ * budget before calling anything broken. A genuinely broken page still fails,
+ * on its content rather than on its clock.
+ */
+async function goto(page, url) {
+  for (const timeout of [45000, 90000]) {
+    try {
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout });
+      return;
+    } catch (e) {
+      if (timeout === 90000) throw e;
+    }
+  }
+}
+
+/**
+ * Wait for the page to stop loading rather than sleeping a fixed interval.
+ *
+ * Every player shows a placeholder while it fetches. A fixed wait is a race
+ * against however long the server took to compile, and losing it reports a
+ * healthy page as broken on its own content.
+ */
+const LOADING = /Loading the|Warming up|Opening the|Setting the scene|Shuffling|Drawing the|Loading \u2026|Loading\.\.\./i;
+
+async function settle(page, budgetMs = 15000) {
+  const until = Date.now() + budgetMs;
+  for (;;) {
+    const text = await page.evaluate(() => document.body.innerText).catch(() => "");
+    if (text.length > 400 && !LOADING.test(text)) return text;
+    if (Date.now() > until) return text;
+    await page.waitForTimeout(400);
+  }
+}
+
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
 const page = await ctx.newPage();
@@ -36,8 +75,8 @@ const consoleErrors = [];
 page.on("console", (m) => { if (m.type() === "error") consoleErrors.push(m.text().slice(0, 160)); });
 
 // Sign in as the student persona.
-await page.goto(`${BASE}/login`, { waitUntil: "domcontentloaded" });
-await page.waitForTimeout(1200);
+await goto(page, `${BASE}/login`);
+await page.waitForTimeout(1800);
 await page.getByRole("button", { name: /^Student/ }).click();
 await page.waitForTimeout(4500);
 console.log("signed in, at", page.url());
@@ -49,9 +88,8 @@ if (/\/login/.test(page.url())) {
 let failures = 0;
 for (const [name, path, expects] of PAGES) {
   consoleErrors.length = 0;
-  await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
-  await page.waitForTimeout(2600);
-  const text = await page.evaluate(() => document.body.innerText);
+  await goto(page, BASE + path);
+  const text = await settle(page);
   const broke = /Something went wrong|Application error|Unhandled Runtime|404|This page could not be found/i.test(text);
   const missing = expects.filter((e) => !text.toLowerCase().includes(e.toLowerCase()));
   const ok = !broke && missing.length === 0 && text.length > 400;

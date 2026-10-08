@@ -142,22 +142,22 @@ const curriculum: CourseCurriculum = {
         mode: "flip",
         lang: "de-DE",
         cards: [
-          { id: 1, front: "Mutter / Mütter", back: "mother / mothers", extra: { Sound: "u against ü", "Why it matters": "The plural is carried entirely by that vowel" }, tags: ["Umlaut"] },
-          { id: 2, front: "schon / schön", back: "already / beautiful", extra: { Sound: "o against ö" }, tags: ["Umlaut"] },
-          { id: 3, front: "Vater / Väter", back: "father / fathers", extra: { Sound: "a against ä", "Why it matters": "Plural again" }, tags: ["Umlaut"] },
-          { id: 4, front: "mochte / möchte", back: "wanted to / would like", extra: { Sound: "o against ö", "Why it matters": "Past against polite present, in every shop transaction" }, tags: ["Umlaut"] },
-          { id: 5, front: "Mann / man", back: "man / one (impersonal)", extra: { Sound: "Same sound, different word", Note: "Heard identically, told apart by grammar" }, tags: ["Listening"] },
-          { id: 6, front: "Bier / Bär", back: "beer / bear", extra: { Sound: "ie as ee, ä as a long e" }, tags: ["Vowels"] },
-          { id: 7, front: "mein / Mien", back: "my / (not a word, but read it)", extra: { Rule: "ei is eye, ie is ee. The reverse of English intuition." }, tags: ["Vowels"] },
-          { id: 8, front: "Kirche / Kirsche", back: "church / cherry", extra: { Sound: "ch against sch" }, tags: ["Consonants"] },
-          { id: 9, front: "Tag", back: "day, ending in a k sound", extra: { Rule: "Final devoicing: b, d, g become p, t, k at the end", Contrast: "But Tage has a real g, because the suffix resyllabifies it" }, tags: ["Devoicing"] },
-          { id: 10, front: "Hund", back: "dog, ending in a t sound", extra: { Rule: "Final devoicing again", Contrast: "Hunde has the d back" }, tags: ["Devoicing"] },
-          { id: 11, front: "Zeit", back: "time, pronounced tsait", extra: { Rule: "z is always ts" }, tags: ["Consonants"] },
-          { id: 12, front: "Wasser", back: "water, pronounced vasser", extra: { Rule: "w is v" }, tags: ["Consonants"] },
-          { id: 13, front: "Vogel", back: "bird, pronounced fogel", extra: { Rule: "v is usually f in native words" }, tags: ["Consonants"] },
-          { id: 14, front: "ich", back: "I, with the soft front ch", extra: { Warning: "Not ik. This is the most recognisable accent marker there is." }, tags: ["Ich-Laut"] },
-          { id: 15, front: "Buch", back: "book, with the hard back ch", extra: { Rule: "After a, o, u the ch moves to the back of the throat" }, tags: ["Ach-Laut"] },
-          { id: 16, front: "Vater", back: "father, ending in a vowel sound not an r", extra: { Rule: "Coda r vocalises. Producing an English r here sounds markedly foreign." }, tags: ["The r"] },
+          { id: 1, front: "Mutter / Mütter", back: "mother / mothers", extra: { "Sound": "u against ü: same length, lips rounded and tongue forward for the second", "In use": "Meine Mutter is one person. Die Mütter is the whole group of them.", "Get it wrong": "You have said the wrong number of people, and nothing else in the sentence corrects you" }, hint: "Round your lips for u, then say ee without moving them", tags: ["Umlaut"] },
+          { id: 2, front: "schon / schön", back: "already / beautiful", extra: { "Sound": "o against ö", "In use": "Ich bin schon da means I am already here. Das ist schön means that is lovely.", "Get it wrong": "Two completely unrelated words, and both fit the same sentence slot" }, hint: "Say the o, then say ay with the lips still rounded", tags: ["Umlaut"] },
+          { id: 3, front: "Vater / Väter", back: "father / fathers", extra: { "Sound": "a against ä, where ä is close to the e in bed", "In use": "Mein Vater, but die Väter in the plural", "Get it wrong": "Plural again. German marks a great many plurals with nothing but this vowel." }, hint: "The umlaut fronts the vowel; it does not lengthen it", tags: ["Umlaut"] },
+          { id: 4, front: "mochte / möchte", back: "wanted to / would like", extra: { "Sound": "o against ö", "In use": "Ich möchte einen Kaffee is how you order. Ich mochte Kaffee means you used to like it.", "Get it wrong": "You have switched a polite request into a remark about the past, at a counter" }, hint: "This is the pair you will use most often in a shop", tags: ["Umlaut"] },
+          { id: 5, front: "Mann / man", back: "man / one (impersonal)", extra: { "Sound": "Identical. There is no audible difference at all.", "In use": "Der Mann sagt is the man says. Man sagt is people say, or it is said.", "Get it wrong": "Only the article and the verb tell them apart, so this one is grammar, not ears" }, hint: "If there is no article in front of it, it is the impersonal one", tags: ["Listening"] },
+          { id: 6, front: "Bier / Bär", back: "beer / bear", extra: { "Sound": "ie is a long ee; ä here is a long e as in bear", "In use": "Ein Bier, bitte. Not something you want to get wrong in a bar.", "Get it wrong": "Memorable, and the single most told joke about learners of German" }, hint: "ie always gives you the second letter: ee", tags: ["Vowels"] },
+          { id: 7, front: "mein / Mien", back: "my / (not a word, but read it anyway)", extra: { "Rule": "ei is pronounced eye; ie is pronounced ee. Each digraph is said as its second letter.", "In use": "mein Name is myn, die Miene is meena", "Get it wrong": "This is the reverse of English intuition and it affects hundreds of common words" }, hint: "Say the second vowel of the pair, every time", tags: ["Vowels"] },
+          { id: 8, front: "Kirche / Kirsche", back: "church / cherry", extra: { "Sound": "ch is the soft front sound; sch is the English sh", "In use": "Die Kirche ist alt, but Ich mag Kirschen", "Get it wrong": "A whole extra consonant, and a word that is not remotely related" }, hint: "If you can hear an s before it, it is the fruit", tags: ["Consonants"] },
+          { id: 9, front: "Tag", back: "day, ending in a k sound", extra: { "Rule": "Final devoicing: b, d and g are said as p, t and k at the end of a word or syllable", "Contrast": "Tage has a real g, because the ending moves it into the next syllable", "Get it wrong": "Guten Tag said with a hard English g is the first thing a listener notices" }, hint: "It is spelled with a g and said with a k", tags: ["Devoicing"] },
+          { id: 10, front: "Hund", back: "dog, ending in a t sound", extra: { "Rule": "Final devoicing again", "Contrast": "Hunde has the d back, for the same reason Tage does", "Get it wrong": "Consistent across the language, so getting the rule fixes many words at once" }, hint: "Same rule as Tag, one letter further along the alphabet", tags: ["Devoicing"] },
+          { id: 11, front: "Zeit", back: "time, pronounced tsait", extra: { "Rule": "z is always ts, never the English z", "In use": "Zehn, Zug, Zimmer, zusammen: all of them start with ts", "Get it wrong": "An English z marks you out instantly and appears in very common words" }, hint: "Think of the ts at the end of cats", tags: ["Consonants"] },
+          { id: 12, front: "Wasser", back: "water, pronounced vasser", extra: { "Rule": "w is v", "In use": "Wein is vine, Wagen is vaagen, wo is vo", "Get it wrong": "Pairs with the next card: the two letters have effectively swapped jobs" }, hint: "w and v are not where English puts them", tags: ["Consonants"] },
+          { id: 13, front: "Vogel", back: "bird, pronounced fogel", extra: { "Rule": "v is usually f in native German words", "Contrast": "In borrowed words such as Vase it stays a v, which is the only real exception", "Get it wrong": "Vater, viel, von and vier are all extremely common and all take f" }, hint: "Native word, f sound. Borrowed word, v sound.", tags: ["Consonants"] },
+          { id: 14, front: "ich", back: "I, with the soft front ch", extra: { "Sound": "Tongue high and forward, air hissing over it. Closer to the h in huge than to a k.", "Warning": "Not ik. This is the most recognisable accent marker in the language.", "Get it wrong": "You will say this word in nearly every sentence you ever speak" }, hint: "Start to say yes, then blow instead of voicing it", tags: ["Ich-Laut"] },
+          { id: 15, front: "Buch", back: "book, with the hard back ch", extra: { "Rule": "After a, o and u the ch moves to the back of the throat", "Contrast": "Compare Buch with ich: same two letters, two genuinely different sounds", "Get it wrong": "Using the front sound here is less damaging than the reverse, but still audible" }, hint: "The vowel before it decides which ch you get", tags: ["Ach-Laut"] },
+          { id: 16, front: "Vater", back: "father, ending in a vowel sound and not an r", extra: { "Rule": "An r at the end of a syllable vocalises, becoming something close to a short a", "In use": "Vater, Mutter, Wasser, aber: none of them ends in a consonant you can hear", "Get it wrong": "An English r here is one of the two or three strongest foreign accent markers" }, hint: "Let the r collapse into a vowel rather than curling your tongue", tags: ["The r"] },
         ],
         skills: ["Umlaut", "Ich-Laut", "Final devoicing"],
       },
@@ -2187,8 +2187,49 @@ const curriculum: CourseCurriculum = {
         level: "CEFR A2",
         lang: "de-DE",
         prompt: `<p>You are at the counter. Handle the whole interaction in German.</p>
-<p>The official speaks quickly and asks closed questions, which is normal. Most of this task is comprehension rather than production: your sentences are short and his questions are the hard part.</p>
-<p>If you do not catch something, say so. <strong>Wie bitte?</strong> or <strong>Können Sie das bitte wiederholen?</strong> Using them is normal and costs you nothing. Freezing costs you the appointment.</p>`,
+<figure>
+<svg viewBox="0 0 1000 652" role="img" aria-label="The four stages of the counter exchange at a registration office">
+<rect x="24" y="24" width="952" height="110" rx="16" fill="#7c3aed" opacity="0.1"/>
+<rect x="24" y="24" width="952" height="110" rx="16" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<circle cx="80" cy="79" r="28" fill="#7c3aed"/>
+<text x="80" y="91" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+<text x="144" y="74" font-size="34" font-weight="800" fill="currentColor">Guten Tag. Ich moechte mich anmelden.</text>
+<text x="144" y="114" font-size="27" fill="currentColor" opacity="0.75">Greet, and say why you are here.</text>
+<rect x="24" y="146" width="952" height="110" rx="16" fill="#0369a1" opacity="0.1"/>
+<rect x="24" y="146" width="952" height="110" rx="16" fill="none" stroke="#0369a1" stroke-width="3"/>
+<circle cx="80" cy="201" r="28" fill="#0369a1"/>
+<text x="80" y="213" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
+<text x="144" y="196" font-size="34" font-weight="800" fill="currentColor">Hier, bitte schoen.</text>
+<text x="144" y="236" font-size="27" fill="currentColor" opacity="0.75">Hand over the documents asked for.</text>
+<rect x="24" y="268" width="952" height="110" rx="16" fill="#b45309" opacity="0.1"/>
+<rect x="24" y="268" width="952" height="110" rx="16" fill="none" stroke="#b45309" stroke-width="3"/>
+<circle cx="80" cy="323" r="28" fill="#b45309"/>
+<text x="80" y="335" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
+<text x="144" y="318" font-size="34" font-weight="800" fill="currentColor">Seit wann wohnen Sie da?</text>
+<text x="144" y="358" font-size="27" fill="currentColor" opacity="0.75">Closed questions, asked fast. The hard part.</text>
+<rect x="24" y="390" width="952" height="110" rx="16" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="390" width="952" height="110" rx="16" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="80" cy="445" r="28" fill="#0f766e"/>
+<text x="80" y="457" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
+<text x="144" y="440" font-size="34" font-weight="800" fill="currentColor">Vielen Dank.</text>
+<text x="144" y="480" font-size="27" fill="currentColor" opacity="0.75">Take the paper, then thank them.</text>
+<rect x="24" y="518" width="952" height="110" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="566" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">When you lose the thread, say so.</text>
+<text x="500" y="606" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Wie bitte? &#183; Koennen Sie das bitte wiederholen?</text>
+</svg>
+<figcaption><strong>Four moves, and only two of them need sentences you compose.</strong> Stages one and four are fixed phrases you can have ready. Stage three is comprehension under time pressure, which is the hard part, and asking for a repeat is a normal move at that counter rather than an admission of failure.</figcaption>
+</figure>
+<p>The official speaks quickly and asks closed questions, which is normal. Most of this task is comprehension rather than production: your sentences are short, and the difficulty is catching theirs.</p>
+<h3>Have these ready before you start</h3>
+<table>
+<tr><th>You will be asked</th><th>You answer with</th></tr>
+<tr><td>Why you are here</td><td>Ich moechte mich anmelden</td></tr>
+<tr><td>Since when you have lived there</td><td>Seit dem ersten Maerz</td></tr>
+<tr><td>Whether you have the landlord confirmation</td><td>Ja, hier ist die Wohnungsgeberbestaetigung</td></tr>
+<tr><td>Your date of birth</td><td>The date, said as a date and not spelled out</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Asking for a repeat is part of the task, not a failure of it</span><p><strong>Wie bitte?</strong> and <strong>Koennen Sie das bitte wiederholen?</strong> are what native speakers say at that counter too. Using one of them and then answering correctly scores better than guessing at a question you did not catch, and the rubric is written that way on purpose.</p></div>
+<div class="warning"><span class="callout-label">The trap is answering the question you expected</span><p>The official may ask something off the script, and a confident answer to a question that was not asked is the most common way this goes wrong. If the reply does not fit, you misheard. Ask again.</p></div>`,
         turns: [
           {
             speaker: "Sachbearbeiter",

@@ -52,8 +52,42 @@ const curriculum: CourseCurriculum = {
         title: "Name every part on an exploded quadcopter",
         diagram: "drone-exploded",
         brief: `<p>This is a five inch quadcopter seen from above, drawn with the propellers lifted off the motors so you can see both.</p>
-<p>Name each numbered point. The label list contains more names than there are points, and the extras are the parts these are most often confused with.</p>
-<p>Then put the parts in the order they are fitted during a build. Order is not a preference here: some of these cannot be reached once another is in place, and one of them has to be tested before anything goes on top of it.</p>`,
+<p>Name each numbered point. The label list contains more names than there are points, and the extras are the parts these are most often confused with, so reading the list is not a shortcut.</p>
+<h3>Before you start: how motors are numbered</h3>
+<figure>
+<svg viewBox="0 0 1000 620" role="img" aria-label="Motor numbering on a quadcopter in X configuration seen from above">
+<path d="M500 40 l40 64 h-80 z" fill="#be123c"/>
+<text x="500" y="146" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">FRONT</text>
+<path d="M330 230 L670 470 M670 230 L330 470" stroke="currentColor" opacity="0.4" stroke-width="22" stroke-linecap="round"/>
+<circle cx="670" cy="230" r="66" fill="#0369a1" opacity="0.25"/>
+<circle cx="670" cy="230" r="66" fill="none" stroke="#0369a1" stroke-width="5"/>
+<text x="670" y="246" font-size="48" font-weight="800" fill="currentColor" text-anchor="middle">2</text>
+<circle cx="670" cy="470" r="66" fill="#b45309" opacity="0.25"/>
+<circle cx="670" cy="470" r="66" fill="none" stroke="#b45309" stroke-width="5"/>
+<text x="670" y="486" font-size="48" font-weight="800" fill="currentColor" text-anchor="middle">1</text>
+<circle cx="330" cy="230" r="66" fill="#b45309" opacity="0.25"/>
+<circle cx="330" cy="230" r="66" fill="none" stroke="#b45309" stroke-width="5"/>
+<text x="330" y="246" font-size="48" font-weight="800" fill="currentColor" text-anchor="middle">4</text>
+<circle cx="330" cy="470" r="66" fill="#0369a1" opacity="0.25"/>
+<circle cx="330" cy="470" r="66" fill="none" stroke="#0369a1" stroke-width="5"/>
+<text x="330" y="486" font-size="48" font-weight="800" fill="currentColor" text-anchor="middle">3</text>
+<path d="M396 282 L604 418" stroke="#0369a1" stroke-width="5" stroke-dasharray="12 9"/>
+<path d="M396 418 L604 282" stroke="#b45309" stroke-width="5" stroke-dasharray="12 9"/>
+<text x="24" y="580" font-size="27" font-weight="800" fill="#0369a1">3 and 2 turn together</text>
+<text x="976" y="580" font-size="27" font-weight="800" fill="#b45309" text-anchor="end">4 and 1 turn together</text>
+</svg>
+<figcaption><strong>Diagonal pairs always turn the same way, and the numbering is fixed by the flight controller rather than by the frame.</strong> Whether the top pair turns inward or outward is a setting you choose and then declare; which motor is number one is not. Get the numbering wrong and the aircraft will flip on its first arm, every time, because the controller corrects the wrong corner.</figcaption>
+</figure>
+<div class="warning"><span class="callout-label">This is the mistake that breaks a first flight</span><p>Motor numbering belongs to the flight controller, not to the frame, and it does not follow any clockwise or anticlockwise order you might assume. If motor three is wired where the controller expects motor one, the aircraft corrects the wrong corner and flips the instant it arms. It will do it every single time, which at least makes it easy to diagnose once you know to suspect it.</p></div>
+<h3>What this frame is</h3>
+<div class="stat-strip">
+<div class="stat"><strong>5 in</strong><span>Propeller</span></div>
+<div class="stat"><strong>2207</strong><span>Motor size</span></div>
+<div class="stat"><strong>6S</strong><span>Battery</span></div>
+<div class="stat"><strong>~650 g</strong><span>All up weight</span></div>
+</div>
+<p>Then put the parts in the order they are fitted during a build. Order is not a preference here: some of these cannot be reached once another is in place, and a build done in the wrong order has to come apart again.</p>
+<div class="key-idea"><span class="callout-label">Why the extras in the label list are there</span><p>Every wrong name offered is one that gets confused with a real part on this drawing, and the reveal tells you how to tell the pair apart. Getting one wrong is more useful here than getting it right, so guess rather than skipping.</p></div>`,
         hotspots: [
           {
             key: "fc",
@@ -2515,12 +2549,48 @@ const curriculum: CourseCurriculum = {
         title: "A flight plan and risk assessment somebody else could fly from",
         brief: `<p>Produce the planning documents for a real flight you intend to make, or for the wedding job in this topic as you would actually deliver it.</p>
 <p>The test is whether a second qualified pilot could pick these up, fly the job without speaking to you, and know what would make them abandon it.</p>
+<h3>The site you are planning for</h3>
+<figure>
+<svg viewBox="0 0 1000 640" role="img" aria-label="Airspace zones around an aerodrome with the venue inside the yellow zone">
+<defs><clipPath id="zoneMap"><rect x="30" y="30" width="940" height="430" rx="18"/></clipPath></defs>
+<rect x="30" y="30" width="940" height="430" rx="18" fill="#0f766e" opacity="0.13"/>
+<g clip-path="url(#zoneMap)">
+<circle cx="740" cy="210" r="290" fill="#b45309" opacity="0.2"/>
+<circle cx="740" cy="210" r="148" fill="#be123c" opacity="0.28"/>
+</g>
+<path d="M702 210 h76 M740 172 v76" stroke="currentColor" opacity="0.8" stroke-width="7"/>
+<text x="740" y="286" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">AERODROME</text>
+<circle cx="520" cy="332" r="17" fill="currentColor"/>
+<text x="496" y="392" font-size="30" font-weight="800" fill="currentColor" text-anchor="end">THE VENUE</text>
+<path d="M520 332 L740 210" stroke="currentColor" opacity="0.65" stroke-width="4" stroke-dasharray="10 8"/>
+<text x="598" y="256" font-size="27" font-weight="800" fill="currentColor" opacity="0.8" transform="rotate(-29 598 256)">4.1 km</text>
+<rect x="30" y="498" width="298" height="114" rx="14" fill="#be123c" opacity="0.22"/>
+<text x="54" y="548" font-size="30" font-weight="800" fill="#be123c">RED</text>
+<text x="54" y="586" font-size="26" font-weight="700" fill="currentColor" opacity="0.85">do not fly at all</text>
+<rect x="352" y="498" width="298" height="114" rx="14" fill="#b45309" opacity="0.22"/>
+<text x="376" y="548" font-size="30" font-weight="800" fill="#b45309">YELLOW</text>
+<text x="376" y="586" font-size="26" font-weight="700" fill="currentColor" opacity="0.85">permission first</text>
+<rect x="674" y="498" width="296" height="114" rx="14" fill="#0f766e" opacity="0.22"/>
+<text x="698" y="548" font-size="30" font-weight="800" fill="#0f766e">GREEN</text>
+<text x="698" y="586" font-size="26" font-weight="700" fill="currentColor" opacity="0.85">log it and fly</text>
+</svg>
+<figcaption><strong>The venue is 4.1 km out, which puts it outside the red zone and well inside the yellow one.</strong> That is not a refusal and it is not a formality either: it is an application, with a lead time, that can come back declined. The plan has to say what happens to the shoot if it does.</figcaption>
+</figure>
+<div class="warning"><span class="callout-label">Check this yourself rather than trusting the drawing</span><p>Airspace classification changes, and a diagram in a course is a teaching aid rather than a source. Your plan must record the date you checked and where you checked it. A plan that asserts the zone without saying when it was looked up is the single most common reason one gets sent back.</p></div>
 <p><strong>What to submit</strong></p>
 <ol>
 <li>A flight plan: location to a coordinate, date and window, maximum altitude, airspace classification with the date you checked it, aircraft registration and category, your certificate number.</li>
 <li>A risk assessment: each hazard, who is exposed, and what reduces it. Mitigations about where and when, not only about equipment.</li>
 <li>Your operational limitations: the wind, visibility, light and battery figures at which you do not fly or you abandon.</li>
 </ol>
+<h3>Ground risk and air risk are assessed separately</h3>
+<table>
+<tr><th></th><th>Ground risk</th><th>Air risk</th></tr>
+<tr><td>Who is exposed</td><td>Guests, staff, passers-by, property</td><td>Other aircraft and their occupants</td></tr>
+<tr><td>Typical mitigation</td><td>Distance, barriers, a flight path that is never over people</td><td>Altitude limit, time window, permission, an observer</td></tr>
+<tr><td>Fails when</td><td>The crowd moves and the plan assumed it would not</td><td>You assumed the zone rather than checking it</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">A wedding is an unusually hard ground-risk case</span><p>The crowd is dense, it moves without warning, a good proportion of it has been drinking, and the people most likely to walk under the aircraft are the ones the client is paying you to film. A mitigation that depends on guests behaving predictably is not a mitigation. Design the flight path so that losing a motor puts the aircraft somewhere empty, and say in the plan where that somewhere is.</p></div>
 <p>If the job as requested cannot legally be flown, say so explicitly and document the alternative you would propose. A plan that quietly omits an illegal element is worse than one that names it.</p>`,
         requires: [
           {

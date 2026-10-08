@@ -524,6 +524,72 @@ fs.rmSync(TMP, { recursive: true, force: true });
 console.log(
   `topics ${topicCount} | questions ${questionCount} | problems ${problemCount} | tests executed ${testCount}`,
 );
+/**
+ * Figures, checked on the source rather than in a browser.
+ *
+ * The browser sweep (check:figures) proves the two renderers do not eat an
+ * svg, which is a property of the renderers and is covered by any one page.
+ * Legibility is a property of each figure, and it cannot be checked that way:
+ * a diagram on step seven of a gated lab procedure, or in a worked answer
+ * released only after submission, is never in the DOM to be measured. Driving
+ * the UI to reach each one is a harness that breaks whenever a control is
+ * renamed, and a check that silently stops reaching the thing it checks is
+ * worse than no check.
+ *
+ * So the rule lives here, where every authored figure is visible whether or
+ * not a learner can get to it yet. An svg scales its text with its container
+ * and the narrowest container these ship into is a reading column of about
+ * 400px against a 1000-unit viewBox, so anything below 26 units renders under
+ * 10.5px and stops being a label.
+ */
+const MIN_FONT_UNITS = 26;
+let figureCount = 0;
+
+for (const file of files) {
+  const src = fs.readFileSync(path.join(DIR, file), "utf8");
+  const where = file.replace(".ts", "");
+
+  for (const [, caption] of src.matchAll(/<figure[^>]*>([\s\S]*?)<\/figure>/g)) {
+    if (!/<figcaption>/.test(caption)) {
+      fail(where, "a <figure> has no <figcaption>; the sentence saying what to look at is the figure");
+    }
+  }
+
+  for (const [svg] of src.matchAll(/<svg[\s\S]*?<\/svg>/g)) {
+    figureCount += 1;
+    const vb = svg.match(/viewBox="0 0 (\d+) (\d+)"/);
+    if (!vb) {
+      fail(where, "an <svg> has no viewBox, so it cannot scale into the column");
+      continue;
+    }
+    if (!/aria-label="/.test(svg)) fail(where, "an <svg> has no aria-label");
+
+    const width = Number(vb[1]);
+    const labels = [...svg.matchAll(/<text[^>]*>/g)];
+    if (!labels.length) {
+      fail(where, "an <svg> has no <text> labels, so it is a drawing nobody can read");
+    }
+    for (const [, size] of svg.matchAll(/font-size="(\d+)"/g)) {
+      // Scale the rule to the viewBox, so a figure drawn in a smaller
+      // coordinate system is judged on what it renders at, not on its number.
+      const units = (Number(size) * 1000) / width;
+      if (units < MIN_FONT_UNITS) {
+        fail(
+          where,
+          `an <svg> label is font-size ${size} in a ${width}-unit viewBox, which renders under 10.5px in a reading column (needs ${Math.ceil((MIN_FONT_UNITS * width) / 1000)})`,
+        );
+      }
+    }
+    // A label running past the right edge is clipped with no warning.
+    for (const [, x] of svg.matchAll(/<text x="(\d+)"/g)) {
+      if (Number(x) > width) fail(where, `an <svg> label starts at x=${x}, outside its ${width}-unit viewBox`);
+    }
+  }
+}
+
+console.log(
+  `figures ${figureCount} legibility-checked`,
+);
 console.log(
   `practicals ${practicalCount} | derivations run ${derivationsRun} | worksheet invariants run ${invariantsRun} | scenario graphs walked ${scenarioPaths} | deck cards ${cardCount}`,
 );
