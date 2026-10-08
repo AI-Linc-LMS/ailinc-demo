@@ -2,6 +2,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useInstantNavigation } from "@/lib/hooks/useInstantNavigation";
+import {
+  accentGradient,
+  accentShadow,
+  courseTheme,
+  heroGradient,
+  type CourseTheme,
+} from "@/lib/theme/courseTheme";
 import { Box, ButtonBase, Chip, LinearProgress, Stack, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { adaptiveJourneyService } from "@/lib/services/adaptive-journey.service";
@@ -93,7 +100,7 @@ const NODE_STYLE: Record<string, { color: string; bg: string; icon: string }> = 
   interview: { color: "#db2777", bg: "#fdf2f8", icon: "mdi:account-voice" },
 };
 
-function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; courseId: number; stepNo: number; dueAt?: string | null }) {
+function NodeRow({ node, courseId, stepNo, dueAt, theme }: { node: JourneyNodeView; courseId: number; stepNo: number; dueAt?: string | null; theme: CourseTheme }) {
   const { push, prefetch } = useInstantNavigation();
   const l = nodeLabel(node);
   const ns = NODE_STYLE[node.type] ?? NODE_STYLE.topic;
@@ -195,7 +202,7 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
               </Typography>
             </Stack>
             {navigable && (
-              <ButtonBase onClick={go} sx={{ flexShrink: 0, px: 2, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.8rem", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" }}>
+              <ButtonBase onClick={go} sx={{ flexShrink: 0, px: 2, py: 0.85, borderRadius: 2, fontWeight: 800, fontSize: "0.8rem", color: "white", background: accentGradient(theme) }}>
                 Continue →
               </ButtonBase>
             )}
@@ -212,7 +219,7 @@ function NodeRow({ node, courseId, stepNo, dueAt }: { node: JourneyNodeView; cou
   );
 }
 
-function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; courseId: number; startStep: number }) {
+function WeekCard({ week, courseId, startStep, theme }: { week: JourneyWeekView; courseId: number; startStep: number; theme: CourseTheme }) {
   const pct = week.totals.total > 0 ? Math.round((week.totals.earned / week.totals.total) * 100) : 0;
   const dl = daysLeft(week.schedule?.dueAt);
   const locked = week.nodes.every((n) => n.status === "locked");
@@ -225,10 +232,10 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
 
   return (
     <Box sx={{ border: "1px solid #e9e6f7", borderRadius: 4, overflow: "hidden", bgcolor: "#fff", mb: 2, boxShadow: "0 12px 30px -24px rgba(99,102,241,0.45)" }}>
-      <Box sx={{ p: { xs: 2, md: 2.5 }, borderBottom: "1px solid #eef2f7", backgroundImage: "linear-gradient(135deg, #f5f3ff 0%, #fdf2f8 100%)" }}>
+      <Box sx={{ p: { xs: 2, md: 2.5 }, borderBottom: "1px solid #eef2f7", backgroundImage: `linear-gradient(135deg, color-mix(in srgb, ${theme.accent[0]} 9%, white) 0%, color-mix(in srgb, ${theme.accent[1]} 9%, white) 100%)` }}>
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" flexWrap="wrap" gap={1}>
           <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap">
-            <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+            <Box sx={{ width: 32, height: 32, borderRadius: 2, display: "grid", placeItems: "center", color: "white", background: accentGradient(theme), boxShadow: accentShadow(theme, 44) }}>
               <Icon icon="mdi:calendar-month" width={18} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", color: "#0f172a" }}>
@@ -257,7 +264,7 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
           </Stack>
         </Stack>
 
-        <LinearProgress variant="determinate" value={pct} sx={{ mt: 1.5, height: 6, borderRadius: 3, bgcolor: "#eef2f7", "& .MuiLinearProgress-bar": { borderRadius: 3, background: "linear-gradient(90deg, #6366f1, #a855f7)" } }} />
+        <LinearProgress variant="determinate" value={pct} sx={{ mt: 1.5, height: 6, borderRadius: 3, bgcolor: "#eef2f7", "& .MuiLinearProgress-bar": { borderRadius: 3, background: `linear-gradient(90deg, ${theme.accent[0]}, ${theme.accent[1]})` } }} />
 
         {week.penaltyStrip && week.schedule && (
           <Stack direction={{ xs: "column", sm: "row" }} spacing={1} alignItems="stretch" sx={{ mt: 1.5 }}>
@@ -272,7 +279,7 @@ function WeekCard({ week, courseId, startStep }: { week: JourneyWeekView; course
 
       <Box sx={{ p: { xs: 1.5, md: 2 } }}>
         {week.nodes.map((n, i) => (
-          <NodeRow key={n.id} node={n} courseId={courseId} stepNo={startStep + i + 1} dueAt={week.schedule?.dueAt} />
+          <NodeRow key={n.id} node={n} courseId={courseId} stepNo={startStep + i + 1} dueAt={week.schedule?.dueAt} theme={theme} />
         ))}
       </Box>
     </Box>
@@ -305,13 +312,22 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
   meta.push({ icon: "mdi:certificate-outline", label: `Certificate on ${c.certificateThreshold}%` });
   if (c.estHours) meta.push({ icon: "mdi:clock-outline", label: `~${c.estHours} hrs` });
 
+  // The course's own colour, so two courses in the same catalogue do not open
+  // onto the same screen. Falls back to the platform violet when absent.
+  const theme = courseTheme(c.theme);
+
   return (
-    <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -28px rgba(124,58,237,0.6)" }}>
+    <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: heroGradient(theme), boxShadow: accentShadow(theme) }}>
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
         <Box sx={{ minWidth: 0, flex: 1 }}>
           <Typography sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.7)", mb: 1 }}>‹ My Courses / {c.title}</Typography>
           <Stack direction="row" spacing={0.75} sx={{ mb: 1 }}>
-            <Chip label={subject} size="small" sx={{ fontWeight: 700, color: "white", bgcolor: "rgba(255,255,255,0.18)" }} />
+            <Chip
+              icon={<Icon icon={theme.icon} width={14} color="white" />}
+              label={subject}
+              size="small"
+              sx={{ fontWeight: 700, color: "white", bgcolor: "rgba(255,255,255,0.18)", "& .MuiChip-icon": { color: "white" } }}
+            />
             <Chip icon={<Icon icon="mdi:certificate" width={14} color="white" />} label="Certified track" size="small" sx={{ fontWeight: 700, color: "white", bgcolor: "rgba(255,255,255,0.18)", "& .MuiChip-icon": { color: "white" } }} />
           </Stack>
           <Typography sx={{ fontWeight: 900, fontSize: { xs: "1.7rem", md: "2.2rem" }, lineHeight: 1.1 }}>{c.title}</Typography>
@@ -341,7 +357,7 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
           <Box sx={{ minWidth: 0 }}>
             <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
               <Typography sx={{ fontWeight: 800, fontSize: "0.92rem" }}>AI has tuned this course to you</Typography>
-              {c.fieldTier && <Chip label={`LEVEL · ${c.fieldTier.toUpperCase()}`} size="small" sx={{ height: 18, fontSize: "0.6rem", fontWeight: 800, color: "#7c3aed", bgcolor: "white" }} />}
+              {c.fieldTier && <Chip label={`LEVEL · ${c.fieldTier.toUpperCase()}`} size="small" sx={{ height: 18, fontSize: "0.6rem", fontWeight: 800, color: theme.accent[0], bgcolor: "white" }} />}
             </Stack>
             <Typography sx={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.8)", mt: 0.25, lineHeight: 1.45 }}>
               {c.fieldTier
@@ -354,7 +370,7 @@ function Hero({ board, courseId }: { board: JourneyBoardData; courseId: number }
           disabled={!resumeSub}
           onMouseEnter={() => resumeSub && prefetch(`/adaptive-courses/${courseId}/submodule/${resumeSub}`)}
           onClick={() => resumeSub && push(`/adaptive-courses/${courseId}/submodule/${resumeSub}`)}
-          sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.82rem", color: "#7c3aed", bgcolor: "white", "&.Mui-disabled": { opacity: 0.5 } }}
+          sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.82rem", color: theme.accent[0], bgcolor: "white", "&.Mui-disabled": { opacity: 0.5 } }}
         >
           Resume learning →
         </ButtonBase>
@@ -390,6 +406,10 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
       cancelled = true;
     };
   }, [courseId]);
+
+  // One resolution for the whole board, so the hero and every week card
+  // below it are the same colour rather than drifting apart.
+  const boardTheme = courseTheme(board?.course?.theme);
 
   const stepStarts = useMemo(() => {
     const starts: number[] = [];
@@ -440,7 +460,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
         <Box>
           <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1} sx={{ mb: 1.25 }}>
             <Stack direction="row" spacing={1.25} alignItems="center">
-              <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+              <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: accentGradient(boardTheme), boxShadow: accentShadow(boardTheme, 44) }}>
                 <Icon icon="mdi:map-marker-path" width={19} />
               </Box>
               <Box>
@@ -474,7 +494,7 @@ export function JourneyBoard({ courseId }: { courseId: number; showHeader?: bool
           )}
 
           {board.weeks.map((w, i) => (
-            <WeekCard key={w.weekNo} week={w} courseId={courseId} startStep={stepStarts[i] ?? 0} />
+            <WeekCard key={w.weekNo} week={w} courseId={courseId} startStep={stepStarts[i] ?? 0} theme={boardTheme} />
           ))}
         </Box>
 

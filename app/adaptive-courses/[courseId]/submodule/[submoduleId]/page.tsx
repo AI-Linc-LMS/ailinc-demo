@@ -19,6 +19,13 @@ import { AdaptiveSubmoduleSkeleton } from "@/components/courses/CourseSkeletons"
 import { useInstantNavigation } from "@/lib/hooks/useInstantNavigation";
 import { asStringList } from "@/lib/utils/as-list";
 import { attachmentLook, formatFileSize } from "@/lib/utils/attachment-display";
+import {
+  accentGradient,
+  accentShadow,
+  accentWash,
+  courseTheme,
+  heroGradient,
+} from "@/lib/theme/courseTheme";
 
 type FlowKind =
   | "video"
@@ -242,6 +249,16 @@ export default function AdaptiveCourseSubmodulePage() {
     return () => { cancelled = true; };
   }, [courseId, submoduleId]);
 
+  /**
+   * The parent course's colour.
+   *
+   * Every lesson in the product used to render the same violet hero, so a
+   * refrigeration lesson and an accounting lesson were the same screen with
+   * different words on it. Falls back to that violet when the payload has no
+   * theme, which keeps any course that predates the field unchanged.
+   */
+  const theme = useMemo(() => courseTheme(submodule?.course_theme), [submodule?.course_theme]);
+
   const pointsByKey = useMemo(
     () => new Map((points?.items ?? []).map((i) => [i.content_key, i])),
     [points],
@@ -329,7 +346,7 @@ export default function AdaptiveCourseSubmodulePage() {
         {submodule && (
           <>
             {/* Gradient hero - matches the course page */}
-            <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%)", boxShadow: "0 24px 60px -28px rgba(124,58,237,0.6)" }}>
+            <Box sx={{ borderRadius: 5, p: { xs: 2.5, md: 3.5 }, mb: 2.5, color: "white", position: "relative", overflow: "hidden", background: heroGradient(theme), boxShadow: accentShadow(theme) }}>
               <ButtonBase onMouseEnter={() => prefetch(`/adaptive-courses/${courseId}`)} onClick={() => push(`/adaptive-courses/${courseId}`)} sx={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.8)", mb: 1, gap: 0.5 }}>
                 <Icon icon="mdi:arrow-left" width={14} /> Back to course
               </ButtonBase>
@@ -356,7 +373,7 @@ export default function AdaptiveCourseSubmodulePage() {
               {items.length > 0 && (
                 <Button onClick={() => items[resumeIdx].onClick()} variant="contained"
                   endIcon={<Icon icon="mdi:arrow-right" width={18} />}
-                  sx={{ mt: 2.25, px: 2.5, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.85rem", color: "#7c3aed", bgcolor: "white", textTransform: "none", "&:hover": { bgcolor: "#f5f3ff" } }}>
+                  sx={{ mt: 2.25, px: 2.5, py: 1, borderRadius: 2, fontWeight: 800, fontSize: "0.85rem", color: theme.accent[0], bgcolor: "white", textTransform: "none", "&:hover": { bgcolor: accentWash(theme, 12) } }}>
                   {ctaLabel}
                 </Button>
               )}
@@ -376,7 +393,7 @@ export default function AdaptiveCourseSubmodulePage() {
                 {/* Section header with gradient badge + the topic points total */}
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.75, gap: 1, flexWrap: "wrap" }}>
                   <Stack direction="row" spacing={1.25} alignItems="center">
-                    <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", boxShadow: "0 8px 18px -10px rgba(124,58,237,0.6)" }}>
+                    <Box sx={{ width: 34, height: 34, borderRadius: 2.5, display: "grid", placeItems: "center", color: "white", background: accentGradient(theme), boxShadow: accentShadow(theme, 44) }}>
                       <Icon icon="mdi:map-marker-path" width={19} />
                     </Box>
                     <Box>

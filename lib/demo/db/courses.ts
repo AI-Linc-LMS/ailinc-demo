@@ -81,8 +81,20 @@ export interface DemoCourse {
    * count are all the same number by construction.
    */
   completion: number;
-  /** Accent used for the generated card art. */
+  /**
+   * The course's own colour, used for the card art AND for every course-scoped
+   * hero. Before this was threaded through, an accounting lesson and a
+   * refrigeration lesson rendered the identical purple gradient and the only
+   * difference between four courses was the words on them.
+   */
   accent: [string, string];
+  /**
+   * Iconify name for the subject motif shown beside the course name.
+   *
+   * A calculator reads as accounting at a glance in a way that a title does
+   * not, and on a catalogue page with nine cards the glance is all you get.
+   */
+  icon: string;
   modules: DemoModule[];
   /**
    * Days from today until the current week's work is due. Null = self-paced.
@@ -202,6 +214,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: INSTRUCTOR_PERSONA,
     enrolled: true,
     accent: ["#6366f1", "#a855f7"],
+    icon: "mdi:language-javascript",
     dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 412,
@@ -276,6 +289,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: FACULTY[0],
     enrolled: true,
     accent: ["#0ea5e9", "#22d3ee"],
+    icon: "mdi:chart-scatter-plot",
     dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 358,
@@ -338,6 +352,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: INSTRUCTOR_PERSONA,
     enrolled: true,
     accent: ["#f43f5e", "#f97316"],
+    icon: "mdi:sitemap-outline",
     dueInDays: null,
     certificateThreshold: 75,
     enrolledCount: 623,
@@ -406,6 +421,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: FACULTY[1],
     enrolled: false,
     accent: ["#f59e0b", "#f43f5e"],
+    icon: "mdi:cloud-outline",
     dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 274,
@@ -444,6 +460,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: FACULTY[2],
     enrolled: false,
     accent: ["#10b981", "#0ea5e9"],
+    icon: "mdi:database-outline",
     dueInDays: null,
     certificateThreshold: 65,
     enrolledCount: 519,
@@ -493,6 +510,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: TRADE_FACULTY[0],
     enrolled: true,
     accent: ["#0f766e", "#14b8a6"],
+    icon: "mdi:calculator-variant-outline",
     dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 1864,
@@ -548,6 +566,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: TRADE_FACULTY[1],
     enrolled: true,
     accent: ["#0369a1", "#38bdf8"],
+    icon: "mdi:air-conditioner",
     dueInDays: null,
     certificateThreshold: 75,
     enrolledCount: 2470,
@@ -603,6 +622,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: TRADE_FACULTY[2],
     enrolled: true,
     accent: ["#b45309", "#f59e0b"],
+    icon: "mdi:translate",
     dueInDays: null,
     certificateThreshold: 70,
     enrolledCount: 3182,
@@ -658,6 +678,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     instructor: TRADE_FACULTY[3],
     enrolled: false,
     accent: ["#4338ca", "#818cf8"],
+    icon: "mdi:quadcopter",
     dueInDays: null,
     certificateThreshold: 75,
     enrolledCount: 1118,

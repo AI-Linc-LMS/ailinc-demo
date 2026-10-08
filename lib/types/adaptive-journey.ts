@@ -16,6 +16,18 @@ export interface JourneyNodeRef {
   interviewTemplateId?: number | null;
 }
 
+/**
+ * A course's authored colour and subject motif.
+ *
+ * Served on every course-scoped payload because every one of them draws a
+ * hero. Optional, so a response that predates the field falls back to the
+ * platform default rather than rendering without a hero.
+ */
+export interface CourseThemeView {
+  accent: [string, string];
+  icon: string;
+}
+
 export interface JourneyNodeView {
   id: number;
   type: NodeType;
@@ -117,6 +129,7 @@ export interface JourneyBoard {
     items: number;
     completionPct: number;
     startedAt: string | null;
+    theme?: CourseThemeView;
   };
   progressCard: {
     pointsEarned: number;

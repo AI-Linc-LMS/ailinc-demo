@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { accentGradient, accentShadow, courseTheme } from "@/lib/theme/courseTheme";
 import { formatMoney } from "@/lib/utils/money";
 import { PriceTag } from "@/components/common/PriceTag";
 import { Icon } from "@iconify/react";
@@ -25,6 +26,7 @@ export function CatalogCourseCard({
   // A course that is priced and not yet bought. `purchased` comes from the server, so a
   // payment that settled while this page was open resolves to a plain Enroll.
   const mustBuy = Boolean(course.is_paid && !course.purchased);
+  const theme = courseTheme(course.theme);
 
   return (
     <Box
@@ -89,11 +91,11 @@ export function CatalogCourseCard({
             display: "grid",
             placeItems: "center",
             color: "white",
-            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)",
-            boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)",
+            background: accentGradient(theme),
+            boxShadow: accentShadow(theme, 44),
           }}
         >
-          <Icon icon="mdi:book-education-outline" width={22} />
+          <Icon icon={theme.icon} width={22} />
         </Box>
         <Box
           component="span"

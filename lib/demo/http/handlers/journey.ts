@@ -163,6 +163,8 @@ function board(course: DemoCourse): JourneyBoard {
       items: topics.length,
       completionPct: course.completion,
       startedAt: isoDaysAgo(seededInt(`start:${course.id}`, 40, 150)),
+      // The board draws the course's hero, so it needs the course's colour.
+      theme: { accent: course.accent, icon: course.icon },
     },
     progressCard: {
       pointsEarned,

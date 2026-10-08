@@ -415,14 +415,31 @@ export function submoduleFor(topic: DemoTopic, order: number, courseId?: number)
     id: topic.id,
     order,
     title: topic.title,
-    description: `Work through ${topic.title.toLowerCase()} and prove it with practice.`,
+    // The authored summary, not a template built from the title. Every lesson
+    // in the product read "Work through <title> and prove it with practice",
+    // which is the same sentence 118 times and is exactly the tell that made
+    // the old generated article bodies obvious. Every topic has a real summary
+    // written for it; the template survives only for a topic nobody has
+    // authored yet.
+    description:
+      peekTopic(courseId ?? -1, topic.id)?.summary ??
+      `Work through ${topic.title.toLowerCase()} and prove it with practice.`,
     articles: kinds.has("article") ? [articleFor(topic)] : [],
     quizzes: kinds.has("quiz") ? [quizFor(topic)] : [],
     coding_sets: kinds.has("coding") ? [codingSetFor(topic, courseId)] : [],
     video_companions: kinds.has("video") ? [videoFor(topic)] : [],
     attachments: [],
     practicals: practicalsFor(topic, courseId),
+    // The lesson page renders a course-scoped hero and this is the only
+    // payload it fetches, so the course's colour travels with the submodule.
+    course_theme: courseId == null ? undefined : themeFor(courseId),
   };
+}
+
+/** The authored colour and motif for a course, or undefined if unknown. */
+function themeFor(courseId: number) {
+  const course = courseById(courseId);
+  return course ? { accent: course.accent, icon: course.icon } : undefined;
 }
 
 function listItem(course: DemoCourse) {
@@ -450,6 +467,10 @@ function listItem(course: DemoCourse) {
     // the card falls back to when the image cannot load.
     card_image_url: courseCover(course.id) || courseArt(course),
     card_image_fallback_url: courseArt(course),
+    // The course's own colour and motif. Served on every course-scoped
+    // response because every one of them draws a hero, and before this they
+    // all drew the same violet one.
+    theme: { accent: course.accent, icon: course.icon },
     // Every course is open to self-enrolment so a prospect can enrol from the
     // catalogue and watch it appear on their dashboard.
     self_enroll_enabled: true,

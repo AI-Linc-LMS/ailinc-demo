@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, ButtonBase, Typography } from "@mui/material";
+import { accentGradient, accentShadow, courseTheme } from "@/lib/theme/courseTheme";
 import { PriceTag } from "@/components/common/PriceTag";
 import { Icon } from "@iconify/react";
 import type { AdaptiveCourseListItem } from "@/lib/services/adaptive-course.service";
@@ -16,6 +17,10 @@ export function AdaptiveCourseCard({
   onOpen: () => void;
   onHover?: () => void;  // warm the destination route on hover/focus for instant open
 }) {
+  // The course's own colour and motif. Nine cards carrying nine identical
+  // violet badges told a learner nothing about which course was which.
+  const theme = courseTheme(course.theme);
+
   return (
     <ButtonBase
       onClick={onOpen}
@@ -67,8 +72,8 @@ export function AdaptiveCourseCard({
       </Box>
 
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, mb: 1.5 }}>
-        <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: "linear-gradient(135deg, #6366f1 0%, #a855f7 60%, #ec4899 100%)", boxShadow: "0 14px 26px -14px rgba(168, 85, 247, 0.6)" }}>
-          <Icon icon="mdi:book-education-outline" width={22} />
+        <Box sx={{ width: 44, height: 44, borderRadius: 3, flexShrink: 0, display: "grid", placeItems: "center", color: "white", background: accentGradient(theme), boxShadow: accentShadow(theme, 44) }}>
+          <Icon icon={theme.icon} width={22} />
         </Box>
         {/* The "Adaptive" chip that used to sit here is gone. It existed to tell
             adaptive cards apart from legacy ones on the shared /courses page. This

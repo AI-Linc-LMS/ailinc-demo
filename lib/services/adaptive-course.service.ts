@@ -166,6 +166,14 @@ export interface AdaptiveCourseSubModule {
   attachments?: AdaptiveCourseAttachment[];
   /** Worksheets, labs, evidence tasks and the rest. See the type above. */
   practicals?: AdaptiveCoursePracticalSummary[];
+  /**
+   * The parent course's colour and motif.
+   *
+   * Travels with the submodule because the lesson page draws a course-scoped
+   * hero and this is the only payload it fetches. Optional, so a response
+   * without it falls back to the platform default.
+   */
+  course_theme?: { accent: [string, string]; icon: string };
 }
 
 export interface AdaptiveCourseModule {
@@ -175,7 +183,14 @@ export interface AdaptiveCourseModule {
   submodules: AdaptiveCourseSubModule[];
 }
 
+export interface AdaptiveCourseTheme {
+  accent: [string, string];
+  icon: string;
+}
+
 export interface AdaptiveCourseListItem {
+  /** The course's authored colour and subject motif. */
+  theme?: AdaptiveCourseTheme;
   /** Optional so the Paid/Free tag can ship before every serializer carries it. */
   is_paid?: boolean;
   price?: string | null;
