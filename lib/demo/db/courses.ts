@@ -688,7 +688,7 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
     durationHours: 70,
     tags: ["UAV", "Multirotor", "DGCA", "Soldering", "Flight controller"],
     instructor: TRADE_FACULTY[3],
-    enrolled: false,
+    enrolled: true,
     accent: ["#4338ca", "#818cf8"],
     icon: "mdi:quadcopter",
     dueInDays: null,
