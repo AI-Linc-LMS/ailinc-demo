@@ -51,21 +51,60 @@ const curriculum: CourseCurriculum = {
     },
     body: {
       Beginner: `<p>Imagine you start a tea stall. You put in 20,000 rupees of your own money. Two things just happened at the same time: the stall now has 20,000 rupees of cash, and the stall now owes you 20,000 rupees. One event, two changes.</p>
-<p>That is the whole idea. A transaction never changes just one thing. If you buy a kettle for 2,000 rupees cash, your cash goes down by 2,000 and your equipment goes up by 2,000. If you buy it on credit, your equipment goes up by 2,000 and the amount you owe the shop goes up by 2,000.</p>
-<p>People find accounting hard because they try to memorise rules before they can see the pairs. So practise the seeing first. For any event, ask two questions. What came in or went out? And where did it come from or go to? The answer to both questions together is the transaction.</p>
-<p>One more thing to know early: accounting only records events you can measure in money and prove with a document. Hiring a brilliant cook is good news but it is not a transaction. Paying that cook 8,000 rupees is.</p>`,
+<div class="key-idea"><span class="callout-label">The whole idea</span><p>A transaction never changes just one thing. If you can find only one change, you have not finished looking.</p></div>
+<h3>Seeing the pair</h3>
+<p>Buy a kettle for 2,000 rupees cash and your cash goes down by 2,000 while your equipment goes up by 2,000. Buy the same kettle on credit and your equipment still goes up by 2,000, but now the amount you owe the shop goes up instead.</p>
+<table>
+<tr><th>What happened</th><th>One change</th><th>The other change</th></tr>
+<tr><td>You put in 20,000 cash</td><td>Cash up 20,000</td><td>You are owed 20,000</td></tr>
+<tr><td>Kettle for 2,000 cash</td><td>Equipment up 2,000</td><td>Cash down 2,000</td></tr>
+<tr><td>Kettle for 2,000 on credit</td><td>Equipment up 2,000</td><td>Owed to shop up 2,000</td></tr>
+</table>
+<h3>Why people find this hard</h3>
+<p>They try to memorise rules before they can see the pairs. So practise the seeing first. For any event, ask two questions. What came in or went out? And where did it come from or go to? The answer to both questions together is the transaction.</p>
+<div class="field"><span class="callout-label">Worth knowing early</span><p>Accounting only records what you can measure in money and prove with a document. Hiring a brilliant cook is good news and it is not a transaction. Paying that cook 8,000 rupees is.</p></div>`,
       Intermediate: `<p>A transaction is an event that changes the composition of a business and can be measured in money. The defining property is that it always changes at least two accounts, which is why the system that records it is called double entry.</p>
-<p>The structural reason sits in one identity: assets equal liabilities plus equity. It holds at every instant, not just at year end. Any event that increased only one side would break it, so no such event can be recorded; what looks like a one-sided change is always a pair where you have not yet found the second half.</p>
-<p>Work through a purchase of machinery for 1,50,000 rupees, half paid by cheque and half on credit. Assets rise by 1,50,000 for the machinery and fall by 75,000 for the bank, a net asset increase of 75,000. Liabilities rise by 75,000 for the amount still owed. Both sides moved by 75,000, so the identity survives.</p>
-<p>Two distinctions matter from the start. A transaction is not the same as a cash movement: a credit sale is a transaction on the day the goods leave, not the day the customer pays. And a transaction needs a source document, because an entry nobody can trace to an invoice or bank advice is an assertion rather than a record, and it is the first thing an auditor pulls on.</p>`,
-      Advanced: `<p>Treat the accounting equation as an invariant that the recording system is built to preserve, and double entry becomes an engineering choice rather than a convention. Every posting is a transformation that must leave assets minus liabilities minus equity equal to zero. Because the invariant is checked arithmetically at every level of aggregation, a violation surfaces as an imbalance you can find, which is the property that made the technique survive five centuries.</p>
-<p>The subtler content is in recognition: deciding when an event has occurred at all. Under accrual accounting the trigger is the transfer of control or the incurring of an obligation, not settlement. A customer order is not a transaction, because neither party has yet done anything irreversible. Dispatch under an enforceable contract is, because a receivable now exists and revenue has been earned.</p>
-<p>Measurement is a second decision, independent of the first. An asset acquired for 1,50,000 rupees enters at that cost even if its market value is 2,00,000, because historical cost is verifiable from a document and a valuation is an opinion. The cost of this choice is a balance sheet that systematically understates appreciating assets, which is why disclosure exists alongside measurement.</p>
-<p>This also explains why some events with large economic consequences never appear. An operating lease commitment, a key-person dependency and a pending lawsuit all change what a business is worth without producing a measurable obligation at a point in time, so they live in the notes rather than the ledger.</p>`,
-      Expert: `<p>The equation is better read as a statement about the closure of a double-entry system under its own operations. Define the ledger as a set of accounts with signed balances and require that the signed sum over all accounts be identically zero. Posting is then any operation preserving that sum, and the familiar categories of asset, liability and equity are a partition imposed on the account set for presentation, not a feature of the algebra. This is why the equation can be rearranged freely and why a trial balance that sums to zero tells you about arithmetic rather than about truth.</p>
-<p>Recognition is the hard boundary, and the standards treat it as a question about control rather than about risk. Ind AS 115 locates revenue at the satisfaction of a performance obligation, which replaced a transfer-of-risks test precisely because risk is continuous and control is comparatively discrete. The practical consequence for a bookkeeper is that the recognition date is a matter of contract analysis, and two competent accountants can disagree on it in good faith.</p>
-<p>Measurement then layers a mixed attribute model on top. Historical cost for most non-financial assets, fair value for several classes of financial instrument, recoverable amount on impairment. The model is incoherent as a single theory of value and defensible as a set of local compromises between relevance and verifiability, and knowing which compromise applies to a given line is most of what distinguishes a preparer from a data entry operator.</p>
-<p>Finally, note what the system structurally cannot represent: anything whose obligation is not measurable at a point in time. That gap is the permanent reason financial statements are read alongside their notes rather than instead of them, and it is why off-balance-sheet structuring has been a recurring source of accounting scandal rather than an occasional one.</p>`,
+<div class="key-idea"><span class="callout-label">The identity everything rests on</span><p>Assets equal liabilities plus equity. It holds at every instant, not just at year end, so any event that increased only one side could not be recorded at all.</p></div>
+<h3>Why a one-sided entry cannot exist</h3>
+<p>What looks like a one-sided change is always a pair where you have not yet found the second half. That is a useful diagnostic rather than a slogan: when an entry refuses to balance, the question is not which rule to apply but which half of the event you have not identified.</p>
+<h3>A transaction worked through</h3>
+<div class="worked"><span class="callout-label">Machinery, 1,50,000 rupees, half by cheque</span>
+<table>
+<tr><th>Effect</th><th class="num">Assets</th><th class="num">Liabilities</th></tr>
+<tr><td>Machinery acquired</td><td class="num">+1,50,000</td><td class="num"></td></tr>
+<tr><td>Bank paid</td><td class="num">(75,000)</td><td class="num"></td></tr>
+<tr><td>Amount still owed</td><td class="num"></td><td class="num">+75,000</td></tr>
+<tr><td><strong>Net movement</strong></td><td class="num"><strong>+75,000</strong></td><td class="num"><strong>+75,000</strong></td></tr>
+</table>
+<p>Both sides moved by 75,000, so the identity survives.</p></div>
+<h3>Two distinctions to fix now</h3>
+<p>A transaction is not the same as a cash movement: a credit sale is a transaction on the day the goods leave, not the day the customer pays. And a transaction needs a source document, because an entry nobody can trace to an invoice or bank advice is an assertion rather than a record.</p>
+<div class="warning"><span class="callout-label">What an auditor pulls on first</span><p>The entries with no document behind them. Not the large ones, the unsupported ones.</p></div>`,
+      Advanced: `<p>Treat the accounting equation as an invariant that the recording system is built to preserve, and double entry becomes an engineering choice rather than a convention. Every posting is a transformation that must leave assets minus liabilities minus equity equal to zero.</p>
+<div class="key-idea"><span class="callout-label">Why the technique survived five centuries</span><p>The invariant is checked arithmetically at every level of aggregation, so a violation surfaces as an imbalance you can actually find.</p></div>
+<h3>Recognition: deciding when an event has occurred</h3>
+<p>Under accrual accounting the trigger is the transfer of control or the incurring of an obligation, not settlement. A customer order is not a transaction, because neither party has yet done anything irreversible. Dispatch under an enforceable contract is, because a receivable now exists and revenue has been earned.</p>
+<h3>Measurement is a separate decision</h3>
+<p>An asset acquired for 1,50,000 rupees enters at that cost even if its market value is 2,00,000, because historical cost is verifiable from a document and a valuation is an opinion. The cost of this choice is a balance sheet that systematically understates appreciating assets, which is why disclosure exists alongside measurement.</p>
+<table>
+<tr><th>Question</th><th>What answers it</th><th>What it costs you</th></tr>
+<tr><td>Has an event occurred?</td><td>Transfer of control, or an obligation incurred</td><td>Judgement; two preparers can differ in good faith</td></tr>
+<tr><td>At what amount?</td><td>Historical cost, from the document</td><td>Appreciating assets are understated</td></tr>
+</table>
+<div class="field"><span class="callout-label">What the ledger structurally cannot hold</span><p>An operating lease commitment, a key-person dependency and a pending lawsuit all change what a business is worth without producing a measurable obligation at a point in time. They live in the notes, which is why the notes are read rather than skipped.</p></div>`,
+      Expert: `<p>The equation is better read as a statement about the closure of a double-entry system under its own operations. Define the ledger as a set of accounts with signed balances and require that the signed sum over all accounts be identically zero. Posting is then any operation preserving that sum.</p>
+<div class="key-idea"><span class="callout-label">The consequence worth drawing</span><p>Asset, liability and equity are a partition imposed on the account set for presentation, not a feature of the algebra. That is why the equation rearranges freely, and why a trial balance that sums to zero tells you about arithmetic rather than about truth.</p></div>
+<h3>Recognition as contract analysis</h3>
+<p>Ind AS 115 locates revenue at the satisfaction of a performance obligation, which replaced a transfer-of-risks test precisely because risk is continuous and control is comparatively discrete. The practical consequence for a preparer is that the recognition date is a matter of contract analysis, and two competent accountants can disagree on it in good faith.</p>
+<h3>A mixed attribute model, and why it is incoherent on purpose</h3>
+<table>
+<tr><th>Class</th><th>Attribute</th><th>The compromise being struck</th></tr>
+<tr><td>Most non-financial assets</td><td>Historical cost</td><td>Verifiability over relevance</td></tr>
+<tr><td>Several financial instruments</td><td>Fair value</td><td>Relevance over verifiability</td></tr>
+<tr><td>Impaired assets</td><td>Recoverable amount</td><td>Prudence overriding both</td></tr>
+</table>
+<p>The model is indefensible as a single theory of value and defensible as a set of local compromises. Knowing which compromise applies to a given line is most of what distinguishes a preparer from a data entry operator.</p>
+<div class="warning"><span class="callout-label">The permanent gap</span><p>The system cannot represent anything whose obligation is not measurable at a point in time. That is why off-balance-sheet structuring has been a recurring source of accounting scandal rather than an occasional one.</p></div>`,
     },
     questions: [
       {

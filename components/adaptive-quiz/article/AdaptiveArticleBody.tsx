@@ -209,7 +209,91 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
         },
         "& pre": { borderRadius: 2, overflowX: "auto" },
         "& pre code": { bgcolor: "transparent", px: 0, py: 0 },
-        "& table": { width: "100%", borderCollapse: "collapse" },
+        /* ---- tables -------------------------------------------------------
+         * `borderCollapse` alone rendered a borderless grid of text, which is
+         * worse than a list because it implies structure it does not draw.
+         * A PT chart, a thrust table or a case paradigm is only readable with
+         * ruled cells and a distinguished header. */
+        "& table": {
+          width: "100%",
+          borderCollapse: "collapse",
+          my: 2.5,
+          fontSize: "0.95rem",
+          lineHeight: 1.55,
+        },
+        "& th, & td": {
+          border: "1px solid var(--border-default, #e6e8ef)",
+          px: 1.15,
+          py: 0.75,
+          textAlign: "left",
+          verticalAlign: "top",
+        },
+        "& th": {
+          fontWeight: 800,
+          color: "var(--font-primary)",
+          bgcolor: "color-mix(in srgb, var(--border-default, #e6e8ef) 32%, transparent)",
+        },
+        "& td.num, & th.num": { textAlign: "right", fontVariantNumeric: "tabular-nums" },
+        "& tbody tr:nth-of-type(even) td": {
+          bgcolor: "color-mix(in srgb, var(--border-default, #e6e8ef) 14%, transparent)",
+        },
+
+        /* ---- callouts ------------------------------------------------------
+         * A small, fixed vocabulary rather than arbitrary markup, so an author
+         * cannot invent a sixth kind of box and every article reads the same.
+         * Each one earns its place in these subjects: a technician needs the
+         * thing that will hurt them set apart from the thing that is merely
+         * true, and an accounting learner needs the worked figures separated
+         * from the explanation of them.
+         *
+         *   .key-idea  the one sentence the rest of the section supports
+         *   .warning   the mistake that costs money, a part, or a finger
+         *   .worked    a calculation carried through with real figures
+         *   .field     what actually happens on site, against the textbook
+         */
+        "& .key-idea, & .warning, & .worked, & .field": {
+          my: 2.5,
+          px: 2,
+          py: 1.5,
+          borderRadius: 3,
+          borderLeft: "4px solid",
+          fontSize: "0.97rem",
+          lineHeight: 1.7,
+          "& > :first-of-type": { mt: 0 },
+          "& > :last-child": { mb: 0 },
+          "& p": { mb: 1 },
+        },
+        "& .key-idea": {
+          borderLeftColor: "#6366f1",
+          bgcolor: "color-mix(in srgb, #6366f1 7%, transparent)",
+        },
+        "& .warning": {
+          borderLeftColor: "#e11d48",
+          bgcolor: "color-mix(in srgb, #e11d48 7%, transparent)",
+        },
+        "& .worked": {
+          borderLeftColor: "#0f766e",
+          bgcolor: "color-mix(in srgb, #0f766e 7%, transparent)",
+        },
+        "& .field": {
+          borderLeftColor: "#b45309",
+          bgcolor: "color-mix(in srgb, #b45309 7%, transparent)",
+        },
+        /* The label that opens a callout. Small caps rather than an icon, so
+         * it survives the no-network rule and the four reading tiers alike. */
+        "& .callout-label": {
+          display: "block",
+          fontSize: "0.68rem",
+          fontWeight: 800,
+          letterSpacing: "0.09em",
+          textTransform: "uppercase",
+          mb: 0.6,
+        },
+        "& .key-idea .callout-label": { color: "#4f46e5" },
+        "& .warning .callout-label": { color: "#be123c" },
+        "& .worked .callout-label": { color: "#0f766e" },
+        "& .field .callout-label": { color: "#b45309" },
+
         "& figure": { my: 3 },
         "& img": { maxWidth: "100%", height: "auto", borderRadius: 3 },
         "& .reveal-unit": { transition: "opacity 0.32s ease" },
