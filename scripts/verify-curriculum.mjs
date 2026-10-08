@@ -65,6 +65,10 @@ let topicCount = 0;
 let questionCount = 0;
 let problemCount = 0;
 let testCount = 0;
+let practicalCount = 0;
+let invariantsRun = 0;
+let scenarioPaths = 0;
+let cardCount = 0;
 
 for (const file of files) {
   const courseId = file.match(/\d+/)[0];
@@ -126,6 +130,305 @@ for (const file of files) {
     if (qs.length && new Set(qs.map((q) => q.question)).size !== qs.length)
       fail(where, "duplicate question text within the topic");
 
+    /* --- practicals -------------------------------------------------------
+     *
+     * The gate that matters here is the one that EXECUTES the content rather
+     * than inspecting it. A worksheet whose own answer key does not satisfy its
+     * own balance rules would tell a learner their correct sheet is unbalanced,
+     * and no amount of reading the file catches that. So the key is poured into
+     * the grid and the invariants are run against it, exactly as the marker
+     * would. Same idea for a scenario: every branch is walked to make sure it
+     * terminates and that the declared ideal path actually reaches a good
+     * ending.
+     */
+
+    // worksheets
+    for (const w of topic.worksheets ?? []) {
+      practicalCount++;
+      const ww = `${where} worksheet ${w.n} (${w.title})`;
+      const rowKeys = new Set((w.rows ?? []).map((r) => r.key));
+      const colKeys = new Set((w.columns ?? []).map((c) => c.key));
+      if (rowKeys.size !== (w.rows ?? []).length) fail(ww, "duplicate row keys");
+      if (colKeys.size !== (w.columns ?? []).length) fail(ww, "duplicate column keys");
+      if (!Array.isArray(w.hints) || w.hints.length !== 3) fail(ww, "needs exactly 3 hints");
+      if (!w.workedAnswer || w.workedAnswer.length < 200) fail(ww, "worked answer missing or too short");
+      if (!(w.cells ?? []).length) fail(ww, "no marked cells");
+
+      for (const c of w.cells ?? []) {
+        if (!rowKeys.has(c.row)) fail(ww, `cell references unknown row "${c.row}"`);
+        if (!colKeys.has(c.col)) fail(ww, `cell references unknown column "${c.col}"`);
+        if (!(c.marks > 0)) fail(ww, `cell ${c.row}:${c.col} carries no marks`);
+        // A cell the learner is given cannot also be a cell they are marked on.
+        const row = (w.rows ?? []).find((r) => r.key === c.row);
+        if (row?.given && row.given[c.col] !== undefined)
+          fail(ww, `cell ${c.row}:${c.col} is both given and marked`);
+        for (const ref of c.derivedFrom?.from ?? []) {
+          const [r, col] = String(ref).split(":");
+          if (!rowKeys.has(r) || !colKeys.has(col))
+            fail(ww, `derivedFrom references unknown cell "${ref}"`);
+        }
+        if (c.derivedFrom && !(c.methodMarks > 0))
+          fail(ww, `cell ${c.row}:${c.col} declares derivedFrom but no methodMarks`);
+        if (c.methodMarks != null && c.methodMarks > c.marks)
+          fail(ww, `cell ${c.row}:${c.col} awards more method marks than full marks`);
+      }
+
+      // Build the answer key as a learner's completed sheet would look, then run the
+      // invariants over it. This is the executing gate.
+      const key = {};
+      for (const r of w.rows ?? []) {
+        key[r.key] = {};
+        for (const [col, v] of Object.entries(r.given ?? {})) key[r.key][col] = String(v);
+      }
+      for (const c of w.cells ?? []) {
+        key[c.row] ??= {};
+        key[c.row][c.col] = String(c.expected);
+      }
+      const n = (v) => {
+        if (v == null) return null;
+        const cleaned = String(v).replace(/[,\s\u20B9]/g, "");
+        if (cleaned === "") return null;
+        const x = Number(cleaned);
+        return Number.isFinite(x) ? x : null;
+      };
+      const colSum = (col) => {
+        let t = 0;
+        for (const r of w.rows ?? []) {
+          if (r.kind === "subtotal" || r.kind === "total") continue;
+          const v = n(key[r.key]?.[col]);
+          if (v !== null) t += v;
+        }
+        return t;
+      };
+      for (const inv of w.invariants ?? []) {
+        if (!(inv.marks > 0)) fail(ww, `invariant ${inv.key} carries no marks`);
+        if (!inv.hint || inv.hint.length < 40) fail(ww, `invariant ${inv.key} needs a hint naming the mechanism`);
+        for (const col of inv.cols ?? []) {
+          if (!colKeys.has(col)) fail(ww, `invariant ${inv.key} references unknown column "${col}"`);
+        }
+        let left = 0;
+        let right = 0;
+        if (inv.kind === "columns-equal") {
+          left = colSum(inv.cols[0]);
+          right = colSum(inv.cols[1]);
+        } else if (inv.kind === "column-total") {
+          left = colSum(inv.cols[0]);
+          right = inv.value ?? 0;
+        } else if (inv.kind === "cell-is-column-sum") {
+          const [r, col] = String(inv.cell ?? "").split(":");
+          if (!rowKeys.has(r) || !colKeys.has(col))
+            fail(ww, `invariant ${inv.key} references unknown cell "${inv.cell}"`);
+          left = n(key[r]?.[col]) ?? 0;
+          right = colSum(inv.cols[0]);
+        } else {
+          fail(ww, `invariant ${inv.key} has unknown kind "${inv.kind}"`);
+          continue;
+        }
+        if (Math.abs(left - right) > 0.011 || left === 0) {
+          fail(
+            ww,
+            `invariant "${inv.label}" does NOT hold for the worksheet's own answer key: ${left} against ${right}`,
+          );
+        }
+        invariantsRun++;
+      }
+    }
+
+    // scenarios
+    for (const sc of topic.scenarios ?? []) {
+      practicalCount++;
+      const sw = `${where} scenario ${sc.n} (${sc.title})`;
+      const ids = new Set((sc.nodes ?? []).map((nd) => nd.id));
+      if (ids.size !== (sc.nodes ?? []).length) fail(sw, "duplicate node ids");
+      if (!ids.has(sc.start)) fail(sw, `start node "${sc.start}" does not exist`);
+      if (!sc.role || sc.role.length < 10) fail(sw, "needs a role telling the learner who they are");
+
+      for (const nd of sc.nodes ?? []) {
+        const hasChoices = (nd.choices ?? []).length > 0;
+        if (hasChoices && nd.ending) fail(sw, `node ${nd.id} has both choices and an ending`);
+        if (!hasChoices && !nd.ending) fail(sw, `node ${nd.id} is a dead end: no choices and no ending`);
+        if (nd.ending && (!nd.ending.debrief || nd.ending.debrief.length < 200))
+          fail(sw, `node ${nd.id} ending needs a real debrief`);
+        const cids = new Set((nd.choices ?? []).map((c) => c.id));
+        if (cids.size !== (nd.choices ?? []).length) fail(sw, `node ${nd.id} has duplicate choice ids`);
+        for (const c of nd.choices ?? []) {
+          if (c.next != null && !ids.has(c.next))
+            fail(sw, `node ${nd.id} choice ${c.id} points at unknown node "${c.next}"`);
+          if (!c.outcome || c.outcome.length < 40)
+            fail(sw, `node ${nd.id} choice ${c.id} needs an outcome saying what happened`);
+          if (typeof c.delta !== "number") fail(sw, `node ${nd.id} choice ${c.id} has no delta`);
+        }
+      }
+
+      // Every node reachable from the start, or it is content nobody can see.
+      const seen = new Set([sc.start]);
+      const stack = [sc.start];
+      while (stack.length) {
+        const nd = (sc.nodes ?? []).find((x) => x.id === stack.pop());
+        for (const c of nd?.choices ?? []) {
+          if (c.next && !seen.has(c.next)) {
+            seen.add(c.next);
+            stack.push(c.next);
+          }
+        }
+      }
+      for (const nd of sc.nodes ?? []) {
+        if (!seen.has(nd.id)) fail(sw, `node ${nd.id} is unreachable from the start`);
+      }
+
+      // The declared ideal path has to be walkable and end well.
+      let cursor = sc.start;
+      for (const [i, step] of (sc.idealPath ?? []).entries()) {
+        if (step !== cursor) {
+          fail(sw, `idealPath step ${i} is "${step}" but the walk reached "${cursor}"`);
+          break;
+        }
+        const nd = (sc.nodes ?? []).find((x) => x.id === step);
+        if (nd?.ending) {
+          if (nd.ending.verdict !== "ideal")
+            fail(sw, `idealPath ends at a "${nd.ending.verdict}" ending rather than an ideal one`);
+          break;
+        }
+        const best = [...(nd?.choices ?? [])].sort((a, b) => b.delta - a.delta)[0];
+        if (!best) {
+          fail(sw, `idealPath stalls at ${step}`);
+          break;
+        }
+        if (best.violation) fail(sw, `the best-scoring choice at ${step} is a rule violation`);
+        cursor = best.next;
+        if (!cursor) break;
+      }
+      scenarioPaths++;
+    }
+
+    // evidence tasks and deliverables: both are human marked, so the rubric IS
+    // the assessment and an empty one means the task cannot be graded at all.
+    for (const [kindName, list] of [
+      ["evidence", topic.evidence ?? []],
+      ["deliverable", topic.deliverables ?? []],
+    ]) {
+      for (const item of list) {
+        practicalCount++;
+        const iw = `${where} ${kindName} ${item.n} (${item.title})`;
+        if (!(item.rubric ?? []).length) fail(iw, "no rubric, so nothing can be marked");
+        for (const c of item.rubric ?? []) {
+          if (!Array.isArray(c.bands) || c.bands.length !== 4)
+            fail(iw, `criterion ${c.key} needs exactly 4 bands`);
+          if ((c.bands ?? []).some((b) => !b || b.length < 15))
+            fail(iw, `criterion ${c.key} has a band description too short to point at`);
+          if (!(c.weight > 0)) fail(iw, `criterion ${c.key} has no weight`);
+        }
+        if (kindName === "evidence") {
+          if (!(item.captures ?? []).length) fail(iw, "an evidence task with no captures proves nothing");
+          for (const c of item.captures ?? []) {
+            if (!["photo", "video", "audio"].includes(c.medium))
+              fail(iw, `capture ${c.key} has unknown medium "${c.medium}"`);
+            if (!c.mustShow || c.mustShow.length < 25)
+              fail(iw, `capture ${c.key} needs a checkable mustShow, not a description`);
+          }
+          if (!(item.integrity ?? []).length) fail(iw, "needs at least one integrity requirement");
+        } else {
+          if (!(item.requires ?? []).length) fail(iw, "a deliverable with no required file");
+          if (!item.modelAnswer || item.modelAnswer.length < 200)
+            fail(iw, "needs a model answer, released on submission");
+        }
+      }
+    }
+
+    // labs
+    for (const lab of topic.labs ?? []) {
+      practicalCount++;
+      const lw = `${where} lab ${lab.n} (${lab.title})`;
+      if (!(lab.ppe ?? []).length) fail(lw, "no PPE gate");
+      if (!(lab.steps ?? []).length) fail(lw, "no steps");
+      (lab.steps ?? []).forEach((st, i) => {
+        if (st.n !== i + 1) fail(lw, `step ${i + 1} is numbered ${st.n}; steps must be sequential from 1`);
+        if (!st.detail || st.detail.length < 60) fail(lw, `step ${st.n} has no real instruction`);
+        if (st.hazard && !["warning", "danger"].includes(st.hazard.level))
+          fail(lw, `step ${st.n} hazard has unknown level`);
+        if (st.reading) {
+          if (!(st.reading.max > st.reading.min))
+            fail(lw, `step ${st.n} reading range is empty or inverted`);
+          if (!st.reading.hint || st.reading.hint.length < 25)
+            fail(lw, `step ${st.n} reading needs a hint for an out-of-range value`);
+        }
+      });
+      if (!(lab.steps ?? []).some((st) => st.hazard?.level === "danger"))
+        fail(lw, "no danger step, so nothing is actually gated");
+    }
+
+    // decks
+    for (const d of topic.decks ?? []) {
+      practicalCount++;
+      const dw = `${where} deck ${d.n} (${d.title})`;
+      if ((d.cards ?? []).length < 8) fail(dw, "a deck under 8 cards is not worth scheduling");
+      const cardIds = new Set((d.cards ?? []).map((c) => c.id));
+      if (cardIds.size !== (d.cards ?? []).length) fail(dw, "duplicate card ids");
+      const fronts = new Set((d.cards ?? []).map((c) => String(c.front).toLowerCase()));
+      if (fronts.size !== (d.cards ?? []).length) fail(dw, "two cards share a front");
+      if (!["type", "flip"].includes(d.mode)) fail(dw, `unknown mode "${d.mode}"`);
+      for (const c of d.cards ?? []) {
+        if (!c.front || !c.back) fail(dw, `card ${c.id} is missing a face`);
+        cardCount++;
+      }
+    }
+
+    // speaking tasks
+    for (const sp of topic.speaking ?? []) {
+      practicalCount++;
+      const pw = `${where} speaking ${sp.n} (${sp.title})`;
+      if (!["listen", "read-aloud", "respond", "roleplay"].includes(sp.kind))
+        fail(pw, `unknown kind "${sp.kind}"`);
+      if (!/^[a-z]{2}-[A-Z]{2}$/.test(sp.lang ?? "")) fail(pw, `lang "${sp.lang}" is not a BCP 47 tag`);
+      if (sp.kind === "listen") {
+        if (!sp.script || sp.script.length < 40) fail(pw, "a listening task needs a script to speak");
+        if (!(sp.questions ?? []).length) fail(pw, "a listening task needs comprehension questions");
+        for (const q of sp.questions ?? []) {
+          if ((q.options ?? []).length !== 4) fail(pw, `question ${q.n} needs 4 options`);
+          if (typeof q.answer !== "number") fail(pw, `question ${q.n} has no answer index`);
+          if (!q.explanation || q.explanation.length < 40)
+            fail(pw, `question ${q.n} needs an explanation`);
+        }
+      }
+      if (sp.kind === "read-aloud" && !sp.target) fail(pw, "a read-aloud task needs target text");
+      if ((sp.kind === "respond" || sp.kind === "roleplay") && !(sp.mustMention ?? []).length)
+        fail(pw, "a spoken response needs the content points a complete answer covers");
+      if (!(sp.rubric ?? []).length) fail(pw, "no rubric");
+      for (const c of sp.rubric ?? []) {
+        if ((c.bands ?? []).length !== 4) fail(pw, `criterion ${c.key} needs exactly 4 bands`);
+      }
+      if (!(sp.seconds > 0)) fail(pw, "needs a target length in seconds");
+    }
+
+    // part identification
+    const KNOWN_DIAGRAMS = ["drone-exploded", "refrigeration-cycle", "ac-wiring", "drone-power"];
+    for (const pt of topic.parts ?? []) {
+      practicalCount++;
+      const tw = `${where} parts ${pt.n} (${pt.title})`;
+      if (!KNOWN_DIAGRAMS.includes(pt.diagram))
+        fail(tw, `diagram "${pt.diagram}" is not one the player can draw`);
+      if ((pt.hotspots ?? []).length < 4) fail(tw, "fewer than 4 hotspots");
+      const hk = new Set((pt.hotspots ?? []).map((h) => h.key));
+      if (hk.size !== (pt.hotspots ?? []).length) fail(tw, "duplicate hotspot keys");
+      const labels = new Set((pt.hotspots ?? []).map((h) => h.label));
+      if (labels.size !== (pt.hotspots ?? []).length) fail(tw, "two hotspots share a label");
+      for (const h of pt.hotspots ?? []) {
+        if (!(h.x >= 0 && h.x <= 100) || !(h.y >= 0 && h.y <= 100))
+          fail(tw, `hotspot ${h.key} sits outside the diagram at ${h.x}/${h.y}`);
+        if (!h.does || h.does.length < 30) fail(tw, `hotspot ${h.key} needs to say what the part does`);
+      }
+      // The bank has to be bigger than the answer set or the last hotspots are
+      // free marks by elimination.
+      const distractors = (pt.hotspots ?? []).filter((h) => h.confusedWith).length;
+      if (distractors === 0) fail(tw, "no confusedWith on any hotspot, so the label bank is exactly the answers");
+      for (const s of pt.sequence ?? []) {
+        if (!s.why || s.why.length < 25) fail(tw, `sequence step ${s.key} needs to say why it comes there`);
+      }
+      for (const wr of pt.wiring ?? []) {
+        if (!wr.note || wr.note.length < 20) fail(tw, `wiring ${wr.from} needs a note`);
+      }
+    }
+
     // --- coding problems: EXECUTE the solution against its own tests --------
     for (const p of topic.problems ?? []) {
       problemCount++;
@@ -166,6 +469,9 @@ fs.rmSync(TMP, { recursive: true, force: true });
 
 console.log(
   `topics ${topicCount} | questions ${questionCount} | problems ${problemCount} | tests executed ${testCount}`,
+);
+console.log(
+  `practicals ${practicalCount} | worksheet invariants run ${invariantsRun} | scenario graphs walked ${scenarioPaths} | deck cards ${cardCount}`,
 );
 if (problems.length) {
   console.error(`\n${problems.length} PROBLEM(S):`);
