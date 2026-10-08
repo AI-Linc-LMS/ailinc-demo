@@ -247,29 +247,153 @@ const curriculum: CourseCurriculum = {
       "Manufacturer thrust data": "The motor maker's published thrust per prop and per cell count, which is optimistic and still the best figure available.",
     },
     body: {
-      Beginner: `<p>Before you buy anything, you can work out whether it will fly well. You need two numbers.</p>
-<p><strong>All up weight.</strong> Add up everything: frame, four motors, four ESCs, flight controller, battery, props, camera, cables, screws. The battery is usually the heaviest single item, so do not leave it out.</p>
-<p><strong>Total thrust.</strong> Look up your motor's thrust with the prop and battery you are using, in the manufacturer's data table. Multiply by four.</p>
-<p>Then divide thrust by weight. That is your <strong>thrust to weight ratio</strong>, and it tells you nearly everything:</p>
-<ul>
-<li><strong>Below 2:1</strong> it barely gets off the ground and cannot recover from anything.</li>
-<li><strong>Around 3:1</strong> it is a steady camera platform.</li>
-<li><strong>4:1 and above</strong> is normal for a 5 inch freestyle build.</li>
-<li><strong>8:1 and above</strong> is a racing quad and is unforgiving.</li>
-</ul>
-<p>A related number falls out for free: hovering uses roughly one divided by the ratio. A 5:1 build hovers at about 20% throttle, which means you have 80% left for everything else.</p>`,
-      Intermediate: `<p>The ratio is predictive because a multirotor manoeuvres by producing differential thrust, so everything above the thrust needed to hover is the control authority available for correcting, climbing and accelerating. A build at 2:1 has only its own weight again in reserve, which must cover gusts, battery sag and any manoeuvre, and that is why it feels sluggish and recovers badly.</p>
-<p>Hover throttle is the inverse of the ratio and is worth checking on the bench because it is measurable. A 5:1 build should hover near 20 per cent. If it hovers at 50 per cent, either the weight is higher than you calculated or the thrust is lower, and both are worth knowing before you fly it rather than after.</p>
-<p>Manufacturer thrust figures are optimistic, measured on a fresh fully charged pack at sea level with a test stand that holds the motor still. Real thrust in flight is lower, and the gap widens as the battery sags. Treating the published figure as an upper bound rather than as a specification is the professional habit, and a sensible build has enough margin that the difference does not matter.</p>
-<p>Weight growth is the thing that catches first-time builders. The components add up to the figure you calculated and then there are cable ties, heat shrink, a battery strap, a GoPro mount and 15 grams of solder, and none of them were in the spreadsheet. Budgeting a realistic allowance for the parts nobody lists is the difference between a predicted ratio and an actual one.</p>`,
-      Advanced: `<p>Static thrust is the wrong metric for anything other than comparison, because a propeller in forward flight operates at a different advance ratio and produces substantially less thrust than it does held still. That is why a quad accelerates hard initially and then feels like it runs out, and why racing builds carry ratios that look absurd on the bench: the margin exists to be consumed at speed.</p>
-<p>Disc loading is the more fundamental parameter and it is rarely taught to builders. Weight divided by total disc area determines induced velocity and therefore hover efficiency, which is why a large slow propeller is always more efficient in hover than a small fast one producing the same thrust. The entire difference between a long-endurance photography platform and a racing quad is a choice about disc loading, and Kv, cell count and prop diameter are the levers that implement it.</p>
-<p>Battery sag couples the two calculations in a way that a static spreadsheet misses. Current draw rises roughly as the cube of rotational speed while thrust rises as the square, so a heavy build does not merely need more throttle, it needs disproportionately more current, which sags the pack, which reduces available thrust. Builds that are marginal on paper are worse than marginal in the air for this reason.</p>
-<p>The practical design rule that falls out of all this is to fix the ratio first and choose components to meet it, rather than selecting parts and discovering what ratio you got. Decide the mission, pick a target ratio, estimate weight with a realistic allowance for the unlisted parts, and then shop for motors and props that deliver the required thrust at that weight.</p>`,
-      Expert: `<p>Momentum theory gives the floor on induced power: for a rotor of disc area A producing thrust T in hover, induced velocity goes as the square root of T over twice the air density times A, and induced power goes as T raised to three halves over the square root of twice rho A. The immediate consequence is that hover power scales with the three-halves power of weight and inversely with the square root of disc area, which is the formal statement of why weight is punished super-linearly and why larger discs are more efficient.</p>
-<p>This also sets the endurance scaling that governs the whole design space. Flight time depends on energy stored over power consumed, and since adding battery adds weight which raises power super-linearly, there is an optimum pack size beyond which additional capacity reduces endurance. Builders discover this empirically as the point where a bigger battery stops helping, and the optimum is calculable from the weight fraction and the power law.</p>
-<p>Figure of merit, the ratio of ideal induced power to actual shaft power, lets published motor and propeller data be compared honestly and typically sits in the range of 0.4 to 0.7 for small multirotor rotors, which are operating at low Reynolds numbers where viscous losses are proportionally large. That low Reynolds regime is why small propellers are so much less efficient than their full-scale equivalents and why scaling intuitions from helicopters mislead.</p>
-<p>At the control level, thrust to weight sets the achievable attitude acceleration and therefore the bandwidth available to the attitude loop, which bounds disturbance rejection. This is the rigorous version of the claim that a low-ratio build recovers badly: it is not a matter of feel, it is that the plant cannot produce the angular acceleration the controller is asking for, and the result is control saturation with the familiar consequence of integral windup and a slow, mushy recovery.</p>`,
+      Beginner: `<p>Before you buy anything, one calculation tells you whether the build will fly. Add up what all four motors can push, and divide it by what the aircraft weighs.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="Total thrust from four motors weighed against the all up weight of the aircraft">
+<rect x="24" y="48" width="440" height="220" rx="18" fill="#0f766e" opacity="0.13"/>
+<rect x="24" y="48" width="440" height="220" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="244" y="104" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">TOTAL THRUST</text>
+<text x="244" y="174" font-size="54" font-weight="800" fill="currentColor" text-anchor="middle">2600 g</text>
+<text x="244" y="226" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">four motors, 650 g each</text>
+<text x="244" y="258" font-size="27" fill="currentColor" opacity="0.6" text-anchor="middle">at full throttle</text>
+<rect x="536" y="48" width="440" height="220" rx="18" fill="#be123c" opacity="0.13"/>
+<rect x="536" y="48" width="440" height="220" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<text x="756" y="104" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">ALL UP WEIGHT</text>
+<text x="756" y="174" font-size="54" font-weight="800" fill="currentColor" text-anchor="middle">650 g</text>
+<text x="756" y="226" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">frame, battery, camera,</text>
+<text x="756" y="258" font-size="27" fill="currentColor" opacity="0.6" text-anchor="middle">straps, everything</text>
+<rect x="24" y="310" width="952" height="96" rx="16" fill="#0f766e" opacity="0.16"/>
+<text x="500" y="372" font-size="40" font-weight="800" fill="currentColor" text-anchor="middle">2600 divided by 650 is a ratio of 4 to 1</text>
+<rect x="24" y="428" width="464" height="110" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="256" y="474" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">Under 2 to 1</text>
+<text x="256" y="514" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">it will not fly properly</text>
+<rect x="512" y="428" width="464" height="110" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="744" y="474" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Around 4 to 1</text>
+<text x="744" y="514" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">a comfortable build</text>
+</svg>
+<figcaption><strong>Weigh the aircraft exactly as it will fly, with the battery in and the camera fitted.</strong> The number most builders get wrong is the weight, not the thrust: straps, the receiver, a lens filter and a dented prop all count, and a build that was fine on paper at 580 g is a different aircraft at 650 g.</figcaption>
+</figure>
+<h3>Getting the two numbers</h3>
+<table>
+<tr><th>Number</th><th>Where it comes from</th></tr>
+<tr><td>Thrust per motor</td><td>The manufacturer's thrust table, for your exact prop and battery voltage</td></tr>
+<tr><td>Total thrust</td><td>That figure times four</td></tr>
+<tr><td>All up weight</td><td>Kitchen scales, with the battery in and everything fitted</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The ratio you are aiming for</span><p>At least 2 to 1 to get off the ground at all, and around 4 to 1 for a build that is pleasant to fly. Below 2 to 1 the aircraft cannot correct itself, and it will feel sluggish and then fall out of the sky.</p></div>
+<div class="warning"><span class="callout-label">Use the right row of the thrust table</span><p>Those tables list a thrust for each prop and each cell count. A figure taken from the wrong row can be out by half, and it is always out in the optimistic direction, because the headline number is the biggest one on the page.</p></div>`,
+      Intermediate: `<p>The ratio is not a pass or fail line. It sets how much of your thrust is spent staying in the air and how much is left over for everything else, and that second figure is what flying actually feels like.</p>
+<figure>
+<svg viewBox="0 0 1000 580" role="img" aria-label="Thrust to weight ratio bands and the hover throttle each one implies">
+<rect x="24" y="60" width="238" height="150" rx="14" fill="#be123c" opacity="0.2"/>
+<text x="143" y="112" font-size="38" font-weight="800" fill="#be123c" text-anchor="middle">1 to 1</text>
+<text x="143" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">cannot hover</text>
+<text x="143" y="192" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">100% throttle</text>
+<rect x="274" y="60" width="238" height="150" rx="14" fill="#b45309" opacity="0.2"/>
+<text x="393" y="112" font-size="38" font-weight="800" fill="#b45309" text-anchor="middle">2 to 1</text>
+<text x="393" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">bare minimum</text>
+<text x="393" y="192" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">50% throttle</text>
+<rect x="524" y="60" width="238" height="150" rx="14" fill="#0f766e" opacity="0.2"/>
+<text x="643" y="112" font-size="38" font-weight="800" fill="#0f766e" text-anchor="middle">4 to 1</text>
+<text x="643" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">sport flying</text>
+<text x="643" y="192" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">25% throttle</text>
+<rect x="774" y="60" width="202" height="150" rx="14" fill="#7c3aed" opacity="0.2"/>
+<text x="875" y="112" font-size="38" font-weight="800" fill="#7c3aed" text-anchor="middle">8 to 1</text>
+<text x="875" y="156" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">racing</text>
+<text x="875" y="192" font-size="26" fill="currentColor" opacity="0.75" text-anchor="middle">12% throttle</text>
+<text x="500" y="268" font-size="30" font-weight="800" fill="currentColor" opacity="0.65" text-anchor="middle">HOVER THROTTLE IS ONE OVER THE RATIO</text>
+<rect x="24" y="300" width="952" height="60" rx="12" fill="currentColor" opacity="0.08"/>
+<rect x="24" y="300" width="952" height="60" rx="12" fill="#be123c" opacity="0.3" clip-path="inset(0 0 0 0)"/>
+<rect x="500" y="300" width="476" height="60" rx="12" fill="#0f766e" opacity="0.3"/>
+<text x="262" y="340" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">no headroom left</text>
+<text x="738" y="340" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">room to correct</text>
+<rect x="24" y="398" width="952" height="156" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="448" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">Why 2 to 1 is a floor and not a target</text>
+<text x="500" y="492" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">At 50% hover, holding level uses half your thrust.</text>
+<text x="500" y="532" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">A gust needs the other half, and then there is none.</text>
+</svg>
+<figcaption><strong>Hover throttle is the reciprocal of the ratio, and that is the number that matters in the air.</strong> Control authority is whatever thrust is left above hover. At 2 to 1 a correction competes with staying up; at 4 to 1 three quarters of the available thrust is free for the flight controller to use.</figcaption>
+</figure>
+<h3>Hover throttle is the ratio, upside down</h3>
+<p>If the aircraft can lift four times its weight, hovering needs a quarter of that thrust. So hover throttle is one divided by the ratio, and the thrust above hover is your control authority: everything the flight controller has available to correct a gust, climb, or stop a descent.</p>
+<table>
+<tr><th>Ratio</th><th>Hover throttle</th><th>Left for control</th></tr>
+<tr><td class="num">2 to 1</td><td class="num">50%</td><td>Half, and a gust can use all of it</td></tr>
+<tr><td class="num">3 to 1</td><td class="num">33%</td><td>Enough for a camera build</td></tr>
+<tr><td class="num">4 to 1</td><td class="num">25%</td><td>Comfortable, responsive</td></tr>
+<tr><td class="num">8 to 1</td><td class="num">12%</td><td>Racing, and twitchy to fly</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Higher is not simply better</span><p>A very high ratio makes the throttle hard to use: the usable hover range is squeezed into the bottom of the stick, and small inputs produce large changes. A camera build at 8 to 1 is harder to fly smoothly than the same build at 3 to 1.</p></div>
+<div class="warning"><span class="callout-label">Thrust figures are measured on a bench</span><p>They are static thrust, at a fixed voltage, on a new prop, with unrestricted airflow. A real aircraft has a sagging battery, a scuffed prop and its own downwash. Treat the table as a ceiling you will not quite reach rather than as a measurement of your build.</p></div>`,
+      Advanced: `<p>Two non-linearities make the arithmetic optimistic, and both of them work against you at exactly the moment you need thrust.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Thrust against throttle showing a non linear curve and why half throttle is not half thrust">
+<path d="M150 480 H950 M150 480 V60" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M150 480 L950 100" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="10 8" opacity="0.45"/>
+<path d="M150 480 C 420 440, 640 300, 950 100" fill="none" stroke="#0369a1" stroke-width="8" stroke-linecap="round"/>
+<text x="470" y="316" font-size="28" font-weight="800" fill="currentColor" opacity="0.55" transform="rotate(-25 470 316)">what people assume</text>
+<text x="560" y="430" font-size="28" font-weight="800" fill="#0369a1">what motors actually do</text>
+<path d="M550 480 V394" stroke="#be123c" stroke-width="4" stroke-dasharray="8 6"/>
+<circle cx="550" cy="394" r="11" fill="#be123c"/>
+<text x="566" y="372" font-size="27" font-weight="800" fill="#be123c">50% throttle</text>
+<text x="566" y="406" font-size="26" fill="currentColor" opacity="0.8">gives about 36% thrust</text>
+<text x="150" y="528" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">0</text>
+<text x="950" y="528" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">FULL THROTTLE</text>
+<text x="92" y="270" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 92 270)">THRUST</text>
+<rect x="150" y="548" width="800" height="44" rx="10" fill="#0369a1" opacity="0.12"/>
+<text x="550" y="580" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Thrust rises roughly with the square of motor speed.</text>
+</svg>
+<figcaption><strong>Thrust is roughly proportional to the square of rotational speed, so the stick is not a thrust dial.</strong> Half stick buys appreciably less than half thrust, which is why a 2 to 1 build hovers well above half stick in practice and has even less margin than the arithmetic suggests. It is also why the last quarter of the throttle range feels so violent.</figcaption>
+</figure>
+<h3>Thrust against throttle</h3>
+<p>Thrust goes roughly with the square of rotational speed, so the throttle stick is not a thrust dial. Half stick is nearer a third of thrust than half of it, which means a 2 to 1 build hovers well above the 50% the simple calculation predicts.</p>
+<h3>Voltage sag is the second one</h3>
+<p>A battery under load sits below its resting voltage, and the gap widens as it empties and as current rises. Motor thrust depends on the voltage actually at the motor, so the thrust available at the end of a pack is meaningfully below the thrust available at the start.</p>
+<table>
+<tr><th>Pack state</th><th>Resting</th><th>Under hard load</th></tr>
+<tr><td>Full</td><td class="num">4.2 V per cell</td><td class="num">about 3.8 V</td></tr>
+<tr><td>Half</td><td class="num">3.8 V per cell</td><td class="num">about 3.5 V</td></tr>
+<tr><td>Near empty</td><td class="num">3.5 V per cell</td><td class="num">about 3.2 V</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Which is why builds crash at the end of a flight</span><p>The aircraft that had adequate margin on a full pack has materially less on a flat one, and a low-voltage build drawing hard current can brown out the flight controller entirely. Size the ratio on sagged voltage, not on the number printed on the battery.</p></div>
+<div class="key-idea"><span class="callout-label">Disc loading explains efficiency separately</span><p>Weight divided by total propeller disc area tells you how hard the aircraft works to stay up. A larger prop at lower revolutions moves more air more slowly for the same thrust and is more efficient, which is why endurance builds use big props and racers use small ones. The ratio tells you whether it flies; disc loading tells you for how long.</p></div>`,
+      Expert: `<p>Sizing a power system properly means treating weight as a dependent variable rather than an input, because the heaviest single component is chosen last and changes the answer.</p>
+<figure>
+<svg viewBox="0 0 1000 620" role="img" aria-label="The weight spiral where adding battery capacity adds weight which demands more thrust">
+<rect x="340" y="40" width="320" height="104" rx="16" fill="#7c3aed" opacity="0.16"/>
+<text x="500" y="84" font-size="28" font-weight="800" fill="#7c3aed" text-anchor="middle">WANT LONGER FLIGHT</text>
+<text x="500" y="122" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">so fit a bigger battery</text>
+<path d="M660 92 C 820 100, 860 180, 830 236" fill="none" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<path d="M826 250 l16 -22 l-22 -6 z" fill="currentColor" opacity="0.45"/>
+<rect x="640" y="256" width="336" height="104" rx="16" fill="#be123c" opacity="0.16"/>
+<text x="808" y="300" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">WEIGHT GOES UP</text>
+<text x="808" y="338" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">ratio falls, hover throttle rises</text>
+<path d="M808 372 C 790 470, 660 500, 586 492" fill="none" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<path d="M572 490 l24 -12 l-4 22 z" fill="currentColor" opacity="0.45"/>
+<rect x="196" y="446" width="376" height="104" rx="16" fill="#b45309" opacity="0.16"/>
+<text x="384" y="490" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">MOTORS WORK HARDER</text>
+<text x="384" y="528" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">more current, less efficiency</text>
+<path d="M196 476 C 90 450, 80 200, 150 120 C 200 70, 280 66, 336 80" fill="none" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<path d="M350 84 l-24 -10 l4 22 z" fill="currentColor" opacity="0.45"/>
+<text x="112" y="300" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle" transform="rotate(-90 112 300)">AND BACK ROUND</text>
+<rect x="196" y="580" width="608" height="30" rx="8" fill="#0f766e" opacity="0.16"/>
+<text x="500" y="604" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">There is a capacity past which flight time falls.</text>
+</svg>
+<figcaption><strong>Endurance does not rise forever with battery size.</strong> Past a point, the extra cells cost more in hover current than they add in stored energy, and flight time starts falling again. For a five inch quad that turning point usually arrives somewhere around a quarter to a third of all up weight in battery.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The loop, stated plainly</span><p>Battery capacity adds stored energy linearly and adds weight linearly, but the hover current needed to carry that weight rises too. Endurance is capacity divided by hover current, so both terms grow and the ratio turns over. Past the optimum, a bigger battery gives a shorter flight, which is counterintuitive enough that people keep buying one.</p></div>
+<h3>Where the current budget actually binds</h3>
+<p>The ratio is a thrust question; survival is a current question, and they have different answers. Peak current at full throttle is what sizes the ESCs, the wiring and the battery's discharge rating, and it is roughly four times the single-motor peak rather than anything related to hover.</p>
+<table>
+<tr><th>Component</th><th>Sized by</th><th>Common mistake</th></tr>
+<tr><td>ESC</td><td>Peak current per motor, with headroom</td><td>Sizing on hover current</td></tr>
+<tr><td>Battery C rating</td><td>Total peak draw</td><td>Trusting the printed C rating</td></tr>
+<tr><td>Main wiring</td><td>Total peak draw and run length</td><td>Reusing thin leads from a lighter build</td></tr>
+<tr><td>Motor</td><td>Thrust at the target ratio</td><td>Reading the wrong prop row</td></tr>
+</table>
+<h3>Margins that are not optional</h3>
+<p>Thrust tables are produced by manufacturers with an interest in a large number, on new equipment at a fixed voltage. A sensible build discounts them, carries ESC headroom well above the expected peak, and verifies the result rather than trusting it.</p>
+<div class="field"><span class="callout-label">Measure it rather than computing it</span><p>Strap the finished aircraft to a kitchen scale upside down, arm it with props off for safety checks first, then run a proper thrust test on a stand. Builders who do this routinely find the real figure fifteen to twenty five per cent below the table. That gap is the difference between a 2 to 1 design and an aircraft that cannot recover from a gust, and it is knowable for the price of ten minutes on a bench.</p></div>`,
     },
     worksheets: [
       {

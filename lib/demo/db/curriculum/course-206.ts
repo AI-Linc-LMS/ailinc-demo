@@ -50,61 +50,174 @@ const curriculum: CourseCurriculum = {
       "Source document": "The invoice, receipt or bank advice that proves a transaction happened.",
     },
     body: {
-      Beginner: `<p>Imagine you start a tea stall. You put in 20,000 rupees of your own money. Two things just happened at the same time: the stall now has 20,000 rupees of cash, and the stall now owes you 20,000 rupees. One event, two changes.</p>
-<div class="key-idea"><span class="callout-label">The whole idea</span><p>A transaction never changes just one thing. If you can find only one change, you have not finished looking.</p></div>
-<h3>Seeing the pair</h3>
-<p>Buy a kettle for 2,000 rupees cash and your cash goes down by 2,000 while your equipment goes up by 2,000. Buy the same kettle on credit and your equipment still goes up by 2,000, but now the amount you owe the shop goes up instead.</p>
+      Beginner: `<p>A business owns things, and it owes things. Everything it owns was paid for by somebody, either a lender or the owner. That single fact is the whole of bookkeeping.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The accounting equation with both sides rising together when an owner puts money in">
+<rect x="24" y="48" width="418" height="186" rx="18" fill="#0f766e" opacity="0.12"/>
+<rect x="24" y="48" width="418" height="186" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="233" y="126" font-size="48" font-weight="800" fill="#0f766e" text-anchor="middle">ASSETS</text>
+<text x="233" y="176" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">what the business has</text>
+<text x="233" y="212" font-size="28" fill="currentColor" opacity="0.6" text-anchor="middle">bank, stock, furniture</text>
+<text x="500" y="156" font-size="64" font-weight="800" fill="currentColor" opacity="0.65" text-anchor="middle">=</text>
+<rect x="558" y="48" width="418" height="186" rx="18" fill="#7c3aed" opacity="0.12"/>
+<rect x="558" y="48" width="418" height="186" rx="18" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<text x="767" y="112" font-size="38" font-weight="800" fill="#7c3aed" text-anchor="middle">LIABILITIES</text>
+<text x="767" y="156" font-size="34" font-weight="800" fill="#7c3aed" text-anchor="middle">+ OWNER CAPITAL</text>
+<text x="767" y="200" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">where it came from</text>
+<rect x="24" y="286" width="952" height="104" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="500" y="350" font-size="34" font-weight="800" fill="currentColor" text-anchor="middle">The owner puts in 2,00,000</text>
+<path d="M233 406 V452" stroke="#0f766e" stroke-width="6"/>
+<path d="M233 466 l-14 -22 h28 z" fill="#0f766e"/>
+<text x="233" y="516" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Bank up 2,00,000</text>
+<path d="M767 406 V452" stroke="#7c3aed" stroke-width="6"/>
+<path d="M767 466 l-14 -22 h28 z" fill="#7c3aed"/>
+<text x="767" y="516" font-size="30" font-weight="800" fill="#7c3aed" text-anchor="middle">Capital up 2,00,000</text>
+</svg>
+<figcaption><strong>Both sides moved by the same amount, so the equation still holds.</strong> That is not a coincidence or a rule somebody imposed. Every transaction has two sides because money always comes from somewhere and goes somewhere, and the books record both halves of that movement.</figcaption>
+</figure>
+<h3>Why every entry has two sides</h3>
+<p>Money never appears from nowhere. If the bank balance goes up by two lakh, something explains where that two lakh came from. Recording only the arrival and not the source is how books stop meaning anything.</p>
 <table>
-<tr><th>What happened</th><th>One change</th><th>The other change</th></tr>
-<tr><td>You put in 20,000 cash</td><td>Cash up 20,000</td><td>You are owed 20,000</td></tr>
-<tr><td>Kettle for 2,000 cash</td><td>Equipment up 2,000</td><td>Cash down 2,000</td></tr>
-<tr><td>Kettle for 2,000 on credit</td><td>Equipment up 2,000</td><td>Owed to shop up 2,000</td></tr>
+<tr><th>What happened</th><th>One side</th><th>The other side</th></tr>
+<tr><td>Owner invests 2,00,000</td><td>Bank up</td><td>Capital up</td></tr>
+<tr><td>Buy furniture for 35,000 cash</td><td>Furniture up</td><td>Bank down</td></tr>
+<tr><td>Buy stock on credit for 60,000</td><td>Stock up</td><td>Supplier owed up</td></tr>
 </table>
-<h3>Why people find this hard</h3>
-<p>They try to memorise rules before they can see the pairs. So practise the seeing first. For any event, ask two questions. What came in or went out? And where did it come from or go to? The answer to both questions together is the transaction.</p>
-<div class="field"><span class="callout-label">Worth knowing early</span><p>Accounting only records what you can measure in money and prove with a document. Hiring a brilliant cook is good news and it is not a transaction. Paying that cook 8,000 rupees is.</p></div>`,
-      Intermediate: `<p>A transaction is an event that changes the composition of a business and can be measured in money. The defining property is that it always changes at least two accounts, which is why the system that records it is called double entry.</p>
-<div class="key-idea"><span class="callout-label">The identity everything rests on</span><p>Assets equal liabilities plus equity. It holds at every instant, not just at year end, so any event that increased only one side could not be recorded at all.</p></div>
-<h3>Why a one-sided entry cannot exist</h3>
-<p>What looks like a one-sided change is always a pair where you have not yet found the second half. That is a useful diagnostic rather than a slogan: when an entry refuses to balance, the question is not which rule to apply but which half of the event you have not identified.</p>
-<h3>A transaction worked through</h3>
-<div class="worked"><span class="callout-label">Machinery, 1,50,000 rupees, half by cheque</span>
+<div class="key-idea"><span class="callout-label">The test you can always apply</span><p>After any transaction, add up what the business has and add up where it came from. If the two numbers differ, something has been recorded once instead of twice.</p></div>
+<div class="warning"><span class="callout-label">A common first misunderstanding</span><p>The two sides are not money going out and money coming in. They are two descriptions of the same single event: what changed, and what explains it.</p></div>`,
+      Intermediate: `<p>Double entry is often taught as a rule to memorise. It is better understood as a consequence: if you insist on recording both what changed and what explains it, two entries fall out automatically, and they are necessarily equal.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="One transaction producing two entries, a debit and a credit of the same amount">
+<rect x="150" y="36" width="700" height="96" rx="16" fill="currentColor" opacity="0.08"/>
+<rect x="150" y="36" width="700" height="96" rx="16" fill="none" stroke="currentColor" stroke-width="3" opacity="0.4"/>
+<text x="500" y="82" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">ONE TRANSACTION</text>
+<text x="500" y="118" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">Bought furniture for cash, 35,000</text>
+<path d="M420 132 L270 206" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<path d="M258 212 l26 -4 l-10 -18 z" fill="currentColor" opacity="0.45"/>
+<path d="M580 132 L730 206" stroke="currentColor" opacity="0.45" stroke-width="5"/>
+<path d="M742 212 l-26 -4 l10 -18 z" fill="currentColor" opacity="0.45"/>
+<rect x="24" y="216" width="440" height="190" rx="18" fill="#0f766e" opacity="0.12"/>
+<rect x="24" y="216" width="440" height="190" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="244" y="278" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">DEBIT</text>
+<text x="244" y="328" font-size="34" font-weight="800" fill="currentColor" text-anchor="middle">Furniture</text>
+<text x="244" y="376" font-size="34" font-weight="800" fill="currentColor" text-anchor="middle">up 35,000</text>
+<rect x="536" y="216" width="440" height="190" rx="18" fill="#7c3aed" opacity="0.12"/>
+<rect x="536" y="216" width="440" height="190" rx="18" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<text x="756" y="278" font-size="34" font-weight="800" fill="#7c3aed" text-anchor="middle">CREDIT</text>
+<text x="756" y="328" font-size="34" font-weight="800" fill="currentColor" text-anchor="middle">Bank</text>
+<text x="756" y="376" font-size="34" font-weight="800" fill="currentColor" text-anchor="middle">down 35,000</text>
+<rect x="24" y="444" width="952" height="94" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="488" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Total assets did not change.</text>
+<text x="500" y="524" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">One asset became another, so the equation never moved.</text>
+</svg>
+<figcaption><strong>Nothing was gained or lost here, and that is the point.</strong> Thirty five thousand rupees of cash turned into thirty five thousand rupees of furniture. A transaction that touches only one side of the equation twice leaves the totals exactly where they were.</figcaption>
+</figure>
+<h3>Debit and credit are directions, not good and bad</h3>
+<p>A debit is not a loss and a credit is not a gain. They are the two columns, and which column a change belongs in depends only on what kind of account it is.</p>
 <table>
-<tr><th>Effect</th><th class="num">Assets</th><th class="num">Liabilities</th></tr>
-<tr><td>Machinery acquired</td><td class="num">+1,50,000</td><td class="num"></td></tr>
-<tr><td>Bank paid</td><td class="num">(75,000)</td><td class="num"></td></tr>
-<tr><td>Amount still owed</td><td class="num"></td><td class="num">+75,000</td></tr>
-<tr><td><strong>Net movement</strong></td><td class="num"><strong>+75,000</strong></td><td class="num"><strong>+75,000</strong></td></tr>
+<tr><th>Account kind</th><th>Increases with</th><th>Decreases with</th></tr>
+<tr><td>Asset</td><td>Debit</td><td>Credit</td></tr>
+<tr><td>Expense</td><td>Debit</td><td>Credit</td></tr>
+<tr><td>Liability</td><td>Credit</td><td>Debit</td></tr>
+<tr><td>Income</td><td>Credit</td><td>Debit</td></tr>
+<tr><td>Capital</td><td>Credit</td><td>Debit</td></tr>
 </table>
-<p>Both sides moved by 75,000, so the identity survives.</p></div>
-<h3>Two distinctions to fix now</h3>
-<p>A transaction is not the same as a cash movement: a credit sale is a transaction on the day the goods leave, not the day the customer pays. And a transaction needs a source document, because an entry nobody can trace to an invoice or bank advice is an assertion rather than a record.</p>
-<div class="warning"><span class="callout-label">What an auditor pulls on first</span><p>The entries with no document behind them. Not the large ones, the unsupported ones.</p></div>`,
-      Advanced: `<p>Treat the accounting equation as an invariant that the recording system is built to preserve, and double entry becomes an engineering choice rather than a convention. Every posting is a transformation that must leave assets minus liabilities minus equity equal to zero.</p>
-<div class="key-idea"><span class="callout-label">Why the technique survived five centuries</span><p>The invariant is checked arithmetically at every level of aggregation, so a violation surfaces as an imbalance you can actually find.</p></div>
-<h3>Recognition: deciding when an event has occurred</h3>
-<p>Under accrual accounting the trigger is the transfer of control or the incurring of an obligation, not settlement. A customer order is not a transaction, because neither party has yet done anything irreversible. Dispatch under an enforceable contract is, because a receivable now exists and revenue has been earned.</p>
-<h3>Measurement is a separate decision</h3>
-<p>An asset acquired for 1,50,000 rupees enters at that cost even if its market value is 2,00,000, because historical cost is verifiable from a document and a valuation is an opinion. The cost of this choice is a balance sheet that systematically understates appreciating assets, which is why disclosure exists alongside measurement.</p>
+<div class="key-idea"><span class="callout-label">Why that table is not arbitrary</span><p>Assets sit on the left of the equation and the things that fund them sit on the right. Debit is the left column and credit is the right one. The table is just the equation written out as columns, which is why learning it as a mnemonic makes it harder rather than easier.</p></div>
+<h3>Working out any entry from first principles</h3>
+<p>Ask two questions in order. What did the business get, or give up? And what explains it. The first answer is usually the debit, the second the credit, and for the handful of cases where that feels backwards the equation will tell you which way round it goes.</p>
+<div class="warning"><span class="callout-label">Drawings is the entry people get wrong</span><p>When an owner takes money out, cash falls, which is a credit to bank. The other side is a debit to drawings, because drawings reduce capital and capital is a credit balance. A reduction in a credit balance is a debit.</p></div>`,
+      Advanced: `<p>Every transaction a business can make falls into one of four shapes, and knowing which shape you are looking at is faster than reasoning about debits each time.</p>
+<figure>
+<svg viewBox="0 0 1000 620" role="img" aria-label="The four ways a transaction can move the accounting equation and still keep it balanced">
+<rect x="24" y="36" width="466" height="256" rx="18" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="36" width="466" height="256" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="56" y="96" font-size="32" font-weight="800" fill="#0f766e">ASSET UP, ASSET DOWN</text>
+<text x="56" y="152" font-size="28" fill="currentColor" opacity="0.85">Buy furniture with cash</text>
+<text x="56" y="204" font-size="28" font-weight="800" fill="currentColor">One side, twice.</text>
+<text x="56" y="252" font-size="28" fill="currentColor" opacity="0.7">Totals do not move at all.</text>
+<rect x="510" y="36" width="466" height="256" rx="18" fill="#7c3aed" opacity="0.1"/>
+<rect x="510" y="36" width="466" height="256" rx="18" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<text x="542" y="96" font-size="32" font-weight="800" fill="#7c3aed">ASSET UP, LIABILITY UP</text>
+<text x="542" y="152" font-size="28" fill="currentColor" opacity="0.85">Buy stock on credit</text>
+<text x="542" y="204" font-size="28" font-weight="800" fill="currentColor">Both sides grow.</text>
+<text x="542" y="252" font-size="28" fill="currentColor" opacity="0.7">The business is bigger, and owes more.</text>
+<rect x="24" y="312" width="466" height="256" rx="18" fill="#b45309" opacity="0.1"/>
+<rect x="24" y="312" width="466" height="256" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
+<text x="56" y="372" font-size="32" font-weight="800" fill="#b45309">ASSET DOWN, LIABILITY DOWN</text>
+<text x="56" y="428" font-size="28" fill="currentColor" opacity="0.85">Pay a supplier</text>
+<text x="56" y="480" font-size="28" font-weight="800" fill="currentColor">Both sides shrink.</text>
+<text x="56" y="528" font-size="28" fill="currentColor" opacity="0.7">Less cash, and less owed.</text>
+<rect x="510" y="312" width="466" height="256" rx="18" fill="#be123c" opacity="0.1"/>
+<rect x="510" y="312" width="466" height="256" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<text x="542" y="372" font-size="32" font-weight="800" fill="#be123c">ASSET UP, EQUITY UP</text>
+<text x="542" y="428" font-size="28" fill="currentColor" opacity="0.85">Make a sale for cash</text>
+<text x="542" y="480" font-size="28" font-weight="800" fill="currentColor">Both sides grow.</text>
+<text x="542" y="528" font-size="28" fill="currentColor" opacity="0.7">Profit belongs to the owner.</text>
+</svg>
+<figcaption><strong>There is no fifth box.</strong> Every transaction a business can make is one of these four shapes, which is why the equation cannot be broken by a correctly recorded entry. If your books do not balance, you have not found a new kind of transaction; you have made a mistake.</figcaption>
+</figure>
+<h3>What this buys you in practice</h3>
+<p>Classifying first and posting second catches errors before they reach the ledger. If you have decided a transaction is asset up and liability up, then an entry that reduces capital is wrong before you check a single column.</p>
 <table>
-<tr><th>Question</th><th>What answers it</th><th>What it costs you</th></tr>
-<tr><td>Has an event occurred?</td><td>Transfer of control, or an obligation incurred</td><td>Judgement; two preparers can differ in good faith</td></tr>
-<tr><td>At what amount?</td><td>Historical cost, from the document</td><td>Appreciating assets are understated</td></tr>
+<tr><th>Shape</th><th>Effect on the totals</th><th>Where it usually shows up</th></tr>
+<tr><td>Asset up, asset down</td><td>Unchanged</td><td>Purchases for cash, collections from customers</td></tr>
+<tr><td>Asset up, liability up</td><td>Both sides grow</td><td>Credit purchases, loans received</td></tr>
+<tr><td>Asset down, liability down</td><td>Both sides shrink</td><td>Paying suppliers, repaying a loan</td></tr>
+<tr><td>Asset up, equity up</td><td>Both sides grow</td><td>Sales, owner investment</td></tr>
 </table>
-<div class="field"><span class="callout-label">What the ledger structurally cannot hold</span><p>An operating lease commitment, a key-person dependency and a pending lawsuit all change what a business is worth without producing a measurable obligation at a point in time. They live in the notes, which is why the notes are read rather than skipped.</p></div>`,
-      Expert: `<p>The equation is better read as a statement about the closure of a double-entry system under its own operations. Define the ledger as a set of accounts with signed balances and require that the signed sum over all accounts be identically zero. Posting is then any operation preserving that sum.</p>
-<div class="key-idea"><span class="callout-label">The consequence worth drawing</span><p>Asset, liability and equity are a partition imposed on the account set for presentation, not a feature of the algebra. That is why the equation rearranges freely, and why a trial balance that sums to zero tells you about arithmetic rather than about truth.</p></div>
-<h3>Recognition as contract analysis</h3>
-<p>Ind AS 115 locates revenue at the satisfaction of a performance obligation, which replaced a transfer-of-risks test precisely because risk is continuous and control is comparatively discrete. The practical consequence for a preparer is that the recognition date is a matter of contract analysis, and two competent accountants can disagree on it in good faith.</p>
-<h3>A mixed attribute model, and why it is incoherent on purpose</h3>
+<div class="key-idea"><span class="callout-label">Income and expenses are equity in disguise</span><p>There is no fifth shape for revenue because revenue is not a separate thing on the equation. Profit increases what the owner is owed, so income is an increase in equity and an expense is a decrease in it. Income and expense accounts exist so the year can be explained, then they close into capital and disappear.</p></div>
+<h3>The consequence for compound entries</h3>
+<p>A transaction with three or four lines is not an exception to any of this. It is two or more of these shapes recorded at once, and the test does not change: the debits total the credits, and the equation holds afterwards.</p>`,
+      Expert: `<p>Double entry is a redundancy mechanism. It records each event twice along independent axes, which makes a whole class of single errors detectable without any external evidence. Understanding precisely which class is detectable is what tells you where the rest of the controls have to go.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The journal to ledger to trial balance to accounts pipeline and the one step the trial balance checks">
+<rect x="20" y="60" width="212" height="140" rx="16" fill="currentColor" opacity="0.08"/>
+<rect x="20" y="60" width="212" height="140" rx="16" fill="none" stroke="currentColor" stroke-width="3" opacity="0.5"/>
+<text x="126" y="126" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">JOURNAL</text>
+<text x="126" y="168" font-size="26" fill="currentColor" opacity="0.7" text-anchor="middle">as it happened</text>
+<path d="M240 130 H286" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M298 130 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="306" y="60" width="212" height="140" rx="16" fill="currentColor" opacity="0.08"/>
+<rect x="306" y="60" width="212" height="140" rx="16" fill="none" stroke="currentColor" stroke-width="3" opacity="0.5"/>
+<text x="412" y="126" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">LEDGER</text>
+<text x="412" y="168" font-size="26" fill="currentColor" opacity="0.7" text-anchor="middle">by account</text>
+<path d="M526 130 H572" stroke="#0f766e" stroke-width="7"/>
+<path d="M584 130 l-22 -11 v22 z" fill="#0f766e"/>
+<rect x="592" y="60" width="212" height="140" rx="16" fill="#0f766e" opacity="0.14"/>
+<rect x="592" y="60" width="212" height="140" rx="16" fill="none" stroke="#0f766e" stroke-width="4"/>
+<text x="698" y="118" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">TRIAL</text>
+<text x="698" y="156" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">BALANCE</text>
+<path d="M812 130 H858" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M870 130 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="878" y="60" width="102" height="140" rx="16" fill="currentColor" opacity="0.08"/>
+<rect x="878" y="60" width="102" height="140" rx="16" fill="none" stroke="currentColor" stroke-width="3" opacity="0.5"/>
+<text x="929" y="118" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">FINAL</text>
+<text x="929" y="154" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">ACCTS</text>
+<path d="M412 214 V262 H698 V214" fill="none" stroke="#0f766e" stroke-width="4" stroke-dasharray="10 8"/>
+<text x="555" y="306" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">the only step it checks</text>
+<rect x="20" y="344" width="960" height="194" rx="16" fill="#be123c" opacity="0.1"/>
+<rect x="20" y="344" width="960" height="194" rx="16" fill="none" stroke="#be123c" stroke-width="3"/>
+<text x="500" y="398" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">What it cannot see</text>
+<text x="500" y="446" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">A transaction never written down at all.</text>
+<text x="500" y="488" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">A correct amount posted to the wrong account.</text>
+<text x="500" y="528" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Two mistakes that happen to cancel.</text>
+</svg>
+<figcaption><strong>The trial balance guards exactly one arrow of four.</strong> It compares the ledger against itself and proves the arithmetic of posting. Everything that went wrong before the journal, or inside the choice of account, passes through it untouched, which is why the rest of the controls in this course exist.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The property that is actually being guaranteed</span><p>The trial balance verifies that the sum of debits equals the sum of credits in the ledger. That is a statement about the postings, not about reality. It is a parity check, and like any parity check it detects errors that break the parity and is silent on errors that preserve it.</p></div>
+<h3>Which errors survive the check</h3>
 <table>
-<tr><th>Class</th><th>Attribute</th><th>The compromise being struck</th></tr>
-<tr><td>Most non-financial assets</td><td>Historical cost</td><td>Verifiability over relevance</td></tr>
-<tr><td>Several financial instruments</td><td>Fair value</td><td>Relevance over verifiability</td></tr>
-<tr><td>Impaired assets</td><td>Recoverable amount</td><td>Prudence overriding both</td></tr>
+<tr><th>Error</th><th>Detected?</th><th>What catches it instead</th></tr>
+<tr><td>One side posted</td><td>Yes</td><td>The trial balance itself</td></tr>
+<tr><td>Transposed figure on one side</td><td>Yes</td><td>Difference divisible by nine</td></tr>
+<tr><td>Transaction omitted entirely</td><td>No</td><td>Bank reconciliation, supplier statements</td></tr>
+<tr><td>Right amount, wrong account</td><td>No</td><td>Analytical review, budget comparison</td></tr>
+<tr><td>Two errors that cancel</td><td>No</td><td>Substantive testing of balances</td></tr>
+<tr><td>Entry reversed on both sides</td><td>No</td><td>Reconciliation against an external record</td></tr>
 </table>
-<p>The model is indefensible as a single theory of value and defensible as a set of local compromises. Knowing which compromise applies to a given line is most of what distinguishes a preparer from a data entry operator.</p>
-<div class="warning"><span class="callout-label">The permanent gap</span><p>The system cannot represent anything whose obligation is not measurable at a point in time. That is why off-balance-sheet structuring has been a recurring source of accounting scandal rather than an occasional one.</p></div>`,
+<div class="warning"><span class="callout-label">The practical reading of that table</span><p>Four of the six are invisible to the check that most people treat as the proof their books are right. Every one of the four is caught by comparing the books to something outside them, which is why reconciliation is not an optional tidy-up at month end.</p></div>
+<h3>Why the system survived five hundred years</h3>
+<p>It is cheap and it is local. The check requires no external data, runs on the entity's own records, and the arithmetic scales linearly with the number of entries. Modern systems enforce the balance at entry time, which removes exactly the errors the trial balance was invented to find and leaves the other four untouched. A ledger that cannot be unbalanced has not become more trustworthy; it has lost its only self-administered warning, and the controls that matter have all moved outward.</p>`,
     },
     questions: [
       {

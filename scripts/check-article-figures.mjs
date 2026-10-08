@@ -21,8 +21,16 @@ const BASE = process.env.BASE_URL || "http://localhost:3000";
 const OUT = process.env.SHOT_DIR || "/tmp/article-figures";
 const TIERS = ["Beginner", "Intermediate", "Advanced", "Expert"];
 
-/** Topics whose bodies carry figures. Add one here when you author one. */
-const CASES = [{ course: 207, topic: 5085, label: "superheat and subcooling" }];
+/**
+ * The flagship article in each course: one per subject, every reading tier
+ * carrying its own diagram. Add a topic here when you author figures into one.
+ */
+const CASES = [
+  { course: 206, topic: 5070, label: "what a transaction does to the books" },
+  { course: 207, topic: 5085, label: "superheat and subcooling" },
+  { course: 208, topic: 5101, label: "verb second and the sentence bracket" },
+  { course: 209, topic: 5107, label: "thrust, weight and the ratio" },
+];
 
 async function goto(page, url) {
   for (const timeout of [45000, 90000]) {
@@ -85,6 +93,10 @@ for (const { course, topic, label } of CASES) {
             w: Math.round(r.width),
             h: Math.round(r.height),
             texts: texts.length,
+            // Identifies the figure exactly. Keying the "did the tier change"
+            // check on a text count and a height collided: two unrelated
+            // diagrams with ten labels in a 1000x560 frame looked identical.
+            label: svg.getAttribute("aria-label") || "",
             // Rendered size of the smallest label. An SVG scales its text
             // with its container, so a figure authored at a comfortable size
             // can arrive at 6px in a narrow reading column.
@@ -114,7 +126,7 @@ for (const { course, topic, label } of CASES) {
     const where = `${course}/${topic} ${tier}`;
     // Four tiers that render the same figure means the control did nothing,
     // which is how three identical screenshots passed as four tiers.
-    const sig = report.svgs.map((s) => `${s.texts}t${s.h}`).join("|");
+    const sig = report.svgs.map((s) => s.label).join("|");
     if (seen.has(sig)) problems.push(`${where}: same figures as the ${seen.get(sig)} tier`);
     else seen.set(sig, tier);
     if (report.figures === 0) problems.push(`${where}: no <figure> in the body`);

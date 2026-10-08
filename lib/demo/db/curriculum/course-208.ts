@@ -1414,24 +1414,158 @@ const curriculum: CourseCurriculum = {
       Mittelfeld: "The middle field between the two halves of the sentence bracket, where the flexible material sits.",
     },
     body: {
-      Beginner: `<p>Two rules, and they explain most of German word order.</p>
-<p><strong>Rule one: the verb is the second thing.</strong> Not the second word, the second element. Ich gehe heute ins Kino. Heute gehe ich ins Kino. Both are correct, and notice what happened: when heute moved to the front, the subject ich got pushed behind the verb. The verb did not move, because it cannot. It is always second.</p>
-<p><strong>Rule two: extra verb bits go to the end.</strong> If there is a second verb, a past participle or a separable prefix, it goes right to the end of the sentence, leaving a gap in the middle.</p>
-<p>Ich <strong>habe</strong> gestern einen Film <strong>gesehen</strong>. Ich <strong>muss</strong> morgen früh <strong>aufstehen</strong>.</p>
-<p>That shape is called the bracket, and German speakers hold the ending in their head while everything else arrives. It is why you cannot interrupt a German sentence and expect to know what it means.</p>
-<p><strong>One exception worth learning now:</strong> after weil, dass and wenn, the verb goes all the way to the end. Ich bleibe zu Hause, weil ich müde <strong>bin</strong>.</p>`,
-      Intermediate: `<p>The verb-second constraint is the single most useful generalisation in German syntax, and learners who internalise it stop making a whole class of errors. Exactly one constituent precedes the finite verb in a main clause, and it does not have to be the subject. When an adverbial, an object or a whole subordinate clause occupies that slot, the subject moves behind the verb.</p>
-<p>The critical point is that "second element" counts constituents, not words. Nächsten Montag fahre ich nach Berlin has a three-word phrase in first position and the verb still comes immediately after it. Learners who count words produce nächsten Montag ich fahre, which is the most common word order error at this level.</p>
-<p>The sentence bracket is the second structural fact. Modal verbs, auxiliaries and separable prefixes split, with the finite part in second position and the rest at the very end. Everything else sits in the Mittelfeld between them. This means German routinely withholds the most informative part of the verb until the end of the clause, which is a genuine listening challenge and not a quirk.</p>
-<p>Subordinating conjunctions send the finite verb to the final position: weil, dass, wenn, ob, obwohl, damit. Contrast this with the coordinating conjunctions und, aber, oder, denn and sondern, which do not affect word order at all. Learners regularly treat denn and weil as interchangeable because they translate the same, and the word order differs.</p>`,
-      Advanced: `<p>The standard topological model, the Feldermodell, is worth adopting because it makes the whole system describable in one diagram: Vorfeld, linke Satzklammer, Mittelfeld, rechte Satzklammer, Nachfeld. The finite verb occupies the left bracket in a main clause and the right bracket in a subordinate clause, and everything else is positioned relative to those. Once a learner thinks in fields, apparently unrelated rules become one rule applied in different configurations.</p>
-<p>The Mittelfeld is where the genuine flexibility lives, and the ordering tendencies there are information-structural rather than grammatical. Pronouns precede full noun phrases, definite precedes indefinite, and given information precedes new. The time-manner-place heuristic is a reasonable default that falls out of these tendencies rather than a rule in its own right, and native speakers violate it routinely for emphasis without producing anything ungrammatical.</p>
-<p>The Nachfeld, the position after the right bracket, is underdescribed in teaching and common in real German. Comparatives, prepositional phrases and whole subordinate clauses are routinely extraposed there: ich habe ihn gesehen, als ich nach Hause kam. Learners who have been taught that nothing follows the final verb will parse these as errors or as sentence boundaries.</p>
-<p>V2 is a main-clause phenomenon, and the asymmetry with subordinate clauses is the classic argument for the verb moving to C in main clauses, with the complementiser occupying that position in subordinate ones and blocking the movement. A learner does not need the derivation, but the generalisation it captures is useful: the finite verb and the complementiser are competing for the same slot, which is exactly why they never co-occur.</p>`,
-      Expert: `<p>German is standardly analysed as underlyingly verb-final with V-to-C movement in main clauses, and the evidence is the complementary distribution between the complementiser and the finite verb plus the fact that the base order is directly visible in every subordinate clause. The Vorfeld is then the specifier of CP, which correctly predicts that it hosts exactly one constituent of any category, and that it can host a constituent extracted from an embedded clause.</p>
-<p>The embedded V2 phenomenon is where the simple account needs supplementing and where learners meet apparent counterexamples. Bridge verbs permit a complement clause with main-clause order and no complementiser: ich glaube, er kommt morgen alongside ich glaube, dass er morgen kommt. These are not errors and are extremely frequent in speech, and the class of licensing verbs is semantically coherent, covering assertion and belief predicates.</p>
-<p>Mittelfeld ordering has been studied as a competition between weakly ranked constraints rather than as a fixed template, with animacy, definiteness, pronominality, givenness and length all contributing. This correctly predicts gradient acceptability rather than sharp grammaticality, which is why the time-manner-place rule taught at A1 works most of the time and feels wrong exactly where another constraint outranks it. Teaching it as a default with a stated reason is more honest than teaching it as a rule.</p>
-<p>From a processing standpoint the right bracket imposes a real cost: the parser must maintain an incomplete verbal dependency across arbitrarily long Mittelfeld material, and dependency locality predicts increased difficulty with distance. German speakers manage it with prosodic cues and by exploiting case marking to assign roles before the verb arrives, which closes the loop with the case system. A learner whose case marking is not automatic cannot do the early role assignment and therefore experiences German sentences as unparseable until the end, which is precisely the complaint they report.</p>`,
+      Beginner: `<p>German word order is not free, and it is not English order either. One rule explains most of it: in a normal statement, the conjugated verb is the second thing in the sentence.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Three German sentences showing the conjugated verb always landing in second position">
+<rect x="24" y="36" width="300" height="72" rx="12" fill="currentColor" opacity="0.07"/>
+<text x="174" y="84" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">POSITION 1</text>
+<rect x="336" y="36" width="220" height="72" rx="12" fill="#be123c" opacity="0.2"/>
+<text x="446" y="84" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">THE VERB</text>
+<rect x="568" y="36" width="408" height="72" rx="12" fill="currentColor" opacity="0.07"/>
+<text x="772" y="84" font-size="28" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">EVERYTHING ELSE</text>
+<text x="40" y="186" font-size="34" font-weight="800" fill="currentColor">Ich</text>
+<rect x="336" y="146" width="220" height="60" rx="10" fill="#be123c" opacity="0.2"/>
+<text x="446" y="188" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">gehe</text>
+<text x="584" y="186" font-size="34" font-weight="800" fill="currentColor">heute ins Kino.</text>
+<text x="40" y="288" font-size="34" font-weight="800" fill="currentColor">Heute</text>
+<rect x="336" y="248" width="220" height="60" rx="10" fill="#be123c" opacity="0.2"/>
+<text x="446" y="290" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">gehe</text>
+<text x="584" y="288" font-size="34" font-weight="800" fill="currentColor">ich ins Kino.</text>
+<text x="40" y="390" font-size="34" font-weight="800" fill="currentColor">Ins Kino</text>
+<rect x="336" y="350" width="220" height="60" rx="10" fill="#be123c" opacity="0.2"/>
+<text x="446" y="392" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">gehe</text>
+<text x="584" y="390" font-size="34" font-weight="800" fill="currentColor">ich heute.</text>
+<rect x="24" y="446" width="952" height="130" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="500" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Whatever you put first, the verb does not move.</text>
+<text x="500" y="546" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">The subject gets pushed behind it instead.</text>
+</svg>
+<figcaption><strong>German does not fix the subject at the front; it fixes the verb at the second slot.</strong> Position one is a single unit of your choosing, and whatever you put there, the conjugated verb takes slot two and everything else rearranges around it. English speakers get this wrong by keeping the subject first and the verb third.</figcaption>
+</figure>
+<h3>Second thing, not second word</h3>
+<p>Position one is a single unit, and that unit can be several words long. <strong>Mein kleiner Bruder</strong> is one unit. <strong>Am naechsten Montag</strong> is one unit. The verb comes straight after whichever unit you chose.</p>
+<table>
+<tr><th>Position 1</th><th>Verb</th><th>The rest</th></tr>
+<tr><td>Ich</td><td>trinke</td><td>jeden Morgen Kaffee.</td></tr>
+<tr><td>Jeden Morgen</td><td>trinke</td><td>ich Kaffee.</td></tr>
+<tr><td>Kaffee</td><td>trinke</td><td>ich jeden Morgen.</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Notice what happened to ich</span><p>When something else takes the front, the subject moves behind the verb. It does not disappear and it does not stay put. English does not do this, so it has to become a habit rather than a calculation.</p></div>
+<div class="warning"><span class="callout-label">Questions and commands break the rule on purpose</span><p>A yes or no question puts the verb first: <strong>Trinkst du Kaffee?</strong> So does a command. The verb-second rule describes statements.</p></div>`,
+      Intermediate: `<p>As soon as a sentence has more than one verb part, German splits them and puts them at opposite ends. The frame they make is called the sentence bracket, and it governs everything in between.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="The German sentence bracket with the conjugated verb second and the other verb part at the end">
+<text x="500" y="56" font-size="30" font-weight="800" fill="currentColor" opacity="0.6" text-anchor="middle">DIE SATZKLAMMER</text>
+<text x="40" y="150" font-size="34" font-weight="800" fill="currentColor">Ich</text>
+<rect x="150" y="108" width="196" height="60" rx="10" fill="#be123c" opacity="0.22"/>
+<text x="248" y="150" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">habe</text>
+<text x="380" y="150" font-size="32" fill="currentColor" opacity="0.8">gestern einen Film</text>
+<rect x="740" y="108" width="236" height="60" rx="10" fill="#be123c" opacity="0.22"/>
+<text x="858" y="150" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">gesehen.</text>
+<path d="M248 180 V222 H858 V180" fill="none" stroke="#be123c" stroke-width="5"/>
+<text x="553" y="262" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">the bracket</text>
+<text x="553" y="302" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">everything else lives inside it</text>
+<rect x="24" y="334" width="304" height="100" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="176" y="376" font-size="28" font-weight="800" fill="#7c3aed" text-anchor="middle">VORFELD</text>
+<text x="176" y="414" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">one unit, your choice</text>
+<rect x="348" y="334" width="304" height="100" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="376" font-size="28" font-weight="800" fill="#0369a1" text-anchor="middle">MITTELFELD</text>
+<text x="500" y="414" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">time, manner, place</text>
+<rect x="672" y="334" width="304" height="100" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="824" y="376" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">RIGHT BRACKET</text>
+<text x="824" y="414" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">the rest of the verb</text>
+<rect x="24" y="460" width="952" height="82" rx="14" fill="#be123c" opacity="0.1"/>
+<text x="500" y="512" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">You must hold the second half of the verb until the end.</text>
+</svg>
+<figcaption><strong>This is why German feels like it withholds the point.</strong> With a perfect tense, a modal or a separable verb, half the meaning is pinned to the far end of the sentence. Listeners cannot stop early, and speakers have to plan the ending before they start the middle.</figcaption>
+</figure>
+<h3>Three very common structures, all the same shape</h3>
+<table>
+<tr><th>Structure</th><th>Slot two</th><th>Far end</th></tr>
+<tr><td>Perfect tense</td><td>habe or bin</td><td>the past participle</td></tr>
+<tr><td>Modal verb</td><td>kann, muss, will</td><td>the infinitive</td></tr>
+<tr><td>Separable verb</td><td>the stem</td><td>the prefix</td></tr>
+</table>
+<p>So <strong>Ich rufe dich morgen an</strong> is the same shape as <strong>Ich habe dich gestern angerufen</strong>. One of them splits a prefix off and the other splits off a participle, but the frame is identical.</p>
+<div class="key-idea"><span class="callout-label">The practical consequence for listening</span><p>You cannot know whether somebody is coming or not coming until the end of their sentence. <strong>Ich komme heute Abend nicht mit</strong> reverses at the last word. Interrupting a German sentence early is how you answer a question that was not asked.</p></div>
+<div class="warning"><span class="callout-label">And for speaking</span><p>You have to commit to the end of the verb before you build the middle. Learners who start a perfect tense sentence without having chosen the participle run out of sentence. Decide the whole verb first, then fill the middle.</p></div>`,
+      Advanced: `<p>The bracket defines three fields, and the interesting one is the middle. Its internal order is not free either, and getting it right is most of what separates fluent-sounding German from understandable German.</p>
+<figure>
+<svg viewBox="0 0 1000 580" role="img" aria-label="The order of elements inside the middle field, time then manner then place">
+<rect x="24" y="40" width="952" height="108" rx="16" fill="#0369a1" opacity="0.12"/>
+<text x="500" y="92" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">INSIDE THE MITTELFELD</text>
+<text x="500" y="132" font-size="28" fill="currentColor" opacity="0.8" text-anchor="middle">Ich fahre morgen mit dem Zug nach Koeln.</text>
+<rect x="24" y="178" width="302" height="150" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="175" y="232" font-size="34" font-weight="800" fill="#7c3aed" text-anchor="middle">TIME</text>
+<text x="175" y="276" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">morgen</text>
+<text x="175" y="312" font-size="26" fill="currentColor" opacity="0.7" text-anchor="middle">wann</text>
+<rect x="348" y="178" width="302" height="150" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="499" y="232" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">MANNER</text>
+<text x="499" y="276" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">mit dem Zug</text>
+<text x="499" y="312" font-size="26" fill="currentColor" opacity="0.7" text-anchor="middle">wie</text>
+<rect x="672" y="178" width="304" height="150" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="824" y="232" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">PLACE</text>
+<text x="824" y="276" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">nach Koeln</text>
+<text x="824" y="312" font-size="26" fill="currentColor" opacity="0.7" text-anchor="middle">wo</text>
+<path d="M326 253 H348" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M360 253 l-20 -10 v20 z" fill="currentColor" opacity="0.5"/>
+<path d="M650 253 H672" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M684 253 l-20 -10 v20 z" fill="currentColor" opacity="0.5"/>
+<rect x="24" y="364" width="952" height="92" rx="14" fill="#be123c" opacity="0.12"/>
+<text x="500" y="404" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">English does the opposite.</text>
+<text x="500" y="440" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">I am going to Cologne by train tomorrow.</text>
+<rect x="24" y="478" width="952" height="80" rx="14" fill="#0f766e" opacity="0.12"/>
+<text x="500" y="528" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Pronouns jump ahead of all three.</text>
+</svg>
+<figcaption><strong>Place last is the single change that makes a sentence sound German rather than translated.</strong> English puts place first and time last, so a learner reproducing English order gets understood and still sounds foreign in every sentence. Pronouns are the exception: they move to the front of the middle field, ahead of time.</figcaption>
+</figure>
+<h3>Time, manner, place</h3>
+<p>The default order inside the middle field is when, then how, then where. English speakers reliably produce the reverse, because English prefers place early and time at the end, and the result is grammatical but audibly translated.</p>
+<table>
+<tr><th>Element</th><th>Question</th><th>Example</th></tr>
+<tr><td>Time</td><td>wann</td><td>morgen, um acht, naechste Woche</td></tr>
+<tr><td>Manner</td><td>wie</td><td>mit dem Zug, schnell, gern</td></tr>
+<tr><td>Place</td><td>wo or wohin</td><td>nach Koeln, in der Stadt</td></tr>
+</table>
+<h3>What overrides the default</h3>
+<p>Pronouns move to the front of the middle field, ahead of time, and among themselves run accusative before dative: <strong>Ich habe es ihm gestern gegeben.</strong> Note that this is the opposite of the order two full nouns take, where dative comes first.</p>
+<div class="key-idea"><span class="callout-label">Why the front slot is the real tool</span><p>Position one is not decoration. Putting a time or an object there is how German marks what the sentence is about, the way English uses stress or a cleft construction. <strong>Diesen Film habe ich schon gesehen</strong> answers a different question from <strong>Ich habe diesen Film schon gesehen</strong>, and both are neutral in isolation.</p></div>
+<div class="warning"><span class="callout-label">Nicht has its own position</span><p>It goes before what it negates, but after the middle field when it negates the whole sentence. <strong>Ich komme heute nicht</strong> denies coming. <strong>Ich komme nicht heute</strong> denies today and implies another day.</p></div>`,
+      Expert: `<p>The cleanest analysis treats the bracket as structural rather than as a list of rules: German is a verb-final language whose main clauses move the finite verb leftward into a slot that must be preceded by exactly one constituent.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="A main clause compared with a subordinate clause where the verb moves to the end">
+<text x="40" y="62" font-size="28" font-weight="800" fill="#0f766e">MAIN CLAUSE</text>
+<text x="40" y="128" font-size="32" font-weight="800" fill="currentColor">Ich</text>
+<rect x="150" y="90" width="176" height="56" rx="10" fill="#be123c" opacity="0.22"/>
+<text x="238" y="130" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">komme</text>
+<text x="350" y="128" font-size="30" fill="currentColor" opacity="0.85">heute nicht.</text>
+<text x="40" y="192" font-size="26" fill="currentColor" opacity="0.7">verb in slot two</text>
+<path d="M24 232 H976" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<text x="40" y="294" font-size="28" font-weight="800" fill="#b45309">SUBORDINATE CLAUSE</text>
+<rect x="150" y="322" width="190" height="56" rx="10" fill="#b45309" opacity="0.22"/>
+<text x="245" y="362" font-size="32" font-weight="800" fill="#b45309" text-anchor="middle">weil</text>
+<text x="364" y="360" font-size="32" font-weight="800" fill="currentColor">ich krank</text>
+<rect x="636" y="322" width="176" height="56" rx="10" fill="#be123c" opacity="0.22"/>
+<text x="724" y="362" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">bin.</text>
+<path d="M340 390 V424 H724 V390" fill="none" stroke="#b45309" stroke-width="5"/>
+<text x="532" y="464" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">the conjunction takes the bracket</text>
+<rect x="24" y="492" width="952" height="92" rx="14" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="532" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">weil, dass, wenn, ob, obwohl, damit</text>
+<text x="500" y="568" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">each one sends the verb to the end.</text>
+</svg>
+<figcaption><strong>A subordinating conjunction does not add a rule, it takes over the bracket.</strong> The conjunction occupies the left position the verb held, so the conjugated verb is displaced to the right end. That is why <strong>weil</strong> sends the verb to the end and <strong>denn</strong>, which is coordinating, does not touch it at all.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Which explains the subordinate clause without a second rule</span><p>A subordinating conjunction occupies the position the finite verb was raised into. That slot can hold one thing, so the verb stays where it started, at the end. Subordinate order is not an exception to verb-second; it is what the sentence looks like when the movement does not happen.</p></div>
+<h3>The prediction that confirms the analysis</h3>
+<p>Coordinating conjunctions sit outside the clause rather than in that slot, so they should leave the verb alone, and they do. <strong>denn</strong> and <strong>weil</strong> both mean because and behave completely differently: <strong>Ich komme nicht, denn ich bin krank</strong> keeps verb-second, while <strong>weil</strong> sends it to the end. Learners taught these as vocabulary memorise two unrelated facts; learners taught the structure get both from one.</p>
+<table>
+<tr><th>Type</th><th>Examples</th><th>Effect on the verb</th></tr>
+<tr><td>Coordinating</td><td>und, aber, oder, denn, sondern</td><td>None; the clause is untouched</td></tr>
+<tr><td>Subordinating</td><td>weil, dass, wenn, ob, obwohl, damit</td><td>Finite verb to the end</td></tr>
+<tr><td>Adverbial</td><td>deshalb, trotzdem, dann</td><td>They fill position one, so the subject inverts</td></tr>
+</table>
+<div class="warning"><span class="callout-label">The third row is the one that catches advanced learners</span><p><strong>deshalb</strong> is not a conjunction; it is an adverb standing in position one. So it is <strong>Deshalb komme ich nicht</strong>, with inversion, and never <strong>Deshalb ich komme nicht</strong>. Every word in that row behaves this way, and the error survives into otherwise fluent speech because the meaning is never in doubt.</p></div>
+<h3>What spoken German actually does</h3>
+<p>Two divergences are worth knowing. <strong>weil</strong> with main-clause order is extremely common in speech and is stable rather than sloppy, though it is still marked in writing. And the Nachfeld, the position after the right bracket, routinely takes heavy or afterthought material: <strong>Ich habe ihn gesehen, gestern in der Stadt.</strong> Both are normal in conversation and wrong in an exam, which is a distinction worth being explicit about rather than discovering.</p>`,
     },
     worksheets: [
       {
