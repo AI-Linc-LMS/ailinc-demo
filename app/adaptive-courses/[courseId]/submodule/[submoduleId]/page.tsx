@@ -25,6 +25,7 @@ import {
   accentWash,
   courseTheme,
   heroGradient,
+  type CourseTheme,
 } from "@/lib/theme/courseTheme";
 
 type FlowKind =
@@ -53,6 +54,15 @@ interface FlowItem {
   onClick: () => void;
   /** Destination URL - used to prefetch the route on hover for instant open. */
   href: string;
+  /**
+   * One line saying what the step is, shown only on the feature card.
+   *
+   * The feature card is full width and was mostly empty between the title and
+   * the button. This is the sentence the API already sends with every
+   * practical, and it answers the question the big card raises: what am I
+   * actually about to do.
+   */
+  blurb?: string;
   completed: boolean;
   /** Where "Review" goes once completed (e.g. past quiz results); falls back to onClick. */
   onReview?: () => void;
@@ -105,6 +115,23 @@ const FLOW_META: Record<FlowKind, { label: string; icon: string; action: string;
   deliverable: { label: "DELIVERABLE", icon: "mdi:file-document-edit-outline", action: "Produce", actionIcon: "mdi:upload", color: "#166534", bg: "#f0fdf4" },
 };
 
+/**
+ * What each built-in kind actually is, in one line.
+ *
+ * Shown only on the feature card, which is full width and was otherwise empty
+ * between the title and the button. Practicals carry their own `detail` from
+ * the API, so they are not listed here.
+ */
+const KIND_BLURB: Partial<Record<FlowKind, string>> = {
+  article:
+    "The lesson itself. It re-renders at four reading levels, so you can take it as plain English or as a deeper treatment.",
+  quiz:
+    "An adaptive check. Answer well and it gets harder, miss one and it steps back, and it stops as soon as it is sure of your level.",
+  coding:
+    "Write the code and run it against real test cases. Hints come in three rungs, a nudge first and the mechanism last.",
+  video: "A walkthrough with check-in questions along the way.",
+};
+
 /** Route segment per practical kind. Matches app/adaptive-courses/.../<seg>/[id]. */
 const PRACTICAL_SEGMENT: Record<string, string> = {
   worksheet: "worksheet",
@@ -128,6 +155,7 @@ function buildItems(
     const href = `/adaptive-courses/${courseId}/submodule/${submoduleId}/video/${vc.id}`;
     items.push({
       kind: "video", key: `v${vc.id}`, contentKey: `video:${vc.id}`, title: vc.title, completed: !!vc.completed,
+      blurb: KIND_BLURB.video,
       chips: [
         ...(vc.duration_seconds > 0 ? [{ icon: "mdi:clock-outline", text: `~${Math.round(vc.duration_seconds / 60)} min` }] : []),
         ...(vc.check_in_count > 0 ? [{ icon: "mdi:lightning-bolt", text: `${vc.check_in_count} check-ins` }] : []),
@@ -139,6 +167,7 @@ function buildItems(
     const href = `/adaptive-courses/${courseId}/submodule/${submoduleId}/article/${a.article_id}`;
     items.push({
       kind: "article", key: `a${a.article_id}`, contentKey: `article:${a.article_id}`, title: a.title, completed: !!a.completed,
+      blurb: KIND_BLURB.article,
       chips: [
         { icon: "mdi:clock-outline", text: `~${a.reading_time_minutes} min` },
         { icon: "mdi:tune-vertical", text: `${a.default_tier} · adapts` },
@@ -151,6 +180,7 @@ function buildItems(
     const reviewHref = q.last_session_id ? `/adaptive-quizzes/session/${q.last_session_id}/results` : undefined;
     items.push({
       kind: "quiz", key: `q${q.config_id}`, contentKey: `quiz:${q.config_id}`, title: q.quiz_title, completed: !!q.completed,
+      blurb: KIND_BLURB.quiz,
       chips: [
         { icon: "mdi:database-outline", text: `${q.mcq_count}-item bank` },
         { icon: "mdi:arrow-decision-outline", text: `serves ${q.min_questions}–${q.max_questions}` },
@@ -166,6 +196,7 @@ function buildItems(
       const href = `/adaptive-courses/${courseId}/submodule/${submoduleId}/coding/${p.problem_id}?configId=${set.config_id}`;
       items.push({
         kind: "coding", key: `c${p.problem_id}`, contentKey: `coding:${p.problem_id}`, title: p.title, completed: !!p.completed,
+        blurb: KIND_BLURB.coding,
         chips: [
           { icon: "mdi:speedometer", text: p.difficulty_level },
           ...asStringList(p.target_skills).slice(0, 2).map((s) => ({ icon: "mdi:tag-outline", text: s })),
@@ -193,6 +224,7 @@ function buildItems(
       contentKey: `${p.kind}:${p.id}`,
       title: p.title,
       completed: !!p.completed,
+      blurb: p.detail,
       chips: [
         ...(p.minutes ? [{ icon: "mdi:clock-outline", text: `~${p.minutes} min` }] : []),
         ...p.facts.slice(0, 3).map((f) => ({ icon: FACT_ICON[p.kind] ?? "mdi:information-outline", text: f })),
@@ -412,19 +444,13 @@ export default function AdaptiveCourseSubmodulePage() {
                   )}
                 </Stack>
 
-                <Box>
-                  {items.map((it, idx) => (
-                    <PathRow
-                      key={it.key}
-                      item={it}
-                      step={idx + 1}
-                      last={idx === items.length - 1}
-                      status={it.completed ? "done" : idx === firstIncomplete ? "current" : "upcoming"}
-                      points={pointsByKey.get(it.contentKey)}
-                      onPrefetch={() => prefetch(it.completed && it.reviewHref ? it.reviewHref : it.href)}
-                    />
-                  ))}
-                </Box>
+                <LearningBoard
+                  items={items}
+                  firstIncomplete={firstIncomplete}
+                  pointsByKey={pointsByKey}
+                  theme={theme}
+                  onPrefetch={(it) => prefetch(it.completed && it.reviewHref ? it.reviewHref : it.href)}
+                />
               </Box>
             )}
 
@@ -542,121 +568,332 @@ function PointsFactors({ item }: { item: PointsBreakdownItem }) {
   );
 }
 
-function PathRow({ item, step, last, status, points, onPrefetch }: { item: FlowItem; step: number; last: boolean; status: StepStatus; points?: PointsBreakdownItem; onPrefetch?: () => void }) {
+/**
+ * How much room a step earns on the board.
+ *
+ * The old layout gave a three minute flashcard drill and a ninety minute
+ * filmed assessment the same box, which is a to-do list rather than a plan: it
+ * tells a learner the order of the work and nothing about its shape. Size here
+ * is driven by what the step actually costs, so a topic with an evidence task
+ * in it looks different from one with three short drills, and the difference
+ * is information rather than decoration.
+ */
+type StepSize = "feature" | "wide" | "tall" | "compact";
+
+/** Kinds that are an afternoon's work rather than a coffee break. */
+const HEAVY_KINDS = new Set<FlowKind>(["evidence", "deliverable"]);
+/** Kinds that need a desk and a clear half hour. */
+const SUBSTANTIAL_KINDS = new Set<FlowKind>(["worksheet", "lab", "scenario", "coding", "partid"]);
+
+function sizeFor(item: FlowItem, isCurrent: boolean): StepSize {
+  // Whatever comes next is the only thing the learner has to decide about, so
+  // it takes the full width regardless of how heavy it is.
+  if (isCurrent) return "feature";
+  // Finished work stays visible and stops competing for attention.
+  if (item.completed) return "compact";
+  if (HEAVY_KINDS.has(item.kind)) return "wide";
+  if (SUBSTANTIAL_KINDS.has(item.kind)) return "tall";
+  return "compact";
+}
+
+const SPAN: Record<StepSize, string> = {
+  feature: "1 / -1",
+  // A heavy step takes the whole row. Two columns rather than three because a
+  // topic typically has two or three steps after the current one, and a third
+  // column left most rows a third empty.
+  wide: "1 / -1",
+  tall: "span 1",
+  compact: "span 1",
+};
+
+/**
+ * The learning path as a board rather than a list.
+ *
+ * A six column grid so a wide card can take two of three visible columns
+ * without the arithmetic fighting the breakpoints.
+ */
+function LearningBoard({
+  items,
+  firstIncomplete,
+  pointsByKey,
+  theme,
+  onPrefetch,
+}: {
+  items: FlowItem[];
+  firstIncomplete: number;
+  pointsByKey: Map<string, PointsBreakdownItem>;
+  theme: CourseTheme;
+  onPrefetch: (item: FlowItem) => void;
+}) {
+  /**
+   * Pack the half-width cards into rows of two, and widen the last one when it
+   * would otherwise sit alone beside an empty column.
+   *
+   * Done as a pass over the list rather than with CSS because the grid cannot
+   * know that a trailing single card looks like a mistake, and a topic with
+   * three steps hits that case constantly.
+   */
+  const layout = useMemo(() => {
+    const sizes = items.map((it, idx) => sizeFor(it, idx === firstIncomplete));
+    const spans = sizes.map((sz) => SPAN[sz]);
+    let run = 0;
+    for (let i = 0; i < sizes.length; i++) {
+      const half = spans[i] === "span 1";
+      if (!half) {
+        run = 0;
+        continue;
+      }
+      run += 1;
+      const nextIsHalf = i + 1 < sizes.length && spans[i + 1] === "span 1";
+      // A half-width card that is the only one in its row gets the whole row.
+      if (run % 2 === 1 && !nextIsHalf) spans[i] = "1 / -1";
+      if (run % 2 === 0) run = 0;
+    }
+    return items.map((item, idx) => ({ item, idx, span: spans[idx] }));
+  }, [items, firstIncomplete]);
+
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+        gap: 1.5,
+        alignItems: "stretch",
+      }}
+    >
+      {layout.map(({ item: it, idx, span }) => {
+        const isCurrent = idx === firstIncomplete;
+        const size = sizeFor(it, isCurrent);
+        return (
+          <Box key={it.key} sx={{ gridColumn: { xs: "1 / -1", md: span } }}>
+            <StepCard
+              item={it}
+              step={idx + 1}
+              size={size}
+              status={it.completed ? "done" : isCurrent ? "current" : "upcoming"}
+              points={pointsByKey.get(it.contentKey)}
+              theme={theme}
+              onPrefetch={() => onPrefetch(it)}
+            />
+          </Box>
+        );
+      })}
+    </Box>
+  );
+}
+
+function StepCard({
+  item,
+  step,
+  size,
+  status,
+  points,
+  theme,
+  onPrefetch,
+}: {
+  item: FlowItem;
+  step: number;
+  size: StepSize;
+  status: StepStatus;
+  points?: PointsBreakdownItem;
+  theme: CourseTheme;
+  onPrefetch?: () => void;
+}) {
   const m = FLOW_META[item.kind];
   const done = status === "done";
   const current = status === "current";
-  // When done, "Review" (and tapping the card) opens past results where available,
-  // instead of restarting the activity.
+  const feature = size === "feature";
+  // When done, tapping the card opens past results where there are any, rather
+  // than restarting the activity.
   const reviewAction = item.onReview ?? item.onClick;
   const cardAction = done ? reviewAction : item.onClick;
-
-  // Status marker - mirrors the course timeline: green check (done), indigo ring
-  // (current), light numbered (upcoming).
-  const marker = done ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#22c55e", color: "white", flexShrink: 0, zIndex: 1 }}>
-      <Icon icon="mdi:check" width={16} />
-    </Box>
-  ) : current ? (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#6366f1", color: "white", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1, boxShadow: "0 0 0 4px rgba(99,102,241,0.18)" }}>
-      {step}
-    </Box>
-  ) : (
-    <Box sx={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", bgcolor: "#e2e8f0", color: "#64748b", fontWeight: 800, fontSize: "0.8rem", flexShrink: 0, zIndex: 1 }}>
-      {step}
-    </Box>
-  );
+  // Heavy kinds are marked by a person, which is worth saying on the card
+  // rather than discovering after a 90 minute capture.
+  const humanGraded = HEAVY_KINDS.has(item.kind);
 
   return (
-    <Box sx={{ display: "flex", gap: 1.75, alignItems: "stretch" }}>
-      {/* timeline rail - marker vertically centred on the card, continuous line behind */}
-      <Box sx={{ position: "relative", width: 28, flexShrink: 0 }}>
-        {!last && <Box sx={{ position: "absolute", left: "50%", top: 0, bottom: -12, width: "2px", bgcolor: "#eef2f7", transform: "translateX(-50%)" }} />}
-        <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", display: "grid", placeItems: "center", bgcolor: "#fff", borderRadius: "50%", p: "3px" }}>
-          {marker}
-        </Box>
-      </Box>
-
+    <Box
+      onMouseEnter={onPrefetch}
+      onClick={cardAction}
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 3.5,
+        cursor: "pointer",
+        border: "1px solid",
+        borderColor: current ? `color-mix(in srgb, ${m.color} 45%, transparent)` : "#eef2f7",
+        bgcolor: done ? "#fcfcfd" : "#fff",
+        opacity: done ? 0.92 : 1,
+        boxShadow: current
+          ? `0 18px 40px -26px ${m.color}`
+          : "0 1px 2px rgba(16,24,40,0.04)",
+        transition: "transform .15s, box-shadow .15s, border-color .15s",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: `0 18px 36px -24px ${m.color}`,
+          borderColor: `color-mix(in srgb, ${m.color} 55%, transparent)`,
+        },
+      }}
+    >
+      {/* The kind's colour as a band across the top, so a board of eight cards
+          reads as eight different activities at a glance rather than as a wall
+          of white boxes with small coloured text. */}
       <Box
-        onMouseEnter={onPrefetch}
-        onClick={cardAction}
         sx={{
-          flex: 1, mb: 1.5, p: 2, borderRadius: 3, border: "1px solid",
-          borderLeft: "4px solid", borderLeftColor: m.color,
-          borderColor: current ? "#c7d2fe" : "#eef2f7",
-          bgcolor: current ? "#fbfbff" : "#fff",
-          boxShadow: current ? `0 4px 14px -14px ${m.color}` : "0 1px 2px rgba(16,24,40,0.04)",
-          cursor: "pointer",
-          transition: "border-color .15s, box-shadow .15s",
-          "&:hover": { borderColor: "#cbd5e1" },
+          height: feature ? 5 : 4,
+          background: `linear-gradient(90deg, ${m.color} 0%, color-mix(in srgb, ${m.color} 45%, ${theme.accent[1]}) 100%)`,
         }}
-      >
-        <Stack direction="row" alignItems="center" gap={1.5}>
-          <Box sx={{ width: 38, height: 38, borderRadius: 2, flexShrink: 0, display: "grid", placeItems: "center", color: m.color, bgcolor: m.bg }}>
-            <Icon icon={m.icon} width={20} />
+      />
+
+      <Box sx={{ p: feature ? { xs: 2, md: 2.75 } : 1.85, flex: 1, display: "flex", flexDirection: "column" }}>
+        <Stack direction="row" alignItems="flex-start" spacing={1.4}>
+          <Box
+            sx={{
+              width: feature ? 52 : 40,
+              height: feature ? 52 : 40,
+              borderRadius: feature ? 3 : 2.25,
+              flexShrink: 0,
+              display: "grid",
+              placeItems: "center",
+              color: done ? "#64748b" : m.color,
+              bgcolor: done ? "#f1f5f9" : m.bg,
+            }}
+          >
+            <Icon icon={done ? "mdi:check" : m.icon} width={feature ? 27 : 21} />
           </Box>
+
           <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap">
-              <Typography sx={{ fontSize: "0.64rem", fontWeight: 800, letterSpacing: 0.6, color: m.color }}>{m.label}</Typography>
-              {done && (
-                <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 0.75, py: 0.2, borderRadius: 999, bgcolor: "#dcfce7" }}>
-                  <Icon icon="mdi:check" width={11} color="#15803d" />
-                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#15803d" }}>Completed</Typography>
-                </Stack>
-              )}
+            <Stack direction="row" spacing={0.7} alignItems="center" flexWrap="wrap" sx={{ gap: 0.6 }}>
+              <Typography sx={{ fontSize: "0.63rem", fontWeight: 800, letterSpacing: 0.6, color: m.color }}>
+                {m.label}
+              </Typography>
               {current && (
-                <Stack direction="row" spacing={0.3} alignItems="center" sx={{ px: 0.75, py: 0.2, borderRadius: 999, bgcolor: "#eef2ff" }}>
-                  <Box sx={{ width: 6, height: 6, borderRadius: "50%", bgcolor: "#6366f1" }} />
-                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#4f46e5" }}>Current step</Typography>
+                <Typography
+                  sx={{
+                    px: 0.8, py: 0.18, borderRadius: 999, fontSize: "0.6rem", fontWeight: 800,
+                    color: "white", bgcolor: m.color,
+                  }}
+                >
+                  DO THIS NEXT
+                </Typography>
+              )}
+              {done && (
+                <Typography sx={{ fontSize: "0.6rem", fontWeight: 800, color: "#15803d" }}>
+                  · Completed
+                </Typography>
+              )}
+              {!done && humanGraded && (
+                <Stack direction="row" spacing={0.3} alignItems="center">
+                  <Icon icon="mdi:account-check-outline" width={11} color="#64748b" />
+                  <Typography sx={{ fontSize: "0.6rem", fontWeight: 700, color: "#64748b" }}>
+                    assessor marked
+                  </Typography>
                 </Stack>
               )}
             </Stack>
-            <Typography sx={{ fontWeight: 700, fontSize: "0.98rem", color: "#0f172a", lineHeight: 1.3, mt: 0.25 }}>{item.title}</Typography>
-            {item.chips.length > 0 && (
-              <Stack direction="row" flexWrap="wrap" sx={{ gap: 0.75, mt: 0.75 }}>
-                {item.chips.map((c, i) => (
-                  <Stack key={i} direction="row" spacing={0.4} alignItems="center" sx={{ px: 1, py: 0.35, borderRadius: 999, fontSize: "0.72rem", fontWeight: 600, color: "#475569", bgcolor: "#f1f5f9", border: "1px solid #e2e8f0" }}>
-                    <Icon icon={c.icon} width={13} />
-                    {c.text}
-                  </Stack>
-                ))}
-              </Stack>
+
+            <Typography
+              sx={{
+                fontWeight: 800,
+                fontSize: feature ? { xs: "1.08rem", md: "1.22rem" } : "0.94rem",
+                color: "#0f172a",
+                lineHeight: 1.3,
+                mt: 0.35,
+              }}
+            >
+              {item.title}
+            </Typography>
+            {feature && item.blurb && (
+              <Typography sx={{ fontSize: "0.86rem", color: "#64748b", lineHeight: 1.5, mt: 0.6, maxWidth: 640 }}>
+                {item.blurb}
+              </Typography>
             )}
-            {done && points && <PointsFactors item={points} />}
           </Box>
+
+          {/* The step number is a quiet ordinal in the corner now. It was a
+              timeline rail, which forced every card to the same height. */}
+          <Typography
+            sx={{
+              flexShrink: 0, fontSize: "0.7rem", fontWeight: 800,
+              color: done ? "#86efac" : current ? m.color : "#cbd5e1",
+            }}
+          >
+            {String(step).padStart(2, "0")}
+          </Typography>
+        </Stack>
+
+        {item.chips.length > 0 && (
+          <Stack direction="row" flexWrap="wrap" sx={{ gap: 0.6, mt: 1.1 }}>
+            {/* Three facts on a compact card, four on anything larger.
+                Two was one too few: a worksheet's chips run duration,
+                difficulty, marked cells, balance rules, so cutting at two
+                dropped "30 marked cells" and the card stopped saying the one
+                thing that distinguishes a working paper from a quiz. */}
+            {item.chips.slice(0, size === "compact" ? 3 : 4).map((c, i) => (
+              <Stack
+                key={i}
+                direction="row"
+                spacing={0.35}
+                alignItems="center"
+                sx={{
+                  px: 0.9, py: 0.3, borderRadius: 999, fontSize: "0.7rem", fontWeight: 600,
+                  color: "#475569", bgcolor: "#f6f8fb", border: "1px solid #eaeff5",
+                }}
+              >
+                <Icon icon={c.icon} width={12} />
+                {c.text}
+              </Stack>
+            ))}
+          </Stack>
+        )}
+
+        {done && points && <PointsFactors item={points} />}
+
+        {/* Pushed to the bottom so cards of different heights still line their
+            actions up along a common baseline. */}
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mt: "auto", pt: 1.4 }}>
           {points && (
-            <Box sx={{ textAlign: "right", flexShrink: 0, minWidth: 46 }}>
-              {done ? (
-                <>
-                  <Typography sx={{ fontWeight: 800, fontSize: "0.92rem", color: "#15803d", lineHeight: 1 }}>
-                    {points.earned}<Box component="span" sx={{ color: "#94a3b8", fontWeight: 600 }}>/{points.on_offer}</Box>
-                  </Typography>
-                  <Typography sx={{ fontSize: "0.6rem", color: "#94a3b8", fontWeight: 700 }}>earned</Typography>
-                </>
-              ) : (
-                <>
-                  <Typography sx={{ fontWeight: 800, fontSize: "0.92rem", color: "#475569", lineHeight: 1 }}>
-                    {points.on_offer}<Box component="span" sx={{ fontSize: "0.6rem", color: "#94a3b8", fontWeight: 600 }}> pts</Box>
-                  </Typography>
-                  <Typography sx={{ fontSize: "0.6rem", color: "#94a3b8", fontWeight: 700 }}>on offer</Typography>
-                </>
-              )}
+            <Box sx={{ minWidth: 0 }}>
+              <Typography sx={{ fontWeight: 800, fontSize: feature ? "1rem" : "0.86rem", lineHeight: 1, color: done ? "#15803d" : "#334155" }}>
+                {done ? points.earned : points.on_offer}
+                <Box component="span" sx={{ color: "#94a3b8", fontWeight: 600, fontSize: "0.7rem" }}>
+                  {done ? ` / ${points.on_offer}` : " pts"}
+                </Box>
+              </Typography>
+              <Typography sx={{ fontSize: "0.58rem", color: "#94a3b8", fontWeight: 700, letterSpacing: 0.3 }}>
+                {done ? "EARNED" : "ON OFFER"}
+              </Typography>
             </Box>
           )}
+          <Box sx={{ flex: 1 }} />
           {done ? (
             <ButtonBase
               onClick={(e) => { e.stopPropagation(); reviewAction(); }}
-              sx={{ flexShrink: 0, px: 2, py: 0.9, borderRadius: 999, fontWeight: 800, color: "#475569", fontSize: "0.82rem", gap: 0.5, border: "1px solid #cbd5e1", bgcolor: "transparent" }}
+              sx={{ flexShrink: 0, px: 1.6, py: 0.7, borderRadius: 999, fontWeight: 800, color: "#475569", fontSize: "0.78rem", gap: 0.4, border: "1px solid #dbe2ea" }}
             >
-              <Icon icon={item.onReview ? "mdi:eye-outline" : "mdi:refresh"} width={15} />
+              <Icon icon={item.onReview ? "mdi:eye-outline" : "mdi:refresh"} width={14} />
               Review
             </ButtonBase>
           ) : (
             <ButtonBase
               onClick={(e) => { e.stopPropagation(); item.onClick(); }}
-              sx={{ flexShrink: 0, px: 2.25, py: 1, borderRadius: 999, fontWeight: 800, color: "white", fontSize: "0.85rem", gap: 0.5, background: `linear-gradient(135deg, ${m.color} 0%, #a855f7 130%)`, boxShadow: `0 12px 26px -16px ${m.color}` }}
+              sx={{
+                flexShrink: 0,
+                px: feature ? 2.6 : 1.9,
+                py: feature ? 1.05 : 0.8,
+                borderRadius: 999,
+                fontWeight: 800,
+                color: "white",
+                fontSize: feature ? "0.88rem" : "0.8rem",
+                gap: 0.5,
+                background: `linear-gradient(135deg, ${m.color} 0%, color-mix(in srgb, ${m.color} 55%, ${theme.accent[1]}) 100%)`,
+                boxShadow: `0 12px 26px -16px ${m.color}`,
+              }}
             >
-              <Icon icon={m.actionIcon} width={16} />
+              <Icon icon={m.actionIcon} width={feature ? 17 : 14} />
               {current ? `${m.action} now` : m.action}
             </ButtonBase>
           )}
