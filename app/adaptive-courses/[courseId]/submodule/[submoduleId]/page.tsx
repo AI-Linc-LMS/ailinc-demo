@@ -20,7 +20,20 @@ import { useInstantNavigation } from "@/lib/hooks/useInstantNavigation";
 import { asStringList } from "@/lib/utils/as-list";
 import { attachmentLook, formatFileSize } from "@/lib/utils/attachment-display";
 
-type FlowKind = "video" | "article" | "quiz" | "coding";
+type FlowKind =
+  | "video"
+  | "article"
+  | "quiz"
+  | "coding"
+  /* Practical kinds. See lib/services/practicals.service.ts. */
+  | "worksheet"
+  | "scenario"
+  | "evidence"
+  | "lab"
+  | "deck"
+  | "speaking"
+  | "partid"
+  | "deliverable";
 type StepStatus = "done" | "current" | "upcoming";
 
 interface FlowItem {
@@ -44,15 +57,57 @@ const KIND_CORRECTNESS: Partial<Record<PointsKind, string>> = {
   quiz: "correct", coding: "tests passed", video: "watched",
 };
 
-const VERB: Record<FlowKind, string> = { video: "watch", article: "read", quiz: "quiz", coding: "practice" };
-const KIND_ORDER: FlowKind[] = ["video", "article", "quiz", "coding"];
+const VERB: Record<FlowKind, string> = {
+  video: "watch", article: "read", quiz: "quiz", coding: "practice",
+  deck: "drill", worksheet: "work it", partid: "identify", speaking: "speak",
+  scenario: "decide", lab: "perform", evidence: "film it", deliverable: "produce",
+};
 
-/** Per-content-type identity - same palette family as the course timeline nodes. */
+/**
+ * The order a lesson's steps are presented in.
+ *
+ * Read, then recall, then do, then prove. A deck sits early because recalling
+ * the terms makes the reading usable; an evidence task and a deliverable sit
+ * last because they are the ones that need everything above them first.
+ */
+const KIND_ORDER: FlowKind[] = [
+  "video", "article", "deck", "quiz", "worksheet", "partid",
+  "speaking", "scenario", "coding", "lab", "evidence", "deliverable",
+];
+
+/**
+ * Per-content-type identity - same palette family as the course timeline nodes.
+ *
+ * Every practical kind gets its own label, icon and colour rather than sharing a
+ * generic "PRACTICAL" chip. The row is where a learner decides what to open
+ * next, and "EVIDENCE" against "WORKSHEET" is the distinction that tells them
+ * whether they need a camera and a spanner or twenty quiet minutes.
+ */
 const FLOW_META: Record<FlowKind, { label: string; icon: string; action: string; actionIcon: string; color: string; bg: string }> = {
   video: { label: "WATCH", icon: "mdi:play-circle", action: "Watch", actionIcon: "mdi:play", color: "#0ea5e9", bg: "#e0f2fe" },
   article: { label: "READ", icon: "mdi:book-open-page-variant", action: "Read", actionIcon: "mdi:book-open-page-variant-outline", color: "#a855f7", bg: "#f5f3ff" },
   quiz: { label: "QUIZ", icon: "mdi:tune-vertical", action: "Start", actionIcon: "mdi:play", color: "#6366f1", bg: "#eef2ff" },
   coding: { label: "PRACTICE", icon: "mdi:code-tags", action: "Solve", actionIcon: "mdi:code-tags", color: "#ec4899", bg: "#fdf2f8" },
+  worksheet: { label: "WORKING PAPER", icon: "mdi:table-large", action: "Open sheet", actionIcon: "mdi:table-edit", color: "#0f766e", bg: "#ecfdf5" },
+  scenario: { label: "DECISION RUN", icon: "mdi:arrow-decision", action: "Begin", actionIcon: "mdi:play", color: "#b45309", bg: "#fffbeb" },
+  evidence: { label: "EVIDENCE", icon: "mdi:camera-outline", action: "Submit work", actionIcon: "mdi:upload", color: "#be123c", bg: "#fff1f2" },
+  lab: { label: "PROCEDURE", icon: "mdi:clipboard-check-outline", action: "Start", actionIcon: "mdi:play", color: "#0369a1", bg: "#f0f9ff" },
+  deck: { label: "RECALL", icon: "mdi:cards-outline", action: "Drill", actionIcon: "mdi:lightning-bolt", color: "#7c3aed", bg: "#f5f3ff" },
+  speaking: { label: "SPEAKING", icon: "mdi:microphone-outline", action: "Speak", actionIcon: "mdi:microphone", color: "#c2410c", bg: "#fff7ed" },
+  partid: { label: "PARTS", icon: "mdi:vector-polyline", action: "Identify", actionIcon: "mdi:cursor-default-click-outline", color: "#4338ca", bg: "#eef2ff" },
+  deliverable: { label: "DELIVERABLE", icon: "mdi:file-document-edit-outline", action: "Produce", actionIcon: "mdi:upload", color: "#166534", bg: "#f0fdf4" },
+};
+
+/** Route segment per practical kind. Matches app/adaptive-courses/.../<seg>/[id]. */
+const PRACTICAL_SEGMENT: Record<string, string> = {
+  worksheet: "worksheet",
+  scenario: "scenario",
+  evidence: "evidence",
+  lab: "lab",
+  deck: "deck",
+  speaking: "speaking",
+  partid: "parts",
+  deliverable: "deliverable",
 };
 
 function buildItems(
@@ -112,6 +167,33 @@ function buildItems(
       });
     }),
   );
+  // Practicals. The chips come from `facts`, which the API has already worded,
+  // because what is worth saying differs per kind: a deck's useful fact is how
+  // many cards are due, a lab's is how many steps cannot be skipped.
+  (sm.practicals ?? []).forEach((p) => {
+    const seg = PRACTICAL_SEGMENT[p.kind];
+    if (!seg) return;
+    const href = `/adaptive-courses/${courseId}/submodule/${submoduleId}/${seg}/${p.id}`;
+    const FACT_ICON: Record<string, string> = {
+      worksheet: "mdi:table-large", scenario: "mdi:arrow-decision-outline",
+      evidence: "mdi:camera-outline", lab: "mdi:clipboard-list-outline",
+      deck: "mdi:cards-outline", speaking: "mdi:waveform",
+      partid: "mdi:map-marker-outline", deliverable: "mdi:paperclip",
+    };
+    items.push({
+      kind: p.kind as FlowKind,
+      key: `p${p.id}`,
+      contentKey: `${p.kind}:${p.id}`,
+      title: p.title,
+      completed: !!p.completed,
+      chips: [
+        ...(p.minutes ? [{ icon: "mdi:clock-outline", text: `~${p.minutes} min` }] : []),
+        ...p.facts.slice(0, 3).map((f) => ({ icon: FACT_ICON[p.kind] ?? "mdi:information-outline", text: f })),
+      ],
+      href,
+      onClick: () => nav(href),
+    });
+  });
   return items;
 }
 
@@ -172,15 +254,23 @@ export default function AdaptiveCourseSubmodulePage() {
 
   const meta = useMemo(() => {
     if (!submodule) return { counts: {} as Record<FlowKind, number>, estMin: 0 };
-    const counts: Record<FlowKind, number> = { video: 0, article: 0, quiz: 0, coding: 0 };
+    const counts = Object.fromEntries(KIND_ORDER.map((k) => [k, 0])) as Record<FlowKind, number>;
     items.forEach((i) => { counts[i.kind] += 1; });
     let estMin = 0;
     (submodule.video_companions ?? []).forEach((v) => { estMin += Math.round((v.duration_seconds || 0) / 60); });
     submodule.articles.forEach((a) => { estMin += a.reading_time_minutes || 0; });
     submodule.quizzes.forEach((q) => { estMin += Math.round(((q.min_questions + q.max_questions) / 2) * 0.75); });
     (submodule.coding_sets ?? []).forEach((s) => s.problems.forEach(() => { estMin += 15; }));
+    // Each practical states its own duration, and they are long enough that
+    // omitting them understated a refrigeration lesson by about an hour.
+    (submodule.practicals ?? []).forEach((p) => { estMin += p.minutes || 0; });
     return { counts, estMin };
   }, [submodule, items]);
+
+  /** Hands-on steps, as one figure. The kinds are listed on the rows themselves. */
+  const practicalTotal = items.filter((i) =>
+    ["worksheet", "scenario", "evidence", "lab", "deck", "speaking", "partid", "deliverable"].includes(i.kind),
+  ).length;
 
   // Progress: first incomplete step = "current"; everything before it that's done = "done".
   const doneCount = items.filter((i) => i.completed).length;
@@ -196,6 +286,9 @@ export default function AdaptiveCourseSubmodulePage() {
         ...(meta.counts.article ? [{ icon: "mdi:book-open-variant", label: `${meta.counts.article} article${meta.counts.article > 1 ? "s" : ""}` }] : []),
         ...(meta.counts.quiz ? [{ icon: "mdi:tune-variant", label: `${meta.counts.quiz} quiz${meta.counts.quiz > 1 ? "zes" : ""}` }] : []),
         ...(meta.counts.coding ? [{ icon: "mdi:code-tags", label: `${meta.counts.coding} coding` }] : []),
+        ...(practicalTotal
+          ? [{ icon: "mdi:hammer-wrench", label: `${practicalTotal} hands-on` }]
+          : []),
         ...(meta.estMin ? [{ icon: "mdi:clock-outline", label: `~${meta.estMin} min` }] : []),
       ]
     : [];

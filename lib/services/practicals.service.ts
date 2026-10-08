@@ -201,15 +201,28 @@ export const practicalsService = {
       )
       .then((r) => r.data),
 
-  submitScenario: (
+  /**
+   * Make one choice and find out what it led to.
+   *
+   * The destination of a choice is never sent to the client, because a learner
+   * who can read the graph is not making a decision. So advancing is a round
+   * trip: post the path so far, get back the consequence of the last choice and
+   * the id of the node it leads to. When that node ends the run the response
+   * also carries the full graded result, so the debrief needs no second call.
+   *
+   * Stateless on purpose. The whole path is posted each time rather than held
+   * in a server-side session, so a learner who reloads mid-run is not stranded
+   * and two tabs cannot corrupt one attempt.
+   */
+  advanceScenario: (
     courseId: number,
     submoduleId: number,
     scenarioId: number,
     body: { path: Array<{ node: string; choice: string }> },
   ) =>
     apiClient
-      .post<ScenarioResult>(
-        `${BASE}/courses/${courseId}/submodules/${submoduleId}/scenarios/${scenarioId}/submit/`,
+      .post<ScenarioAdvance>(
+        `${BASE}/courses/${courseId}/submodules/${submoduleId}/scenarios/${scenarioId}/advance/`,
         body,
       )
       .then((r) => r.data),
@@ -406,6 +419,21 @@ export interface ScenarioStepVerdict {
   cost?: { minutes?: number; rupees?: number };
   /** What the best available choice at this node would have been. */
   best?: string;
+}
+
+/** The response to one choice. See `advanceScenario`. */
+export interface ScenarioAdvance {
+  /** What the choice just made led to. */
+  outcome: string;
+  cost?: { minutes?: number; rupees?: number };
+  violation?: string;
+  /** Running tallies, so the header does not have to add up costs itself. */
+  minutes_spent: number;
+  rupees_spent: number;
+  /** The node to show next. Null means the run is over. */
+  next_node: string | null;
+  /** Present only when `next_node` is null. */
+  result?: ScenarioResult;
 }
 
 export interface ScenarioResult extends PracticalResult {

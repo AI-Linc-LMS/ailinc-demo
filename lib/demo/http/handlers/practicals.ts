@@ -349,6 +349,53 @@ defineRoutes(MODULE, {
     };
   },
 
+  /**
+   * Advance one step.
+   *
+   * Grades the whole path every time rather than incrementally, so the step
+   * verdict a learner sees mid-run and the debrief they get at the end come from
+   * one marker. An incremental scorer and a final scorer are two implementations
+   * of the same rules, and they drift.
+   */
+  "POST /adaptive-quiz/api/courses/:courseId/submodules/:submoduleId/scenarios/:id/advance/": async (
+    req,
+  ) => {
+    const { topic, authored } = await authoredFor(Number(req.params.submoduleId));
+    const id = Number(req.params.id);
+    const sc = (authored.scenarios ?? [])[indexOf("scenario", topic, id)];
+    if (!sc) throw notFound("Scenario not found");
+
+    const path = (req.body?.path ?? []) as Array<{ node: string; choice: string }>;
+    if (!Array.isArray(path) || path.length === 0) throw badRequest("No choice was sent.");
+
+    const last = path[path.length - 1];
+    const node = sc.nodes.find((n) => n.id === last.node);
+    const choice = node?.choices?.find((c) => c.id === last.choice);
+    if (!node || !choice) throw badRequest("That choice does not belong to that node.");
+
+    let minutes = 0;
+    let rupees = 0;
+    for (const step of path) {
+      const n = sc.nodes.find((x) => x.id === step.node);
+      const c = n?.choices?.find((x) => x.id === step.choice);
+      minutes += c?.cost?.minutes ?? 0;
+      rupees += c?.cost?.rupees ?? 0;
+    }
+
+    const nextNode = choice.next ? sc.nodes.find((n) => n.id === choice.next) : null;
+    const terminal = !nextNode || !!nextNode.ending;
+
+    return {
+      outcome: choice.outcome,
+      cost: choice.cost,
+      violation: choice.violation,
+      minutes_spent: minutes,
+      rupees_spent: rupees,
+      next_node: nextNode?.id ?? null,
+      result: terminal ? gradeScenario(sc, path, topic, id) : undefined,
+    };
+  },
+
   "POST /adaptive-quiz/api/courses/:courseId/submodules/:submoduleId/scenarios/:id/submit/": async (
     req,
   ) => {
@@ -359,74 +406,7 @@ defineRoutes(MODULE, {
 
     const path = (req.body?.path ?? []) as Array<{ node: string; choice: string }>;
     if (!Array.isArray(path)) throw badRequest("path must be a list of choices");
-
-    const steps = [];
-    let minutes = 0;
-    let rupees = 0;
-    const violations: string[] = [];
-
-    for (const step of path) {
-      const node = sc.nodes.find((n) => n.id === step.node);
-      const choice = node?.choices?.find((c) => c.id === step.choice);
-      if (!node || !choice) continue;
-      minutes += choice.cost?.minutes ?? 0;
-      rupees += choice.cost?.rupees ?? 0;
-      if (choice.violation) violations.push(choice.violation);
-      // The best available choice at this node, so the debrief can show what a
-      // professional would have done at the exact point the learner diverged.
-      const best = [...(node.choices ?? [])].sort((a, b) => b.delta - a.delta)[0];
-      steps.push({
-        node: node.id,
-        prompt: node.prompt,
-        chose: choice.label,
-        outcome: choice.outcome,
-        delta: choice.delta,
-        violation: choice.violation,
-        cost: choice.cost,
-        best: best && best.id !== choice.id ? best.label : undefined,
-      });
-    }
-
-    const raw = steps.reduce((s, st) => s + st.delta, 0);
-    const maxScore = scenarioMax(sc);
-    // Deltas run negative, so the floor is 0 rather than the raw sum.
-    const score = Math.max(0, raw);
-    const pct = maxScore === 0 ? 0 : score / maxScore;
-
-    // A safety violation caps the run however good the rest of the path was.
-    // That is the whole point of modelling it: on a live job the one wrong move
-    // is not averaged away by five right ones.
-    const capped = violations.length > 0;
-    const finalScore = capped ? Math.min(score, Math.floor(maxScore * 0.4)) : score;
-    const verdict: "ideal" | "acceptable" | "poor" = capped
-      ? "poor"
-      : pct >= 0.85
-        ? "ideal"
-        : pct >= 0.55
-          ? "acceptable"
-          : "poor";
-
-    if (verdict !== "poor") markComplete(id);
-
-    return {
-      kind: "scenario",
-      status: "graded",
-      score: finalScore,
-      max_score: maxScore,
-      points_awarded: verdict === "poor" ? 0 : Math.round(70 * pct),
-      headline: capped
-        ? `The run is capped: ${violations[0]}`
-        : verdict === "ideal"
-          ? "You took the path a competent professional would have taken."
-          : verdict === "acceptable"
-            ? "You got there, but it cost more than it had to."
-            : "The approach did not hold up. Read the debrief and run it again.",
-      steps,
-      verdict,
-      minutes_spent: minutes,
-      rupees_spent: rupees,
-      violations,
-    };
+    return gradeScenario(sc, path, topic, id);
   },
 
   /* ------------------------------------------------------------ evidence --- */
@@ -1070,6 +1050,81 @@ defineRoutes(MODULE, {
  * side, where 420 quizzes stated a maximum bounded by a bank that could not
  * produce it.
  */
+function gradeScenario(
+  sc: AuthoredScenario,
+  path: Array<{ node: string; choice: string }>,
+  topic: DemoTopic,
+  id: number,
+) {
+  const steps = [];
+  let minutes = 0;
+  let rupees = 0;
+  const violations: string[] = [];
+
+  for (const step of path) {
+    const node = sc.nodes.find((n) => n.id === step.node);
+    const choice = node?.choices?.find((c) => c.id === step.choice);
+    if (!node || !choice) continue;
+    minutes += choice.cost?.minutes ?? 0;
+    rupees += choice.cost?.rupees ?? 0;
+    if (choice.violation) violations.push(choice.violation);
+    // The best available choice at this node, so the debrief can show what a
+    // professional would have done at the exact point the learner diverged.
+    const best = [...(node.choices ?? [])].sort((a, b) => b.delta - a.delta)[0];
+    steps.push({
+      node: node.id,
+      prompt: node.prompt,
+      chose: choice.label,
+      outcome: choice.outcome,
+      delta: choice.delta,
+      violation: choice.violation,
+      cost: choice.cost,
+      best: best && best.id !== choice.id ? best.label : undefined,
+    });
+  }
+
+  const maxScore = scenarioMax(sc);
+  // Deltas run negative, so the floor is 0 rather than the raw sum.
+  const score = Math.max(0, steps.reduce((s, st) => s + st.delta, 0));
+  const pct = maxScore === 0 ? 0 : score / maxScore;
+
+  // A safety violation caps the run however good the rest of the path was. That
+  // is the whole point of modelling it: on a live job the one wrong move is not
+  // averaged away by five right ones.
+  const capped = violations.length > 0;
+  const finalScore = capped ? Math.min(score, Math.floor(maxScore * 0.4)) : score;
+  const verdict: "ideal" | "acceptable" | "poor" = capped
+    ? "poor"
+    : pct >= 0.85
+      ? "ideal"
+      : pct >= 0.55
+        ? "acceptable"
+        : "poor";
+
+  if (verdict !== "poor") markComplete(id);
+  void topic;
+
+  return {
+    kind: "scenario" as const,
+    status: "graded" as const,
+    score: finalScore,
+    max_score: maxScore,
+    points_awarded: verdict === "poor" ? 0 : Math.round(70 * pct),
+    headline: capped
+      ? `The run is capped: ${violations[0]}`
+      : verdict === "ideal"
+        ? "You took the path a competent professional would have taken."
+        : verdict === "acceptable"
+          ? "You got there, but it cost more than it had to."
+          : "The approach did not hold up. Read the debrief and run it again.",
+    steps,
+    verdict,
+    minutes_spent: minutes,
+    rupees_spent: rupees,
+    violations,
+  };
+}
+
 function scenarioMax(sc: AuthoredScenario): number {
   let total = 0;
   for (const nodeId of sc.idealPath) {
