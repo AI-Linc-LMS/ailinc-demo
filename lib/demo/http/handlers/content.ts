@@ -17,7 +17,16 @@ import { loadCourseCurriculum } from "../../db/curriculum";
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
 import { seededInt } from "../../random";
-import { conceptsFor, submoduleFor, ARTICLE_ID, QUIZ_ID, CODING_ID, VIDEO_ID } from "./adaptive-courses";
+import {
+  conceptsFor,
+  submoduleFor,
+  ARTICLE_ID,
+  QUIZ_ID,
+  CODING_ID,
+  VIDEO_ID,
+  PRACTICAL_ID,
+  type PracticalKind,
+} from "./adaptive-courses";
 
 const MODULE = "content";
 
@@ -43,8 +52,31 @@ function isComplete(topic: DemoTopic, contentId: number): boolean {
   return topic.progress === 100 || overlay.get<number[]>("adaptive:completed", []).includes(contentId);
 }
 
-/** Points on offer for one piece of content, by kind. */
-const POINTS = { article: 25, quiz: 60, coding: 90, video: 30 } as const;
+/**
+ * Points on offer for one piece of content, by kind.
+ *
+ * Every kind in `DemoTopic["kinds"]` must appear here. This map is one of the
+ * places a new content type has to be registered, and the lesson's points panel
+ * is derived from it, so a kind that is missing shows a lesson worth fewer
+ * points than its own items add up to. The practical kinds are weighted above a
+ * quiz and at or above a coding problem, because producing a document or a sound
+ * joint is more work than recognising the right option.
+ */
+const POINTS = {
+  article: 25,
+  quiz: 60,
+  coding: 90,
+  video: 30,
+  assignment: 150,
+  worksheet: 80,
+  scenario: 70,
+  evidence: 120,
+  lab: 60,
+  deck: 30,
+  speaking: 55,
+  partid: 45,
+  deliverable: 140,
+} as const satisfies Record<DemoTopic["kinds"][number], number>;
 
 /** Re-render an article at another reading tier. Shared by the POST and GET routes. */
 async function articleTier(req: DemoRequest) {
@@ -88,18 +120,38 @@ defineRoutes(MODULE, {
 
     const items = topic.kinds
       .map((kind) => {
+        const PRACTICAL_DETAIL: Record<string, string> = {
+          worksheet: "Working paper, marked cell by cell",
+          scenario: "Decision run, scored on the path",
+          evidence: "Evidence of real work, assessor marked",
+          lab: "Guided procedure with locked safety steps",
+          deck: "Spaced-repetition recall",
+          speaking: "Spoken task, scored per word",
+          partid: "Identify, order and wire the parts",
+          deliverable: "Document produced, rubric marked",
+        };
         const map = {
           article: { id: ARTICLE_ID(topic), on_offer: POINTS.article, detail: "Read the lesson" },
           quiz: { id: QUIZ_ID(topic), on_offer: POINTS.quiz, detail: "Adaptive quiz" },
           coding: { id: CODING_ID(topic), on_offer: POINTS.coding, detail: "Coding practice set" },
           video: { id: VIDEO_ID(topic), on_offer: POINTS.video, detail: "Video with check-ins" },
-          assignment: { id: topic.id, on_offer: 150, detail: "Submitted project" },
+          assignment: { id: topic.id, on_offer: POINTS.assignment, detail: "Submitted project" },
         } as const;
-        const meta = map[kind];
+        const meta: { id: number; on_offer: number; detail: string } | undefined =
+          kind in map
+            ? map[kind as keyof typeof map]
+            : {
+                id: PRACTICAL_ID(kind as PracticalKind, topic, 0),
+                on_offer: POINTS[kind],
+                detail: PRACTICAL_DETAIL[kind] ?? "Practical task",
+              };
         if (!meta) return null;
 
         const earnedAll = isComplete(topic, meta.id);
         return {
+          // "assignment" is reported as coding because the legacy points panel
+          // has no row for it. The practical kinds DO have their own rows, so
+          // they must pass through unchanged or they all render as coding.
           kind: kind === "assignment" ? "coding" : kind,
           title: topic.title,
           detail: meta.detail,

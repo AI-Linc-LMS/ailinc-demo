@@ -33,6 +33,46 @@ export const QUIZ_ID = (topic: DemoTopic) => topic.id + 200_000;
 export const CODING_ID = (topic: DemoTopic) => topic.id + 300_000;
 export const VIDEO_ID = (topic: DemoTopic) => topic.id + 400_000;
 
+/**
+ * Practical-id namespaces, one band of 100k each.
+ *
+ * A separate band per kind rather than one shared counter, so a url carries its
+ * own kind: 5085 + 1_500_000 can only ever be a worksheet. That is what lets
+ * the points ledger resolve `worksheet:1505085` without a lookup, and it means a
+ * mis-registered route 404s instead of serving a lab to a worksheet player.
+ */
+export const PRACTICAL_BASE: Record<PracticalKind, number> = {
+  worksheet: 1_500_000,
+  scenario: 1_600_000,
+  evidence: 1_700_000,
+  lab: 1_800_000,
+  deck: 1_900_000,
+  speaking: 2_000_000,
+  partid: 2_100_000,
+  deliverable: 2_200_000,
+};
+
+export type PracticalKind =
+  | "worksheet" | "scenario" | "evidence" | "lab"
+  | "deck" | "speaking" | "partid" | "deliverable";
+
+export const PRACTICAL_KINDS: PracticalKind[] = [
+  "worksheet", "scenario", "evidence", "lab", "deck", "speaking", "partid", "deliverable",
+];
+
+/** The nth practical of a kind on a topic. Index is 0-based. */
+export const PRACTICAL_ID = (kind: PracticalKind, topic: DemoTopic, index = 0) =>
+  topic.id + PRACTICAL_BASE[kind] + index;
+
+/** Resolve a practical id back to its kind, or null when it is out of every band. */
+export function practicalKindOf(id: number): PracticalKind | null {
+  for (const kind of PRACTICAL_KINDS) {
+    const base = PRACTICAL_BASE[kind];
+    if (id >= base && id < base + 100_000) return kind;
+  }
+  return null;
+}
+
 /** Items the visitor completed this session, on top of whatever the seed says. */
 function completedInSession(): number[] {
   return overlay.get<number[]>("adaptive:completed", []);
@@ -186,6 +226,189 @@ export function conceptsFor(topic: DemoTopic): string[] {
   return concepts.length > 0 ? concepts : [topic.title.split(/\s+/)[0]];
 }
 
+/**
+ * Practical summaries for a lesson.
+ *
+ * Every chip is read off the AUTHORED item, never invented beside it. The
+ * coding card used to pick its own difficulty with `seededPick`, so 79 of 117
+ * cards named a difficulty the problem behind them did not have. A worksheet
+ * card claiming "14 cells" over a sheet with 9 is the same bug, and on a
+ * vocational course it is the card a prospect reads most closely, because it is
+ * the one promising something no other LMS does.
+ *
+ * When the course chunk has not loaded yet the row still renders, with the
+ * title and nothing it cannot prove.
+ */
+function practicalsFor(topic: DemoTopic, courseId?: number) {
+  const authored = courseId == null ? null : peekTopic(courseId, topic.id);
+  const out: Array<Record<string, unknown>> = [];
+
+  const push = (
+    kind: PracticalKind,
+    index: number,
+    title: string,
+    detail: string,
+    facts: string[],
+    minutes: number,
+    skills: string[],
+    extra: Record<string, unknown> = {},
+  ) => {
+    const id = PRACTICAL_ID(kind, topic, index);
+    out.push({
+      id, kind, title, detail, facts, minutes,
+      target_skills: skills.length ? skills : conceptsFor(topic),
+      completed: isDone(topic, id),
+      ...extra,
+    });
+  };
+
+  for (const kind of topic.kinds) {
+    switch (kind) {
+      case "worksheet":
+        (authored?.worksheets ?? [{} as never]).forEach((w, i) => {
+          const cells = w.cells?.length ?? 0;
+          const rules = w.invariants?.length ?? 0;
+          push("worksheet", i,
+            w.title ?? `${topic.title} - working paper`,
+            "Fill the sheet. Marked cell by cell, with method marks.",
+            [
+              ...(w.difficulty ? [w.difficulty] : []),
+              ...(cells ? [`${cells} marked cells`] : []),
+              ...(rules ? [`${rules} balance ${rules === 1 ? "rule" : "rules"}`] : []),
+            ],
+            w.minutes ?? 20, w.skills ?? [],
+          );
+        });
+        break;
+      case "scenario":
+        (authored?.scenarios ?? [{} as never]).forEach((sc, i) => {
+          const nodes = sc.nodes?.length ?? 0;
+          const endings = sc.nodes?.filter((n) => n.ending).length ?? 0;
+          push("scenario", i,
+            sc.title ?? `${topic.title} - decision run`,
+            sc.blurb ?? "Decide under pressure. Scored on the path, not the last answer.",
+            [
+              ...(nodes ? [`${nodes} decision points`] : []),
+              ...(endings ? [`${endings} endings`] : []),
+            ],
+            sc.minutes ?? 12, sc.skills ?? [],
+          );
+        });
+        break;
+      case "evidence":
+        (authored?.evidence ?? [{} as never]).forEach((e, i) => {
+          const caps = e.captures?.length ?? 0;
+          const video = e.captures?.some((c) => c.medium === "video");
+          push("evidence", i,
+            e.title ?? `${topic.title} - evidence of work`,
+            "Do it for real, film it, submit it. A person marks this one.",
+            [
+              ...(caps ? [`${caps} ${caps === 1 ? "capture" : "captures"}`] : []),
+              ...(video ? ["video required"] : []),
+              "instructor marked",
+            ],
+            e.minutes ?? 45, e.skills ?? [],
+            { human_graded: true },
+          );
+        });
+        break;
+      case "lab":
+        (authored?.labs ?? [{} as never]).forEach((l, i) => {
+          const steps = l.steps?.length ?? 0;
+          const danger = l.steps?.filter((st) => st.hazard?.level === "danger").length ?? 0;
+          const readings = l.steps?.filter((st) => st.reading).length ?? 0;
+          push("lab", i,
+            l.title ?? `${topic.title} - guided procedure`,
+            l.objective ?? "Work the procedure step by step. Safety steps cannot be skipped.",
+            [
+              ...(steps ? [`${steps} steps`] : []),
+              ...(danger ? [`${danger} locked safety ${danger === 1 ? "step" : "steps"}`] : []),
+              ...(readings ? [`${readings} readings taken`] : []),
+            ],
+            l.steps?.reduce((sum, st) => sum + (st.minutes ?? 0), 0) || 30,
+            l.skills ?? [],
+          );
+        });
+        break;
+      case "deck":
+        (authored?.decks ?? [{} as never]).forEach((d, i) => {
+          const cards = d.cards?.length ?? 0;
+          // Due today is what the learner is actually asked to clear, so it is
+          // the number on the card. Seeded, so it does not move between loads.
+          const due = cards ? Math.min(cards, seededInt(`due:${topic.id}:${i}`, 4, 12)) : 0;
+          push("deck", i,
+            d.title ?? `${topic.title} - recall deck`,
+            d.blurb ?? "Spaced repetition. Short sittings, scheduled for you.",
+            [
+              ...(cards ? [`${cards} cards`] : []),
+              ...(due ? [`${due} due today`] : []),
+              d.mode === "flip" ? "self-rated" : "typed recall",
+            ],
+            Math.max(3, Math.round(due * 0.4)), d.skills ?? [],
+            { due_count: due },
+          );
+        });
+        break;
+      case "speaking":
+        (authored?.speaking ?? [{} as never]).forEach((sp, i) => {
+          const KINDS: Record<string, string> = {
+            listen: "Listen and answer",
+            "read-aloud": "Read aloud, scored per word",
+            respond: "Speak your own answer",
+            roleplay: "Hold a conversation",
+          };
+          push("speaking", i,
+            sp.title ?? `${topic.title} - speaking task`,
+            KINDS[sp.kind] ?? "Use your voice, and be marked on it.",
+            [
+              ...(sp.level ? [sp.level] : []),
+              ...(sp.seconds ? [`${sp.seconds}s of speech`] : []),
+              "microphone",
+            ],
+            Math.max(4, Math.round((sp.seconds ?? 60) / 12)), sp.skills ?? [],
+          );
+        });
+        break;
+      case "partid":
+        (authored?.parts ?? [{} as never]).forEach((pt, i) => {
+          const spots = pt.hotspots?.length ?? 0;
+          const stages = 1 + (pt.sequence ? 1 : 0) + (pt.wiring ? 1 : 0);
+          push("partid", i,
+            pt.title ?? `${topic.title} - name the parts`,
+            "Identify it on the diagram, then fit it in the right order.",
+            [
+              ...(spots ? [`${spots} parts to name`] : []),
+              ...(stages > 1 ? [`${stages} stages`] : []),
+              ...(pt.wiring ? ["terminal matching"] : []),
+            ],
+            pt.minutes ?? 10, pt.skills ?? [],
+          );
+        });
+        break;
+      case "deliverable":
+        (authored?.deliverables ?? [{} as never]).forEach((d, i) => {
+          const files = d.requires?.length ?? 0;
+          const crit = d.rubric?.length ?? 0;
+          push("deliverable", i,
+            d.title ?? `${topic.title} - deliverable`,
+            "Produce the document. Marked against a rubric you can read first.",
+            [
+              ...(files ? [`${files} ${files === 1 ? "file" : "files"} to attach`] : []),
+              ...(crit ? [`${crit}-criterion rubric`] : []),
+              "instructor marked",
+            ],
+            d.minutes ?? 90, d.skills ?? [],
+            { human_graded: true },
+          );
+        });
+        break;
+      default:
+        break;
+    }
+  }
+  return out;
+}
+
 export function submoduleFor(topic: DemoTopic, order: number, courseId?: number) {
   const kinds = new Set(topic.kinds);
   return {
@@ -198,6 +421,7 @@ export function submoduleFor(topic: DemoTopic, order: number, courseId?: number)
     coding_sets: kinds.has("coding") ? [codingSetFor(topic, courseId)] : [],
     video_companions: kinds.has("video") ? [videoFor(topic)] : [],
     attachments: [],
+    practicals: practicalsFor(topic, courseId),
   };
 }
 

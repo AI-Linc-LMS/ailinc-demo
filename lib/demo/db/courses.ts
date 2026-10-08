@@ -12,7 +12,7 @@
  */
 
 import { avatarFor } from "./avatar";
-import { INSTRUCTOR_PERSONA, FACULTY, type DemoPerson } from "./people";
+import { INSTRUCTOR_PERSONA, FACULTY, TRADE_FACULTY, type DemoPerson } from "./people";
 import { daysAhead, isoDaysAgo, isoDaysAhead } from "../clock";
 import { seededInt } from "../random";
 
@@ -32,7 +32,22 @@ export interface DemoTopic {
    * "video" back to whichever topics should have it. Everything downstream
    * already handles it.
    */
-  kinds: Array<"article" | "video" | "quiz" | "coding" | "assignment">;
+  kinds: Array<
+    | "article"
+    | "video"
+    | "quiz"
+    | "coding"
+    | "assignment"
+    /* --- vocational proof primitives. See curriculum/types.ts. ----------- */
+    | "worksheet"
+    | "scenario"
+    | "evidence"
+    | "lab"
+    | "deck"
+    | "speaking"
+    | "partid"
+    | "deliverable"
+  >;
   /** 0-100. 100 = finished, 0 = untouched. */
   progress: number;
 }
@@ -451,6 +466,236 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
       ]),
     ],
   },
+  /* =========================================================================
+   * The vocational catalogue: 206 to 209.
+   *
+   * These four exist to prove the platform is not a coding school with a
+   * content CMS bolted on. Each is built around the proof primitive its trade
+   * actually uses: a worksheet for accounting, a gated procedure and a camera
+   * for refrigeration, the voice for a language, a diagram and a build log for
+   * drones. Not one of them contains a coding problem, and the catalogue card
+   * does not claim otherwise.
+   * ========================================================================= */
+  {
+    id: 206,
+    title: "Finance & Accounting Essentials",
+    subtitle: "From a journal entry to a filed return",
+    description:
+      "Learn accounting the way it is practised: by producing the document. You will post " +
+      "journals, rule off a trial balance that actually balances, prepare a bank reconciliation " +
+      "against a statement that does not agree, compute depreciation two ways, and file a GSTR-3B " +
+      "from a month of messy invoices. Every module ends with a working paper marked cell by " +
+      "cell, with method marks for a figure that is right given your own earlier number.",
+    slug: "finance-and-accounting-essentials",
+    difficulty: "Beginner",
+    durationHours: 62,
+    tags: ["Bookkeeping", "Tally-ready", "GST", "Financial statements", "Reconciliation"],
+    instructor: TRADE_FACULTY[0],
+    enrolled: true,
+    accent: ["#0f766e", "#14b8a6"],
+    dueInDays: null,
+    certificateThreshold: 70,
+    enrolledCount: 1864,
+    rating: 4.8,
+    ratingCount: 612,
+    modules: [
+      courseModule(
+        "The double-entry machine",
+        "Why every transaction lands twice, and how to stop guessing which side.",
+        [
+          topic("What a transaction does to the books", ["article", "quiz", "deck"], 100),
+          topic("Debit and credit without the mnemonics", ["article", "quiz", "worksheet"], 100),
+          topic("Posting a journal to the ledger", ["article", "worksheet"], 100),
+          topic("The trial balance, and what it cannot catch", ["article", "worksheet", "scenario"], 70),
+        ],
+      ),
+      courseModule(
+        "Adjustments and the final accounts",
+        "The entries nobody hands you, which are the ones the exam is about.",
+        [
+          topic("Accruals, prepayments and the matching principle", ["article", "quiz", "worksheet"], 45),
+          topic("Depreciation: straight line and written down value", ["article", "worksheet"], 20),
+          topic("Bad debts, provisions and the judgement involved", ["article", "quiz", "scenario"], 0),
+          topic("Final accounts from a trial balance", ["article", "worksheet", "deliverable"], 0),
+        ],
+      ),
+      courseModule(
+        "Controls, cash and compliance",
+        "Where money actually goes missing, and what the law wants from you.",
+        [
+          topic("Bank reconciliation against a statement that disagrees", ["article", "worksheet"], 0),
+          topic("GST mechanics: input credit, output tax, reverse charge", ["article", "quiz", "deck"], 0),
+          topic("Filing a GSTR-3B from a month of invoices", ["article", "worksheet", "deliverable"], 0),
+          topic("Fraud red flags and the ethics of the figure", ["article", "scenario"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 207,
+    title: "Air Conditioning Service & Repair",
+    subtitle: "Split and window units, diagnosis to handover",
+    description:
+      "A field technician's course for residential and light commercial RAC work. You will learn " +
+      "the refrigeration cycle as a set of readings you can take, diagnose by fault tree rather " +
+      "than by swapping parts, and perform recovery, evacuation and charging to the step. " +
+      "Practical work is submitted as video and photographs of your own hands on real equipment, " +
+      "marked against the same rubric an NSQF assessor uses.",
+    slug: "air-conditioning-service-and-repair",
+    difficulty: "Beginner",
+    durationHours: 78,
+    tags: ["HVAC&R", "NSQF Level 4", "Refrigeration cycle", "Brazing", "Electrical safety"],
+    instructor: TRADE_FACULTY[1],
+    enrolled: true,
+    accent: ["#0369a1", "#38bdf8"],
+    dueInDays: null,
+    certificateThreshold: 75,
+    enrolledCount: 2470,
+    rating: 4.9,
+    ratingCount: 904,
+    modules: [
+      courseModule(
+        "The cycle, and the gauges that show it",
+        "Four components and one pressure difference. The rest is plumbing.",
+        [
+          topic("The vapour compression cycle as four readings", ["article", "quiz", "partid"], 100),
+          topic("Refrigerants, glide and why R-32 changed the job", ["article", "quiz", "deck"], 100),
+          topic("Reading a manifold gauge set correctly", ["article", "lab", "evidence"], 100),
+          topic("Superheat and subcooling: what each one proves", ["article", "worksheet", "scenario"], 60),
+        ],
+      ),
+      courseModule(
+        "The electrical side",
+        "Most no-cool calls are electrical, and this is the half that can kill you.",
+        [
+          topic("Isolation, lock-out tag-out and proving dead", ["article", "lab", "evidence"], 30),
+          topic("Capacitors, contactors and the run winding", ["article", "partid", "quiz"], 0),
+          topic("Tracing a control circuit from the wiring diagram", ["article", "partid", "scenario"], 0),
+          topic("Inverter boards: what you may and may not touch", ["article", "quiz"], 0),
+        ],
+      ),
+      courseModule(
+        "Diagnosis in the field",
+        "A fault tree beats a parts cannon, and the customer can tell the difference.",
+        [
+          topic("No cooling: the decision tree that ends the call", ["article", "scenario", "quiz"], 0),
+          topic("Finding and fixing a leak without guessing", ["article", "lab", "evidence"], 0),
+          topic("Recovery, evacuation and weighed-in charging", ["article", "lab", "evidence"], 0),
+          topic("The handover: report, invoice and what you promise", ["article", "scenario", "deliverable"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 208,
+    title: "Learning German: A1 to A2",
+    subtitle: "Speak from the first week, not the first year",
+    description:
+      "A spoken-first German course for absolute beginners working towards the Goethe A2 " +
+      "examination. Every unit gives you a situation you will actually be in, the sentences that " +
+      "survive it, and a microphone. You are marked on pronunciation, on whether the task got " +
+      "done, and on the grammar that changes meaning rather than the grammar that only changes " +
+      "style.",
+    slug: "learning-german-a1-to-a2",
+    difficulty: "Beginner",
+    durationHours: 96,
+    tags: ["German", "CEFR A1", "CEFR A2", "Goethe-Zertifikat", "Speaking"],
+    instructor: TRADE_FACULTY[2],
+    enrolled: true,
+    accent: ["#b45309", "#f59e0b"],
+    dueInDays: null,
+    certificateThreshold: 70,
+    enrolledCount: 3182,
+    rating: 4.7,
+    ratingCount: 1247,
+    modules: [
+      courseModule(
+        "Sich vorstellen: your first conversation",
+        "Greet, name yourself, say where you are from, and ask back.",
+        [
+          topic("The six sounds that decide whether you are understood", ["article", "speaking", "deck"], 100),
+          topic("Introducing yourself and asking back", ["article", "speaking", "quiz"], 100),
+          topic("Numbers, spelling aloud and giving a phone number", ["article", "speaking", "deck"], 80),
+          topic("Du or Sie, and the cost of getting it wrong", ["article", "scenario", "quiz"], 40),
+        ],
+      ),
+      courseModule(
+        "Der, die, das: making the case system usable",
+        "Gender and case are not decoration. They mark who did what to whom.",
+        [
+          topic("Gender, articles and the patterns that predict it", ["article", "quiz", "deck"], 20),
+          topic("Nominative and accusative: who is doing it to whom", ["article", "worksheet", "quiz"], 0),
+          topic("The dative, and the verbs that demand it", ["article", "worksheet", "speaking"], 0),
+          topic("Word order: the verb-second rule and the bracket", ["article", "worksheet", "quiz"], 0),
+        ],
+      ),
+      courseModule(
+        "Alltag: getting things done in German",
+        "Shopping, the doctor, the Amt, and an email an office will answer.",
+        [
+          topic("Shopping and asking for what you cannot name", ["article", "speaking", "scenario"], 0),
+          topic("At the doctor: describing a symptom precisely", ["article", "speaking", "deck"], 0),
+          topic("Termin beim Amt: the appointment that decides your paperwork", ["article", "scenario", "speaking"], 0),
+          topic("Writing an email a German office will answer", ["article", "deliverable", "quiz"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 209,
+    title: "Drone Assembly & Flight Operations",
+    subtitle: "Build it, tune it, fly it legally",
+    description:
+      "Build a 5-inch quadcopter from loose components and take it through a first flight you can " +
+      "defend. You will size a power system with arithmetic rather than optimism, solder and " +
+      "verify a build, set failsafes before you ever arm, and plan a flight against India's " +
+      "actual airspace rules. Assembly is submitted as photographs of your own frame at each " +
+      "stage.",
+    slug: "drone-assembly-and-flight-operations",
+    difficulty: "Intermediate",
+    durationHours: 70,
+    tags: ["UAV", "Multirotor", "DGCA", "Soldering", "Flight controller"],
+    instructor: TRADE_FACULTY[3],
+    enrolled: false,
+    accent: ["#4338ca", "#818cf8"],
+    dueInDays: null,
+    certificateThreshold: 75,
+    enrolledCount: 1118,
+    rating: 4.8,
+    ratingCount: 389,
+    modules: [
+      courseModule(
+        "Airframe and power",
+        "What each part does, and the arithmetic that decides which one you buy.",
+        [
+          topic("Anatomy of a multirotor, part by part", ["article", "partid", "deck"], 0),
+          topic("Thrust, weight and the ratio that decides if it flies", ["article", "worksheet", "quiz"], 0),
+          topic("Battery chemistry, C rating and real endurance", ["article", "worksheet", "quiz"], 0),
+          topic("Motors, ESCs and propeller matching", ["article", "partid", "worksheet"], 0),
+        ],
+      ),
+      courseModule(
+        "The build",
+        "Assembly order, solder joints and the checks that come before power.",
+        [
+          topic("Assembly order, and why it is not negotiable", ["article", "partid", "evidence"], 0),
+          topic("Soldering a joint that survives vibration", ["article", "lab", "evidence"], 0),
+          topic("Power distribution and the smoke-stopper test", ["article", "lab", "evidence"], 0),
+          topic("Flight controller setup, orientation and motor order", ["article", "partid", "lab"], 0),
+        ],
+      ),
+      courseModule(
+        "Flying it, and the law",
+        "Failsafes before the first arm, and a flight plan that survives a question.",
+        [
+          topic("Failsafes, arming checks and the pre-flight that matters", ["article", "lab", "quiz"], 0),
+          topic("India's drone rules: zones, UIN and the pilot certificate", ["article", "quiz", "deck"], 0),
+          topic("Planning a legal flight, and refusing an illegal one", ["article", "scenario", "deliverable"], 0),
+          topic("First flight, hover trim and reading a crash", ["article", "scenario", "evidence"], 0),
+        ],
+      ),
+    ],
+  },
 ];
 
 /**
@@ -486,7 +731,14 @@ export function topicsOf(course: DemoCourse): DemoTopic[] {
 
 /** Total learning items across a course, used for card stats. */
 export function itemCounts(course: DemoCourse) {
-  const counts = { video: 0, quiz: 0, article: 0, assignment: 0, coding_problem: 0 };
+  const counts = {
+    video: 0, quiz: 0, article: 0, assignment: 0, coding_problem: 0,
+    // Vocational primitives. Counted separately because a card that advertises
+    // "18 coding problems" for a refrigeration course is worse than silence,
+    // and because `practical` is the number those courses lead with.
+    worksheet: 0, scenario: 0, evidence: 0, lab: 0, deck: 0, speaking: 0,
+    partid: 0, deliverable: 0,
+  };
   for (const t of topicsOf(course)) {
     for (const kind of t.kinds) {
       if (kind === "video") counts.video++;
@@ -494,9 +746,20 @@ export function itemCounts(course: DemoCourse) {
       else if (kind === "article") counts.article++;
       else if (kind === "assignment") counts.assignment++;
       else if (kind === "coding") counts.coding_problem++;
+      else counts[kind]++;
     }
   }
   return counts;
+}
+
+/**
+ * Hands-on items in a course: everything that is neither reading nor recall.
+ *
+ * The vocational catalogue is sold on this number, not on the article count.
+ */
+export function practicalCount(course: DemoCourse): number {
+  const c = itemCounts(course);
+  return c.worksheet + c.scenario + c.evidence + c.lab + c.speaking + c.partid + c.deliverable;
 }
 
 /**

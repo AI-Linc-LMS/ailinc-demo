@@ -25,6 +25,7 @@ import "./content";
 import "./courses";
 import "./dashboard";
 import "./journey";
+import "./practicals";
 import "./progression";
 import "./quiz";
 

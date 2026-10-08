@@ -40,13 +40,21 @@ import {
 import { articleBody } from "../../db/article-content";
 import { QUIZ_BANK, bankForTopic, type DemoMcq } from "../../db/quiz-bank";
 import { CODING_PROBLEMS, problemAt } from "../../db/coding-bank";
+import { peekTopic } from "../../db/curriculum";
 import { INSTRUCTOR_PERSONA, STUDENT_PERSONA, STUDENTS } from "../../db/people";
 import { DEMO_CLIENT_ID, DEMO_TENANT } from "../../config";
 import { clientInfo } from "../../db/tenant";
 import { overlay, nextDemoId } from "../../db/overlay";
 import { iso, isoDaysAgo, nowMs } from "../../clock";
 import { seededInt, seededPick } from "../../random";
-import { ARTICLE_ID, CODING_ID, QUIZ_ID, VIDEO_ID, conceptsFor } from "./adaptive-courses";
+import {
+  ARTICLE_ID,
+  CODING_ID,
+  QUIZ_ID,
+  VIDEO_ID,
+  PRACTICAL_ID,
+  conceptsFor,
+} from "./adaptive-courses";
 
 const MODULE = "course-builder";
 
@@ -55,8 +63,29 @@ const DEMO_CLIENT = DEMO_CLIENT_ID;
 
 /* ────────────────────────────────────────────────────────────── content kinds */
 
-/** The API's content-type enum. The builder and the lesson page both key off it. */
-type ContentType = "Article" | "Quiz" | "CodingProblem" | "Assignment" | "VideoTutorial";
+/**
+ * The API's content-type enum. The builder and the lesson page both key off it.
+ *
+ * The eight practical types are first class here, not a sub-kind of Assignment.
+ * An administrator building a refrigeration course has to be able to add a
+ * Worksheet or an EvidenceTask and see it named as such in the gradebook; if
+ * they all collapse to "Assignment" the builder cannot express the course and
+ * the marks column lies about what was assessed.
+ */
+type ContentType =
+  | "Article"
+  | "Quiz"
+  | "CodingProblem"
+  | "Assignment"
+  | "VideoTutorial"
+  | "Worksheet"
+  | "Scenario"
+  | "EvidenceTask"
+  | "GuidedLab"
+  | "TermDeck"
+  | "SpeakingTask"
+  | "PartIdentification"
+  | "Deliverable";
 
 /** The adaptive builder's lowercase vocabulary for the same five things. */
 type ContentKind = "article" | "quiz" | "coding" | "video" | "attachment";
@@ -70,6 +99,14 @@ const TYPE_OF_KIND: Record<DemoTopic["kinds"][number], ContentType> = {
   coding: "CodingProblem",
   assignment: "Assignment",
   video: "VideoTutorial",
+  worksheet: "Worksheet",
+  scenario: "Scenario",
+  evidence: "EvidenceTask",
+  lab: "GuidedLab",
+  deck: "TermDeck",
+  speaking: "SpeakingTask",
+  partid: "PartIdentification",
+  deliverable: "Deliverable",
 };
 
 /** Marks a content item is worth, by type. Used by the lesson header and the gradebook. */
@@ -79,6 +116,14 @@ const MARKS_OF_TYPE: Record<ContentType, number> = {
   CodingProblem: 30,
   Assignment: 50,
   VideoTutorial: 5,
+  Worksheet: 30,
+  Scenario: 25,
+  EvidenceTask: 40,
+  GuidedLab: 20,
+  TermDeck: 10,
+  SpeakingTask: 20,
+  PartIdentification: 15,
+  Deliverable: 50,
 };
 
 const MINUTES_OF_TYPE: Record<ContentType, number> = {
@@ -87,6 +132,14 @@ const MINUTES_OF_TYPE: Record<ContentType, number> = {
   CodingProblem: 35,
   Assignment: 90,
   VideoTutorial: 12,
+  Worksheet: 25,
+  Scenario: 12,
+  EvidenceTask: 50,
+  GuidedLab: 35,
+  TermDeck: 6,
+  SpeakingTask: 10,
+  PartIdentification: 10,
+  Deliverable: 100,
 };
 
 /* ──────────────────────────────────────────────────────────────── the overlay */
@@ -365,6 +418,10 @@ function seedContentId(topic: DemoTopic, kind: DemoTopic["kinds"][number]): numb
       return VIDEO_ID(topic);
     case "assignment":
       return ASSIGNMENT_ID(topic);
+    default:
+      // Practical kinds. The id band is owned by adaptive-courses.ts so the
+      // builder and the learner-facing routes agree on which row is which.
+      return PRACTICAL_ID(kind, topic, 0);
   }
 }
 
@@ -397,6 +454,22 @@ function labelForContent(topicTitle: string, type: ContentType): string {
       return `${topicTitle}: submitted work`;
     case "VideoTutorial":
       return `${topicTitle}: walkthrough`;
+    case "Worksheet":
+      return `${topicTitle}: working paper`;
+    case "Scenario":
+      return `${topicTitle}: decision run`;
+    case "EvidenceTask":
+      return `${topicTitle}: evidence of work`;
+    case "GuidedLab":
+      return `${topicTitle}: guided procedure`;
+    case "TermDeck":
+      return `${topicTitle}: recall deck`;
+    case "SpeakingTask":
+      return `${topicTitle}: speaking task`;
+    case "PartIdentification":
+      return `${topicTitle}: name the parts`;
+    case "Deliverable":
+      return `${topicTitle}: deliverable`;
   }
 }
 
@@ -753,6 +826,61 @@ function contentDetails(content: BuilderContent): Record<string, unknown> {
         description: `Walkthrough of ${topic.title.toLowerCase()}.`,
         difficulty_level: course.difficulty,
       };
+    default: {
+      /* The eight practical types. The administrator surface is read-mostly for
+       * these: what they contain lives in the course's authored chunk, which is
+       * loaded by the learner-facing routes. `peekTopic` is a cache read, not a
+       * lookup, so a miss means "not fetched yet" rather than "does not exist",
+       * and the row must still describe itself. */
+      const authored = peekTopic(course.id, topic.id);
+      const BLURB: Record<string, string> = {
+        Worksheet: "A working paper the learner fills in, marked cell by cell with method marks for a figure that is right given their own earlier number.",
+        Scenario: "A branching decision run. Scored over the whole path, with a safety or compliance breach capping the result.",
+        EvidenceTask: "Photo, video or audio of real work, marked by an assessor against a published rubric. Nothing here is auto-scored.",
+        GuidedLab: "A gated procedure. Hazard steps cannot be advanced past, and readings are checked against their expected range.",
+        TermDeck: "Spaced-repetition recall. The schedule is held server side so two devices cannot disagree about when a card is due.",
+        SpeakingTask: "A listening, read-aloud or spoken-response task. Pronunciation is scored per word, task completion separately.",
+        PartIdentification: "Identify parts on a diagram, then put them in assembly order and match the terminals.",
+        Deliverable: "A document produced and submitted, marked against a rubric the learner can read before starting.",
+      };
+      const counts: Record<string, number | undefined> = {
+        Worksheet: authored?.worksheets?.[0]?.cells?.length,
+        Scenario: authored?.scenarios?.[0]?.nodes?.length,
+        EvidenceTask: authored?.evidence?.[0]?.captures?.length,
+        GuidedLab: authored?.labs?.[0]?.steps?.length,
+        TermDeck: authored?.decks?.[0]?.cards?.length,
+        SpeakingTask: authored?.speaking?.[0]?.rubric?.length,
+        PartIdentification: authored?.parts?.[0]?.hotspots?.length,
+        Deliverable: authored?.deliverables?.[0]?.rubric?.length,
+      };
+      const UNIT: Record<string, string> = {
+        Worksheet: "marked cells",
+        Scenario: "decision points",
+        EvidenceTask: "required captures",
+        GuidedLab: "steps",
+        TermDeck: "cards",
+        SpeakingTask: "rubric criteria",
+        PartIdentification: "parts to name",
+        Deliverable: "rubric criteria",
+      };
+      const n = counts[content.content_type];
+      return {
+        id: content.content_id,
+        title: content.title,
+        difficulty_level: course.difficulty,
+        description: BLURB[content.content_type] ?? "A practical task.",
+        content:
+          `<p>${BLURB[content.content_type] ?? "A practical task."}</p>` +
+          (n
+            ? `<p>This one has <strong>${n} ${UNIT[content.content_type]}</strong>.</p>`
+            : "") +
+          `<p>Practical items are authored in the course content file and marked by ` +
+          `<code>lib/demo/http/handlers/practicals.ts</code>. Editing them from this screen is ` +
+          `not wired up yet.</p>`,
+        marks: MARKS_OF_TYPE[content.content_type],
+        duration_in_minutes: MINUTES_OF_TYPE[content.content_type],
+      };
+    }
   }
 }
 

@@ -23,6 +23,26 @@
 import type { AuthoredTopic, CourseCurriculum } from "./types";
 
 export type { AuthoredTopic, AuthoredProblem, AuthoredQuestion, ReadingTier } from "./types";
+export type {
+  RubricCriterion,
+  AuthoredWorksheet,
+  WorksheetColumn,
+  WorksheetRow,
+  WorksheetCell,
+  WorksheetInvariant,
+  AuthoredScenario,
+  ScenarioNode,
+  ScenarioChoice,
+  AuthoredEvidenceTask,
+  AuthoredLab,
+  LabStep,
+  AuthoredDeck,
+  DeckCard,
+  AuthoredSpeakingTask,
+  AuthoredPartTask,
+  PartHotspot,
+  AuthoredDeliverable,
+} from "./types";
 
 /**
  * Static map of course id to importer.
@@ -37,6 +57,10 @@ const LOADERS: Record<number, () => Promise<{ default: CourseCurriculum }>> = {
   203: () => import("./course-203"),
   204: () => import("./course-204"),
   205: () => import("./course-205"),
+  206: () => import("./course-206"),
+  207: () => import("./course-207"),
+  208: () => import("./course-208"),
+  209: () => import("./course-209"),
 };
 
 /** Chunks already fetched. A second visit to a course must not re-parse it. */
