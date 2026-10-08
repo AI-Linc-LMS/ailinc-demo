@@ -1524,7 +1524,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "A single phase motor needs the capacitor's phase shift to produce starting torque. Without it the motor sits drawing locked rotor current and trips on overload, which is exactly the symptom described. It also often starts if spun by hand, because the asymmetry is only needed to begin.",
+          "A single phase motor cannot start on its own, because one alternating field produces no rotating torque. The run capacitor shifts the start winding current out of phase, and the two offset fields are what produce rotation. Take the capacitor away and the motor sits there drawing locked rotor current, which is five to seven times its running current, until the overload opens. That is precisely the symptom described. The confirming test costs nothing: a motor in this state will usually run if you spin it by hand, because it needs the asymmetry only to begin, not to continue. The thermostat and the expansion valve are both wrong for the same reason, which is that neither is in the circuit at the moment of starting, and a condenser fan fault produces high head pressure several minutes in rather than a trip in seconds.",
         difficulty: "Easy",
         skill: "Run capacitor",
       },
@@ -1539,7 +1539,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "Tolerance is usually around five or six per cent, so 31 against 45 is far outside it. Bulging is conclusive evidence of failure but its absence proves nothing, and a clean-looking capacitor measuring thirty per cent low is the more common case.",
+          "Tolerance on a run capacitor is usually around five or six per cent, so 31 against a marked 45 is not marginal, it is a failed component. The trap in this question is the word intact. Bulging is conclusive evidence of failure, but its absence proves nothing at all, and a clean-looking capacitor measuring thirty per cent low is by far the more common presentation. Dielectric ageing is gradual, driven by heat and ripple current, and it does not deform the can until very late. This is the argument for measuring capacitance at every service visit and writing the number down: the degradation is close to monotonic, so a capacitor that has lost ten per cent in a year is visible in the trend and can be replaced during a planned visit instead of an emergency call in peak season.",
         difficulty: "Medium",
         skill: "Run capacitor",
       },
@@ -1554,7 +1554,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "The two smaller readings add to the largest, 2.1 plus 5.4 is 7.5, so the largest is run to start and the terminal common to the two smaller readings is C. The 2.1 reading goes to the run winding and the 5.4 to the higher-resistance start winding.",
+          "The two smaller readings must add to the largest, and 2.1 plus 5.4 is 7.5 exactly. That tells you the 7.5 reading spans run to start, which means the terminal NOT involved in it is common, and common is therefore the terminal shared by the two smaller readings. From there the rest follows: the lower of the two, 2.1 ohms, is the run winding, because it is wound with heavier wire to carry continuous current; the 5.4 is the start winding, which is thinner and higher resistance because it is only energised briefly. The reason this is worth doing by arithmetic rather than by reading the terminal markings is that markings are routinely obscured by oil, corrosion or a previous repair, and the sum rule works regardless.",
         difficulty: "Hard",
         skill: "Common terminal",
       },
@@ -1569,7 +1569,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "For a healthy motor the two smaller readings must sum to the largest, and 3.0 plus 4.0 is 7.0 rather than 9.0. A violation of the sum rule is evidence of an open or shorted winding rather than a terminal identification problem, which saves re-measuring a motor that is already condemned.",
+          "For a healthy motor the two smaller readings must sum to the largest, because the windings are in series between run and start with common tapped between them. Here 3.0 plus 4.0 is 7.0 and the largest reading is 9.0, so the rule is violated and no assignment of terminals can make it work. The important consequence is diagnostic rather than arithmetic: a broken sum rule is evidence of an open or shorted winding, not a terminal identification problem you have got wrong. Recognising that saves re-measuring a motor that is already condemned, and it redirects you to the test that should come next, which is insulation resistance between each winding and the shell. A compressor that fails the sum rule is replaced; the megohmmeter reading tells you whether it took the contactor with it.",
         difficulty: "Hard",
         skill: "Winding resistance",
       },
@@ -1584,7 +1584,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "If the coil pulls in, the control circuit and the coil are both working. That leaves the load side, and contacts burn and pit over time, so you can have a contactor that closes mechanically while passing very little. The test is voltage drop across the closed contacts under load.",
+          "If the coil pulls in audibly, the control circuit reached it and the coil itself is sound, which eliminates both of those answers. That leaves the load side. Contacts erode every time they break an inductive load, and a pitted contact can close mechanically while passing very little current, so the contactor looks and sounds like it is working. The test is a voltage drop measurement across the closed contacts while the compressor is trying to start, and it has to be under load: an unloaded meter reads full voltage across a contact that will collapse the instant current flows. More than a volt or so across a closed contact condemns it. This is the single most common reason a control fault is written up as intermittent, because every static test passes.",
         difficulty: "Medium",
         skill: "Contactor",
       },
@@ -1599,7 +1599,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "Welded contacts mean the control circuit can no longer stop the compressor, so the unit remains live when a technician believes the control has switched it off. This is one of the concrete reasons proving dead is done at the point of work rather than inferred from the control state.",
+          "Welded contacts mean the control circuit can no longer stop the compressor. The unit runs regardless of thermostat demand, and it remains live at the terminals when a technician believes the control has switched it off. That is the hazard, and it is not hypothetical: it is one of the concrete reasons proving dead is performed at the point of work rather than inferred from the state of a control. The distractors describe things that are either untrue or are the opposite failure. A welded contactor does not prevent starting, it prevents stopping, and a unit that short cycles itself to death on a welded contactor usually presents first as a high electricity bill or a compressor that is too hot to touch rather than as a unit that will not run.",
         difficulty: "Medium",
         skill: "Contactor",
       },
@@ -1614,7 +1614,7 @@ const curriculum: CourseCurriculum = {
         ],
         answer: 0,
         explanation:
-          "A hard start kit raises starting torque and will mask a failing run capacitor, a sticking valve plate or voltage sag on an undersized supply. It converts an intermittent, diagnosable fault into a system that starts reliably until the real problem finishes the compressor.",
+          "A hard start kit raises starting torque, and torque is not the fault here, it is the symptom. Fitting one will mask a failing run capacitor, a sticking valve plate, or voltage sag on an undersized or over-long supply cable, all of which present identically as a compressor that struggles to start. What the kit does is convert an intermittent and diagnosable fault into a system that starts reliably right up until the underlying problem finishes the compressor, at which point the diagnosis costs a compressor instead of a capacitor. Note that none of the other options is a reason against fitting one: age is irrelevant, a capillary system is actually the classic candidate because pressures do not equalise quickly, and having measured the supply voltage is an argument for fitting a kit rather than against it.",
         difficulty: "Hard",
         skill: "Start winding",
       },
