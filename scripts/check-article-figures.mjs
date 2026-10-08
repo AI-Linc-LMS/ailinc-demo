@@ -153,68 +153,30 @@ for (const { course, topic, label } of CASES) {
  *
  * PracticalProse is a separate renderer from the article body with its own
  * copy of the figure CSS, so an svg that survives one can still be dropped or
- * crushed by the other. These are the briefs that carry a diagram.
+ * crushed by the other. These are the briefs a learner meets on arrival.
+ *
+ * Figures behind a gate are deliberately NOT here. The evacuation lab keeps
+ * its decay curve on step seven of a ten-step procedure, and a worked answer
+ * is released only after submission, so neither is in the DOM to be measured.
+ * Driving ten steps of a stepper to reach one of them is a harness that breaks
+ * the next time a control is renamed, and one that quietly stops reaching its
+ * target is worse than none. Legibility is a property of the figure rather
+ * than of the renderer, so that rule lives in verify-curriculum, where every
+ * authored figure is visible whether or not a learner can get to it yet. What
+ * is left here is the renderer question, and one page answers it.
  */
 const PRACTICALS = [
   { course: 206, topic: 5073, seg: "worksheet", id: 1_505_073 },
   { course: 207, topic: 5086, seg: "evidence", id: 1_705_086 },
   { course: 207, topic: 5090, seg: "scenario", id: 1_605_090 },
-  // The decay curve lives on step seven of a gated procedure, so it is not in
-  // the DOM until the PPE gate and six steps are behind it. Driving the
-  // stepper is the only honest way to check it; a harness that skipped it
-  // would be a check that cannot fail.
-  { course: 207, topic: 5092, seg: "lab", id: 1_805_092, drive: "lab" },
   { course: 208, topic: 5104, seg: "speaking", id: 2_005_104 },
   { course: 209, topic: 5106, seg: "parts", id: 2_105_106 },
   { course: 209, topic: 5116, seg: "deliverable", id: 2_205_116 },
 ];
 
-for (const { course, topic, seg, id, drive } of PRACTICALS) {
+for (const { course, topic, seg, id } of PRACTICALS) {
   await goto(page, `${BASE}/adaptive-courses/${course}/submodule/${topic}/${seg}/${id}`);
 
-  if (drive === "lab") {
-    await page.waitForTimeout(2500);
-    // The PPE gate: each item is a button that toggles, not a checkbox, and
-    // step one stays locked until every one of them is confirmed.
-    const CHROME = /^(Guide|Back to the lesson|\d+|Begin the procedure|Confirm every item above to begin|Today's Leaders)$/i;
-    const ppe = page.locator("button");
-    for (let i = 0; i < (await ppe.count()); i++) {
-      const label = (await ppe.nth(i).innerText().catch(() => "")).replace(/\s+/g, " ").trim();
-      if (!label || CHROME.test(label)) continue;
-      await ppe.nth(i).click().catch(() => {});
-    }
-    await page.waitForTimeout(500);
-    const begin = page.getByRole("button", { name: /Begin the procedure/i });
-    if (!(await begin.count())) {
-      problems.push(`${course}/${topic} lab: PPE gate never unlocked, so the procedure cannot be driven`);
-    }
-    await begin.click().catch(() => {});
-    await page.waitForTimeout(900);
-    // Then walk steps until the figure appears. Some steps want a reading
-    // before they will advance, so fill any empty number field on the way.
-    for (let step = 0; step < 14; step++) {
-      if (await page.locator("figure svg").count()) break;
-      const nums = page.locator('input[type="number"]');
-      for (let i = 0; i < (await nums.count()); i++) {
-        if (!(await nums.nth(i).inputValue())) await nums.nth(i).fill("450").catch(() => {});
-      }
-      // A hazard step wants the acknowledgement BEFORE it will advance, and
-      // the two controls are separate. Matching them with one loose pattern
-      // clicked the acknowledgement every time and never moved a step.
-      const ack = page.getByRole("button", { name: /^I have read this and done it$/i }).first();
-      if (await ack.count()) {
-        await ack.click().catch(() => {});
-        await page.waitForTimeout(250);
-      }
-      const next = page.getByRole("button", { name: /^Step done, next$/i }).first();
-      if (!(await next.count())) break;
-      await next.click().catch(() => {});
-      await page.waitForTimeout(650);
-    }
-  }
-  // A lab gates its first step behind a PPE confirmation and a scenario opens
-  // on its first node, so the figure may be below a control rather than on
-  // screen. Waiting for it in the DOM is the right test either way.
   const found = await page
     .waitForSelector("figure svg", { timeout: 30000 })
     .then(() => true)

@@ -2552,9 +2552,12 @@ const curriculum: CourseCurriculum = {
 <h3>The site you are planning for</h3>
 <figure>
 <svg viewBox="0 0 1000 640" role="img" aria-label="Airspace zones around an aerodrome with the venue inside the yellow zone">
+<defs><clipPath id="zoneMap"><rect x="30" y="30" width="940" height="430" rx="18"/></clipPath></defs>
 <rect x="30" y="30" width="940" height="430" rx="18" fill="#0f766e" opacity="0.13"/>
+<g clip-path="url(#zoneMap)">
 <circle cx="740" cy="210" r="290" fill="#b45309" opacity="0.2"/>
 <circle cx="740" cy="210" r="148" fill="#be123c" opacity="0.28"/>
+</g>
 <path d="M702 210 h76 M740 172 v76" stroke="currentColor" opacity="0.8" stroke-width="7"/>
 <text x="740" y="286" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">AERODROME</text>
 <circle cx="520" cy="332" r="17" fill="currentColor"/>

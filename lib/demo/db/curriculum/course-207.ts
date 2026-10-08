@@ -1329,10 +1329,10 @@ const curriculum: CourseCurriculum = {
 <rect x="520" y="40" width="450" height="300" rx="16" fill="none" stroke="#0f766e" stroke-width="5"/>
 <rect x="556" y="90" width="150" height="104" rx="10" fill="none" stroke="currentColor" stroke-width="6" opacity="0.7"/>
 <path d="M578 142 h106" stroke="currentColor" stroke-width="6" opacity="0.7"/>
-<text x="631" y="222" font-size="24" font-weight="700" fill="currentColor" opacity="0.75" text-anchor="middle">isolator, locked</text>
+<text x="631" y="222" font-size="26" font-weight="700" fill="currentColor" opacity="0.75" text-anchor="middle">isolator, locked</text>
 <rect x="744" y="110" width="170" height="104" rx="10" fill="none" stroke="currentColor" stroke-width="6" opacity="0.7"/>
 <rect x="766" y="134" width="126" height="38" rx="5" fill="currentColor" opacity="0.25"/>
-<text x="829" y="242" font-size="24" font-weight="700" fill="currentColor" opacity="0.75" text-anchor="middle">meter, reading</text>
+<text x="829" y="242" font-size="26" font-weight="700" fill="currentColor" opacity="0.75" text-anchor="middle">meter, reading</text>
 <rect x="596" y="256" width="300" height="56" rx="8" fill="#0f766e" opacity="0.25"/>
 <text x="746" y="294" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">YOUR ID + TODAY</text>
 <circle cx="930" cy="76" r="26" fill="#0f766e"/>
@@ -2321,7 +2321,7 @@ const curriculum: CourseCurriculum = {
 <circle cx="150" cy="240" r="24" fill="#0f766e"/>
 <text x="150" y="190" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">09:00</text>
 <text x="150" y="304" font-size="27" font-weight="700" fill="currentColor" opacity="0.8" text-anchor="middle">Not cooling</text>
-<text x="150" y="338" font-size="25" fill="currentColor" opacity="0.6" text-anchor="middle">first floor flat</text>
+<text x="150" y="338" font-size="26" fill="currentColor" opacity="0.6" text-anchor="middle">first floor flat</text>
 <circle cx="382" cy="240" r="24" fill="currentColor" opacity="0.45"/>
 <text x="382" y="190" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">10:30</text>
 <text x="382" y="304" font-size="27" font-weight="700" fill="currentColor" opacity="0.8" text-anchor="middle">Service due</text>

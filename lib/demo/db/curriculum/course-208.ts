@@ -2188,42 +2188,34 @@ const curriculum: CourseCurriculum = {
         lang: "de-DE",
         prompt: `<p>You are at the counter. Handle the whole interaction in German.</p>
 <figure>
-<svg viewBox="0 0 1000 560" role="img" aria-label="The four stages of the counter exchange at a registration office">
-<rect x="24" y="40" width="226" height="300" rx="16" fill="#7c3aed" opacity="0.1"/>
-<rect x="24" y="40" width="226" height="300" rx="16" fill="none" stroke="#7c3aed" stroke-width="3"/>
-<circle cx="70" cy="90" r="25" fill="#7c3aed"/>
-<text x="70" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
-<text x="48" y="168" font-size="30" font-weight="800" fill="currentColor">Guten Tag</text>
-<text x="48" y="226" font-size="25" fill="currentColor" opacity="0.8">Greet, then say</text>
-<text x="48" y="260" font-size="25" fill="currentColor" opacity="0.8">why you are here.</text>
-<text x="48" y="312" font-size="24" font-weight="800" fill="#7c3aed">Ich moechte mich anmelden</text>
-<rect x="274" y="40" width="226" height="300" rx="16" fill="#0369a1" opacity="0.1"/>
-<rect x="274" y="40" width="226" height="300" rx="16" fill="none" stroke="#0369a1" stroke-width="3"/>
-<circle cx="320" cy="90" r="25" fill="#0369a1"/>
-<text x="320" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
-<text x="298" y="168" font-size="30" font-weight="800" fill="currentColor">Papiere</text>
-<text x="298" y="226" font-size="25" fill="currentColor" opacity="0.8">Hand over the</text>
-<text x="298" y="260" font-size="25" fill="currentColor" opacity="0.8">documents asked for.</text>
-<text x="298" y="312" font-size="24" font-weight="800" fill="#0369a1">Hier, bitte schoen</text>
-<rect x="524" y="40" width="226" height="300" rx="16" fill="#b45309" opacity="0.1"/>
-<rect x="524" y="40" width="226" height="300" rx="16" fill="none" stroke="#b45309" stroke-width="3"/>
-<circle cx="570" cy="90" r="25" fill="#b45309"/>
-<text x="570" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
-<text x="548" y="168" font-size="30" font-weight="800" fill="currentColor">Fragen</text>
-<text x="548" y="226" font-size="25" fill="currentColor" opacity="0.8">Closed questions,</text>
-<text x="548" y="260" font-size="25" fill="currentColor" opacity="0.8">asked fast.</text>
-<text x="548" y="312" font-size="24" font-weight="800" fill="#b45309">Seit wann wohnen Sie da?</text>
-<rect x="774" y="40" width="202" height="300" rx="16" fill="#0f766e" opacity="0.1"/>
-<rect x="774" y="40" width="202" height="300" rx="16" fill="none" stroke="#0f766e" stroke-width="3"/>
-<circle cx="820" cy="90" r="25" fill="#0f766e"/>
-<text x="820" y="101" font-size="30" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
-<text x="798" y="168" font-size="30" font-weight="800" fill="currentColor">Abschluss</text>
-<text x="798" y="226" font-size="25" fill="currentColor" opacity="0.8">Take the paper,</text>
-<text x="798" y="260" font-size="25" fill="currentColor" opacity="0.8">then thank them.</text>
-<text x="798" y="312" font-size="24" font-weight="800" fill="#0f766e">Vielen Dank</text>
-<rect x="24" y="394" width="952" height="130" rx="16" fill="#be123c" opacity="0.12"/>
-<text x="500" y="446" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">When you lose the thread, say so.</text>
-<text x="500" y="492" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Wie bitte? &#183; Koennen Sie das bitte wiederholen?</text>
+<svg viewBox="0 0 1000 652" role="img" aria-label="The four stages of the counter exchange at a registration office">
+<rect x="24" y="24" width="952" height="110" rx="16" fill="#7c3aed" opacity="0.1"/>
+<rect x="24" y="24" width="952" height="110" rx="16" fill="none" stroke="#7c3aed" stroke-width="3"/>
+<circle cx="80" cy="79" r="28" fill="#7c3aed"/>
+<text x="80" y="91" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+<text x="144" y="74" font-size="34" font-weight="800" fill="currentColor">Guten Tag. Ich moechte mich anmelden.</text>
+<text x="144" y="114" font-size="27" fill="currentColor" opacity="0.75">Greet, and say why you are here.</text>
+<rect x="24" y="146" width="952" height="110" rx="16" fill="#0369a1" opacity="0.1"/>
+<rect x="24" y="146" width="952" height="110" rx="16" fill="none" stroke="#0369a1" stroke-width="3"/>
+<circle cx="80" cy="201" r="28" fill="#0369a1"/>
+<text x="80" y="213" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">2</text>
+<text x="144" y="196" font-size="34" font-weight="800" fill="currentColor">Hier, bitte schoen.</text>
+<text x="144" y="236" font-size="27" fill="currentColor" opacity="0.75">Hand over the documents asked for.</text>
+<rect x="24" y="268" width="952" height="110" rx="16" fill="#b45309" opacity="0.1"/>
+<rect x="24" y="268" width="952" height="110" rx="16" fill="none" stroke="#b45309" stroke-width="3"/>
+<circle cx="80" cy="323" r="28" fill="#b45309"/>
+<text x="80" y="335" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">3</text>
+<text x="144" y="318" font-size="34" font-weight="800" fill="currentColor">Seit wann wohnen Sie da?</text>
+<text x="144" y="358" font-size="27" fill="currentColor" opacity="0.75">Closed questions, asked fast. The hard part.</text>
+<rect x="24" y="390" width="952" height="110" rx="16" fill="#0f766e" opacity="0.1"/>
+<rect x="24" y="390" width="952" height="110" rx="16" fill="none" stroke="#0f766e" stroke-width="3"/>
+<circle cx="80" cy="445" r="28" fill="#0f766e"/>
+<text x="80" y="457" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">4</text>
+<text x="144" y="440" font-size="34" font-weight="800" fill="currentColor">Vielen Dank.</text>
+<text x="144" y="480" font-size="27" fill="currentColor" opacity="0.75">Take the paper, then thank them.</text>
+<rect x="24" y="518" width="952" height="110" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="566" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">When you lose the thread, say so.</text>
+<text x="500" y="606" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Wie bitte? &#183; Koennen Sie das bitte wiederholen?</text>
 </svg>
 <figcaption><strong>Four moves, and only two of them need sentences you compose.</strong> Stages one and four are fixed phrases you can have ready. Stage three is comprehension under time pressure, which is the hard part, and asking for a repeat is a normal move at that counter rather than an admission of failure.</figcaption>
 </figure>
