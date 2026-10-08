@@ -27,24 +27,172 @@ const curriculum: CourseCurriculum = {
       "Letter w": "Pronounced like an English v. The English w sound does not exist in German.",
     },
     body: {
-      Beginner: `<p>German spelling is honest. Unlike English, a letter almost always sounds the same way. That means a short list of rules gets you a long way.</p>
-<p><strong>w sounds like v.</strong> Wasser is "vasser". <strong>v usually sounds like f.</strong> Vater is "fater". <strong>z always sounds like ts.</strong> Zwei is "tsvai", never "zwai".</p>
-<p><strong>The dots change the vowel.</strong> They are not decoration. Schon means already; schön means beautiful. Different words.</p>
-<p><strong>ch is not k.</strong> After i or e it is a soft hiss made at the front of your mouth, like the start of the English word "huge". Milch is not "milk".</p>
-<p><strong>ei sounds like "eye" and ie sounds like "ee".</strong> This feels backwards to English speakers and it is the single most common reading mistake. Bier is "beer". Mein is "mine".</p>
-<p>Six rules. Practise them out loud rather than reading them, because the muscles have to learn this and your eyes cannot do it for them.</p>`,
-      Intermediate: `<p>German orthography is close to phonemic, so unlike English the written form is a reliable guide once you know the correspondences. The investment in learning them is small and it pays on every word you ever read.</p>
-<p>The umlauts are genuinely new sounds rather than modifications you can approximate. For ü, hold your tongue where it sits for "ee" and round your lips as for "oo"; for ö, hold the tongue for "eh" and round the lips as for "oh". The reason approximating fails is that these distinctions carry meaning: Mutter is mother and Mütter is mothers, schwul and schwül are entirely different words.</p>
-<p>The two ch sounds are allophones determined by the preceding vowel, which means you do not have to choose. After a, o, u and au it is the back-of-throat Ach-Laut as in Buch. After everything else, including i, e, ä, ö, ü and consonants, it is the front Ich-Laut as in ich and Milch. Substituting k for either is the single most recognisable marker of a foreign accent.</p>
-<p>Final devoicing is the rule nobody teaches early enough. A b, d or g at the end of a syllable is pronounced as p, t or k, so Tag ends in a k sound and Hund ends in a t. It matters for comprehension as much as for production, because you will hear "hunt" and need to recognise Hund.</p>`,
-      Advanced: `<p>The functional load of these distinctions is what makes them worth drilling rather than approximating. Front rounded vowels carry grammatical information in German, most visibly in plural formation and in the subjunctive, so a learner who collapses ü into u is not merely accented: they are deleting morphology. Mutter and Mütter differ only in that vowel, and so do a long list of singular and plural pairs.</p>
-<p>The ch allophony is conditioned by the preceding segment rather than chosen, which is pedagogically useful because it removes a decision. The one systematic exception worth knowing is the diminutive suffix -chen, which takes the front Ich-Laut regardless of what precedes it, so Frauchen does not take the back sound its preceding vowel would otherwise dictate. That exception exists because the morpheme boundary blocks the assimilation.</p>
-<p>The r is the sound most courses teach badly by ignoring it. In standard German it is uvular in onset position, close to the French r, but in syllable codas and in the unstressed -er ending it vocalises to something near a schwa: Vater ends in a vowel, not a consonant. Learners who produce an English retroflex r in coda position sound markedly foreign even when every other sound is correct, and the fix is to stop producing a consonant there at all.</p>
-<p>Prosody matters more than any single segment and is almost never taught at A1. German is stress-timed with fairly even syllable weight and strong word-initial stress in native vocabulary, and it tolerates consonant clusters that English would break up. A learner who inserts an epenthetic vowel into Strumpf or Herbst will be understood with effort; one who gets the clusters and the stress right will be understood even with imperfect vowels.</p>`,
-      Expert: `<p>The umlaut vowels are front rounded, a cross-linguistically marked combination that English lacks entirely, and the acquisition literature is consistent that the difficulty is perceptual before it is articulatory. Learners assimilate ü to their nearest native category, typically /u/, and because they cannot reliably hear the contrast they cannot monitor their own production. The pedagogical implication is that discrimination training precedes production training, which inverts how most courses sequence it, and it is the reason a listening task on minimal pairs belongs before a speaking task on the same sounds.</p>
-<p>Final devoicing, Auslautverhärtung, is a syllable-final neutralisation and its interaction with morphology is what makes it a genuine learning problem rather than a pronunciation rule. The underlying voiced segment resurfaces when a vowel-initial suffix resyllabifies it, so Tag is realised with a final k but Tage has an intervocalic g. A learner who has internalised the surface form as the lexical form will produce Take for Tage, which is a morphophonological error rather than a phonetic one.</p>
-<p>The vocalised r deserves formal treatment because it changes syllable structure rather than merely colouring a consonant. Coda r surfaces as a non-syllabic low central vocoid, and the -er sequence as a schwa-like vowel, which means words like Vater and besser are phonologically vowel-final. This has downstream effects on connected speech that learners notice as native speakers "swallowing" endings, and the fix is to produce the vowel rather than to listen harder.</p>
-<p>On assessment, the construct worth measuring at this level is intelligibility rather than nativelikeness, and those come apart in identifiable ways. Segmental errors on high functional load contrasts, chiefly the front rounded vowels and the ch distinction, damage intelligibility; errors on low functional load features such as the exact quality of the uvular r do not. A scoring scheme that weights all segments equally will penalise a perfectly comprehensible speaker and reward one whose accent is tidy but whose plurals are inaudible.</p>`,
+      Beginner: `<p>German has a handful of sounds English does not. Get these six roughly right and you will be understood; get them wrong and people will ask you to repeat yourself.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Six German sounds that change meaning, each with the English habit that gets it wrong">
+<rect x="24" y="40" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="50" y="92" font-size="34" font-weight="800" fill="#7c3aed">ue</text>
+<text x="50" y="136" font-size="27" font-weight="800" fill="currentColor">Muetter, ueber</text>
+<text x="50" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ee</text>
+<rect x="350" y="40" width="300" height="140" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="376" y="92" font-size="34" font-weight="800" fill="#0369a1">oe</text>
+<text x="376" y="136" font-size="27" font-weight="800" fill="currentColor">schoen, moechte</text>
+<text x="376" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ay</text>
+<rect x="676" y="40" width="300" height="140" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="702" y="92" font-size="34" font-weight="800" fill="#0f766e">ae</text>
+<text x="702" y="136" font-size="27" font-weight="800" fill="currentColor">Vaeter, spaet</text>
+<text x="702" y="168" font-size="26" fill="currentColor" opacity="0.75">like e in bed</text>
+<rect x="24" y="200" width="300" height="140" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="50" y="252" font-size="34" font-weight="800" fill="#b45309">ch soft</text>
+<text x="50" y="296" font-size="27" font-weight="800" fill="currentColor">ich, nicht</text>
+<text x="50" y="328" font-size="26" fill="currentColor" opacity="0.75">not ik, ever</text>
+<rect x="350" y="200" width="300" height="140" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="376" y="252" font-size="34" font-weight="800" fill="#be123c">ch hard</text>
+<text x="376" y="296" font-size="27" font-weight="800" fill="currentColor">Buch, acht</text>
+<text x="376" y="328" font-size="26" fill="currentColor" opacity="0.75">after a, o, u</text>
+<rect x="676" y="200" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="702" y="252" font-size="34" font-weight="800" fill="#7c3aed">final r</text>
+<text x="702" y="296" font-size="27" font-weight="800" fill="currentColor">Vater, aber</text>
+<text x="702" y="328" font-size="26" fill="currentColor" opacity="0.75">becomes a vowel</text>
+<rect x="24" y="372" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Four of the six do not exist in English.</text>
+<text x="500" y="468" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">So your mouth will substitute the nearest English sound</text>
+<text x="500" y="502" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">automatically, and you will not hear yourself do it.</text>
+</svg>
+<figcaption><strong>These six carry almost the whole of a foreign accent in German.</strong> They are worth more practice than any amount of vocabulary, because a listener forgives a missing word and struggles with a word they cannot identify.</figcaption>
+</figure>
+<h3>How to make the hard three</h3>
+<table>
+<tr><th>Sound</th><th>Do this</th></tr>
+<tr><td>ue</td><td>Round your lips for oo, then say ee without moving them</td></tr>
+<tr><td>oe</td><td>Round your lips for oh, then say ay without moving them</td></tr>
+<tr><td>ae</td><td>Just the e in bed, held a little longer</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Listen before you speak</span><p>You cannot correct a difference you cannot hear. Play a pair like Mutter and Muetter several times until the two sound obviously different to you, then try producing them.</p></div>
+<div class="warning"><span class="callout-label">The ich sound is the big one</span><p>Saying ik instead of ich marks every sentence you speak, because the word appears in nearly all of them. Start to say the y in yes, then blow air instead of making a sound.</p></div>`,
+      Intermediate: `<p>These sounds are not decoration. Four of them change the meaning of words, so a listener who mishears one has to reconstruct your sentence from context.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Six German sounds that change meaning, each with the English habit that gets it wrong">
+<rect x="24" y="40" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="50" y="92" font-size="34" font-weight="800" fill="#7c3aed">ue</text>
+<text x="50" y="136" font-size="27" font-weight="800" fill="currentColor">Muetter, ueber</text>
+<text x="50" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ee</text>
+<rect x="350" y="40" width="300" height="140" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="376" y="92" font-size="34" font-weight="800" fill="#0369a1">oe</text>
+<text x="376" y="136" font-size="27" font-weight="800" fill="currentColor">schoen, moechte</text>
+<text x="376" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ay</text>
+<rect x="676" y="40" width="300" height="140" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="702" y="92" font-size="34" font-weight="800" fill="#0f766e">ae</text>
+<text x="702" y="136" font-size="27" font-weight="800" fill="currentColor">Vaeter, spaet</text>
+<text x="702" y="168" font-size="26" fill="currentColor" opacity="0.75">like e in bed</text>
+<rect x="24" y="200" width="300" height="140" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="50" y="252" font-size="34" font-weight="800" fill="#b45309">ch soft</text>
+<text x="50" y="296" font-size="27" font-weight="800" fill="currentColor">ich, nicht</text>
+<text x="50" y="328" font-size="26" fill="currentColor" opacity="0.75">not ik, ever</text>
+<rect x="350" y="200" width="300" height="140" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="376" y="252" font-size="34" font-weight="800" fill="#be123c">ch hard</text>
+<text x="376" y="296" font-size="27" font-weight="800" fill="currentColor">Buch, acht</text>
+<text x="376" y="328" font-size="26" fill="currentColor" opacity="0.75">after a, o, u</text>
+<rect x="676" y="200" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="702" y="252" font-size="34" font-weight="800" fill="#7c3aed">final r</text>
+<text x="702" y="296" font-size="27" font-weight="800" fill="currentColor">Vater, aber</text>
+<text x="702" y="328" font-size="26" fill="currentColor" opacity="0.75">becomes a vowel</text>
+<rect x="24" y="372" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Four of the six do not exist in English.</text>
+<text x="500" y="468" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">So your mouth will substitute the nearest English sound</text>
+<text x="500" y="502" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">automatically, and you will not hear yourself do it.</text>
+</svg>
+<figcaption><strong>These six carry almost the whole of a foreign accent in German.</strong> They are worth more practice than any amount of vocabulary, because a listener forgives a missing word and struggles with a word they cannot identify.</figcaption>
+</figure>
+<h3>Pairs that differ only in the sound</h3>
+<table>
+<tr><th>Pair</th><th>Means</th></tr>
+<tr><td>Mutter / Muetter</td><td>mother / mothers</td></tr>
+<tr><td>schon / schoen</td><td>already / beautiful</td></tr>
+<tr><td>mochte / moechte</td><td>liked / would like</td></tr>
+<tr><td>Kirche / Kirsche</td><td>church / cherry</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Which ch you use is decided by the vowel before it</span><p>After a, o and u it is the hard sound from the back of the throat. Everywhere else it is the soft one. It is a rule rather than a judgement, so it can simply be learned.</p></div>
+<div class="warning"><span class="callout-label">The vanishing r is the one nobody teaches</span><p>An r at the end of a syllable is not pronounced as a consonant at all. Vater ends in something close to a short a. Producing an English r there is one of the strongest accent markers in the language, and it is easy to fix once you notice it.</p></div>`,
+      Advanced: `<p>The reason these are hard is mechanical rather than mysterious: adult learners perceive unfamiliar sounds through the categories of their first language, so a new sound gets filed as the nearest familiar one and produced that way.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Six German sounds that change meaning, each with the English habit that gets it wrong">
+<rect x="24" y="40" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="50" y="92" font-size="34" font-weight="800" fill="#7c3aed">ue</text>
+<text x="50" y="136" font-size="27" font-weight="800" fill="currentColor">Muetter, ueber</text>
+<text x="50" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ee</text>
+<rect x="350" y="40" width="300" height="140" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="376" y="92" font-size="34" font-weight="800" fill="#0369a1">oe</text>
+<text x="376" y="136" font-size="27" font-weight="800" fill="currentColor">schoen, moechte</text>
+<text x="376" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ay</text>
+<rect x="676" y="40" width="300" height="140" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="702" y="92" font-size="34" font-weight="800" fill="#0f766e">ae</text>
+<text x="702" y="136" font-size="27" font-weight="800" fill="currentColor">Vaeter, spaet</text>
+<text x="702" y="168" font-size="26" fill="currentColor" opacity="0.75">like e in bed</text>
+<rect x="24" y="200" width="300" height="140" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="50" y="252" font-size="34" font-weight="800" fill="#b45309">ch soft</text>
+<text x="50" y="296" font-size="27" font-weight="800" fill="currentColor">ich, nicht</text>
+<text x="50" y="328" font-size="26" fill="currentColor" opacity="0.75">not ik, ever</text>
+<rect x="350" y="200" width="300" height="140" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="376" y="252" font-size="34" font-weight="800" fill="#be123c">ch hard</text>
+<text x="376" y="296" font-size="27" font-weight="800" fill="currentColor">Buch, acht</text>
+<text x="376" y="328" font-size="26" fill="currentColor" opacity="0.75">after a, o, u</text>
+<rect x="676" y="200" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="702" y="252" font-size="34" font-weight="800" fill="#7c3aed">final r</text>
+<text x="702" y="296" font-size="27" font-weight="800" fill="currentColor">Vater, aber</text>
+<text x="702" y="328" font-size="26" fill="currentColor" opacity="0.75">becomes a vowel</text>
+<rect x="24" y="372" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Four of the six do not exist in English.</text>
+<text x="500" y="468" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">So your mouth will substitute the nearest English sound</text>
+<text x="500" y="502" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">automatically, and you will not hear yourself do it.</text>
+</svg>
+<figcaption><strong>These six carry almost the whole of a foreign accent in German.</strong> They are worth more practice than any amount of vocabulary, because a listener forgives a missing word and struggles with a word they cannot identify.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Which is why perception training comes first</span><p>Minimal pair listening, where the only task is to say which of two words you heard, builds the category. Production practice before the category exists is practising the substitution, and repetition makes the wrong version more automatic rather than less.</p></div>
+<h3>Rounding is the feature doing the work</h3>
+<p>The front rounded vowels combine a tongue position English uses with a lip position English never combines it with. That is the whole difficulty, and it is why the instruction to hold the lip shape and change only the tongue works better than any amount of imitation.</p>
+<h3>Final devoicing is systematic</h3>
+<p>Final b, d and g are said as p, t and k. Tag ends in a k sound, Hund in a t. The spelling keeps the voiced letter because the plural restores it: Tage and Hunde have a real g and d. One rule, hundreds of words.</p>`,
+      Expert: `<p>Worth being honest about the ceiling: adult learners rarely reach native pronunciation, and intelligibility rather than nativeness is the sensible target. The distinction matters because it tells you where to spend effort.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Six German sounds that change meaning, each with the English habit that gets it wrong">
+<rect x="24" y="40" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="50" y="92" font-size="34" font-weight="800" fill="#7c3aed">ue</text>
+<text x="50" y="136" font-size="27" font-weight="800" fill="currentColor">Muetter, ueber</text>
+<text x="50" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ee</text>
+<rect x="350" y="40" width="300" height="140" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="376" y="92" font-size="34" font-weight="800" fill="#0369a1">oe</text>
+<text x="376" y="136" font-size="27" font-weight="800" fill="currentColor">schoen, moechte</text>
+<text x="376" y="168" font-size="26" fill="currentColor" opacity="0.75">round lips, say ay</text>
+<rect x="676" y="40" width="300" height="140" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="702" y="92" font-size="34" font-weight="800" fill="#0f766e">ae</text>
+<text x="702" y="136" font-size="27" font-weight="800" fill="currentColor">Vaeter, spaet</text>
+<text x="702" y="168" font-size="26" fill="currentColor" opacity="0.75">like e in bed</text>
+<rect x="24" y="200" width="300" height="140" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="50" y="252" font-size="34" font-weight="800" fill="#b45309">ch soft</text>
+<text x="50" y="296" font-size="27" font-weight="800" fill="currentColor">ich, nicht</text>
+<text x="50" y="328" font-size="26" fill="currentColor" opacity="0.75">not ik, ever</text>
+<rect x="350" y="200" width="300" height="140" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="376" y="252" font-size="34" font-weight="800" fill="#be123c">ch hard</text>
+<text x="376" y="296" font-size="27" font-weight="800" fill="currentColor">Buch, acht</text>
+<text x="376" y="328" font-size="26" fill="currentColor" opacity="0.75">after a, o, u</text>
+<rect x="676" y="200" width="300" height="140" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="702" y="252" font-size="34" font-weight="800" fill="#7c3aed">final r</text>
+<text x="702" y="296" font-size="27" font-weight="800" fill="currentColor">Vater, aber</text>
+<text x="702" y="328" font-size="26" fill="currentColor" opacity="0.75">becomes a vowel</text>
+<rect x="24" y="372" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Four of the six do not exist in English.</text>
+<text x="500" y="468" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">So your mouth will substitute the nearest English sound</text>
+<text x="500" y="502" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">automatically, and you will not hear yourself do it.</text>
+</svg>
+<figcaption><strong>These six carry almost the whole of a foreign accent in German.</strong> They are worth more practice than any amount of vocabulary, because a listener forgives a missing word and struggles with a word they cannot identify.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Spend it on contrasts that carry meaning</span><p>Fixing ue and oe buys intelligibility, because they distinguish words. Polishing the exact quality of an unstressed vowel buys very little. A learner who prioritises by functional load improves faster in the way listeners actually notice.</p></div>
+<h3>Prosody is underrated relative to segments</h3>
+<p>Stress placement and sentence rhythm affect comprehension at least as much as individual sounds, and they are less often practised. German compound words carry stress on the first element, and getting that wrong can make a familiar word unrecognisable even when every sound in it is correct.</p>
+<h3>Regional variation is real and permissive</h3>
+<p>The soft ch, the final r and the uvular or rolled r all vary substantially across the German-speaking area, and all of those variants are native. This is liberating for a learner: there is no single correct target for several of the hardest features, and approximating any established variant is fine.</p>
+<div class="field"><span class="callout-label">Record yourself, because you cannot hear yourself live</span><p>Speaking and monitoring at the same time is genuinely difficult, and most learners are unaware of substitutions they make consistently. A recording played back a day later is the cheapest diagnostic available, and it is the one almost nobody does.</p></div>`,
     },
     speaking: [
       {
@@ -180,25 +328,113 @@ const curriculum: CourseCurriculum = {
       "Und Sie?": "And you? The two words that turn a statement into a conversation.",
     },
     body: {
-      Beginner: `<p>Four sentences and one question. That is the whole introduction, and you will use it hundreds of times.</p>
-<p><strong>Ich heiße Priya.</strong> My name is Priya. Literally "I am called".<br>
-<strong>Ich komme aus Indien.</strong> I come from India.<br>
-<strong>Ich wohne in Berlin.</strong> I live in Berlin.<br>
-<strong>Ich bin Ingenieurin.</strong> I am an engineer. Note that German drops the "an" here.</p>
-<p>Then the part that matters more than all of it: <strong>Und Sie?</strong> And you? Two words, and they turn your four sentences into a conversation instead of a speech.</p>
-<p>To ask, use the w words. <strong>Wie heißen Sie?</strong> What are you called. <strong>Woher kommen Sie?</strong> Where do you come from. <strong>Wo wohnen Sie?</strong> Where do you live. Notice the verb is always the second thing in the sentence. That rule will follow you through the whole language.</p>`,
-      Intermediate: `<p>Learn this as a routine rather than as four separate grammar points, because that is how it is used. The pattern is: name, origin, residence, occupation, and then hand the turn back.</p>
-<p>Three verbs carry it. Heißen, to be called, is the normal way to give a name; mein Name ist exists but sounds stiff. Kommen aus takes a country or city for origin. Wohnen in takes a place of residence, and it is distinct from leben, which is to live in the broader sense.</p>
-<p>Occupations drop the article: Ich bin Ingenieurin, not ich bin eine Ingenieurin. They also take a feminine form, usually with -in, and using the masculine form of your own occupation when you are female is a visible error rather than a neutral choice.</p>
-<p>The question forms all put the verb second, which is the rule that governs German word order generally. Wie heißen Sie, woher kommen Sie, wo wohnen Sie. The w word occupies the first position, the verb takes the second, and the subject follows, which is the inversion English only does in questions and German does whenever anything other than the subject comes first.</p>`,
-      Advanced: `<p>Heißen is worth examining because it is unusual: it takes a predicate nominative rather than an object, so the name is in the nominative case. That matters once you move past names, since the same structure appears in constructions where learners expect an accusative. Mein Name ist exists as an alternative and carries a register difference, appearing in formal introductions and on the telephone rather than in ordinary conversation.</p>
-<p>The distinction between wohnen and leben is one learners flatten and native speakers maintain. Wohnen is about residence, about where your address is; leben is about living in a broader sense, about existence or a way of life. Ich wohne in Berlin and ich lebe in Berlin are both correct and not equivalent, with the second implying something about one's life rather than one's postal address.</p>
-<p>Occupation without an article is a genuine structural feature rather than an idiom, and it extends to nationalities and to religious affiliation. The article reappears as soon as the noun is modified: ich bin Ingenieurin, but ich bin eine gute Ingenieurin. The rule is that the bare form names a category membership while the article introduces an individual instance, which is also why it feels wrong to a speaker whose language does not make the distinction.</p>
-<p>Asking back is not merely polite, it is structurally expected, and a learner who answers and stops creates an awkwardness that reads as rudeness rather than as limited vocabulary. Und Sie is the minimal form and carries the whole function, which is why it is worth drilling to the point of automaticity before any of the grammar underneath it is understood.</p>`,
-      Expert: `<p>The verb-second constraint visible in these question forms is the surface reflex of a deeper property: German is a V2 language in main clauses, with the finite verb in the C position and exactly one constituent in the specifier before it. What makes this harder than it looks for learners is that the pre-verbal position is not reserved for subjects, so any topicalised element triggers inversion, and a learner who has memorised question inversion as a question rule will produce ungrammatical declaratives the moment they front an adverbial.</p>
-<p>The articleless predicate nominal in ich bin Ingenieurin is a well-studied construction, and the analysis that generalises is that bare predicate nominals denote properties while determined ones denote individuals. This correctly predicts that modification forces the article, that the bare form is restricted to professions, nationalities and similar category nouns, and that it is unavailable in argument positions. Learners who are given the fact without the principle overapply it to objects.</p>
-<p>Sociolinguistically, the introduction routine is also where the Sie and du decision is first made and it is rarely neutral. The default in any transaction with a stranger over about sixteen is Sie, but the domains where du is default have expanded in recent decades, notably in tech workplaces, among students, and in much of the service sector aimed at younger customers. A learner operating on a 1990s textbook rule will sound stiff in a Berlin startup and a learner operating on English informality will cause genuine offence in an Amt.</p>
-<p>Finally, the pedagogical case for teaching this as an unanalysed chunk is strong and worth stating, because it conflicts with grammar-first instruction. Formulaic sequences are processed holistically, which frees working memory for the parts of the interaction that cannot be automated, and the research on chunk learning indicates that early formulaic competence correlates with later analytic competence rather than competing with it. Drilling the block first and unpacking the grammar afterwards is the right order.</p>`,
+      Beginner: `<p>A first conversation is a small number of fixed phrases. Learn them as whole units rather than assembling them word by word.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A first exchange, with the move that keeps it going">
+<rect x="24" y="40" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="84" font-size="30" font-weight="800" fill="currentColor">Guten Tag, ich heisse Anna.</text>
+<text x="52" y="118" font-size="26" fill="currentColor" opacity="0.75">Hello, my name is Anna.</text>
+<rect x="356" y="152" width="620" height="92" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="384" y="196" font-size="30" font-weight="800" fill="currentColor">Freut mich. Ich bin Jonas.</text>
+<text x="384" y="230" font-size="26" fill="currentColor" opacity="0.75">Pleased to meet you. I am Jonas.</text>
+<rect x="24" y="264" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="308" font-size="30" font-weight="800" fill="currentColor">Woher kommen Sie?</text>
+<text x="52" y="342" font-size="26" fill="currentColor" opacity="0.75">Where are you from?</text>
+<rect x="24" y="386" width="952" height="114" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="432" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">The third line is the whole skill.</text>
+<text x="500" y="474" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Answering is easy. Asking back is what makes a conversation.</text>
+</svg>
+<figcaption><strong>Most learners prepare their own answers and nothing else.</strong> Then the exchange stops dead after two lines, because the other person has answered and is waiting. Having two questions ready to hand back is worth more than a longer self-introduction.</figcaption>
+</figure>
+<h3>The lines you need</h3>
+<table>
+<tr><th>German</th><th>English</th></tr>
+<tr><td>Guten Tag</td><td>Hello, during the day</td></tr>
+<tr><td>Ich heisse ...</td><td>My name is ...</td></tr>
+<tr><td>Freut mich</td><td>Pleased to meet you</td></tr>
+<tr><td>Woher kommen Sie?</td><td>Where are you from?</td></tr>
+<tr><td>Ich komme aus Indien</td><td>I am from India</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Ask back</span><p>Und Sie? means and you? It is two words and it doubles the length of every conversation you have.</p></div>
+<div class="warning"><span class="callout-label">Use Sie with anyone you have just met</span><p>Unless they are a child. Getting this wrong is the one social mistake that is actually noticed.</p></div>`,
+      Intermediate: `<p>Introductions are formulaic in every language, and the value of the formula is that it frees your attention for listening.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A first exchange, with the move that keeps it going">
+<rect x="24" y="40" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="84" font-size="30" font-weight="800" fill="currentColor">Guten Tag, ich heisse Anna.</text>
+<text x="52" y="118" font-size="26" fill="currentColor" opacity="0.75">Hello, my name is Anna.</text>
+<rect x="356" y="152" width="620" height="92" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="384" y="196" font-size="30" font-weight="800" fill="currentColor">Freut mich. Ich bin Jonas.</text>
+<text x="384" y="230" font-size="26" fill="currentColor" opacity="0.75">Pleased to meet you. I am Jonas.</text>
+<rect x="24" y="264" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="308" font-size="30" font-weight="800" fill="currentColor">Woher kommen Sie?</text>
+<text x="52" y="342" font-size="26" fill="currentColor" opacity="0.75">Where are you from?</text>
+<rect x="24" y="386" width="952" height="114" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="432" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">The third line is the whole skill.</text>
+<text x="500" y="474" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Answering is easy. Asking back is what makes a conversation.</text>
+</svg>
+<figcaption><strong>Most learners prepare their own answers and nothing else.</strong> Then the exchange stops dead after two lines, because the other person has answered and is waiting. Having two questions ready to hand back is worth more than a longer self-introduction.</figcaption>
+</figure>
+<h3>Two ways to give your name</h3>
+<table>
+<tr><th>Form</th><th>Register</th></tr>
+<tr><td>Ich heisse Anna</td><td>Neutral, very common</td></tr>
+<tr><td>Mein Name ist Anna Schmidt</td><td>More formal, official settings</td></tr>
+<tr><td>Ich bin Anna</td><td>Casual</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Occupation needs no article</span><p>Ich bin Ingenieur, not ein Ingenieur. German drops the article for professions, which is one of the few places it uses fewer words than English.</p></div>
+<div class="warning"><span class="callout-label">Watch the verb position</span><p>Woher kommen Sie? puts the verb second, after the question word. Ich komme aus Indien puts it second as well. The rule is the same in both, and it is the rule the whole course keeps returning to.</p></div>`,
+      Advanced: `<p>What distinguishes a fluent-sounding introduction is not vocabulary but turn management: knowing how to hand the conversation back and how to signal that you did not catch something.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A first exchange, with the move that keeps it going">
+<rect x="24" y="40" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="84" font-size="30" font-weight="800" fill="currentColor">Guten Tag, ich heisse Anna.</text>
+<text x="52" y="118" font-size="26" fill="currentColor" opacity="0.75">Hello, my name is Anna.</text>
+<rect x="356" y="152" width="620" height="92" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="384" y="196" font-size="30" font-weight="800" fill="currentColor">Freut mich. Ich bin Jonas.</text>
+<text x="384" y="230" font-size="26" fill="currentColor" opacity="0.75">Pleased to meet you. I am Jonas.</text>
+<rect x="24" y="264" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="308" font-size="30" font-weight="800" fill="currentColor">Woher kommen Sie?</text>
+<text x="52" y="342" font-size="26" fill="currentColor" opacity="0.75">Where are you from?</text>
+<rect x="24" y="386" width="952" height="114" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="432" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">The third line is the whole skill.</text>
+<text x="500" y="474" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Answering is easy. Asking back is what makes a conversation.</text>
+</svg>
+<figcaption><strong>Most learners prepare their own answers and nothing else.</strong> Then the exchange stops dead after two lines, because the other person has answered and is waiting. Having two questions ready to hand back is worth more than a longer self-introduction.</figcaption>
+</figure>
+<table>
+<tr><th>Move</th><th>Phrase</th></tr>
+<tr><td>Hand it back</td><td>Und Sie?</td></tr>
+<tr><td>Ask for a repeat</td><td>Wie bitte?</td></tr>
+<tr><td>Ask for slower</td><td>Koennen Sie bitte langsamer sprechen?</td></tr>
+<tr><td>Buy thinking time</td><td>Also ... Moment ...</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Filler words are a skill, not a flaw</span><p>Also, naja and Moment mal give you a second to compose and they sound native. Silence while you assemble a sentence reads as not having understood, and the other person will switch to English to help you.</p></div>
+<h3>Small talk has narrower bounds than in English</h3>
+<p>Weather, travel and work are safe. Direct questions about income, politics or religion on first meeting are not, and personal questions generally arrive later than an English speaker expects. This is a register difference rather than coldness.</p>`,
+      Expert: `<p>The interesting problem at this level is the switch to English. Germans in cities often speak excellent English and will switch the moment they detect effort, which removes exactly the practice you came for.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="A first exchange, with the move that keeps it going">
+<rect x="24" y="40" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="84" font-size="30" font-weight="800" fill="currentColor">Guten Tag, ich heisse Anna.</text>
+<text x="52" y="118" font-size="26" fill="currentColor" opacity="0.75">Hello, my name is Anna.</text>
+<rect x="356" y="152" width="620" height="92" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="384" y="196" font-size="30" font-weight="800" fill="currentColor">Freut mich. Ich bin Jonas.</text>
+<text x="384" y="230" font-size="26" fill="currentColor" opacity="0.75">Pleased to meet you. I am Jonas.</text>
+<rect x="24" y="264" width="620" height="92" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="52" y="308" font-size="30" font-weight="800" fill="currentColor">Woher kommen Sie?</text>
+<text x="52" y="342" font-size="26" fill="currentColor" opacity="0.75">Where are you from?</text>
+<rect x="24" y="386" width="952" height="114" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="432" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">The third line is the whole skill.</text>
+<text x="500" y="474" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Answering is easy. Asking back is what makes a conversation.</text>
+</svg>
+<figcaption><strong>Most learners prepare their own answers and nothing else.</strong> Then the exchange stops dead after two lines, because the other person has answered and is waiting. Having two questions ready to hand back is worth more than a longer self-introduction.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">What actually prevents the switch</span><p>Fluency signals rather than accuracy. A short, confidently delivered sentence with filler words keeps the conversation in German; a grammatically perfect sentence delivered after a four second pause does not. Saying up front that you are learning and would like to practise works, and most people are happy to oblige once asked.</p></div>
+<h3>Formulaic language is how fluency is built</h3>
+<p>A great deal of natural speech in any language is prefabricated chunks retrieved whole rather than constructed. Learning Freut mich as one item costs nothing extra and frees working memory for the part of the sentence that is genuinely new. Learners who insist on building everything from rules sound slower and more effortful than their actual knowledge warrants.</p>
+<h3>Names deserve preparation</h3>
+<p>If yours is unfamiliar in German, decide in advance how you will say and spell it, and have the letter names ready. Being unable to spell your own name aloud is a surprisingly common stumble, and it happens at exactly the moment you want to be making a good impression.</p>`,
     },
     questions: [
       {
@@ -397,22 +633,122 @@ const curriculum: CourseCurriculum = {
       Nummer: "A number as a label, such as a house or phone number, distinct from Zahl as a quantity.",
     },
     body: {
-      Beginner: `<p>Numbers to twelve you just learn: eins, zwei, drei, vier, fünf, sechs, sieben, acht, neun, zehn, elf, zwölf.</p>
-<p>Then the thing that catches everybody. From twenty-one upwards, German says the small digit first. <strong>Einundzwanzig</strong> is literally "one and twenty", which is 21. <strong>Siebenundvierzig</strong> is "seven and forty", which is 47. You have to hold the first number in your head and wait for the second, which is exhausting at first and becomes automatic.</p>
-<p>Phone numbers avoid this entirely. Germans usually read them in pairs: 0176 23 45 67 is read as null eins sieben sechs, dreiundzwanzig, fünfundvierzig, siebenundsechzig. Or they read them digit by digit, which you are allowed to ask for: <strong>Können Sie das bitte einzeln sagen?</strong></p>
-<p>And one trap in telling the time. <strong>Halb drei</strong> is not half past three. It is half an hour before three, so 2:30. Germans count toward the coming hour, not back from the past one.</p>`,
-      Intermediate: `<p>The reversed order of two digit numbers is the single hardest listening feature at A1, because it imposes a working memory cost. Hearing "sieben und vierzig" requires holding the seven while waiting for the forty, and then assembling 47. Native speakers do this without noticing; learners lose the first digit under load, which is why numbers go wrong on the phone long after they are solid on paper.</p>
-<p>The practical defence is to write as you hear rather than to listen and then write. Note the first digit immediately, leave a gap, and fill in the tens when it arrives. This feels clumsy and it is substantially more reliable than trying to assemble the number in your head.</p>
-<p>Spelling aloud is a survival skill rather than an exercise, because any non-German name will be asked for letter by letter in every office you ever enter. The letters that cause trouble are the ones that differ from English: e is "ay", i is "ee", a is "ah", j is "yot", v is "fau", w is "vay", y is "üpsilon", and z is "tsett". Confusing e and i is the most common error and produces a misspelled name on an official document.</p>
-<p>For the clock, remember that German orients toward the coming hour. Halb drei is half an hour before three. Viertel vor and viertel nach work as in English, but the halb form is a genuine trap and getting it wrong moves an appointment by an hour.</p>`,
-      Advanced: `<p>The reversed decade construction is a Germanic retention that English lost, surviving only in archaisms like four and twenty blackbirds, and knowing that it is a retention rather than an oddity helps learners stop fighting it. Dutch and Danish do the same thing. What matters pedagogically is that the cost is perceptual rather than conceptual: learners understand the rule immediately and still fail to parse numbers in real time, which means drilling has to be aural and under time pressure rather than written.</p>
-<p>Telephone number conventions vary regionally and by context, and all three patterns are current: pairs, digit by digit, and a mixed form where the dialling code is read digitally and the rest in pairs. Asking for one form explicitly is entirely normal and not a mark of incompetence, which is worth telling learners because they will otherwise guess and write down a wrong number rather than ask.</p>
-<p>The clock has a further regional complication worth knowing even at A1. In southern Germany and Austria, dreiviertel drei means 2:45 and viertel drei means 2:15, counting quarters toward the coming hour rather than using vor and nach. A learner who has only the northern forms will misunderstand an appointment time by half an hour in Bavaria, and the forms are not interchangeable in either direction.</p>
-<p>Ordinals deserve a mention because dates use them and the written form is a trap. Der erste Mai is written 1. Mai, with a full stop standing for the ordinal ending, and a date written 1.5. means the first of May rather than the fifth of January. The day-month order is standard and the full stop is doing grammatical work, which is why a date copied from an English form into a German one is a recurring administrative error.</p>`,
-      Expert: `<p>The processing cost of decade inversion has been measured, and it shows up as longer latencies and higher error rates in number transcoding tasks for German relative to English even among native speakers, with the effect magnified in multi-digit sequences. The implication for instruction is that automaticity, not comprehension, is the bottleneck, and the training that works is high-volume aural practice with immediate transcription rather than explanation.</p>
-<p>There is an interesting downstream consequence in arithmetic acquisition. Cross-linguistic work on early number development finds that inverted decade languages produce measurable disadvantages in place value tasks in young children, and that transparent systems such as the East Asian ones produce advantages. That is not directly relevant to an adult learner, but it does indicate that the inversion imposes a genuine cognitive cost rather than being a surface convention one simply habituates to.</p>
-<p>On spelling, the Deutsches Funkalphabet, the German spelling alphabet, is the professional register for this task and is still in regular use in administrative and telephone contexts: Anton, Berta, Cäsar and so on. A learner who can use it is operating at a level above letter-by-letter spelling and will be understood on a poor telephone line where letter names fail, which is precisely the situation where this matters most.</p>
-<p>The dates convention interacts with a broader issue of document literacy that language courses typically omit. German administrative forms use the day-month-year order with full stops, write decimal commas and thousands separators the opposite way round from the Indian and English conventions, and use the comma as the decimal separator. A learner filling in a form with 1,5 meaning one and a half and 1.500 meaning fifteen hundred is reading correctly; one who imports English conventions will make errors that are invisible to them and consequential on a rental application or a tax form.</p>`,
+      Beginner: `<p>German numbers are said with the units before the tens. This is the single most common source of error when taking a phone number down.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="German two digit numbers are said with the units before the tens">
+<rect x="24" y="40" width="440" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="244" y="100" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">ENGLISH</text>
+<text x="244" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">twenty-one</text>
+<text x="244" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">tens, then units</text>
+<rect x="536" y="40" width="440" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="756" y="100" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">GERMAN</text>
+<text x="756" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">einundzwanzig</text>
+<text x="756" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">one and twenty</text>
+<path d="M300 258 H700" stroke="currentColor" opacity="0.4" stroke-width="4"/>
+<rect x="24" y="286" width="952" height="170" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="336" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">So you hear the last digit first.</text>
+<text x="500" y="382" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Writing 2 as soon as you hear zwei in zweiundvierzig</text>
+<text x="500" y="416" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">gives you 24 when the answer was 42.</text>
+<text x="500" y="448" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wait for the whole word.</text>
+</svg>
+<figcaption><strong>This single reversal causes more wrong phone numbers than any other feature of the language.</strong> The habit to build is deliberately not writing anything until the number word has finished, which feels slow and is the only thing that works.</figcaption>
+</figure>
+<h3>The pattern</h3>
+<table>
+<tr><th>Number</th><th>German</th><th>Literally</th></tr>
+<tr><td class="num">21</td><td>einundzwanzig</td><td>one and twenty</td></tr>
+<tr><td class="num">42</td><td>zweiundvierzig</td><td>two and forty</td></tr>
+<tr><td class="num">67</td><td>siebenundsechzig</td><td>seven and sixty</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Do not start writing early</span><p>If you write the first digit you hear, you will reverse every two digit number. Wait for the whole word before your pen moves.</p></div>
+<div class="key-idea"><span class="callout-label">Phone numbers are often said in pairs</span><p>So a number may arrive as a string of two digit groups, each one reversed. Asking for it digit by digit is completely normal: Koennen Sie das einzeln sagen?</p></div>`,
+      Intermediate: `<p>Numbers, letters and times are the three things you will be asked to write down, and all three have traps that have nothing to do with vocabulary.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="German two digit numbers are said with the units before the tens">
+<rect x="24" y="40" width="440" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="244" y="100" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">ENGLISH</text>
+<text x="244" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">twenty-one</text>
+<text x="244" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">tens, then units</text>
+<rect x="536" y="40" width="440" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="756" y="100" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">GERMAN</text>
+<text x="756" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">einundzwanzig</text>
+<text x="756" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">one and twenty</text>
+<path d="M300 258 H700" stroke="currentColor" opacity="0.4" stroke-width="4"/>
+<rect x="24" y="286" width="952" height="170" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="336" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">So you hear the last digit first.</text>
+<text x="500" y="382" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Writing 2 as soon as you hear zwei in zweiundvierzig</text>
+<text x="500" y="416" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">gives you 24 when the answer was 42.</text>
+<text x="500" y="448" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wait for the whole word.</text>
+</svg>
+<figcaption><strong>This single reversal causes more wrong phone numbers than any other feature of the language.</strong> The habit to build is deliberately not writing anything until the number word has finished, which feels slow and is the only thing that works.</figcaption>
+</figure>
+<h3>Spelling aloud</h3>
+<p>German letter names differ from English in ways that matter: e sounds like English a, i sounds like English e, and j is yot. Confusing e and i when taking down an email address is the commonest error, and it is silent until the message bounces.</p>
+<table>
+<tr><th>Letter</th><th>Sounds like</th></tr>
+<tr><td>a</td><td>ah</td></tr>
+<tr><td>e</td><td>ay</td></tr>
+<tr><td>i</td><td>ee</td></tr>
+<tr><td>j</td><td>yot</td></tr>
+<tr><td>v</td><td>fow</td></tr>
+<tr><td>w</td><td>vay</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Read it back, every time</span><p>Repeating what you wrote is not a sign of weak German. It is what a native speaker does on the phone, and it catches the error while it is still free to fix.</p></div>`,
+      Advanced: `<p>The difficulty is a working memory problem rather than a knowledge one. You are holding a partial number, parsing an inverted one, and writing at the same time.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="German two digit numbers are said with the units before the tens">
+<rect x="24" y="40" width="440" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="244" y="100" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">ENGLISH</text>
+<text x="244" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">twenty-one</text>
+<text x="244" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">tens, then units</text>
+<rect x="536" y="40" width="440" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="756" y="100" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">GERMAN</text>
+<text x="756" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">einundzwanzig</text>
+<text x="756" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">one and twenty</text>
+<path d="M300 258 H700" stroke="currentColor" opacity="0.4" stroke-width="4"/>
+<rect x="24" y="286" width="952" height="170" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="336" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">So you hear the last digit first.</text>
+<text x="500" y="382" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Writing 2 as soon as you hear zwei in zweiundvierzig</text>
+<text x="500" y="416" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">gives you 24 when the answer was 42.</text>
+<text x="500" y="448" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wait for the whole word.</text>
+</svg>
+<figcaption><strong>This single reversal causes more wrong phone numbers than any other feature of the language.</strong> The habit to build is deliberately not writing anything until the number word has finished, which feels slow and is the only thing that works.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Reduce the load rather than trying harder</span><p>Ask for digits individually, write in pairs, and read back. Each of those removes one thing you were holding in your head. Learners who try to simply concentrate harder fail in exactly the same place every time, because the constraint is capacity rather than effort.</p></div>
+<h3>Times have two systems</h3>
+<table>
+<tr><th>Spoken</th><th>Means</th></tr>
+<tr><td>halb drei</td><td>half past two, not half past three</td></tr>
+<tr><td>viertel nach drei</td><td>quarter past three</td></tr>
+<tr><td>viertel vor drei</td><td>quarter to three</td></tr>
+<tr><td>vierzehn Uhr dreissig</td><td>14:30, official and unambiguous</td></tr>
+</table>
+<div class="warning"><span class="callout-label">halb drei is the one that costs you an hour</span><p>It means halfway to three, which is two thirty. English speakers reliably hear three thirty. For appointments, confirm in the twenty four hour form, where no ambiguity exists.</p></div>`,
+      Expert: `<p>Inverted number naming is not a German eccentricity. It existed in English until relatively recently, which is why four and twenty blackbirds is a familiar line, and it survives in Dutch, Danish and Arabic among others.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="German two digit numbers are said with the units before the tens">
+<rect x="24" y="40" width="440" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="244" y="100" font-size="32" font-weight="800" fill="#be123c" text-anchor="middle">ENGLISH</text>
+<text x="244" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">twenty-one</text>
+<text x="244" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">tens, then units</text>
+<rect x="536" y="40" width="440" height="180" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="756" y="100" font-size="32" font-weight="800" fill="#0f766e" text-anchor="middle">GERMAN</text>
+<text x="756" y="160" font-size="42" font-weight="800" fill="currentColor" text-anchor="middle">einundzwanzig</text>
+<text x="756" y="200" font-size="27" fill="currentColor" opacity="0.8" text-anchor="middle">one and twenty</text>
+<path d="M300 258 H700" stroke="currentColor" opacity="0.4" stroke-width="4"/>
+<rect x="24" y="286" width="952" height="170" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="336" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">So you hear the last digit first.</text>
+<text x="500" y="382" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">Writing 2 as soon as you hear zwei in zweiundvierzig</text>
+<text x="500" y="416" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">gives you 24 when the answer was 42.</text>
+<text x="500" y="448" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wait for the whole word.</text>
+</svg>
+<figcaption><strong>This single reversal causes more wrong phone numbers than any other feature of the language.</strong> The habit to build is deliberately not writing anything until the number word has finished, which feels slow and is the only thing that works.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">It has measurable costs, and they are acknowledged</span><p>Transcription error rates are higher for inverted systems, and the effect is strongest under time pressure and in noise. There have been serious proposals in German-speaking countries to change the convention in safety-critical contexts for exactly this reason.</p></div>
+<h3>Where professionals have already solved it</h3>
+<p>Aviation, medicine and banking use digit-by-digit reading, mandatory read-back, and the twenty four hour clock. None of that is about language ability; it is error control for a known failure mode, and borrowing it is entirely appropriate in any situation where the number matters.</p>
+<h3>Regional variation to expect</h3>
+<p>Austrian and Swiss usage differs in places, including the pronunciation of some number words and the common forms for times. A learner who has only heard standard German recordings will be briefly thrown by a Swiss speaker, and the correct response is to ask for the digits rather than to assume you have misunderstood the system.</p>`,
     },
     speaking: [
       {
@@ -558,23 +894,132 @@ const curriculum: CourseCurriculum = {
       "Hamburger Sie": "The mixed form of first name plus Sie, common in modern workplaces.",
     },
     body: {
-      Beginner: `<p>German has two words for "you". <strong>Sie</strong> is formal and <strong>du</strong> is informal, and you have to choose one every time you speak to somebody.</p>
-<p>The safe default with any adult stranger is <strong>Sie</strong>. Shop staff, officials, colleagues you have just met, your landlord, a doctor. Using Sie when du would have been fine makes you sound slightly formal. Using du when Sie was expected can genuinely offend, so the risk is not symmetrical.</p>
-<p>Use <strong>du</strong> with children, with family, with close friends, and with people who have offered it to you. In many younger workplaces, especially in tech, everybody uses du from the first day, and you will notice within an hour.</p>
-<p>If somebody offers you du, take it. <strong>Wir können uns duzen</strong> means "we can use du with each other". Saying no is a refusal of friendliness, and continuing with Sie after it has been offered is its own small insult.</p>
-<p>The grammar follows the pronoun. Sie takes the same verb form as the infinitive: Sie kommen. Du has its own ending: du kommst.</p>`,
-      Intermediate: `<p>The choice is a social judgement that German forces into the grammar, so it cannot be avoided the way English allows. The error is asymmetric: excessive formality reads as reserve, while unwarranted familiarity reads as disrespect, and in an official setting it can affect how you are treated.</p>
-<p>The reliable defaults are worth memorising. Sie with anybody in a service or official role, with colleagues on first meeting, with anybody notably older, and in writing to an organisation. Du with children up to about sixteen, within families, among students, among close friends, and in workplaces that have declared themselves du cultures.</p>
-<p>The transition is conventionally offered by the older or more senior person, and the formula is wir können uns duzen or the more direct ich bin Thomas accompanied by a handshake. Once offered it is not withdrawn, and going back to Sie afterwards is a deliberate act of distancing that will be read as such.</p>
-<p>Grammatically, Sie takes third person plural forms and is always capitalised, which distinguishes it in writing from sie meaning she or they. Du has its own conjugation with the -st ending. Mixing them within one conversation, which learners do constantly under pressure, is more noticeable to a German ear than a mispronounced vowel.</p>`,
-      Advanced: `<p>The distinction is a classic T-V system, and the useful framing is that it encodes two different dimensions that usually but not always align: social distance and relative power. Historically the asymmetric use, where a superior said du and received Sie, marked hierarchy directly. That asymmetry has largely disappeared from German, and its absence is itself informative: modern usage is overwhelmingly reciprocal, so an asymmetric exchange signals something marked rather than something normal.</p>
-<p>Usage has shifted substantially in two generations and a learner working from an older textbook will be miscalibrated. Advertising addresses customers with du routinely. Most startups and much of the tech sector are du from the first interview. IKEA famously uses du with all customers, which caused genuine controversy when introduced and is now unremarkable. Against that, Ämter, banks, medicine, law and most of the traditional professions remain firmly Sie.</p>
-<p>The Hamburger Sie, first name plus Sie, is now common in workplaces trying to be informal without the commitment of du, and it occupies a genuine middle position rather than being an error. Its mirror image, the Münchner Du of surname plus du, is rarer and marks a specific kind of long familiarity. A learner who encounters either and corrects it will be the only person in the room who thought it was wrong.</p>
-<p>Repair strategies matter because mistakes will happen. Having used du wrongly, the recovery is a brief explicit apology, Entschuldigung, ich meinte Sie, and then simply continuing. The version that compounds the error is over-apologising, which draws attention to it and makes the other person manage your embarrassment. Germans generally treat a learner's slip as unremarkable unless it is made into an event.</p>`,
-      Expert: `<p>Brown and Gilman's analysis of the pronouns of power and solidarity remains the standard framework, and the German case is a good illustration of the predicted historical trajectory: a shift from power-based asymmetric usage toward solidarity-based reciprocal usage, with the solidarity semantic progressively widening the du domain. What the model does not predict well is the recent partial reversal in some professional contexts, where Sie has been reasserted as a marker of professionalism specifically because du has become commercially ubiquitous.</p>
-<p>The sociolinguistic variables that actually predict usage in contemporary German are age, sector and regional culture, roughly in that order, with age the strongest. Speakers under thirty-five duzen far more readily across contexts than their parents did, and the effect is strongest in urban and in internationally oriented workplaces. A learner can use this: the prior should be conditioned on who is in front of them rather than on a flat rule.</p>
-<p>There is a legal dimension that surprises people. German labour case law has treated unsolicited duzen in a workplace as potentially constituting a slight in specific circumstances, and the right not to be duzt has been upheld in employment disputes. That is not a reason for a learner to worry, but it does establish that the distinction carries weight beyond etiquette, which is the fact that justifies teaching it carefully rather than as a curiosity.</p>
-<p>Finally, note what the system does that English cannot. Every German utterance to another person encodes a claim about the relationship, which means the relationship is continuously negotiated in the grammar rather than left implicit. English speakers experience this as an extra burden; it is more accurately a different distribution of the same information, since English carries it in address terms, hedging and intonation instead. Learners who understand it as relocation rather than addition stop treating it as an arbitrary obstacle.</p>`,
+      Beginner: `<p>German has two words for you. Choosing the wrong one is the social mistake people actually notice.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="When to use du and when to use Sie">
+<rect x="24" y="40" width="464" height="300" rx="18" fill="#0369a1" opacity="0.13"/>
+<rect x="24" y="40" width="464" height="300" rx="18" fill="none" stroke="#0369a1" stroke-width="3"/>
+<text x="256" y="104" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">Sie</text>
+<text x="56" y="164" font-size="28" font-weight="800" fill="currentColor">Any adult stranger</text>
+<text x="56" y="212" font-size="28" font-weight="800" fill="currentColor">Shops, offices, doctors</text>
+<text x="56" y="260" font-size="28" font-weight="800" fill="currentColor">Colleagues, until told</text>
+<text x="256" y="316" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">the safe default</text>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="#0f766e" opacity="0.13"/>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="744" y="104" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">du</text>
+<text x="544" y="164" font-size="28" font-weight="800" fill="currentColor">Friends and family</text>
+<text x="544" y="212" font-size="28" font-weight="800" fill="currentColor">Children</text>
+<text x="544" y="260" font-size="28" font-weight="800" fill="currentColor">When you are offered it</text>
+<text x="744" y="316" font-size="27" font-weight="800" fill="#0f766e" text-anchor="middle">wait to be invited</text>
+<rect x="24" y="372" width="952" height="130" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">The offer is a sentence, and it comes from the older</text>
+<text x="500" y="462" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">or more senior person.</text>
+<text x="500" y="496" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wir koennen uns duzen.</text>
+</svg>
+<figcaption><strong>Using Sie where du was expected is mildly stiff. Using du where Sie was expected is rude.</strong> The costs are not symmetric, so when you are unsure the answer is always Sie, and you wait for the other person to offer the change.</figcaption>
+</figure>
+<h3>The rule</h3>
+<table>
+<tr><th>Use</th><th>With</th></tr>
+<tr><td>Sie</td><td>Adults you do not know, shops, offices, colleagues at first</td></tr>
+<tr><td>du</td><td>Friends, family, children, anyone who has offered it</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">When unsure, use Sie</span><p>Being slightly too formal is unremarkable. Being too familiar is not. The two errors do not cost the same, so the safe choice is obvious.</p></div>
+<div class="warning"><span class="callout-label">Sie takes a different verb form</span><p>Wie heissen Sie? with Sie, Wie heisst du? with du. Mixing the pronoun with the wrong verb ending is more noticeable than choosing the wrong pronoun.</p></div>`,
+      Intermediate: `<p>The choice encodes a relationship, which is why switching is a small event with its own phrase rather than a drift.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="When to use du and when to use Sie">
+<rect x="24" y="40" width="464" height="300" rx="18" fill="#0369a1" opacity="0.13"/>
+<rect x="24" y="40" width="464" height="300" rx="18" fill="none" stroke="#0369a1" stroke-width="3"/>
+<text x="256" y="104" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">Sie</text>
+<text x="56" y="164" font-size="28" font-weight="800" fill="currentColor">Any adult stranger</text>
+<text x="56" y="212" font-size="28" font-weight="800" fill="currentColor">Shops, offices, doctors</text>
+<text x="56" y="260" font-size="28" font-weight="800" fill="currentColor">Colleagues, until told</text>
+<text x="256" y="316" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">the safe default</text>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="#0f766e" opacity="0.13"/>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="744" y="104" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">du</text>
+<text x="544" y="164" font-size="28" font-weight="800" fill="currentColor">Friends and family</text>
+<text x="544" y="212" font-size="28" font-weight="800" fill="currentColor">Children</text>
+<text x="544" y="260" font-size="28" font-weight="800" fill="currentColor">When you are offered it</text>
+<text x="744" y="316" font-size="27" font-weight="800" fill="#0f766e" text-anchor="middle">wait to be invited</text>
+<rect x="24" y="372" width="952" height="130" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">The offer is a sentence, and it comes from the older</text>
+<text x="500" y="462" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">or more senior person.</text>
+<text x="500" y="496" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wir koennen uns duzen.</text>
+</svg>
+<figcaption><strong>Using Sie where du was expected is mildly stiff. Using du where Sie was expected is rude.</strong> The costs are not symmetric, so when you are unsure the answer is always Sie, and you wait for the other person to offer the change.</figcaption>
+</figure>
+<h3>Who offers, and how</h3>
+<p>The offer comes from the older or more senior person, or from a woman to a man where ages are similar. The phrase is Wir koennen uns duzen, or simply Du kannst du sagen. Accepting is normal; so is a polite decline in a professional setting.</p>
+<table>
+<tr><th>Setting</th><th>Usual form</th></tr>
+<tr><td>Shop, bank, doctor</td><td>Sie</td></tr>
+<tr><td>Traditional office</td><td>Sie, often for years</td></tr>
+<tr><td>Startup, agency</td><td>du from the first day</td></tr>
+<tr><td>University students</td><td>du among themselves</td></tr>
+<tr><td>Sports club</td><td>du</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Watch what is used about you, not only to you</span><p>If colleagues refer to each other with du in your hearing but address you with Sie, that is information. The team is waiting to offer rather than excluding you.</p></div>`,
+      Advanced: `<p>The distinction is a politeness system, and systems like it exist in many languages. What varies is where the boundary sits and how fast it moves, and German sits on the conservative side of Europe.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="When to use du and when to use Sie">
+<rect x="24" y="40" width="464" height="300" rx="18" fill="#0369a1" opacity="0.13"/>
+<rect x="24" y="40" width="464" height="300" rx="18" fill="none" stroke="#0369a1" stroke-width="3"/>
+<text x="256" y="104" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">Sie</text>
+<text x="56" y="164" font-size="28" font-weight="800" fill="currentColor">Any adult stranger</text>
+<text x="56" y="212" font-size="28" font-weight="800" fill="currentColor">Shops, offices, doctors</text>
+<text x="56" y="260" font-size="28" font-weight="800" fill="currentColor">Colleagues, until told</text>
+<text x="256" y="316" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">the safe default</text>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="#0f766e" opacity="0.13"/>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="744" y="104" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">du</text>
+<text x="544" y="164" font-size="28" font-weight="800" fill="currentColor">Friends and family</text>
+<text x="544" y="212" font-size="28" font-weight="800" fill="currentColor">Children</text>
+<text x="544" y="260" font-size="28" font-weight="800" fill="currentColor">When you are offered it</text>
+<text x="744" y="316" font-size="27" font-weight="800" fill="#0f766e" text-anchor="middle">wait to be invited</text>
+<rect x="24" y="372" width="952" height="130" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">The offer is a sentence, and it comes from the older</text>
+<text x="500" y="462" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">or more senior person.</text>
+<text x="500" y="496" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wir koennen uns duzen.</text>
+</svg>
+<figcaption><strong>Using Sie where du was expected is mildly stiff. Using du where Sie was expected is rude.</strong> The costs are not symmetric, so when you are unsure the answer is always Sie, and you wait for the other person to offer the change.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The asymmetry is the practical point</span><p>Over-formality reads as reserved. Over-familiarity reads as presumptuous, and it is the kind of error that is remembered rather than corrected. Because the costs differ, the optimal strategy under uncertainty is not to guess the likely answer but to take the cheaper mistake.</p></div>
+<h3>It is drifting, unevenly</h3>
+<p>Younger speakers, creative industries and international companies use du far more widely than was true a generation ago, while public administration, medicine and law have barely moved. Someone who has learned German inside a startup and then walks into a Finanzamt will be using the wrong form without any sense of having changed register.</p>
+<h3>The pronoun is not the only marker</h3>
+<p>Formality also lives in the title and surname, in modal verbs, and in whether a request is phrased as a question. Koennten Sie mir bitte helfen is softer than Helfen Sie mir, and the gap between them is larger in German than the equivalent gap in English.</p>`,
+      Expert: `<p>Sociolinguistically this is a T and V system, and German is useful to study because the boundary is contested in a way that makes the underlying negotiation visible.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="When to use du and when to use Sie">
+<rect x="24" y="40" width="464" height="300" rx="18" fill="#0369a1" opacity="0.13"/>
+<rect x="24" y="40" width="464" height="300" rx="18" fill="none" stroke="#0369a1" stroke-width="3"/>
+<text x="256" y="104" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">Sie</text>
+<text x="56" y="164" font-size="28" font-weight="800" fill="currentColor">Any adult stranger</text>
+<text x="56" y="212" font-size="28" font-weight="800" fill="currentColor">Shops, offices, doctors</text>
+<text x="56" y="260" font-size="28" font-weight="800" fill="currentColor">Colleagues, until told</text>
+<text x="256" y="316" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">the safe default</text>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="#0f766e" opacity="0.13"/>
+<rect x="512" y="40" width="464" height="300" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="744" y="104" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">du</text>
+<text x="544" y="164" font-size="28" font-weight="800" fill="currentColor">Friends and family</text>
+<text x="544" y="212" font-size="28" font-weight="800" fill="currentColor">Children</text>
+<text x="544" y="260" font-size="28" font-weight="800" fill="currentColor">When you are offered it</text>
+<text x="744" y="316" font-size="27" font-weight="800" fill="#0f766e" text-anchor="middle">wait to be invited</text>
+<rect x="24" y="372" width="952" height="130" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="422" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">The offer is a sentence, and it comes from the older</text>
+<text x="500" y="462" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">or more senior person.</text>
+<text x="500" y="496" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Wir koennen uns duzen.</text>
+</svg>
+<figcaption><strong>Using Sie where du was expected is mildly stiff. Using du where Sie was expected is rude.</strong> The costs are not symmetric, so when you are unsure the answer is always Sie, and you wait for the other person to offer the change.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">What is actually being negotiated</span><p>Two dimensions, power and solidarity. Historically the asymmetric use, where a superior said du and received Sie, marked power. Modern usage is largely reciprocal, so the choice now marks solidarity instead: whether we are the sort of people who are close. That shift is why the offer matters so much; it is an offer of relationship, not of convenience.</p></div>
+<h3>Consequences for a non-native speaker</h3>
+<p>You are granted some latitude, and you should not rely on it. The latitude covers getting it wrong; it does not cover appearing not to have noticed there is a choice. Demonstrating awareness, by using Sie correctly and accepting du when offered, signals cultural competence far more strongly than fluency in any particular construction.</p>
+<h3>Written German is more conservative than spoken</h3>
+<p>An email to someone you say du to in person may still open formally if it is going to a shared inbox or will be forwarded. Business correspondence defaults to Sie well beyond the point where spoken interaction has moved on, and matching the register of the message you received is the reliable heuristic.</p>
+<div class="field"><span class="callout-label">The one thing worth memorising</span><p>Wir koennen uns duzen, said with a smile, is how you offer. Knowing how to make the offer, rather than only how to receive one, is what lets you set the register when you are the host or the senior person in the room.</p></div>`,
     },
     questions: [
       {
@@ -775,25 +1220,160 @@ const curriculum: CourseCurriculum = {
       "Natural gender": "Where grammatical gender follows biological sex, which it mostly does for people and not otherwise.",
     },
     body: {
-      Beginner: `<p>Every German noun is der, die or das, and you have to learn which. The usual advice is to memorise the article with every word, which is correct and incomplete, because a lot of the time you can work it out.</p>
-<p>Here are the rules that pay for themselves immediately.</p>
-<p><strong>Always feminine:</strong> words ending in -ung, -heit, -keit, -schaft, -ion, -tät. Die Wohnung, die Freiheit, die Universität. No exceptions worth worrying about.</p>
-<p><strong>Always neuter:</strong> words ending in -chen or -lein. Das Mädchen is neuter even though it means girl, because the ending wins over the meaning.</p>
-<p><strong>Usually masculine:</strong> days, months, seasons, and weather. Der Montag, der Juli, der Sommer, der Regen.</p>
-<p><strong>Compound words take the gender of the last part.</strong> Die Hand plus der Schuh gives der Handschuh, a glove. This one rule covers thousands of words.</p>
-<p>Learn the plural with the word too. German has five plural patterns and no reliable way to guess, so "die Wohnung, die Wohnungen" is the unit to learn rather than just the singular.</p>`,
-      Intermediate: `<p>Grammatical gender is a classification system rather than a semantic one, which is why das Mädchen is neuter: the diminutive suffix -chen determines the class and overrides the meaning entirely. Treating gender as arbitrary is the standard beginner position and it is costly, because the suffix rules alone cover a substantial proportion of the nouns a learner meets.</p>
-<p>The reliable feminine endings are -ung, -heit, -keit, -schaft, -ion, -tät, -ik and -ei. The reliable neuter endings are -chen, -lein, -ment and -um. Masculine is the weakest set and tends to be defined by semantic fields rather than by form: days, months, seasons, weather phenomena, points of the compass, and most agent nouns in -er.</p>
-<p>Compounding is the single highest-value rule because German builds nouns freely and the last element always determines gender. Die Hand plus der Schuh gives der Handschuh. That means learning the gender of a few hundred base nouns gives you the gender of tens of thousands of compounds for nothing.</p>
-<p>Plurals must be learned with the noun because the five patterns, no ending, -e, -er, -en and -s, are not predictable from the singular in most cases, although gender correlates: feminine nouns overwhelmingly take -n or -en. Learning article plus noun plus plural as one three-part unit from the first encounter is far cheaper than relearning it later.</p>`,
-      Advanced: `<p>The predictive structure is stronger than most courses admit, and the research on German gender assignment finds that phonological and morphological cues together account for a large majority of nouns. Monosyllabic nouns are a notable hard case where the cues are weakest and frequency effects dominate, which is exactly the set beginners encounter first, so learners form the impression that gender is arbitrary from the least representative sample in the language.</p>
-<p>The feminine suffix set is worth treating as absolute because it is, and the apparent exceptions are illuminating rather than troublesome. Das Verhältnis ends in -nis, which is a different suffix and takes neuter. Der Reichtum takes -tum which is masculine here against the usual neuter, and it is one of a pair with der Irrtum. Knowing that the exceptions are lexically listed rather than random is what makes the rules usable.</p>
-<p>Gender is doing more work than identification. It is the hook on which case marking hangs, so a learner who is unsure of gender cannot produce correct case marking even when they know the case system perfectly. That dependency is the practical argument for drilling gender early and hard: it is a prerequisite rather than a parallel topic, and the errors it causes surface as case errors, which get misdiagnosed.</p>
-<p>On plurals, the five patterns correlate with gender and with syllable structure strongly enough to be worth teaching as tendencies. Feminine nouns take -n or -en in the overwhelming majority of cases. Masculine and neuter monosyllables tend toward -e, often with umlaut on the masculine. The -s plural is largely restricted to loanwords and abbreviations, which is why it feels foreign: it is.</p>`,
-      Expert: `<p>The assignment system is best modelled as a hierarchy of competing cues with morphological ones ranked above phonological and phonological above semantic, which correctly predicts that das Mädchen is neuter despite a semantic cue pointing the other way. Connectionist models trained on German noun form alone reach accuracies in the high eighties, which establishes that the system is substantially learnable from form and that the folk belief in arbitrariness is an artefact of how it is taught.</p>
-<p>What makes gender hard for adult learners specifically is not the assignment but the retrieval. Lexical access models suggest gender is stored as a lemma-level feature retrieved along with the noun, and late learners show slower and less reliable retrieval even at high proficiency, with errors concentrated under time pressure. This predicts the observed pattern: advanced learners who know the gender of a word in isolation and produce the wrong article in running speech. The instructional consequence is that gender needs automatising through production rather than merely learning through recognition.</p>
-<p>The sociolinguistic dimension has become live. Gendered agent nouns, where der Lehrer and die Lehrerin encode sex, have made German a focus of inclusive language debate, with competing conventions including the Binnen-I, the Gendersternchen and the Doppelpunkt. A learner will encounter all of them in written German and should know that none is uncontroversial, that official style guides differ, and that the Rat für deutsche Rechtschreibung has so far declined to incorporate the starred forms into the official orthography.</p>
-<p>Finally, there is a measurable processing consequence worth knowing. Gender marking on the article provides predictive information that native listeners exploit to anticipate the upcoming noun, and eye-tracking studies show this prediction effect robustly. Learners who have not automatised gender lose that predictive advantage and consequently process German more slowly, which means gender accuracy pays off in listening comprehension and not only in production correctness.</p>`,
+      Beginner: `<p>Every German noun is der, die or das. It looks like something you simply have to memorise, and mostly it is not.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Word endings that reliably predict grammatical gender in German">
+<rect x="24" y="40" width="300" height="320" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">der</text>
+<text x="56" y="156" font-size="28" font-weight="800" fill="currentColor">-er, -en, -ling</text>
+<text x="56" y="200" font-size="28" font-weight="800" fill="currentColor">-ismus, -or</text>
+<text x="56" y="262" font-size="26" fill="currentColor" opacity="0.8">Lehrer, Garten</text>
+<text x="56" y="298" font-size="26" fill="currentColor" opacity="0.8">Motor, Fruehling</text>
+<text x="174" y="344" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">days, months, weather</text>
+<rect x="350" y="40" width="300" height="320" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="40" font-weight="800" fill="#be123c" text-anchor="middle">die</text>
+<text x="382" y="156" font-size="28" font-weight="800" fill="currentColor">-ung, -heit, -keit</text>
+<text x="382" y="200" font-size="28" font-weight="800" fill="currentColor">-schaft, -ion, -taet</text>
+<text x="382" y="262" font-size="26" fill="currentColor" opacity="0.8">Zeitung, Freiheit</text>
+<text x="382" y="298" font-size="26" fill="currentColor" opacity="0.8">Nation, Universitaet</text>
+<text x="500" y="344" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">nearly always reliable</text>
+<rect x="676" y="40" width="300" height="320" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="826" y="98" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">das</text>
+<text x="708" y="156" font-size="28" font-weight="800" fill="currentColor">-chen, -lein</text>
+<text x="708" y="200" font-size="28" font-weight="800" fill="currentColor">-ment, -um</text>
+<text x="708" y="262" font-size="26" fill="currentColor" opacity="0.8">Maedchen, Brot</text>
+<text x="708" y="298" font-size="26" fill="currentColor" opacity="0.8">Dokument, Museum</text>
+<text x="826" y="344" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">all diminutives</text>
+<rect x="24" y="392" width="952" height="126" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">das Maedchen is neuter because -chen is,</text>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">not because German has an opinion about girls.</text>
+<text x="500" y="512" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The ending wins over the meaning, always.</text>
+</svg>
+<figcaption><strong>Gender is far more predictable than most courses admit.</strong> A few dozen endings cover a large share of the nouns you will meet, and learning them turns a memorisation problem into a recognition one. Learn the article with every new noun anyway, because the exceptions are real.</figcaption>
+</figure>
+<h3>Endings that give it away</h3>
+<table>
+<tr><th>Ending</th><th>Gender</th><th>Example</th></tr>
+<tr><td>-ung</td><td>die</td><td>die Zeitung</td></tr>
+<tr><td>-heit, -keit</td><td>die</td><td>die Freiheit</td></tr>
+<tr><td>-chen</td><td>das</td><td>das Maedchen</td></tr>
+<tr><td>-er (person)</td><td>der</td><td>der Lehrer</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Learn the article with the word</span><p>Not Tisch but der Tisch. Learning the noun alone and adding the gender later means learning it twice, and the second time is harder.</p></div>
+<div class="warning"><span class="callout-label">Gender is grammar, not meaning</span><p>das Maedchen is neuter because every word ending in -chen is. The ending decides, and it overrides what the word refers to.</p></div>`,
+      Intermediate: `<p>Three kinds of clue predict gender: the ending, the category the word belongs to, and the form of the word itself.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Word endings that reliably predict grammatical gender in German">
+<rect x="24" y="40" width="300" height="320" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">der</text>
+<text x="56" y="156" font-size="28" font-weight="800" fill="currentColor">-er, -en, -ling</text>
+<text x="56" y="200" font-size="28" font-weight="800" fill="currentColor">-ismus, -or</text>
+<text x="56" y="262" font-size="26" fill="currentColor" opacity="0.8">Lehrer, Garten</text>
+<text x="56" y="298" font-size="26" fill="currentColor" opacity="0.8">Motor, Fruehling</text>
+<text x="174" y="344" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">days, months, weather</text>
+<rect x="350" y="40" width="300" height="320" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="40" font-weight="800" fill="#be123c" text-anchor="middle">die</text>
+<text x="382" y="156" font-size="28" font-weight="800" fill="currentColor">-ung, -heit, -keit</text>
+<text x="382" y="200" font-size="28" font-weight="800" fill="currentColor">-schaft, -ion, -taet</text>
+<text x="382" y="262" font-size="26" fill="currentColor" opacity="0.8">Zeitung, Freiheit</text>
+<text x="382" y="298" font-size="26" fill="currentColor" opacity="0.8">Nation, Universitaet</text>
+<text x="500" y="344" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">nearly always reliable</text>
+<rect x="676" y="40" width="300" height="320" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="826" y="98" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">das</text>
+<text x="708" y="156" font-size="28" font-weight="800" fill="currentColor">-chen, -lein</text>
+<text x="708" y="200" font-size="28" font-weight="800" fill="currentColor">-ment, -um</text>
+<text x="708" y="262" font-size="26" fill="currentColor" opacity="0.8">Maedchen, Brot</text>
+<text x="708" y="298" font-size="26" fill="currentColor" opacity="0.8">Dokument, Museum</text>
+<text x="826" y="344" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">all diminutives</text>
+<rect x="24" y="392" width="952" height="126" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">das Maedchen is neuter because -chen is,</text>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">not because German has an opinion about girls.</text>
+<text x="500" y="512" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The ending wins over the meaning, always.</text>
+</svg>
+<figcaption><strong>Gender is far more predictable than most courses admit.</strong> A few dozen endings cover a large share of the nouns you will meet, and learning them turns a memorisation problem into a recognition one. Learn the article with every new noun anyway, because the exceptions are real.</figcaption>
+</figure>
+<h3>Categories that are consistent</h3>
+<table>
+<tr><th>Category</th><th>Gender</th></tr>
+<tr><td>Days, months, seasons, weather</td><td>der</td></tr>
+<tr><td>Numbers used as nouns</td><td>die</td></tr>
+<tr><td>Verbs used as nouns</td><td>das</td></tr>
+<tr><td>Young beings</td><td>das</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Compounds take the gender of the last part</span><p>die Hand plus der Schuh gives der Handschuh. This is a complete rule with no exceptions, and it means a long intimidating compound only ever requires you to know the gender of its final noun.</p></div>
+<div class="warning"><span class="callout-label">The exceptions are the frequent words</span><p>das Wasser, der Kaese and a handful of others break the patterns, and they are common enough that you will meet them early. Learn those individually and let the rules carry the rest.</p></div>`,
+      Advanced: `<p>Estimates vary, but the broad finding is consistent: a modest set of formal cues predicts gender for a large majority of German nouns. Treating gender as arbitrary is a pedagogical choice rather than a fact about the language.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Word endings that reliably predict grammatical gender in German">
+<rect x="24" y="40" width="300" height="320" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">der</text>
+<text x="56" y="156" font-size="28" font-weight="800" fill="currentColor">-er, -en, -ling</text>
+<text x="56" y="200" font-size="28" font-weight="800" fill="currentColor">-ismus, -or</text>
+<text x="56" y="262" font-size="26" fill="currentColor" opacity="0.8">Lehrer, Garten</text>
+<text x="56" y="298" font-size="26" fill="currentColor" opacity="0.8">Motor, Fruehling</text>
+<text x="174" y="344" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">days, months, weather</text>
+<rect x="350" y="40" width="300" height="320" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="40" font-weight="800" fill="#be123c" text-anchor="middle">die</text>
+<text x="382" y="156" font-size="28" font-weight="800" fill="currentColor">-ung, -heit, -keit</text>
+<text x="382" y="200" font-size="28" font-weight="800" fill="currentColor">-schaft, -ion, -taet</text>
+<text x="382" y="262" font-size="26" fill="currentColor" opacity="0.8">Zeitung, Freiheit</text>
+<text x="382" y="298" font-size="26" fill="currentColor" opacity="0.8">Nation, Universitaet</text>
+<text x="500" y="344" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">nearly always reliable</text>
+<rect x="676" y="40" width="300" height="320" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="826" y="98" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">das</text>
+<text x="708" y="156" font-size="28" font-weight="800" fill="currentColor">-chen, -lein</text>
+<text x="708" y="200" font-size="28" font-weight="800" fill="currentColor">-ment, -um</text>
+<text x="708" y="262" font-size="26" fill="currentColor" opacity="0.8">Maedchen, Brot</text>
+<text x="708" y="298" font-size="26" fill="currentColor" opacity="0.8">Dokument, Museum</text>
+<text x="826" y="344" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">all diminutives</text>
+<rect x="24" y="392" width="952" height="126" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">das Maedchen is neuter because -chen is,</text>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">not because German has an opinion about girls.</text>
+<text x="500" y="512" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The ending wins over the meaning, always.</text>
+</svg>
+<figcaption><strong>Gender is far more predictable than most courses admit.</strong> A few dozen endings cover a large share of the nouns you will meet, and learning them turns a memorisation problem into a recognition one. Learn the article with every new noun anyway, because the exceptions are real.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Why it is nevertheless hard</span><p>The cues are reliable but numerous, and they only pay off once enough of them are internalised to apply without deliberation. Early on, a learner is doing lookup in a list of rules, which is slower than recall. The investment is front-loaded and the return arrives later, which is exactly the shape of learning that people abandon.</p></div>
+<h3>Where gender actually bites</h3>
+<p>Not in the article itself but in everything that agrees with it: adjective endings, relative pronouns, and the case forms. A wrong gender propagates through the sentence, which is why the error is more visible than its size suggests.</p>
+<h3>Plural forms are a separate problem</h3>
+<p>German has several plural patterns and the gender does not fully determine which one a noun takes. Feminine nouns overwhelmingly take -n or -en, which helps; elsewhere the plural has to be learned with the word, so the honest advice is to learn three things per noun rather than two.</p>`,
+      Expert: `<p>Grammatical gender is a noun classification system, and German's is unusual mainly in having three classes with substantial formal marking and weak semantic correlation.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Word endings that reliably predict grammatical gender in German">
+<rect x="24" y="40" width="300" height="320" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="40" font-weight="800" fill="#0369a1" text-anchor="middle">der</text>
+<text x="56" y="156" font-size="28" font-weight="800" fill="currentColor">-er, -en, -ling</text>
+<text x="56" y="200" font-size="28" font-weight="800" fill="currentColor">-ismus, -or</text>
+<text x="56" y="262" font-size="26" fill="currentColor" opacity="0.8">Lehrer, Garten</text>
+<text x="56" y="298" font-size="26" fill="currentColor" opacity="0.8">Motor, Fruehling</text>
+<text x="174" y="344" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">days, months, weather</text>
+<rect x="350" y="40" width="300" height="320" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="40" font-weight="800" fill="#be123c" text-anchor="middle">die</text>
+<text x="382" y="156" font-size="28" font-weight="800" fill="currentColor">-ung, -heit, -keit</text>
+<text x="382" y="200" font-size="28" font-weight="800" fill="currentColor">-schaft, -ion, -taet</text>
+<text x="382" y="262" font-size="26" fill="currentColor" opacity="0.8">Zeitung, Freiheit</text>
+<text x="382" y="298" font-size="26" fill="currentColor" opacity="0.8">Nation, Universitaet</text>
+<text x="500" y="344" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">nearly always reliable</text>
+<rect x="676" y="40" width="300" height="320" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="826" y="98" font-size="40" font-weight="800" fill="#0f766e" text-anchor="middle">das</text>
+<text x="708" y="156" font-size="28" font-weight="800" fill="currentColor">-chen, -lein</text>
+<text x="708" y="200" font-size="28" font-weight="800" fill="currentColor">-ment, -um</text>
+<text x="708" y="262" font-size="26" fill="currentColor" opacity="0.8">Maedchen, Brot</text>
+<text x="708" y="298" font-size="26" fill="currentColor" opacity="0.8">Dokument, Museum</text>
+<text x="826" y="344" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">all diminutives</text>
+<rect x="24" y="392" width="952" height="126" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="440" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">das Maedchen is neuter because -chen is,</text>
+<text x="500" y="482" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">not because German has an opinion about girls.</text>
+<text x="500" y="512" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The ending wins over the meaning, always.</text>
+</svg>
+<figcaption><strong>Gender is far more predictable than most courses admit.</strong> A few dozen endings cover a large share of the nouns you will meet, and learning them turns a memorisation problem into a recognition one. Learn the article with every new noun anyway, because the exceptions are real.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The semantic core is small but real</span><p>Male and female humans and animals mostly align, and the exceptions cluster where a formal rule overrides, as with the diminutives. So the system is neither arbitrary nor meaningful; it is formally driven with a semantic residue, which is the worst case for intuition and the best case for explicit rules.</p></div>
+<h3>What the research suggests about teaching it</h3>
+<p>Presenting nouns with their article and in a consistent colour or group appears to help, and learning nouns in a phrase rather than in isolation helps more. Testing recall of the article separately from the noun does not. The practical reading is that gender should be bound to the word from first encounter rather than attached afterwards.</p>
+<h3>And a note on what fluent non-natives actually do</h3>
+<p>Advanced speakers make gender errors on low-frequency nouns indefinitely, and it rarely impedes communication. It is a reasonable thing to be imperfect at. What is not reasonable is avoiding constructions that require it, because adjective endings and relative clauses are most of what makes speech sound adult.</p>`,
     },
     questions: [
       {
@@ -950,29 +1530,129 @@ const curriculum: CourseCurriculum = {
       "Accusative prepositions": "durch, für, gegen, ohne, um, which always take the accusative whatever the meaning.",
     },
     body: {
-      Beginner: `<p>In English, word order tells you who did what. "The dog bites the man" and "The man bites the dog" use the same words and mean opposite things.</p>
-<p>German marks it on the article instead. That is the whole point of cases, and it means German can move words around without losing track of who did what.</p>
-<p>Here is the good news. Only one article changes in the singular: masculine <strong>der</strong> becomes <strong>den</strong>. Everything else stays the same.</p>
-<ul>
-<li>Masculine: der → <strong>den</strong>. Ich sehe <strong>den</strong> Mann.</li>
-<li>Feminine: die → die. Ich sehe <strong>die</strong> Frau.</li>
-<li>Neuter: das → das. Ich sehe <strong>das</strong> Kind.</li>
-<li>Plural: die → die. Ich sehe <strong>die</strong> Kinder.</li>
-</ul>
-<p>So three quarters of the accusative is "no change". Learn der to den properly and you have most of it.</p>
-<p>Five prepositions always take the accusative no matter what: <strong>durch, für, gegen, ohne, um</strong>. Für den Mann. Ohne den Hund. Learn them as a block.</p>`,
-      Intermediate: `<p>Case is how German encodes grammatical role, which is why its word order can be freer than English. Den Mann sehe ich is perfectly grammatical and means the same as ich sehe den Mann, with the fronting adding emphasis rather than changing who did what. English cannot do that because it has nothing but position to carry the information.</p>
-<p>The economy of the singular accusative is worth emphasising because it is usually taught as a four-cell table that looks harder than it is. Only the masculine changes: der to den, and correspondingly ein to einen, kein to keinen, mein to meinen. Feminine, neuter and plural are identical to the nominative.</p>
-<p>The accusative marks the direct object, meaning the entity directly affected by the verb. Separating it from the subject is straightforward once the question is asked explicitly: who or what is doing this, and who or what is it being done to. For most learners the errors come not from confusion about roles but from failing to apply the marking under time pressure.</p>
-<p>The accusative prepositions are a closed set and should be memorised as a unit: durch, für, gegen, ohne, um. They take the accusative regardless of whether any motion or affectedness is involved, which is the point of calling them fixed. A sixth, bis, belongs to the set but rarely appears with an article.</p>`,
-      Advanced: `<p>The structural insight that makes the case system coherent is that German is a configurationally freer language precisely because its morphology carries the role information. Scrambling in the Mittelfeld is licensed by case marking, and where case marking is ambiguous, as it is for feminine and neuter singular and all plurals, word order reasserts itself as the disambiguator. Die Mutter sieht die Tochter is genuinely ambiguous out of context, and native speakers default to subject-first exactly because nothing else resolves it.</p>
-<p>That ambiguity is a useful teaching point rather than a defect. It demonstrates that case and word order are two mechanisms for the same job, operating in complementary distribution: German uses morphology where it has it and position where it does not. A learner who understands this stops treating free word order as an alarming property and starts treating it as a consequence of the case endings they are learning.</p>
-<p>The weak noun class, the n-declension, is the loose end at this level and is worth flagging early. A set of masculine nouns, mostly animate and many ending in -e, take -n in every case except the nominative singular: der Junge but den Jungen, der Student but den Studenten. Learners who meet these as exceptions after internalising the regular pattern tend to treat them as errors in the text.</p>
-<p>On acquisition order, case marking is late and effortful, and the accusative reliably precedes the dative. Learners typically pass through a stage of producing the nominative everywhere, which is a developmental sequence rather than carelessness, and correcting it is a matter of increasing automaticity rather than re-explaining the rule. The rule is almost never the problem by the time a learner reaches this stage.</p>`,
-      Expert: `<p>Treating case as morphological role marking rather than as a list of endings explains its distribution within the language and across its relatives. German retains four cases where English retains them only in pronouns, and the retention correlates with the freer constituent order in the Mittelfeld, which is the expected trade-off: a language can encode grammatical function positionally or morphologically, and the two are to a first approximation substitutable.</p>
-<p>The syncretism pattern in German is not random and is worth examining because it bears on learnability. Nominative and accusative are distinguished only in the masculine singular across the entire determiner paradigm, which means the accusative is the weakest-marked case in the system and is consequently the first to erode in language contact varieties. Observed simplification in German spoken by second generation migrants tends to collapse exactly this distinction, which is evidence about where the functional load is lowest.</p>
-<p>The n-declension is a remnant of the Proto-Germanic weak noun class and its membership is largely predictable from semantic and phonological properties: animate masculine nouns ending in unstressed -e, plus a set of learned borrowings in -ant, -ent, -ist and -oge. It is also demonstrably in retreat, with the accusative -n increasingly omitted in spoken German, and prescriptive sources treating the omission as an error while descriptive corpora show it widely. A learner will meet both positions.</p>
-<p>Finally, the processing evidence matters for how case should be drilled. ERP studies show native speakers producing reliable responses to case violations, indicating automatic morphosyntactic processing, while late learners show reduced or absent effects at comparable proficiency. The implication is that explicit knowledge of the paradigm and automatic processing of it are genuinely separate attainments, and that production practice under time pressure is the only thing that converts one into the other.</p>`,
+      Beginner: `<p>German marks who is doing something and who it is being done to by changing the word in front of the noun, not by word order.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The same sentence with the roles swapped, shown by the article changing">
+<rect x="24" y="40" width="952" height="130" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="96" font-size="36" font-weight="800" fill="#0369a1">Der Hund</text>
+<text x="300" y="96" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="96" font-size="36" font-weight="800" fill="#be123c">den Mann.</text>
+<text x="56" y="146" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<text x="470" y="146" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<rect x="24" y="196" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="56" y="252" font-size="36" font-weight="800" fill="#be123c">Den Hund</text>
+<text x="300" y="252" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="252" font-size="36" font-weight="800" fill="#0369a1">der Mann.</text>
+<text x="56" y="302" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<text x="470" y="302" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<rect x="24" y="352" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Same word order. Opposite meaning.</text>
+<text x="500" y="448" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">English marks the roles by position. German marks them</text>
+<text x="500" y="482" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">on the article, which is why word order can move.</text>
+</svg>
+<figcaption><strong>Only the masculine article visibly changes, which is both the clearest example and the reason this is hard.</strong> For feminine and neuter nouns nominative and accusative look identical, so the contrast is invisible and learners conclude the case does not matter until they meet a der that became den.</figcaption>
+</figure>
+<h3>The two cases</h3>
+<table>
+<tr><th>Case</th><th>Role</th><th>Masculine article</th></tr>
+<tr><td>Nominative</td><td>The doer</td><td>der</td></tr>
+<tr><td>Accusative</td><td>The one done to</td><td>den</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Only masculine visibly changes</span><p>die, das and the plural die look the same in both. So if you learn the masculine pair properly you have learned most of what is visible.</p></div>
+<div class="warning"><span class="callout-label">Find the verb, then ask who</span><p>Who is doing it? That is nominative. Who or what is it being done to? That is accusative. The order they appear in the sentence does not decide it.</p></div>`,
+      Intermediate: `<p>Because the article carries the role, word order is free to do a different job: marking what the sentence is about.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The same sentence with the roles swapped, shown by the article changing">
+<rect x="24" y="40" width="952" height="130" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="96" font-size="36" font-weight="800" fill="#0369a1">Der Hund</text>
+<text x="300" y="96" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="96" font-size="36" font-weight="800" fill="#be123c">den Mann.</text>
+<text x="56" y="146" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<text x="470" y="146" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<rect x="24" y="196" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="56" y="252" font-size="36" font-weight="800" fill="#be123c">Den Hund</text>
+<text x="300" y="252" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="252" font-size="36" font-weight="800" fill="#0369a1">der Mann.</text>
+<text x="56" y="302" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<text x="470" y="302" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<rect x="24" y="352" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Same word order. Opposite meaning.</text>
+<text x="500" y="448" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">English marks the roles by position. German marks them</text>
+<text x="500" y="482" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">on the article, which is why word order can move.</text>
+</svg>
+<figcaption><strong>Only the masculine article visibly changes, which is both the clearest example and the reason this is hard.</strong> For feminine and neuter nouns nominative and accusative look identical, so the contrast is invisible and learners conclude the case does not matter until they meet a der that became den.</figcaption>
+</figure>
+<h3>The full pattern</h3>
+<table>
+<tr><th></th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+<tr><td>Nominative</td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+<tr><td>Accusative</td><td>den</td><td>die</td><td>das</td><td>die</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">One cell differs, and it carries the whole system</span><p>That is why learners conclude case does not matter: for three of the four columns they are right, and then a masculine noun arrives and the sentence inverts.</p></div>
+<h3>Prepositions that always take accusative</h3>
+<p>durch, fuer, gegen, ohne, um. They take accusative regardless of whether there is any movement or any object being acted on, so this group is memorised rather than reasoned about.</p>
+<div class="warning"><span class="callout-label">es gibt always takes accusative</span><p>Es gibt einen Grund, not ein Grund. It is extremely common and it catches people for a long time.</p></div>`,
+      Advanced: `<p>The trade is explicit: morphological marking buys word order freedom. German spends endings to gain the front position as a topic slot, and English spends word order rigidity to avoid endings.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The same sentence with the roles swapped, shown by the article changing">
+<rect x="24" y="40" width="952" height="130" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="96" font-size="36" font-weight="800" fill="#0369a1">Der Hund</text>
+<text x="300" y="96" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="96" font-size="36" font-weight="800" fill="#be123c">den Mann.</text>
+<text x="56" y="146" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<text x="470" y="146" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<rect x="24" y="196" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="56" y="252" font-size="36" font-weight="800" fill="#be123c">Den Hund</text>
+<text x="300" y="252" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="252" font-size="36" font-weight="800" fill="#0369a1">der Mann.</text>
+<text x="56" y="302" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<text x="470" y="302" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<rect x="24" y="352" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Same word order. Opposite meaning.</text>
+<text x="500" y="448" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">English marks the roles by position. German marks them</text>
+<text x="500" y="482" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">on the article, which is why word order can move.</text>
+</svg>
+<figcaption><strong>Only the masculine article visibly changes, which is both the clearest example and the reason this is hard.</strong> For feminine and neuter nouns nominative and accusative look identical, so the contrast is invisible and learners conclude the case does not matter until they meet a der that became den.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Which is why Den Hund beisst der Mann is grammatical</span><p>It is unusual, and it is used when the dog is what the conversation is already about. English cannot do this without a passive or a cleft, so a learner translating word for word loses the emphasis entirely and produces a sentence that is correct and flat.</p></div>
+<h3>Where it stops being optional</h3>
+<p>Adjective endings depend on case, gender and whether an article is present. Relative pronouns take the case of their role in the relative clause, not in the main one. Both of those are unavoidable in adult speech, and both require the case to be identified correctly first.</p>
+<h3>Pronouns show the system more clearly than articles</h3>
+<table>
+<tr><th>Nominative</th><th>Accusative</th></tr>
+<tr><td>ich</td><td>mich</td></tr>
+<tr><td>du</td><td>dich</td></tr>
+<tr><td>er</td><td>ihn</td></tr>
+<tr><td>wir</td><td>uns</td></tr>
+</table>
+<p>English keeps a remnant of exactly this in I and me, he and him, which is a useful anchor: nobody says me saw he.</p>`,
+      Expert: `<p>Case is the surviving fragment of a much richer system. Old English had four cases and lost them as word order rigidified, which is why the modern English pronoun paradigm is the only place the pattern remains.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The same sentence with the roles swapped, shown by the article changing">
+<rect x="24" y="40" width="952" height="130" rx="16" fill="#0369a1" opacity="0.13"/>
+<text x="56" y="96" font-size="36" font-weight="800" fill="#0369a1">Der Hund</text>
+<text x="300" y="96" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="96" font-size="36" font-weight="800" fill="#be123c">den Mann.</text>
+<text x="56" y="146" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<text x="470" y="146" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<rect x="24" y="196" width="952" height="130" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="56" y="252" font-size="36" font-weight="800" fill="#be123c">Den Hund</text>
+<text x="300" y="252" font-size="36" font-weight="800" fill="currentColor">beisst</text>
+<text x="470" y="252" font-size="36" font-weight="800" fill="#0369a1">der Mann.</text>
+<text x="56" y="302" font-size="27" fill="currentColor" opacity="0.8">done to</text>
+<text x="470" y="302" font-size="27" fill="currentColor" opacity="0.8">doer</text>
+<rect x="24" y="352" width="952" height="146" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Same word order. Opposite meaning.</text>
+<text x="500" y="448" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">English marks the roles by position. German marks them</text>
+<text x="500" y="482" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">on the article, which is why word order can move.</text>
+</svg>
+<figcaption><strong>Only the masculine article visibly changes, which is both the clearest example and the reason this is hard.</strong> For feminine and neuter nouns nominative and accusative look identical, so the contrast is invisible and learners conclude the case does not matter until they meet a der that became den.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The functional pressure is identifiability</span><p>A language needs to distinguish who did what to whom. It can do that positionally or morphologically, and either suffices, so a language that has one tends to lose the other. German has retained enough marking that order can carry information structure instead, which is a different job rather than a redundant one.</p></div>
+<h3>Syncretism is the learner's real obstacle</h3>
+<p>German case marking is heavily syncretic: die covers feminine nominative, feminine accusative, plural nominative and plural accusative. So the paradigm has sixteen cells and far fewer distinct forms, and the learner cannot rely on hearing the distinction. This is why comprehension outruns production for a long time, and why reading reinforces the system faster than listening does.</p>
+<h3>What to do about it practically</h3>
+<p>Drill the masculine singular until it is automatic, because it is the only fully distinct column and it is where errors are audible. Then drill the pronouns, which are distinct across the board. Those two carry most of the functional load; the rest of the paradigm is largely invisible and can be acquired by exposure.</p>`,
     },
     worksheets: [
       {
@@ -1184,29 +1864,130 @@ const curriculum: CourseCurriculum = {
       "Two-way prepositions": "in, an, auf and others which take accusative for movement into a place and dative for position within it.",
     },
     body: {
-      Beginner: `<p>The dative marks the person something is done <em>for</em> or given <em>to</em>. In "I give the man the book", the book is the direct object and the man is the one receiving it, so the man is dative.</p>
-<p>Unlike the accusative, every article changes:</p>
-<ul>
-<li>Masculine: der → <strong>dem</strong>. Ich gebe <strong>dem</strong> Mann das Buch.</li>
-<li>Feminine: die → <strong>der</strong>. Ich gebe <strong>der</strong> Frau das Buch.</li>
-<li>Neuter: das → <strong>dem</strong>. Ich gebe <strong>dem</strong> Kind das Buch.</li>
-<li>Plural: die → <strong>den</strong>, and the noun adds an <strong>-n</strong>. Ich gebe <strong>den</strong> Kinder<strong>n</strong> das Buch.</li>
-</ul>
-<p>Watch the feminine: die becomes <strong>der</strong>, which looks exactly like the masculine nominative. That trips everybody for a while.</p>
-<p>Seven prepositions always take the dative: <strong>aus, bei, mit, nach, seit, von, zu</strong>. Learn them as a chant, because reasoning about them does not work.</p>
-<p>And some verbs just take the dative with no logic: helfen, danken, gehören, gefallen, antworten. Ich helfe <strong>dem</strong> Mann, not den Mann. There is no rule. It is a list.</p>`,
-      Intermediate: `<p>The dative is the case of the indirect object: the recipient, the beneficiary, the person affected rather than acted upon. Geben, schenken, zeigen, schicken and kaufen take two objects, an accusative thing and a dative person, and the ordering convention is dative before accusative when both are nouns.</p>
-<p>Every determiner changes in the dative, which makes it more visible than the accusative but also more work. The collision worth naming is that the feminine dative der is identical in form to the masculine nominative der, so der Frau can only be read correctly from the verb and the context. Learners spend a long period parsing that wrongly.</p>
-<p>The dative plural carries an additional mark that nothing else does: the noun itself takes -n unless its plural already ends in one. Mit den Kindern, aus den Häusern, von den Freunden. It is the only place in modern German where a case ending appears on the noun rather than only on its determiner, and omitting it is one of the most audible learner errors.</p>
-<p>The seven dative prepositions, aus, bei, mit, nach, seit, von and zu, are a closed set to be memorised rather than derived. Separately, the two-way prepositions take accusative for movement into a location and dative for position within it: ich gehe in die Küche against ich bin in der Küche. That distinction does carry meaning and is worth reasoning about, unlike the fixed set.</p>`,
-      Advanced: `<p>The dative verbs are a lexical class rather than a semantic one, although a tendency is visible: many of them involve a person affected without being directly acted upon, which is the dative's core function. Helfen, danken, folgen, gratulieren, antworten, gehören, gefallen, passen and schmecken are the core set. The semantic generalisation is weak enough that the list has to be learned, but strong enough to make the list memorable rather than arbitrary.</p>
-<p>Gefallen deserves separate attention because its argument structure reverses what learners expect. Das Buch gefällt mir means I like the book, with the book as grammatical subject and the person in the dative. Learners consistently produce ich gefalle das Buch, which means something close to the book finds me pleasing. The same pattern governs schmecken and gehören, and recognising it as a class rather than as three oddities is what makes it stick.</p>
-<p>The two-way prepositions encode a genuine semantic distinction and are therefore the one part of the case system where reasoning is productive. The test is whether the prepositional phrase answers wohin, where to, which takes accusative, or wo, where, which takes dative. Ich hänge das Bild an die Wand against das Bild hängt an der Wand. Verbs of placement and position pair up systematically: legen against liegen, stellen against stehen, setzen against sitzen, hängen doing both.</p>
-<p>On the dative plural -n, note the interaction with the -s plural class: das Auto gives die Autos and mit den Autos, with no additional -n, because the -s plural does not take it. That is the only systematic exception and it follows from the loanword status of the class rather than from anything structural.</p>`,
-      Expert: `<p>The German dative is best analysed as covering two distinguishable functions that happen to share a form: a structural dative assigned to the indirect object of ditransitives, and a lexical dative selected idiosyncratically by particular verbs and prepositions. The split matters because the two behave differently under passivisation. The structural dative survives as a dative in the passive, which is why German has no true dative passive and resorts to bekommen-passives, while the lexical dative with helfen yields the impersonal mir wird geholfen.</p>
-<p>The free dative constructions are a feature with no English equivalent and are worth knowing because they are frequent in speech. The dativus ethicus or dative of interest, as in das ist mir zu teuer, and the possessive dative, ich wasche mir die Hände rather than meine Hände, both express a participant's involvement without any verb selecting the dative. The possessive dative is obligatory with inalienable possession, so a learner producing ich wasche meine Hände is grammatical and sounds foreign.</p>
-<p>Diachronically the German case system is eroding from the edges, and the genitive is the visible casualty: prepositions historically taking the genitive, wegen, trotz, während, are now routinely used with the dative in speech and increasingly in writing. The dative itself is stable, which is consistent with its higher functional load. A learner will encounter prescriptive sources insisting on wegen des Wetters and native speakers saying wegen dem Wetter, and both are facts about the language.</p>
-<p>On acquisition, the dative is reliably later than the accusative across studies of learner German, and the ordering holds regardless of first language, which suggests a processing explanation rather than a transfer one. The dative requires tracking an additional argument role and carries more morphological distinctions, so the load is simply higher. The practical consequence is that dative errors in an otherwise fluent learner are developmental rather than evidence that the rule was never taught.</p>`,
+      Beginner: `<p>The dative marks the person something is given, said or done to. It is a third set of articles.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="A sentence with a giver, a thing given and a receiver in the dative">
+<rect x="24" y="40" width="952" height="140" rx="16" fill="currentColor" opacity="0.06"/>
+<text x="56" y="100" font-size="34" font-weight="800" fill="#0369a1">Ich</text>
+<text x="170" y="100" font-size="34" font-weight="800" fill="currentColor">gebe</text>
+<text x="310" y="100" font-size="34" font-weight="800" fill="#b45309">dem Mann</text>
+<text x="590" y="100" font-size="34" font-weight="800" fill="#be123c">das Buch.</text>
+<text x="56" y="150" font-size="26" fill="currentColor" opacity="0.8">who</text>
+<text x="310" y="150" font-size="26" font-weight="800" fill="#b45309">to whom</text>
+<text x="590" y="150" font-size="26" font-weight="800" fill="#be123c">what</text>
+<rect x="24" y="208" width="464" height="118" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="256" y="252" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">DATIVE</text>
+<text x="256" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">dem, der, dem, den</text>
+<rect x="512" y="208" width="464" height="118" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="252" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">ACCUSATIVE</text>
+<text x="744" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">den, die, das, die</text>
+<rect x="24" y="352" width="952" height="126" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Some verbs take dative with no accusative at all.</text>
+<text x="500" y="448" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">helfen, danken, folgen, gehoeren, passen</text>
+</svg>
+<figcaption><strong>Ich helfe dir, never Ich helfe dich.</strong> These verbs take a dative object where English uses a plain one, so there is nothing in the meaning to remind you. They are a short list and they are worth learning as a list.</figcaption>
+</figure>
+<h3>The articles</h3>
+<table>
+<tr><th></th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+<tr><td>Dative</td><td>dem</td><td>der</td><td>dem</td><td>den</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Ich gebe dem Mann das Buch</span><p>The man receives, so he is dative. The book is what is given, so it is accusative. Receiver first, thing second.</p></div>
+<div class="warning"><span class="callout-label">Plural dative adds an n to the noun too</span><p>den Kindern, not den Kinder. It is the one place the noun itself changes, and it is easy to forget.</p></div>`,
+      Intermediate: `<p>Two things trigger the dative: a verb that demands it, and a preposition that takes it. Both are lists.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="A sentence with a giver, a thing given and a receiver in the dative">
+<rect x="24" y="40" width="952" height="140" rx="16" fill="currentColor" opacity="0.06"/>
+<text x="56" y="100" font-size="34" font-weight="800" fill="#0369a1">Ich</text>
+<text x="170" y="100" font-size="34" font-weight="800" fill="currentColor">gebe</text>
+<text x="310" y="100" font-size="34" font-weight="800" fill="#b45309">dem Mann</text>
+<text x="590" y="100" font-size="34" font-weight="800" fill="#be123c">das Buch.</text>
+<text x="56" y="150" font-size="26" fill="currentColor" opacity="0.8">who</text>
+<text x="310" y="150" font-size="26" font-weight="800" fill="#b45309">to whom</text>
+<text x="590" y="150" font-size="26" font-weight="800" fill="#be123c">what</text>
+<rect x="24" y="208" width="464" height="118" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="256" y="252" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">DATIVE</text>
+<text x="256" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">dem, der, dem, den</text>
+<rect x="512" y="208" width="464" height="118" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="252" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">ACCUSATIVE</text>
+<text x="744" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">den, die, das, die</text>
+<rect x="24" y="352" width="952" height="126" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Some verbs take dative with no accusative at all.</text>
+<text x="500" y="448" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">helfen, danken, folgen, gehoeren, passen</text>
+</svg>
+<figcaption><strong>Ich helfe dir, never Ich helfe dich.</strong> These verbs take a dative object where English uses a plain one, so there is nothing in the meaning to remind you. They are a short list and they are worth learning as a list.</figcaption>
+</figure>
+<h3>Verbs that take dative</h3>
+<table>
+<tr><th>Verb</th><th>Means</th><th>Example</th></tr>
+<tr><td>helfen</td><td>to help</td><td>Ich helfe dir</td></tr>
+<tr><td>danken</td><td>to thank</td><td>Ich danke Ihnen</td></tr>
+<tr><td>gehoeren</td><td>to belong to</td><td>Das gehoert mir</td></tr>
+<tr><td>folgen</td><td>to follow</td><td>Folgen Sie mir</td></tr>
+<tr><td>passen</td><td>to suit, to fit</td><td>Das passt mir</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Nothing in the meaning predicts these</span><p>Helping somebody feels like doing something to them, which is why Ich helfe dich is such a natural mistake. The list is short, so learn it as a list rather than looking for a reason.</p></div>
+<h3>Prepositions that always take dative</h3>
+<p>aus, bei, mit, nach, seit, von, zu. They are extremely common, which means the dative arrives constantly and is worth getting right early.</p>`,
+      Advanced: `<p>The two-way prepositions are where the dative becomes interesting, because the case choice carries meaning rather than being fixed.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="A sentence with a giver, a thing given and a receiver in the dative">
+<rect x="24" y="40" width="952" height="140" rx="16" fill="currentColor" opacity="0.06"/>
+<text x="56" y="100" font-size="34" font-weight="800" fill="#0369a1">Ich</text>
+<text x="170" y="100" font-size="34" font-weight="800" fill="currentColor">gebe</text>
+<text x="310" y="100" font-size="34" font-weight="800" fill="#b45309">dem Mann</text>
+<text x="590" y="100" font-size="34" font-weight="800" fill="#be123c">das Buch.</text>
+<text x="56" y="150" font-size="26" fill="currentColor" opacity="0.8">who</text>
+<text x="310" y="150" font-size="26" font-weight="800" fill="#b45309">to whom</text>
+<text x="590" y="150" font-size="26" font-weight="800" fill="#be123c">what</text>
+<rect x="24" y="208" width="464" height="118" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="256" y="252" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">DATIVE</text>
+<text x="256" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">dem, der, dem, den</text>
+<rect x="512" y="208" width="464" height="118" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="252" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">ACCUSATIVE</text>
+<text x="744" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">den, die, das, die</text>
+<rect x="24" y="352" width="952" height="126" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Some verbs take dative with no accusative at all.</text>
+<text x="500" y="448" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">helfen, danken, folgen, gehoeren, passen</text>
+</svg>
+<figcaption><strong>Ich helfe dir, never Ich helfe dich.</strong> These verbs take a dative object where English uses a plain one, so there is nothing in the meaning to remind you. They are a short list and they are worth learning as a list.</figcaption>
+</figure>
+<table>
+<tr><th>Question</th><th>Case</th><th>Example</th></tr>
+<tr><td>wo, where something is</td><td>Dative</td><td>Ich bin in der Stadt</td></tr>
+<tr><td>wohin, where it goes</td><td>Accusative</td><td>Ich gehe in die Stadt</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Location against direction</span><p>in, an, auf, unter, ueber, vor, hinter, neben and zwischen all work this way. The same preposition with the same noun means two different things depending on the case, which is the clearest demonstration in the language that case is carrying meaning rather than decorating it.</p></div>
+<h3>Word order among objects</h3>
+<p>Two full nouns go dative then accusative: Ich gebe dem Mann das Buch. But pronouns come first and run accusative before dative: Ich gebe es ihm. The order inverts depending on what kind of word it is, which is not intuitive and is worth drilling as two separate patterns.</p>`,
+      Expert: `<p>Historically the dative is the indirect object case and it has absorbed functions the genitive and the instrumental once carried, which is why its modern distribution looks untidy.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="A sentence with a giver, a thing given and a receiver in the dative">
+<rect x="24" y="40" width="952" height="140" rx="16" fill="currentColor" opacity="0.06"/>
+<text x="56" y="100" font-size="34" font-weight="800" fill="#0369a1">Ich</text>
+<text x="170" y="100" font-size="34" font-weight="800" fill="currentColor">gebe</text>
+<text x="310" y="100" font-size="34" font-weight="800" fill="#b45309">dem Mann</text>
+<text x="590" y="100" font-size="34" font-weight="800" fill="#be123c">das Buch.</text>
+<text x="56" y="150" font-size="26" fill="currentColor" opacity="0.8">who</text>
+<text x="310" y="150" font-size="26" font-weight="800" fill="#b45309">to whom</text>
+<text x="590" y="150" font-size="26" font-weight="800" fill="#be123c">what</text>
+<rect x="24" y="208" width="464" height="118" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="256" y="252" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">DATIVE</text>
+<text x="256" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">dem, der, dem, den</text>
+<rect x="512" y="208" width="464" height="118" rx="14" fill="#be123c" opacity="0.14"/>
+<text x="744" y="252" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">ACCUSATIVE</text>
+<text x="744" y="296" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">den, die, das, die</text>
+<rect x="24" y="352" width="952" height="126" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="402" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">Some verbs take dative with no accusative at all.</text>
+<text x="500" y="448" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">helfen, danken, folgen, gehoeren, passen</text>
+</svg>
+<figcaption><strong>Ich helfe dir, never Ich helfe dich.</strong> These verbs take a dative object where English uses a plain one, so there is nothing in the meaning to remind you. They are a short list and they are worth learning as a list.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Dative verbs are a historical residue, not a semantic class</span><p>Attempts to find a unifying meaning, such as the object being affected rather than acted upon, work for some of the list and not for others. The honest position is that this is lexical information attached to each verb, and treating it as vocabulary rather than as grammar is both accurate and faster.</p></div>
+<h3>The genitive is retreating into the dative</h3>
+<p>Spoken German increasingly uses von plus dative where the genitive was once required: das Auto von meinem Bruder rather than das Auto meines Bruders. Written and formal registers retain the genitive. A learner should be able to recognise both and will be understood using either, but should match the register of the context.</p>
+<h3>Why dative errors are more tolerated than case errors generally</h3>
+<p>Word order and context usually recover the intended meaning, so Ich helfe dich is understood immediately. It is nevertheless one of the most recognisable non-native markers, precisely because the verbs involved are so common that a native speaker has never heard them any other way.</p>`,
     },
     worksheets: [
       {
@@ -1795,24 +2576,142 @@ const curriculum: CourseCurriculum = {
       "Wie bitte?": "Pardon? The single most useful repair phrase in the language.",
     },
     body: {
-      Beginner: `<p>You will not know the word. That is normal and it is not a problem, because there are three ways around it.</p>
-<p><strong>Describe it.</strong> Ich suche etwas für... I am looking for something for... Es ist aus Plastik. It is made of plastic. Es ist wie ein Löffel, aber größer. It is like a spoon but bigger.</p>
-<p><strong>Point and ask.</strong> Was ist das? Wie heißt das auf Deutsch? Both are completely normal questions and nobody minds.</p>
-<p><strong>Ask for help.</strong> Können Sie mir helfen? Ich suche... Entschuldigung, wo finde ich Milch?</p>
-<p>The basics of the transaction: <strong>Ich hätte gern...</strong> is the polite way to ask for something, more so than ich will. <strong>Was kostet das?</strong> for the price. <strong>Das ist alles, danke.</strong> when they ask whether you want anything else.</p>
-<p>Two things that surprise people. Many small shops and even restaurants are <strong>cash only</strong>, so ask nur Bargeld? before you order. And bottles carry a deposit called <strong>Pfand</strong>, which you get back by feeding them into a machine in the supermarket.</p>`,
-      Intermediate: `<p>Circumlocution is the highest-leverage skill at this level because it converts a vocabulary gap from a conversation-ending problem into a slightly longer sentence. The useful frames are small in number: es ist aus plus a material, man benutzt das für plus a purpose, es ist wie ein plus a known thing, and es ist zum plus an infinitive. Four frames will get you almost any object in a hardware shop.</p>
-<p>Register in German shops is brisk rather than effusive, and learners carrying Anglophone service expectations often read it as rudeness. The expected exchange is short: a greeting, the request, the payment, danke, tschüss. Bitte and danke are not optional, but the extended pleasantries that pad an English transaction are absent, and attempting them reads as odd rather than warm.</p>
-<p>Ich hätte gern is a subjunctive form and it is the standard polite request, more so than ich möchte and considerably more so than ich will, which sounds blunt to the point of rudeness. Learning it as a fixed phrase long before the subjunctive is taught is entirely sensible, because it is used dozens of times a week.</p>
-<p>The practical culture matters as much as the language. Cash remains common, particularly in bakeries, Imbisse and smaller restaurants, and asking Kann ich mit Karte zahlen? before ordering avoids an awkward moment. Bags are not free and not offered. And the Pfand system means an empty bottle has monetary value, which is why people leave them beside bins rather than in them.</p>`,
-      Advanced: `<p>Communication strategy research distinguishes achievement strategies, where the learner finds a way to convey the message, from avoidance strategies, where they abandon or alter it. Circumlocution is the prototypical achievement strategy and the evidence is consistent that learners who deploy achievement strategies make faster progress, because they stay in interactions that generate input rather than retreating from them. This is a strong argument for teaching the frames explicitly rather than hoping learners improvise them.</p>
-<p>The politeness system in German transactional encounters is organised differently from English rather than being less polite. German tends toward negative politeness, respecting autonomy and not imposing, which surfaces as brevity and as the Sie form. English service register leans on positive politeness, friendliness and solidarity markers. A learner transferring English norms will produce utterances that are grammatical and socially miscalibrated, and the usual feedback is a slight coolness they cannot account for.</p>
-<p>Repair strategies deserve as much drilling as the requests themselves, because comprehension will fail long before production does. Wie bitte, Können Sie das bitte wiederholen, Langsamer bitte, and Ich habe das nicht verstanden are a complete toolkit, and the key point to convey is that using them is normal rather than an admission of failure. Learners who will not interrupt to ask for repetition accumulate misunderstandings instead.</p>
-<p>Regional variation is worth flagging so learners are not thrown by it. Grüß Gott rather than Guten Tag in the south, Moin in the north, Semmel against Brötchen for a bread roll, and a range of greeting conventions that differ by Land. None of this is optional knowledge if a learner is going to be living somewhere specific, and none of it is in most A1 textbooks.</p>`,
-      Expert: `<p>The service encounter is one of the most heavily scripted genres in any language, which makes it unusually teachable and unusually revealing when the script is violated. German retail scripts are notably compressed relative to English ones: the opening is a greeting without a how-are-you, the closing is a thank you without a have-a-nice-day, and the body is the transaction. Learners who insert the missing English moves are not misunderstood, they are read as doing something marked, and the attribution is usually to personality rather than to nationality.</p>
-<p>The Pfand system is worth understanding as an instance of something broader, which is that German daily life contains a number of institutionally organised routines with no close Anglophone equivalent, and that competence in them is read as integration. The Pfandautomat, the Anmeldung, the Mülltrennung system and the Termin culture all require procedural knowledge that language instruction typically omits and that determines how much friction a resident experiences.</p>
-<p>On strategy instruction, the research literature is somewhat divided on whether communication strategies can be taught or merely transferred from the first language, with the stronger evidence suggesting that explicit instruction improves deployment particularly for learners whose first language or educational culture discourages approximate production. For learners from contexts where accuracy is prized and error is penalised, giving explicit permission to approximate is a substantive intervention rather than a tip.</p>
-<p>Finally, there is a measurable relationship between willingness to communicate and proficiency gain, mediated by the quantity of interaction a learner enters into. The practical consequence for course design is that teaching the four circumlocution frames and the four repair phrases in the first weeks has outsized returns, because they determine whether a learner stays in conversations long enough to get the input that everything else depends on. They are not survival phrases, they are the mechanism of acquisition.</p>`,
+      Beginner: `<p>You will constantly want something whose German name you do not know. There are four ways around it and all of them work.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="Four ways to ask for something when you do not know its name">
+<rect x="24" y="40" width="464" height="140" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="94" font-size="30" font-weight="800" fill="#0369a1">Say what it does</text>
+<text x="56" y="142" font-size="27" font-weight="800" fill="currentColor">Etwas zum Schneiden</text>
+<text x="56" y="172" font-size="26" fill="currentColor" opacity="0.75">something for cutting</text>
+<rect x="512" y="40" width="464" height="140" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="544" y="94" font-size="30" font-weight="800" fill="#0f766e">Say where it goes</text>
+<text x="544" y="142" font-size="27" font-weight="800" fill="currentColor">Das fuer die Kueche</text>
+<text x="544" y="172" font-size="26" fill="currentColor" opacity="0.75">the thing for the kitchen</text>
+<rect x="24" y="204" width="464" height="140" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="258" font-size="30" font-weight="800" fill="#b45309">Compare it</text>
+<text x="56" y="306" font-size="27" font-weight="800" fill="currentColor">Wie ein Loeffel, aber...</text>
+<text x="56" y="336" font-size="26" fill="currentColor" opacity="0.75">like a spoon, but</text>
+<rect x="512" y="204" width="464" height="140" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="544" y="258" font-size="30" font-weight="800" fill="#7c3aed">Point and ask</text>
+<text x="544" y="306" font-size="27" font-weight="800" fill="currentColor">Wie heisst das?</text>
+<text x="544" y="336" font-size="26" fill="currentColor" opacity="0.75">what is that called</text>
+<rect x="24" y="368" width="952" height="110" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="414" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">The fourth one also teaches you the word.</text>
+<text x="500" y="456" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Write it down before you leave the shop.</text>
+</svg>
+<figcaption><strong>Working around a missing word is a skill, not a failure.</strong> Native speakers do it constantly in their own language. A learner who stops dead at every unknown noun will stay silent; one with four strategies will complete the transaction and leave with the word.</figcaption>
+</figure>
+<h3>The phrases</h3>
+<table>
+<tr><th>German</th><th>English</th></tr>
+<tr><td>Ich suche etwas zum ...</td><td>I am looking for something for ...</td></tr>
+<tr><td>Wie heisst das auf Deutsch?</td><td>What is that called in German?</td></tr>
+<tr><td>Haben Sie so etwas?</td><td>Do you have something like this?</td></tr>
+<tr><td>Was kostet das?</td><td>What does that cost?</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Pointing is allowed</span><p>Das da, bitte means that one there please. It is not cheating and shopkeepers hear it all day.</p></div>
+<div class="warning"><span class="callout-label">Many shops are cash only</span><p>Especially bakeries and small shops. Carry cash, and expect a deposit on bottles that you get back when you return them.</p></div>`,
+      Intermediate: `<p>Circumlocution is a learnable technique rather than a sign of failure, and it is the single highest-value thing you can practise at this level.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="Four ways to ask for something when you do not know its name">
+<rect x="24" y="40" width="464" height="140" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="94" font-size="30" font-weight="800" fill="#0369a1">Say what it does</text>
+<text x="56" y="142" font-size="27" font-weight="800" fill="currentColor">Etwas zum Schneiden</text>
+<text x="56" y="172" font-size="26" fill="currentColor" opacity="0.75">something for cutting</text>
+<rect x="512" y="40" width="464" height="140" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="544" y="94" font-size="30" font-weight="800" fill="#0f766e">Say where it goes</text>
+<text x="544" y="142" font-size="27" font-weight="800" fill="currentColor">Das fuer die Kueche</text>
+<text x="544" y="172" font-size="26" fill="currentColor" opacity="0.75">the thing for the kitchen</text>
+<rect x="24" y="204" width="464" height="140" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="258" font-size="30" font-weight="800" fill="#b45309">Compare it</text>
+<text x="56" y="306" font-size="27" font-weight="800" fill="currentColor">Wie ein Loeffel, aber...</text>
+<text x="56" y="336" font-size="26" fill="currentColor" opacity="0.75">like a spoon, but</text>
+<rect x="512" y="204" width="464" height="140" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="544" y="258" font-size="30" font-weight="800" fill="#7c3aed">Point and ask</text>
+<text x="544" y="306" font-size="27" font-weight="800" fill="currentColor">Wie heisst das?</text>
+<text x="544" y="336" font-size="26" fill="currentColor" opacity="0.75">what is that called</text>
+<rect x="24" y="368" width="952" height="110" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="414" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">The fourth one also teaches you the word.</text>
+<text x="500" y="456" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Write it down before you leave the shop.</text>
+</svg>
+<figcaption><strong>Working around a missing word is a skill, not a failure.</strong> Native speakers do it constantly in their own language. A learner who stops dead at every unknown noun will stay silent; one with four strategies will complete the transaction and leave with the word.</figcaption>
+</figure>
+<h3>Four strategies, in order of usefulness</h3>
+<table>
+<tr><th>Strategy</th><th>Pattern</th></tr>
+<tr><td>Function</td><td>Etwas zum Oeffnen, something for opening</td></tr>
+<tr><td>Location</td><td>Das fuer das Badezimmer</td></tr>
+<tr><td>Comparison</td><td>Wie ein Messer, aber kleiner</td></tr>
+<tr><td>Ask outright</td><td>Wie heisst das?</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">zum plus a verb is the workhorse</span><p>Etwas zum Schreiben, zum Putzen, zum Schneiden. One pattern covers a very large number of objects, and it buys you time while you think.</p></div>
+<div class="warning"><span class="callout-label">Say the number back when you pay</span><p>Prices are said quickly and two digit numbers are inverted. Repeating the amount before you hand money over costs two seconds and catches the misheard ones.</p></div>`,
+      Advanced: `<p>What separates a smooth transaction from an awkward one is managing the exchange, not knowing more nouns.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="Four ways to ask for something when you do not know its name">
+<rect x="24" y="40" width="464" height="140" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="94" font-size="30" font-weight="800" fill="#0369a1">Say what it does</text>
+<text x="56" y="142" font-size="27" font-weight="800" fill="currentColor">Etwas zum Schneiden</text>
+<text x="56" y="172" font-size="26" fill="currentColor" opacity="0.75">something for cutting</text>
+<rect x="512" y="40" width="464" height="140" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="544" y="94" font-size="30" font-weight="800" fill="#0f766e">Say where it goes</text>
+<text x="544" y="142" font-size="27" font-weight="800" fill="currentColor">Das fuer die Kueche</text>
+<text x="544" y="172" font-size="26" fill="currentColor" opacity="0.75">the thing for the kitchen</text>
+<rect x="24" y="204" width="464" height="140" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="258" font-size="30" font-weight="800" fill="#b45309">Compare it</text>
+<text x="56" y="306" font-size="27" font-weight="800" fill="currentColor">Wie ein Loeffel, aber...</text>
+<text x="56" y="336" font-size="26" fill="currentColor" opacity="0.75">like a spoon, but</text>
+<rect x="512" y="204" width="464" height="140" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="544" y="258" font-size="30" font-weight="800" fill="#7c3aed">Point and ask</text>
+<text x="544" y="306" font-size="27" font-weight="800" fill="currentColor">Wie heisst das?</text>
+<text x="544" y="336" font-size="26" fill="currentColor" opacity="0.75">what is that called</text>
+<rect x="24" y="368" width="952" height="110" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="414" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">The fourth one also teaches you the word.</text>
+<text x="500" y="456" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Write it down before you leave the shop.</text>
+</svg>
+<figcaption><strong>Working around a missing word is a skill, not a failure.</strong> Native speakers do it constantly in their own language. A learner who stops dead at every unknown noun will stay silent; one with four strategies will complete the transaction and leave with the word.</figcaption>
+</figure>
+<table>
+<tr><th>Moment</th><th>Phrase</th></tr>
+<tr><td>Opening</td><td>Entschuldigung, koennen Sie mir helfen?</td></tr>
+<tr><td>Narrowing</td><td>Nein, eher so etwas wie ...</td></tr>
+<tr><td>Not understanding</td><td>Wie bitte? Langsamer, bitte.</td></tr>
+<tr><td>Deciding not to buy</td><td>Ich schaue mich nur um, danke.</td></tr>
+<tr><td>Closing</td><td>Das nehme ich. Danke schoen.</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Having a decline ready matters</span><p>A learner without a phrase for leaving without buying will buy things they do not want. Ich ueberlege es mir, I will think about it, ends the conversation politely and is worth having automatic.</p></div>
+<h3>Service culture is different, not unfriendly</h3>
+<p>Staff are typically direct and efficient rather than effusive, and they will not fill silences for you. Greeting on entry and thanking on leaving is expected and noticed; the absence of small talk in between is normal.</p>`,
+      Expert: `<p>Communication strategies are a studied part of language competence, and the finding most relevant here is that strategic competence can be taught directly and transfers quickly.</p>
+<figure>
+<svg viewBox="0 0 1000 500" role="img" aria-label="Four ways to ask for something when you do not know its name">
+<rect x="24" y="40" width="464" height="140" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="94" font-size="30" font-weight="800" fill="#0369a1">Say what it does</text>
+<text x="56" y="142" font-size="27" font-weight="800" fill="currentColor">Etwas zum Schneiden</text>
+<text x="56" y="172" font-size="26" fill="currentColor" opacity="0.75">something for cutting</text>
+<rect x="512" y="40" width="464" height="140" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="544" y="94" font-size="30" font-weight="800" fill="#0f766e">Say where it goes</text>
+<text x="544" y="142" font-size="27" font-weight="800" fill="currentColor">Das fuer die Kueche</text>
+<text x="544" y="172" font-size="26" fill="currentColor" opacity="0.75">the thing for the kitchen</text>
+<rect x="24" y="204" width="464" height="140" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="56" y="258" font-size="30" font-weight="800" fill="#b45309">Compare it</text>
+<text x="56" y="306" font-size="27" font-weight="800" fill="currentColor">Wie ein Loeffel, aber...</text>
+<text x="56" y="336" font-size="26" fill="currentColor" opacity="0.75">like a spoon, but</text>
+<rect x="512" y="204" width="464" height="140" rx="16" fill="#7c3aed" opacity="0.14"/>
+<text x="544" y="258" font-size="30" font-weight="800" fill="#7c3aed">Point and ask</text>
+<text x="544" y="306" font-size="27" font-weight="800" fill="currentColor">Wie heisst das?</text>
+<text x="544" y="336" font-size="26" fill="currentColor" opacity="0.75">what is that called</text>
+<rect x="24" y="368" width="952" height="110" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="414" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">The fourth one also teaches you the word.</text>
+<text x="500" y="456" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Write it down before you leave the shop.</text>
+</svg>
+<figcaption><strong>Working around a missing word is a skill, not a failure.</strong> Native speakers do it constantly in their own language. A learner who stops dead at every unknown noun will stay silent; one with four strategies will complete the transaction and leave with the word.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Achievement beats avoidance</span><p>Learners broadly split into those who work around a gap and those who abandon the message. The first group gets more practice, more input and more corrections, and improves faster. Deliberately choosing to stay in the conversation when you lack a word is therefore not just about today's transaction; it changes the rate at which you learn.</p></div>
+<h3>What to do with the word once you get it</h3>
+<p>A word acquired at the moment you needed it is retained far better than one from a list, because the context and the need are both encoded with it. Writing it down before leaving the shop takes seconds and converts a transaction into a vocabulary item you will not forget.</p>
+<h3>Regional practicalities worth knowing</h3>
+<p>The bottle deposit system is widespread and the amounts are not trivial, so returning bottles is routine rather than eccentric. Sunday closing is near-universal for shops, which catches visitors out repeatedly. Neither is a language issue and both will shape your week more than any grammar point in this course.</p>`,
     },
     speaking: [
       {
@@ -2033,24 +2932,139 @@ const curriculum: CourseCurriculum = {
       "Es tut weh": "It hurts. The construction that pairs with a dative person: mir tut der Kopf weh.",
     },
     body: {
-      Beginner: `<p>Three ways to say something hurts, and you need all three because German uses them differently.</p>
-<p><strong>Ich habe Kopfschmerzen.</strong> I have a headache. Build these as compounds: Kopf plus Schmerzen, Bauchschmerzen, Halsschmerzen, Rückenschmerzen, Zahnschmerzen.</p>
-<p><strong>Mein Hals tut weh.</strong> My throat hurts. Or more naturally, <strong>mir tut der Hals weh</strong>, with the person in the dative and the body part taking the definite article.</p>
-<p><strong>Ich fühle mich nicht gut.</strong> I do not feel well. The general one for when you cannot be specific.</p>
-<p>The first question will be <strong>Seit wann?</strong> Since when. Answer with seit: seit gestern, seit drei Tagen, seit einer Woche. Note that seit takes the dative, so it is seit drei Tagen with the plural -n.</p>
-<p>And the practical part. You almost always need a <strong>Termin</strong>. If you need a sick note for work, ask for a <strong>Krankmeldung</strong> or an <strong>Arbeitsunfähigkeitsbescheinigung</strong>, and in many jobs you need it from the first day of absence.</p>`,
-      Intermediate: `<p>The three pain constructions are not interchangeable and learners benefit from seeing why. The compound noun form, ich habe Kopfschmerzen, states a condition. The weh tun form, mir tut der Kopf weh, reports a sensation and is the more natural spoken option. Ich fühle mich nicht gut is a general statement of unwellness and is what you say when you cannot localise it.</p>
-<p>Body parts take the definite article where English takes a possessive, which is a systematic feature rather than an oddity. Mir tut der Kopf weh rather than mein Kopf, ich wasche mir die Hände rather than meine Hände. The possessor appears as a dative pronoun, which is the possessive dative construction, and it is obligatory with body parts.</p>
-<p>Seit plus dative is the structure for duration, and the tense is the point that catches English speakers: German uses the present where English uses a perfect. Ich habe seit drei Tagen Kopfschmerzen means I have had a headache for three days. Saying ich hatte will be understood as the pain having stopped.</p>
-<p>The administrative layer is as important as the language. Most practices require an appointment, many require registration with your insurance card on the first visit, and the Krankmeldung is a formal document your employer is entitled to require. Knowing to ask for it before leaving saves a second appointment, and many employment contracts require it from the first day rather than the fourth.</p>`,
-      Advanced: `<p>Medical communication in a second language carries documented risk, and the asymmetry is the problem: the clinician controls the register and the patient controls the information. Learners under-report because they lack vocabulary for qualities of symptoms, and the qualities are frequently what distinguishes diagnoses. Stechend for stabbing, dumpf for dull, brennend for burning, ziehend for pulling, krampfartig for cramping: thirty words covering quality, onset, duration and radiation materially improve the quality of the consultation.</p>
-<p>Patients have a legal right to understand, and in practice the mechanism is a Dolmetscher. German law does not generally oblige a practice to provide one at its own cost for routine outpatient care, which means the practical advice is to bring somebody or to use a telephone interpreting service, and to say at the point of booking that you need one. A learner who discovers this in the consulting room has already lost the appointment.</p>
-<p>The Krankmeldung deserves precision because it has employment-law consequences. The Arbeitsunfähigkeitsbescheinigung is now largely transmitted electronically to the insurer, with the employee responsible for notifying the employer of absence immediately. The common error is assuming the electronic transmission discharges the duty to inform the employer, which it does not, and the resulting gap has cost people their notice protection.</p>
-<p>Culturally, German medical consultations tend to be shorter and more directive than Anglophone norms, and patients are expected to come with their information organised. A learner who prepares the four facts a doctor needs, what, where, since when and what makes it worse, will have a substantially better consultation than one who waits to be drawn out, because the drawing out may not happen.</p>`,
-      Expert: `<p>The research on language-discordant medical consultation consistently finds elevated rates of diagnostic error, longer consultations, lower adherence and worse outcomes, and the effect is only partly mitigated by ad hoc interpreters such as family members, who introduce their own error modes including omission and editing of embarrassing content. Professional interpreting substantially closes the gap, which is the empirical basis for the advice to arrange one rather than to improvise.</p>
-<p>What makes symptom description a distinctive linguistic task is that the relevant vocabulary is largely in the quality dimension, which is exactly where second language lexicons are thinnest. Learners acquire nouns for body parts early and adjectives for sensation qualities late, so they can say where it hurts long before they can say how, and the how carries much of the diagnostic information. Front-loading the quality adjectives inverts the usual sequencing and is defensible on utility grounds.</p>
-<p>There is also a register trap specific to German medicine. The clinical register uses Latinate terminology heavily, and patients are routinely addressed in it, so a learner may encounter Hypertonie rather than Bluthochdruck or Dyspnoe rather than Atemnot. Teaching the common pairs is cheap and prevents a learner from failing to recognise a condition they actually know about.</p>
-<p>Finally the structural point about the possessive dative is worth making explicitly because it generalises beyond the medical context. German treats inalienable possession as a relation between a dative participant and a definite noun phrase rather than as a possessive modifier, which is why mir tut der Kopf weh is natural and mein Kopf tut mir weh is redundant. The same structure governs reflexive body-part constructions and a range of benefactive readings, so learning it here pays elsewhere.</p>`,
+      Beginner: `<p>Describing a symptom needs three things: where, what it feels like, and how long it has been going on.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="The three parts of describing a symptom in German">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">WHERE</text>
+<text x="174" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals</text>
+<text x="174" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">my throat</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">WHAT</text>
+<text x="500" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">tut weh</text>
+<text x="500" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">hurts</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="826" y="98" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">HOW LONG</text>
+<text x="826" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">seit drei Tagen</text>
+<text x="826" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">for three days</text>
+<rect x="24" y="252" width="952" height="96" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="312" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals tut seit drei Tagen weh.</text>
+<rect x="24" y="372" width="952" height="92" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="418" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">seit takes the dative, and it takes the present tense.</text>
+<text x="500" y="452" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Not the past, even though English uses have been.</text>
+</svg>
+<figcaption><strong>Three slots, and the duration is the one that changes the diagnosis.</strong> A sore throat for a day and a sore throat for three weeks are different problems, so the part a learner is most likely to leave out is the part the doctor most needs.</figcaption>
+</figure>
+<h3>The two patterns</h3>
+<table>
+<tr><th>German</th><th>English</th></tr>
+<tr><td>Ich habe Kopfschmerzen</td><td>I have a headache</td></tr>
+<tr><td>Mein Hals tut weh</td><td>My throat hurts</td></tr>
+<tr><td>Mir ist schlecht</td><td>I feel sick</td></tr>
+<tr><td>Ich habe Fieber</td><td>I have a fever</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Schmerzen attaches to the body part</span><p>Kopfschmerzen, Halsschmerzen, Bauchschmerzen, Rueckenschmerzen. One ending, and you have four symptoms.</p></div>
+<div class="warning"><span class="callout-label">Say how long, unprompted</span><p>seit gestern, seit drei Tagen, seit einer Woche. It is the piece of information a doctor needs most and the piece learners most often leave out.</p></div>`,
+      Intermediate: `<p>German uses the present tense with seit where English uses a perfect. Ich habe seit drei Tagen Fieber, literally I have fever since three days.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="The three parts of describing a symptom in German">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">WHERE</text>
+<text x="174" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals</text>
+<text x="174" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">my throat</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">WHAT</text>
+<text x="500" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">tut weh</text>
+<text x="500" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">hurts</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="826" y="98" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">HOW LONG</text>
+<text x="826" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">seit drei Tagen</text>
+<text x="826" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">for three days</text>
+<rect x="24" y="252" width="952" height="96" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="312" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals tut seit drei Tagen weh.</text>
+<rect x="24" y="372" width="952" height="92" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="418" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">seit takes the dative, and it takes the present tense.</text>
+<text x="500" y="452" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Not the past, even though English uses have been.</text>
+</svg>
+<figcaption><strong>Three slots, and the duration is the one that changes the diagnosis.</strong> A sore throat for a day and a sore throat for three weeks are different problems, so the part a learner is most likely to leave out is the part the doctor most needs.</figcaption>
+</figure>
+<h3>Describing the pain itself</h3>
+<table>
+<tr><th>German</th><th>Means</th></tr>
+<tr><td>stechend</td><td>stabbing</td></tr>
+<tr><td>dumpf</td><td>dull</td></tr>
+<tr><td>brennend</td><td>burning</td></tr>
+<tr><td>staendig</td><td>constant</td></tr>
+<tr><td>ab und zu</td><td>on and off</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">What you will be asked</span><p>Seit wann? Wo genau? Haben Sie Fieber? Nehmen Sie Medikamente? Preparing answers to those four covers most of a first consultation.</p></div>
+<div class="warning"><span class="callout-label">Say if you did not understand</span><p>Ich habe das nicht verstanden. Getting a medical instruction wrong is worse than admitting you missed it, and no doctor will mind being asked to repeat.</p></div>`,
+      Advanced: `<p>Precision matters more here than in most conversations, because the words are carrying clinical information rather than social meaning.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="The three parts of describing a symptom in German">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">WHERE</text>
+<text x="174" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals</text>
+<text x="174" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">my throat</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">WHAT</text>
+<text x="500" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">tut weh</text>
+<text x="500" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">hurts</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="826" y="98" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">HOW LONG</text>
+<text x="826" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">seit drei Tagen</text>
+<text x="826" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">for three days</text>
+<rect x="24" y="252" width="952" height="96" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="312" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals tut seit drei Tagen weh.</text>
+<rect x="24" y="372" width="952" height="92" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="418" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">seit takes the dative, and it takes the present tense.</text>
+<text x="500" y="452" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Not the past, even though English uses have been.</text>
+</svg>
+<figcaption><strong>Three slots, and the duration is the one that changes the diagnosis.</strong> A sore throat for a day and a sore throat for three weeks are different problems, so the part a learner is most likely to leave out is the part the doctor most needs.</figcaption>
+</figure>
+<table>
+<tr><th>Vague</th><th>Useful</th></tr>
+<tr><td>Es tut weh</td><td>Es tut stechend weh, besonders beim Schlucken</td></tr>
+<tr><td>Seit kurzem</td><td>Seit Montagabend</td></tr>
+<tr><td>Manchmal</td><td>Zwei oder drei Mal pro Tag</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Bring a written list</span><p>Symptoms, when they started, current medication, allergies, previous conditions. Reading from a list in a consultation is completely normal, and it removes the risk of your German failing at the moment accuracy matters most.</p></div>
+<h3>How the system works</h3>
+<p>You usually see a Hausarzt first, who refers you onward. The Krankenkasse card is required at every visit. Appointments for specialists can be weeks out, and an acute problem goes to the Notaufnahme rather than waiting.</p>`,
+      Expert: `<p>Medical German has a register split worth knowing about: a Latin or Greek technical term used in writing, and a plain German word used with patients.</p>
+<figure>
+<svg viewBox="0 0 1000 480" role="img" aria-label="The three parts of describing a symptom in German">
+<rect x="24" y="40" width="300" height="180" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="174" y="98" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">WHERE</text>
+<text x="174" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals</text>
+<text x="174" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">my throat</text>
+<rect x="350" y="40" width="300" height="180" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="98" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">WHAT</text>
+<text x="500" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">tut weh</text>
+<text x="500" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">hurts</text>
+<rect x="676" y="40" width="300" height="180" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="826" y="98" font-size="30" font-weight="800" fill="#b45309" text-anchor="middle">HOW LONG</text>
+<text x="826" y="150" font-size="30" font-weight="800" fill="currentColor" text-anchor="middle">seit drei Tagen</text>
+<text x="826" y="192" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">for three days</text>
+<rect x="24" y="252" width="952" height="96" rx="16" fill="#0f766e" opacity="0.14"/>
+<text x="500" y="312" font-size="32" font-weight="800" fill="currentColor" text-anchor="middle">Mein Hals tut seit drei Tagen weh.</text>
+<rect x="24" y="372" width="952" height="92" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="418" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">seit takes the dative, and it takes the present tense.</text>
+<text x="500" y="452" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Not the past, even though English uses have been.</text>
+</svg>
+<figcaption><strong>Three slots, and the duration is the one that changes the diagnosis.</strong> A sore throat for a day and a sore throat for three weeks are different problems, so the part a learner is most likely to leave out is the part the doctor most needs.</figcaption>
+</figure>
+<table>
+<tr><th>Technical</th><th>Everyday</th></tr>
+<tr><td>Hypertonie</td><td>hoher Blutdruck</td></tr>
+<tr><td>Fraktur</td><td>Bruch</td></tr>
+<tr><td>Nausea</td><td>Uebelkeit</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Which helps more than it looks</span><p>Many technical terms are internationally recognisable, so a letter or a report is often more readable to a non-native speaker than the conversation was. If the spoken explanation did not land, asking for it in writing is a legitimate and effective request.</p></div>
+<h3>Interpreting is a right, not an imposition</h3>
+<p>For anything consequential, ask whether an interpreter is available. Hospitals in larger cities generally have access to one. Relying on a family member to interpret is common and is known to produce omissions, particularly where the subject is uncomfortable.</p>
+<h3>Consent is a language problem before it is a legal one</h3>
+<p>Signing an Einverstaendniserklaerung you have not fully understood is a bad idea, and saying so is unremarkable: Ich moechte das in Ruhe lesen. Nobody will be offended, and a clinician would far rather explain twice than proceed on a misunderstanding.</p>`,
     },
     speaking: [
       {
@@ -2170,29 +3184,110 @@ const curriculum: CourseCurriculum = {
       Meldebescheinigung: "The certificate of registration issued at the Anmeldung, needed by banks and employers.",
     },
     body: {
-      Beginner: `<p>The <strong>Anmeldung</strong> is registering where you live, and it is the thing everything else depends on. Without it you will struggle to open a bank account, start a job properly or get a tax number.</p>
-<p>You need an appointment, a <strong>Termin</strong>, and in some cities they are booked weeks ahead. Book it online the day you arrive, not the week you need it.</p>
-<p>Bring your documents, the <strong>Unterlagen</strong>. Usually: your passport, the completed registration form, and a <strong>Wohnungsgeberbestätigung</strong>, which is a confirmation from your landlord that you actually live there. If one of these is missing the appointment ends and you book another one.</p>
-<p>Useful sentences:</p>
-<ul>
-<li><strong>Ich möchte mich anmelden.</strong> I would like to register.</li>
-<li><strong>Ich habe einen Termin um zehn Uhr.</strong> I have an appointment at ten.</li>
-<li><strong>Welche Unterlagen brauche ich?</strong> Which documents do I need?</li>
-<li><strong>Können Sie das bitte wiederholen?</strong> Could you repeat that please?</li>
-</ul>
-<p>Speak German if you can. Officials are not obliged to speak English, and many will not.</p>`,
-      Intermediate: `<p>The registration requirement is a legal obligation under the Bundesmeldegesetz, typically within two weeks of moving in, and it generates the Meldebescheinigung that banks, employers and the tax office all ask for. Treating it as the first task rather than an administrative afterthought avoids a cascade of blocked downstream processes.</p>
-<p>The document list is the part that determines whether the appointment succeeds. Passport, the Anmeldeformular, and the Wohnungsgeberbestätigung signed by whoever controls the property. The last of these is the one newcomers miss, because it has no equivalent in many countries and because a tenancy agreement is not a substitute for it.</p>
-<p>Appointment scarcity is real in the larger cities and the practical strategies are worth knowing: book online immediately, check early in the morning when cancellations are released, and be willing to travel to a less central office, since any Bürgeramt in the city will generally do.</p>
-<p>Language-wise the register is formal Sie throughout, and the useful set is small: a statement of what you want, a statement that you have an appointment, questions about documents, and repair phrases for when you do not understand. Most of the interaction is the official asking closed questions, so comprehension matters more than production.</p>`,
-      Advanced: `<p>The institutional map matters because newcomers conflate offices that handle different things. The Bürgeramt handles registration and civil matters. The Ausländerbehörde handles residence permits. The Finanzamt handles tax and issues the Steueridentifikationsnummer, which arrives by post after registration rather than being issued at it. The Agentur für Arbeit handles employment matters. Turning up at the wrong one costs an appointment slot that may be weeks away.</p>
-<p>The dependency chain is the thing to internalise: Anmeldung produces the Meldebescheinigung, which unlocks the bank account, which the employer needs for payroll, while the tax ID arrives separately by post and the health insurance registration requires both. Each link has its own lead time, and the total is measured in weeks, which is why starting at the Anmeldung on day one rather than day twenty compresses the whole sequence.</p>
-<p>On rights, you may bring somebody to interpret and there is no requirement that you manage alone. Officials vary enormously in their willingness to use English and are within their rights to decline. Bringing a German-speaking friend to a consequential appointment is normal and sensible rather than an admission of inadequacy.</p>
-<p>The cultural expectation worth naming is that German administrative encounters are rule-bound rather than discretionary. An official who says a document is missing is usually describing a constraint rather than exercising judgement, so arguing is unproductive while asking exactly what is needed and when you can return is productive. Learners from administrative cultures with more discretion read this as obstruction and respond in ways that do not help them.</p>`,
-      Expert: `<p>The Meldepflicht is a distinctive feature of German administration with no equivalent in several comparable countries, and understanding that the state maintains a population register explains a great deal of downstream behaviour: why your address is known to the tax authority, why the broadcasting fee finds you, and why deregistration on leaving is also a legal obligation that affects your final tax position. Newcomers who treat registration as a formality often discover its consequences at departure.</p>
-<p>Digitalisation has been slow and uneven, and the Onlinezugangsgesetz set targets that have been substantially missed, so the practical position varies sharply by municipality. Some cities offer online Anmeldung and some still require physical attendance with original documents. This variability is itself the operational fact: advice from somebody who registered in a different city two years ago may be wrong in both directions.</p>
-<p>On the residence side, the distinction between a Visum, an Aufenthaltstitel and a Niederlassungserlaubnis is consequential and routinely confused. The relevant point for a learner is that the Ausländerbehörde is a different authority with different appointment systems and much longer lead times, and that its decisions can be contingent on documents the Bürgeramt issued, which makes the sequencing a hard dependency rather than a preference.</p>
-<p>Finally there is a well-documented equity dimension. Research on administrative burden distinguishes learning costs, compliance costs and psychological costs, and all three fall disproportionately on people operating in a second language. A learner who understands that the difficulty is a property of the system rather than of their German is better placed to deal with it, chiefly by front-loading the learning cost: find out exactly what is required before the appointment rather than discovering it in the room.</p>`,
+      Beginner: `<p>Dealing with a German public office is mostly about paperwork and timing. The German you need is a small set of fixed phrases.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The sequence of an appointment at a German public office">
+<rect x="24" y="40" width="952" height="72" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="86" font-size="29" font-weight="800" fill="currentColor">1. Book online, weeks ahead</text>
+<rect x="24" y="126" width="952" height="72" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="29" font-weight="800" fill="currentColor">2. Take a number, wait to be called</text>
+<rect x="24" y="212" width="952" height="72" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="258" font-size="29" font-weight="800" fill="currentColor">3. Hand over every document, in order</text>
+<rect x="24" y="298" width="952" height="72" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="344" font-size="29" font-weight="800" fill="currentColor">4. Answer closed questions, quickly asked</text>
+<rect x="24" y="398" width="952" height="104" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="444" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">One missing document ends the appointment.</text>
+<text x="500" y="484" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The next one may be weeks away.</text>
+</svg>
+<figcaption><strong>The language is the easy part of this; the paperwork is what decides the outcome.</strong> Officials are efficient rather than unhelpful, and the appointment is short because it assumes you arrived with everything. Bring originals and copies of more than you think you need.</figcaption>
+</figure>
+<h3>The phrases</h3>
+<table>
+<tr><th>German</th><th>English</th></tr>
+<tr><td>Ich habe einen Termin</td><td>I have an appointment</td></tr>
+<tr><td>Ich moechte mich anmelden</td><td>I would like to register my address</td></tr>
+<tr><td>Hier sind meine Unterlagen</td><td>Here are my documents</td></tr>
+<tr><td>Wie lange dauert das?</td><td>How long will that take?</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Book the appointment weeks ahead</span><p>Walk-in slots are rare and often gone by early morning. Registering an address usually has a legal deadline after you move in, so the booking has to happen before you are ready.</p></div>
+<div class="key-idea"><span class="callout-label">Bring more documents than asked</span><p>Passport, landlord confirmation, rental contract, and copies of everything. One missing paper ends the appointment.</p></div>`,
+      Intermediate: `<p>The appointment is short and assumes you came prepared. Most of the risk sits in the documents rather than in the conversation.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The sequence of an appointment at a German public office">
+<rect x="24" y="40" width="952" height="72" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="86" font-size="29" font-weight="800" fill="currentColor">1. Book online, weeks ahead</text>
+<rect x="24" y="126" width="952" height="72" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="29" font-weight="800" fill="currentColor">2. Take a number, wait to be called</text>
+<rect x="24" y="212" width="952" height="72" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="258" font-size="29" font-weight="800" fill="currentColor">3. Hand over every document, in order</text>
+<rect x="24" y="298" width="952" height="72" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="344" font-size="29" font-weight="800" fill="currentColor">4. Answer closed questions, quickly asked</text>
+<rect x="24" y="398" width="952" height="104" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="444" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">One missing document ends the appointment.</text>
+<text x="500" y="484" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The next one may be weeks away.</text>
+</svg>
+<figcaption><strong>The language is the easy part of this; the paperwork is what decides the outcome.</strong> Officials are efficient rather than unhelpful, and the appointment is short because it assumes you arrived with everything. Bring originals and copies of more than you think you need.</figcaption>
+</figure>
+<h3>What is usually required to register</h3>
+<table>
+<tr><th>Document</th><th>Note</th></tr>
+<tr><td>Passport or ID</td><td>Original</td></tr>
+<tr><td>Wohnungsgeberbestaetigung</td><td>From your landlord, on their form</td></tr>
+<tr><td>Completed Anmeldeformular</td><td>Fill it in beforehand</td></tr>
+<tr><td>Marriage or birth certificates</td><td>If registering family members</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The questions are closed and quick</span><p>Seit wann wohnen Sie da? Sind Sie verheiratet? Short factual answers are expected, and you are not required to elaborate.</p></div>
+<div class="warning"><span class="callout-label">Say when you did not catch it</span><p>Wie bitte? or Koennen Sie das bitte wiederholen? Guessing at a question about your legal status is a much worse outcome than asking twice.</p></div>`,
+      Advanced: `<p>The registration certificate is a key that unlocks other things, which is why its timing matters more than it first appears.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The sequence of an appointment at a German public office">
+<rect x="24" y="40" width="952" height="72" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="86" font-size="29" font-weight="800" fill="currentColor">1. Book online, weeks ahead</text>
+<rect x="24" y="126" width="952" height="72" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="29" font-weight="800" fill="currentColor">2. Take a number, wait to be called</text>
+<rect x="24" y="212" width="952" height="72" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="258" font-size="29" font-weight="800" fill="currentColor">3. Hand over every document, in order</text>
+<rect x="24" y="298" width="952" height="72" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="344" font-size="29" font-weight="800" fill="currentColor">4. Answer closed questions, quickly asked</text>
+<rect x="24" y="398" width="952" height="104" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="444" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">One missing document ends the appointment.</text>
+<text x="500" y="484" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The next one may be weeks away.</text>
+</svg>
+<figcaption><strong>The language is the easy part of this; the paperwork is what decides the outcome.</strong> Officials are efficient rather than unhelpful, and the appointment is short because it assumes you arrived with everything. Bring originals and copies of more than you think you need.</figcaption>
+</figure>
+<table>
+<tr><th>Needs the Meldebescheinigung</th><th>Why</th></tr>
+<tr><td>Opening a bank account</td><td>Proof of address</td></tr>
+<tr><td>The tax ID</td><td>Arrives by post afterwards</td></tr>
+<tr><td>A phone or internet contract</td><td>Address verification</td></tr>
+<tr><td>A residence permit</td><td>Part of the application</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">So the queue is serial, not parallel</span><p>No registration means no tax ID, which means an emergency tax rate on your first salary. Booking the appointment is therefore the first thing to do on arrival rather than something to get around to.</p></div>
+<h3>Written German is the fallback</h3>
+<p>If the conversation is not working, asking for it in writing is a reasonable request and often produces a clearer answer. Koennen Sie mir das bitte schriftlich geben is a sentence worth having ready.</p>`,
+      Expert: `<p>The system is rule-bound rather than discretionary, which is unfamiliar if you come from an administrative culture where an official can make an exception.</p>
+<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The sequence of an appointment at a German public office">
+<rect x="24" y="40" width="952" height="72" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="86" font-size="29" font-weight="800" fill="currentColor">1. Book online, weeks ahead</text>
+<rect x="24" y="126" width="952" height="72" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="29" font-weight="800" fill="currentColor">2. Take a number, wait to be called</text>
+<rect x="24" y="212" width="952" height="72" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="258" font-size="29" font-weight="800" fill="currentColor">3. Hand over every document, in order</text>
+<rect x="24" y="298" width="952" height="72" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="344" font-size="29" font-weight="800" fill="currentColor">4. Answer closed questions, quickly asked</text>
+<rect x="24" y="398" width="952" height="104" rx="16" fill="#be123c" opacity="0.14"/>
+<text x="500" y="444" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">One missing document ends the appointment.</text>
+<text x="500" y="484" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">The next one may be weeks away.</text>
+</svg>
+<figcaption><strong>The language is the easy part of this; the paperwork is what decides the outcome.</strong> Officials are efficient rather than unhelpful, and the appointment is short because it assumes you arrived with everything. Bring originals and copies of more than you think you need.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Which changes what persuasion is worth</span><p>Arguing with a clerk about a missing document is close to useless, because they usually cannot waive it. Asking what would satisfy the requirement is useful, because that is a question they can answer. The distinction is the single most practical thing to understand about German bureaucracy.</p></div>
+<h3>Everything happens by post</h3>
+<p>Decisions, tax IDs and requests for further information arrive as letters, and deadlines run from the date on the letter. A missing nameplate on your letterbox genuinely causes problems, because undeliverable post is treated as delivered in some contexts. Put your surname on the box on the day you move in.</p>
+<h3>Deadlines are real and appealable</h3>
+<p>Most decisions carry a Rechtsbehelfsbelehrung at the end, stating how and by when you may object. That paragraph is the most important part of any official letter you receive, and it is the part a non-native reader is most likely to skip because it is the densest German on the page.</p>
+<div class="field"><span class="callout-label">Keep everything</span><p>Every letter, every form, every appointment confirmation, in one folder. German administration assumes you have the paper, and reconstructing a file later is far harder than keeping it. This is the habit that most distinguishes people who find the system workable from people who find it hostile.</p></div>`,
     },
     scenarios: [
       {
@@ -2478,24 +3573,127 @@ const curriculum: CourseCurriculum = {
       Anhang: "An attachment, which is always named in the body rather than left to be discovered.",
     },
     body: {
-      Beginner: `<p>A formal German email has a fixed shape. Learn the shape and the content is the easy part.</p>
-<p><strong>Betreff:</strong> a specific subject line. Not "Question" but "Terminanfrage Anmeldung, Familie Sharma". German offices sort by subject and a vague one gets a slower answer.</p>
-<p><strong>Anrede:</strong> Sehr geehrte Damen und Herren if you do not know the name. Sehr geehrte Frau Weber or Sehr geehrter Herr Weber if you do. Note the comma after it, and that the next line starts with a small letter.</p>
-<p><strong>Body:</strong> say why you are writing in the first sentence. Ich schreibe Ihnen, weil... Then the detail. Then what you want them to do.</p>
-<p><strong>Grußformel:</strong> Mit freundlichen Grüßen, then your name on the next line.</p>
-<p>Two things that make it sound right. Use <strong>Sie</strong> and capitalise it. And use the polite forms: <strong>Könnten Sie</strong> rather than Können Sie, <strong>Ich hätte eine Frage</strong> rather than Ich habe eine Frage. They are softer and they are what a German reader expects.</p>`,
-      Intermediate: `<p>Written formal German is more codified than the spoken language, which makes it easier rather than harder for a learner: the structure is fixed and a correct letter can be assembled from a template without sounding assembled.</p>
-<p>The subject line does real work. German administrative correspondence is routed and filed by Betreff, so naming the matter, the reference number if you have one, and your name produces a faster response than a general enquiry. Terminanfrage, Kündigung, Widerspruch and Anfrage are the conventional openers.</p>
-<p>The salutation convention is strict. Sehr geehrte Damen und Herren with no name, Sehr geehrte Frau X or Sehr geehrter Herr X with one, and note that the sentence following the comma begins in lower case because the salutation is grammatically part of it. Hallo is acceptable in many workplaces and not with an authority.</p>
-<p>The polite subjunctive is what separates a competent letter from a blunt one. Könnten Sie mir bitte mitteilen rather than sagen Sie mir, ich hätte eine Frage rather than ich habe eine Frage, ich würde mich freuen rather than ich freue mich. These are conventional softeners and their absence reads as peremptory rather than as direct.</p>`,
-      Advanced: `<p>The DIN 5008 standard governs the layout of German business correspondence down to the placement of the subject and the spacing around it, and while nobody will reject an email for deviating from it, documents that follow it read as professionally produced. The conventions worth adopting are the bold or marked Betreff without the word Betreff itself, a blank line after the salutation, and the closing without a comma before the name.</p>
-<p>Register calibration is the recurring difficulty. German formal writing tolerates and expects a level of impersonality that Anglophone business writing has largely abandoned, so hedging, warmth markers and apologetic framing read as unprofessional rather than as polite. Conversely, directness that would be acceptable in an English email can read as rude without the subjunctive softeners, so the two adjustments pull in opposite directions and both are needed.</p>
-<p>Naming attachments in the body is a convention with a practical rationale, since administrative processing frequently separates the message from its attachments. Anbei sende ich Ihnen followed by an explicit list, or Im Anhang finden Sie, establishes a record of what was sent, which matters when a deadline is involved and a document is later said not to have arrived.</p>
-<p>For consequential correspondence, particularly anything with a legal deadline such as a Kündigung or a Widerspruch, email is often not the right channel at all. German contract and administrative law frequently requires Schriftform, which means a physical signature, and the defensive practice is Einschreiben mit Rückschein, registered post with acknowledgement. A learner who sends a notice by email because it is faster may find it was never validly served.</p>`,
-      Expert: `<p>The persistence of highly codified German business correspondence is sociolinguistically interesting because it has resisted the informalisation that has transformed Anglophone professional writing. The explanation most often advanced is institutional: the conventions are taught explicitly in the Ausbildung system, assessed, and reproduced by people who were examined on them, which creates a stabilising feedback loop that informal transmission does not.</p>
-<p>The Schriftform requirement deserves precision because it has caught competent people. Section 126 of the Bürgerliches Gesetzbuch requires a handwritten signature on the document itself for written form, and section 126a permits a qualified electronic signature as a substitute, which an ordinary email is not. Where a contract or a statute prescribes Schriftform, an emailed notice is formally ineffective regardless of receipt, and the Textform of section 126b is a weaker requirement that email does satisfy. Knowing which applies to a given notice is the whole question.</p>
-<p>On the gendered salutation, Sehr geehrte Damen und Herren is a binary formulation that is increasingly supplemented or replaced, with Guten Tag and Sehr geehrte Damen und Herren alongside Liebe Lesende and similar constructions appearing in institutional usage. There is no settled convention, official style guides diverge, and a learner should know both that the traditional form remains safe with an authority and that its alternatives are not errors.</p>
-<p>Finally, the pragmatics literature on German and English requests is consistent and useful here. German speakers tend toward more direct request strategies with more conventional indirectness carried by modal particles and subjunctive morphology, while English speakers favour conventionally indirect formulations with more lexical hedging. The learner consequence is specific: translating an English request literally produces something over-hedged and vague in German, while translating a German one literally produces something that reads as brusque in English. Neither speaker is being rude, and both think the other is.</p>`,
+      Beginner: `<p>A German official email has four parts, and they are always the same. Learn the template and you only have to write the middle.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="The fixed structure of a formal German email">
+<rect x="24" y="40" width="952" height="80" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="78" font-size="27" font-weight="800" fill="#7c3aed">BETREFF</text>
+<text x="56" y="108" font-size="28" font-weight="800" fill="currentColor">Anmeldung, Termin am 12. Maerz, Kundennummer 88213</text>
+<rect x="24" y="134" width="952" height="80" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="27" font-weight="800" fill="#0369a1">ANREDE</text>
+<text x="56" y="202" font-size="28" font-weight="800" fill="currentColor">Sehr geehrte Damen und Herren,</text>
+<rect x="24" y="228" width="952" height="130" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="266" font-size="27" font-weight="800" fill="#0f766e">ANLIEGEN</text>
+<text x="56" y="300" font-size="28" font-weight="800" fill="currentColor">What you want, in the first sentence.</text>
+<text x="56" y="340" font-size="28" fill="currentColor" opacity="0.85">Then the detail, then the deadline.</text>
+<rect x="24" y="372" width="952" height="80" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="410" font-size="27" font-weight="800" fill="#b45309">GRUSS</text>
+<text x="56" y="440" font-size="28" font-weight="800" fill="currentColor">Mit freundlichen Gruessen</text>
+<rect x="24" y="466" width="952" height="60" rx="12" fill="#be123c" opacity="0.13"/>
+<text x="500" y="506" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Four blocks. None of them is optional.</text>
+</svg>
+<figcaption><strong>German official correspondence is formulaic, and that is good news.</strong> The structure is fixed, so you are filling in a template rather than composing. An email missing the formal greeting reads as rude in a way that a grammar error does not.</figcaption>
+</figure>
+<h3>The fixed parts</h3>
+<table>
+<tr><th>Part</th><th>Use</th></tr>
+<tr><td>Betreff</td><td>Subject, with your reference number</td></tr>
+<tr><td>Sehr geehrte Damen und Herren,</td><td>When you do not know the name</td></tr>
+<tr><td>Sehr geehrter Herr Schmidt,</td><td>When you do</td></tr>
+<tr><td>Mit freundlichen Gruessen</td><td>The standard sign-off</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Say what you want in the first sentence</span><p>Ich schreibe Ihnen, weil ... Officials read a great many emails and the request should not be at the bottom.</p></div>
+<div class="warning"><span class="callout-label">A comma after the greeting, then a lower case letter</span><p>Sehr geehrte Damen und Herren, then the next line starts in lower case. It looks wrong to an English eye and it is correct.</p></div>`,
+      Intermediate: `<p>The register is more formal than an English business email, and matching it is what gets an answer.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="The fixed structure of a formal German email">
+<rect x="24" y="40" width="952" height="80" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="78" font-size="27" font-weight="800" fill="#7c3aed">BETREFF</text>
+<text x="56" y="108" font-size="28" font-weight="800" fill="currentColor">Anmeldung, Termin am 12. Maerz, Kundennummer 88213</text>
+<rect x="24" y="134" width="952" height="80" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="27" font-weight="800" fill="#0369a1">ANREDE</text>
+<text x="56" y="202" font-size="28" font-weight="800" fill="currentColor">Sehr geehrte Damen und Herren,</text>
+<rect x="24" y="228" width="952" height="130" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="266" font-size="27" font-weight="800" fill="#0f766e">ANLIEGEN</text>
+<text x="56" y="300" font-size="28" font-weight="800" fill="currentColor">What you want, in the first sentence.</text>
+<text x="56" y="340" font-size="28" fill="currentColor" opacity="0.85">Then the detail, then the deadline.</text>
+<rect x="24" y="372" width="952" height="80" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="410" font-size="27" font-weight="800" fill="#b45309">GRUSS</text>
+<text x="56" y="440" font-size="28" font-weight="800" fill="currentColor">Mit freundlichen Gruessen</text>
+<rect x="24" y="466" width="952" height="60" rx="12" fill="#be123c" opacity="0.13"/>
+<text x="500" y="506" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Four blocks. None of them is optional.</text>
+</svg>
+<figcaption><strong>German official correspondence is formulaic, and that is good news.</strong> The structure is fixed, so you are filling in a template rather than composing. An email missing the formal greeting reads as rude in a way that a grammar error does not.</figcaption>
+</figure>
+<h3>Useful sentences</h3>
+<table>
+<tr><th>Purpose</th><th>Sentence</th></tr>
+<tr><td>Stating your request</td><td>Ich moechte Sie bitten, ...</td></tr>
+<tr><td>Attaching something</td><td>Im Anhang finden Sie ...</td></tr>
+<tr><td>Asking for confirmation</td><td>Koennten Sie mir bitte bestaetigen, ob ...</td></tr>
+<tr><td>Giving a deadline</td><td>bis zum 15. Maerz</td></tr>
+<tr><td>Closing</td><td>Vielen Dank im Voraus.</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Put your reference number in the subject</span><p>Kundennummer, Aktenzeichen or Geschaeftszeichen. An email without one may be filed rather than answered, and including it is the single biggest improvement you can make to your response rate.</p></div>
+<div class="warning"><span class="callout-label">Do not open with a question</span><p>State who you are and what this concerns first. An email that opens with a question and explains afterwards reads as abrupt in this register.</p></div>`,
+      Advanced: `<p>What distinguishes an email that gets acted on is structure rather than vocabulary. One request, clearly bounded, with everything needed to act on it present.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="The fixed structure of a formal German email">
+<rect x="24" y="40" width="952" height="80" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="78" font-size="27" font-weight="800" fill="#7c3aed">BETREFF</text>
+<text x="56" y="108" font-size="28" font-weight="800" fill="currentColor">Anmeldung, Termin am 12. Maerz, Kundennummer 88213</text>
+<rect x="24" y="134" width="952" height="80" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="27" font-weight="800" fill="#0369a1">ANREDE</text>
+<text x="56" y="202" font-size="28" font-weight="800" fill="currentColor">Sehr geehrte Damen und Herren,</text>
+<rect x="24" y="228" width="952" height="130" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="266" font-size="27" font-weight="800" fill="#0f766e">ANLIEGEN</text>
+<text x="56" y="300" font-size="28" font-weight="800" fill="currentColor">What you want, in the first sentence.</text>
+<text x="56" y="340" font-size="28" fill="currentColor" opacity="0.85">Then the detail, then the deadline.</text>
+<rect x="24" y="372" width="952" height="80" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="410" font-size="27" font-weight="800" fill="#b45309">GRUSS</text>
+<text x="56" y="440" font-size="28" font-weight="800" fill="currentColor">Mit freundlichen Gruessen</text>
+<rect x="24" y="466" width="952" height="60" rx="12" fill="#be123c" opacity="0.13"/>
+<text x="500" y="506" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Four blocks. None of them is optional.</text>
+</svg>
+<figcaption><strong>German official correspondence is formulaic, and that is good news.</strong> The structure is fixed, so you are filling in a template rather than composing. An email missing the formal greeting reads as rude in a way that a grammar error does not.</figcaption>
+</figure>
+<table>
+<tr><th>Paragraph</th><th>Contains</th></tr>
+<tr><td>One</td><td>Who you are, your reference, what this is about</td></tr>
+<tr><td>Two</td><td>The request, stated once</td></tr>
+<tr><td>Three</td><td>Relevant facts and dates, briefly</td></tr>
+<tr><td>Four</td><td>What you would like to happen, and by when</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">One email, one request</td></p><p>Two unrelated questions in one message reliably get one answer. Send two emails with two subjects instead; they are tracked separately and both get handled.</p></div>
+<h3>Chasing politely</h3>
+<p>Ich moechte hoeflich nachfragen, ob es Neuigkeiten gibt. Quoting the original date and reference makes it easy to locate, and a chaser without them usually produces a request for them rather than an answer.</p>`,
+      Expert: `<p>The formality is doing real work rather than being decorative: it signals that the writer knows the conventions, and in administrative correspondence that correlates with the file being complete.</p>
+<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="The fixed structure of a formal German email">
+<rect x="24" y="40" width="952" height="80" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="78" font-size="27" font-weight="800" fill="#7c3aed">BETREFF</text>
+<text x="56" y="108" font-size="28" font-weight="800" fill="currentColor">Anmeldung, Termin am 12. Maerz, Kundennummer 88213</text>
+<rect x="24" y="134" width="952" height="80" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="172" font-size="27" font-weight="800" fill="#0369a1">ANREDE</text>
+<text x="56" y="202" font-size="28" font-weight="800" fill="currentColor">Sehr geehrte Damen und Herren,</text>
+<rect x="24" y="228" width="952" height="130" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="266" font-size="27" font-weight="800" fill="#0f766e">ANLIEGEN</text>
+<text x="56" y="300" font-size="28" font-weight="800" fill="currentColor">What you want, in the first sentence.</text>
+<text x="56" y="340" font-size="28" fill="currentColor" opacity="0.85">Then the detail, then the deadline.</text>
+<rect x="24" y="372" width="952" height="80" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="56" y="410" font-size="27" font-weight="800" fill="#b45309">GRUSS</text>
+<text x="56" y="440" font-size="28" font-weight="800" fill="currentColor">Mit freundlichen Gruessen</text>
+<rect x="24" y="466" width="952" height="60" rx="12" fill="#be123c" opacity="0.13"/>
+<text x="500" y="506" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Four blocks. None of them is optional.</text>
+</svg>
+<figcaption><strong>German official correspondence is formulaic, and that is good news.</strong> The structure is fixed, so you are filling in a template rather than composing. An email missing the formal greeting reads as rude in a way that a grammar error does not.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">Mirror what you received</span><p>If their reply opens Sehr geehrte, stay formal. If it opens Hallo and signs Viele Gruesse, you may follow. The person who de-escalates register first is the one with more status in the exchange, and as the person making the request that is not you.</p></div>
+<h3>Where the genitive and passive still live</h3>
+<p>Administrative German retains constructions that have retreated from speech: full genitives, extended passive forms, and nominalisations. You do not need to produce them, but you do need to read them, and official letters are written in exactly this style.</p>
+<h3>The paragraph to read twice</h3>
+<p>Any decision letter ends with the Rechtsbehelfsbelehrung, which states the deadline and the form for objecting. It is dense, it is formulaic, and it is the part that determines whether you still have options. Everything above it describes what was decided; that paragraph describes what you can do about it.</p>
+<div class="field"><span class="callout-label">Keep your own sent copies</span><p>With dates. Being able to say that you wrote on a given date and received no reply changes a conversation entirely, and it is the kind of evidence that cannot be assembled afterwards.</p></div>`,
     },
     questions: [
       {
