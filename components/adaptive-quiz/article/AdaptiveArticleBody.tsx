@@ -105,7 +105,7 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
       let node: Node | null;
       while ((node = walker.nextNode())) {
         const text = node.nodeValue ?? "";
-        if ((node.parentElement as HTMLElement | null)?.closest(".explain-term")) continue;
+        if ((node.parentElement as HTMLElement | null)?.closest(".explain-term, svg")) continue;
         const idx = text.toLowerCase().indexOf(term.toLowerCase());
         if (idx === -1) continue;
         const span = document.createElement("span");
@@ -131,7 +131,8 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
           const v = node.nodeValue;
           if (!v || !v.trim()) return NodeFilter.FILTER_REJECT;
           const p = node.parentElement;
-          if (!p || p.closest("pre, code, .reveal-unit, .article-code-mount")) return NodeFilter.FILTER_REJECT;
+          if (!p || p.closest("pre, code, svg, .reveal-unit, .article-code-mount"))
+            return NodeFilter.FILTER_REJECT;
           return NodeFilter.FILTER_ACCEPT;
         },
       });
@@ -294,8 +295,90 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
         "& .worked .callout-label": { color: "#0f766e" },
         "& .field .callout-label": { color: "#b45309" },
 
-        "& figure": { my: 3 },
+        /**
+         * Figures.
+         *
+         * An article in this catalogue carries two kinds of image and they want
+         * the same frame: a bespoke inline SVG schematic, which is how anything
+         * technical is drawn here because the demo has no network and a diagram
+         * has to survive being read on a phone at a customer site, and a
+         * photograph, which is right only where the learner needs to recognise
+         * a real object rather than understand a relationship.
+         *
+         * The caption is part of the figure rather than a line of prose under
+         * it, because a diagram whose caption can be separated from it by a
+         * page break has lost the sentence that said what to look at.
+         */
+        "& figure": {
+          my: 3.25,
+          mx: "auto",
+          p: 0,
+          maxWidth: 860,
+          borderRadius: 4,
+          overflow: "hidden",
+          border: "1px solid var(--border-default, #e6e8ef)",
+          bgcolor: "color-mix(in srgb, var(--border-default, #e6e8ef) 10%, transparent)",
+        },
+        "& figure > svg, & figure > img": { display: "block", width: "100%", height: "auto" },
+        "& figure > svg": { p: { xs: 0.75, md: 1.5 } },
+        // Authored SVG sets its own fills from theme tokens, but text should
+        // still be the page's typeface rather than the browser's serif default.
+        "& figure svg text": { fontFamily: "inherit" },
         "& img": { maxWidth: "100%", height: "auto", borderRadius: 3 },
+        "& figcaption": {
+          px: { xs: 1.5, md: 2 },
+          py: 1.25,
+          borderTop: "1px solid var(--border-default, #e6e8ef)",
+          bgcolor: "var(--card-bg)",
+          fontSize: "0.8rem",
+          lineHeight: 1.55,
+          color: "var(--text-secondary)",
+        },
+        "& figcaption strong": { color: "var(--font-primary)", fontWeight: 800 },
+        // Two figures that are read against each other, which is most of the
+        // comparisons in this catalogue: right joint against wrong joint, the
+        // reading that passes against the one that does not.
+        "& .fig-grid": {
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 2,
+          my: 3.25,
+        },
+        "& .fig-grid figure": { my: 0 },
+        "& .fig-photo": { background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)" },
+        "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 0 },
+        // A row of headline numbers. Used where the figures ARE the point and
+        // burying them in a sentence loses them.
+        "& .stat-strip": {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(132px, 1fr))",
+          gap: 1.25,
+          my: 3,
+        },
+        "& .stat": {
+          px: 1.5,
+          py: 1.35,
+          borderRadius: 3,
+          border: "1px solid var(--border-default, #e6e8ef)",
+          bgcolor: "var(--card-bg)",
+        },
+        "& .stat strong": {
+          display: "block",
+          fontSize: "1.3rem",
+          fontWeight: 800,
+          lineHeight: 1.1,
+          fontVariantNumeric: "tabular-nums",
+          color: "var(--font-primary)",
+        },
+        "& .stat span": {
+          display: "block",
+          mt: 0.4,
+          fontSize: "0.7rem",
+          fontWeight: 700,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          color: "var(--text-secondary)",
+        },
         "& .reveal-unit": { transition: "opacity 0.32s ease" },
         "& .explain-term": {
           cursor: "pointer",

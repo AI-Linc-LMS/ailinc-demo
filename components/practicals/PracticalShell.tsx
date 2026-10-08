@@ -343,6 +343,115 @@ export function PracticalProse({ html }: { html: string }) {
         },
         "& th": { fontWeight: 800, bgcolor: "color-mix(in srgb, var(--border-default) 20%, transparent)" },
         "& td.num, & th.num": { textAlign: "right", fontVariantNumeric: "tabular-nums" },
+
+        /**
+         * The same callout vocabulary the article reader uses.
+         *
+         * A brief and an article are both read before the work starts, and a
+         * hazard needs to look like a hazard in both places. Four words of
+         * shared CSS beats a learner having to notice that this screen marks
+         * danger differently from the last one.
+         */
+        "& .key-idea, & .warning, & .worked, & .field": {
+          my: 1.75,
+          px: 1.5,
+          py: 1.15,
+          borderRadius: 2.5,
+          borderLeft: "4px solid",
+          fontSize: "0.9rem",
+        },
+        "& .key-idea": {
+          borderLeftColor: "#6366f1",
+          bgcolor: "color-mix(in srgb, #6366f1 7%, transparent)",
+        },
+        "& .warning": {
+          borderLeftColor: "#e11d48",
+          bgcolor: "color-mix(in srgb, #e11d48 7%, transparent)",
+        },
+        "& .worked": {
+          borderLeftColor: "#0f766e",
+          bgcolor: "color-mix(in srgb, #0f766e 7%, transparent)",
+        },
+        "& .field": {
+          borderLeftColor: "#b45309",
+          bgcolor: "color-mix(in srgb, #b45309 8%, transparent)",
+        },
+        "& .callout-label": {
+          display: "block",
+          fontSize: "0.66rem",
+          fontWeight: 800,
+          letterSpacing: "0.09em",
+          textTransform: "uppercase",
+          mb: 0.5,
+        },
+        "& .key-idea .callout-label": { color: "#4f46e5" },
+        "& .warning .callout-label": { color: "#be123c" },
+        "& .worked .callout-label": { color: "#0f766e" },
+        "& .field .callout-label": { color: "#b45309" },
+
+        // Figures, as in the article reader: a brief that has to show a joint,
+        // a framing, or a circuit cannot do it in prose.
+        "& figure": {
+          my: 2,
+          mx: "auto",
+          p: 0,
+          maxWidth: 860,
+          borderRadius: 3,
+          overflow: "hidden",
+          border: "1px solid var(--border-default)",
+          bgcolor: "color-mix(in srgb, var(--border-default) 12%, transparent)",
+        },
+        "& figure > svg, & figure > img": { display: "block", width: "100%", height: "auto" },
+        "& figure > svg": { p: { xs: 0.75, md: 1.25 } },
+        "& figure svg text": { fontFamily: "inherit" },
+        "& figcaption": {
+          px: 1.5,
+          py: 1,
+          borderTop: "1px solid var(--border-default)",
+          bgcolor: "var(--card-bg)",
+          fontSize: "0.78rem",
+          lineHeight: 1.5,
+          color: "var(--text-secondary)",
+        },
+        "& figcaption strong": { color: "var(--text-primary)", fontWeight: 800 },
+        "& .fig-grid": {
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+          gap: 1.5,
+          my: 2,
+        },
+        "& .fig-grid figure": { my: 0 },
+        "& .fig-photo": { background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)" },
+        "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 0 },
+        "& .stat-strip": {
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(126px, 1fr))",
+          gap: 1,
+          my: 2,
+        },
+        "& .stat": {
+          px: 1.25,
+          py: 1.1,
+          borderRadius: 2.5,
+          border: "1px solid var(--border-default)",
+          bgcolor: "var(--card-bg)",
+        },
+        "& .stat strong": {
+          display: "block",
+          fontSize: "1.15rem",
+          fontWeight: 800,
+          lineHeight: 1.1,
+          fontVariantNumeric: "tabular-nums",
+        },
+        "& .stat span": {
+          display: "block",
+          mt: 0.3,
+          fontSize: "0.66rem",
+          fontWeight: 700,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          color: "var(--text-secondary)",
+        },
       }}
     />
   );
