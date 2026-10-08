@@ -414,6 +414,17 @@ export function PracticalProse({ html }: { html: string }) {
           color: "var(--text-secondary)",
         },
         "& figcaption strong": { color: "var(--text-primary)", fontWeight: 800 },
+        // Attribution line inside a figcaption. Wikimedia images are mostly
+        // CC BY-SA, which requires credit, so the style exists to make giving
+        // it cheap rather than a judgement call each time.
+        "& .credit": {
+          display: "block",
+          mt: 0.75,
+          fontSize: "0.68rem",
+          letterSpacing: "0.01em",
+          opacity: 0.72,
+        },
+        "& .credit a": { color: "inherit", textDecoration: "underline" },
         "& .fig-grid": {
           display: "grid",
           gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },

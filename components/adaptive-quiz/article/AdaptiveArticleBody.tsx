@@ -335,6 +335,17 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
           color: "var(--text-secondary)",
         },
         "& figcaption strong": { color: "var(--font-primary)", fontWeight: 800 },
+        // Attribution line inside a figcaption. Wikimedia images are mostly
+        // CC BY-SA, which requires credit, so the style exists to make giving
+        // it cheap rather than a judgement call each time.
+        "& .credit": {
+          display: "block",
+          mt: 0.75,
+          fontSize: "0.68rem",
+          letterSpacing: "0.01em",
+          opacity: 0.72,
+        },
+        "& .credit a": { color: "inherit", textDecoration: "underline" },
         // Two figures that are read against each other, which is most of the
         // comparisons in this catalogue: right joint against wrong joint, the
         // reading that passes against the one that does not.

@@ -553,6 +553,17 @@ for (const file of files) {
     if (!/<figcaption>/.test(caption)) {
       fail(where, "a <figure> has no <figcaption>; the sentence saying what to look at is the figure");
     }
+    // A photograph has two obligations a drawing does not: it has to describe
+    // itself to a screen reader, and almost everything usable from Wikimedia
+    // is CC BY-SA, which requires the author and licence to be named.
+    if (/<img/.test(caption)) {
+      if (!/<img[^>]*\salt="[^"]{4,}"/.test(caption)) {
+        fail(where, "an <img> has no usable alt text");
+      }
+      if (!/class="credit"/.test(caption)) {
+        fail(where, "a photo figure has no credit line; CC BY-SA requires the author and licence");
+      }
+    }
   }
 
   for (const [svg] of src.matchAll(/<svg[\s\S]*?<\/svg>/g)) {

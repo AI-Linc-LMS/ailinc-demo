@@ -27,24 +27,72 @@ const curriculum: CourseCurriculum = {
       "Kv rating": "Motor revolutions per volt with no load. A rough proxy for whether a motor suits a large slow prop or a small fast one.",
     },
     body: {
-      Beginner: `<p>A quadcopter has no moving parts except four motors. Everything else is deciding how fast each one should spin.</p>
-<p>The <strong>flight controller</strong> is the brain. It has a gyroscope in it, so it knows when the aircraft is tilting, and it adjusts the motors hundreds of times a second to keep it where you asked. Without it a quadcopter cannot be flown at all by a human: the corrections are far too fast.</p>
-<p>Each motor has an <strong>ESC</strong>, an electronic speed controller. The flight controller says "motor two, 60 per cent" and the ESC turns that into the actual electrical switching the motor needs.</p>
-<p>The <strong>battery</strong> feeds everything through the <strong>power distribution</strong>, which splits the high current to the four ESCs and steps the voltage down to five volts for the electronics.</p>
-<p>The <strong>receiver</strong> picks up your transmitter and tells the flight controller what you asked for. The <strong>camera</strong> and video transmitter are a separate path entirely and have nothing to do with flying.</p>
-<p>One thing to know now: a brushless motor has no built-in direction. Swap any two of its three wires and it spins the other way. That is a feature and it is also how beginners make a quad flip on its first arm.</p>`,
-      Intermediate: `<p>The control loop is the thing to understand first, because everything else exists to serve it. The gyroscope measures angular rate, the flight controller compares that against what the sticks are asking for, and a PID controller computes a correction which becomes four motor commands. That loop runs at a rate measured in thousands of hertz, which is why a multirotor is an inherently unstable airframe made flyable by software.</p>
-<p>ESCs exist because a brushless motor needs three-phase commutation, and generating that is a dedicated job. Modern ESCs run digital protocols such as DShot that carry a numeric throttle value rather than a pulse width, which removes calibration entirely and allows telemetry back from the ESC. An older analogue protocol requires throttle range calibration, and skipping it is a classic cause of one motor spinning up before the others.</p>
-<p>Power distribution matters more than its simplicity suggests. Four motors drawing peak current simultaneously can pull well over a hundred amps through traces measured in millimetres, so the board, the solder joints and the battery lead are all load-bearing. Most electrical failures in a first build are here rather than in the components.</p>
-<p>Motor direction is set by wire order, not by the motor, and the flight controller expects a specific pattern: two motors spinning one way and two the other, arranged diagonally. Getting one wrong produces a quad that flips immediately on arming, which is the single most common first-build failure and is a two-minute fix.</p>`,
-      Advanced: `<p>Treating the airframe as a plant under feedback control makes the component choices legible. The gyroscope's noise floor and the loop rate together set how much derivative gain the controller can carry before amplifying noise into motor heat, which is why soft-mounting the flight controller and filtering are not cosmetic. A build with a rigidly mounted board and an unbalanced prop will hit a noise limit long before it hits a thrust limit.</p>
-<p>Kv as a specification is widely misunderstood. It is revolutions per volt unloaded, so it describes the motor's speed constant rather than its power or efficiency. A high Kv motor on a low cell count and a small prop and a low Kv motor on a high cell count and a large prop can produce identical thrust at identical power; the choice is about matching the prop's aerodynamic load to the motor's torque constant, and Kv is a proxy for that rather than the thing itself.</p>
-<p>ESC protocol choice has real consequences beyond convenience. DShot is digital and checksummed, so it is immune to the signal degradation that produced the calibration rituals of the analogue era, and bidirectional DShot returns actual RPM, which enables RPM-based filtering of the gyro signal. That filtering is the single largest improvement in multirotor flight quality of the past decade, and it is unavailable on an analogue protocol.</p>
-<p>The separation of the video path from the control path is worth being deliberate about. They share only the battery, and a video transmitter is an electrically noisy device sitting close to a sensitive radio receiver. Most of the mysterious control dropouts in first builds are the VTX desensitising the receiver, which is a layout and shielding problem rather than a radio range problem.</p>`,
-      Expert: `<p>The multirotor is an underactuated system with four inputs controlling six degrees of freedom, which is why translation is achieved only by tilting and why position control is necessarily an outer loop around attitude. That structure explains a great deal about handling: the aircraft cannot accelerate sideways without first rotating, so the response bandwidth in translation is bounded by the attitude loop's bandwidth, and every improvement in position holding ultimately comes from improving attitude control.</p>
-<p>Modern flight controller firmware has converged on a cascaded architecture with a high-rate rate loop and a lower-rate attitude loop, plus substantial signal conditioning between the gyro and the controller. The filtering stack is where most of the engineering now sits: static notch filters, dynamic notches tracking motor RPM, and the various low-pass stages. Each filter adds phase lag, which costs stability margin, so the design is a direct trade between noise rejection and achievable gain, and RPM-based filtering wins because it removes the dominant noise source with a narrow notch rather than a broad low-pass.</p>
-<p>On the power system, the relevant failure mode at the component level is ESC MOSFET failure, which is usually thermal or secondary to a desync event rather than a quality problem. Desync, where the ESC loses track of rotor position during a rapid transient and the commutation goes open loop, produces a characteristic sound and a sudden loss of thrust on one arm, and it is far more likely with high-Kv motors on aggressive timing. Diagnosing a crash as desync rather than as a mechanical failure requires the ESC telemetry that only digital protocols provide.</p>
-<p>Finally, note that the entire architecture assumes the four thrust vectors are parallel and the mass distribution is known, and both assumptions are violated by any real build. Motor mount misalignment produces a yaw bias the controller must trim out continuously, and a battery mounted off-centre produces a constant roll correction. Both consume control authority that is then unavailable for disturbance rejection, which is the engineering reason a tidy build flies better rather than merely looking better.</p>`,
+      Beginner: `<p>A quadcopter is not one machine. It is about eight kinds of part bolted together, and knowing what each one does is what makes a fault findable later.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Racing_Drone.jpg/1280px-Racing_Drone.jpg" alt="A custom built FPV racing quadcopter with a carbon frame, four orange three-blade propellers, a green lithium polymer battery held on with a velcro strap, an action camera and a GPS antenna" loading="lazy"/>
+<figcaption><strong>Almost everything on this aircraft is a separate purchase.</strong> Carbon arms, four motors, four speed controllers in heatshrink, a flight controller stack under the battery tray, a strapped pack, a camera and an antenna. Nothing here is moulded into anything else, which is what makes it repairable and what makes the build order matter.<span class="credit">Photo: Commanderbryce, CC BY-SA 4.0, via Wikimedia Commons</span></figcaption>
+</figure>
+<h3>The parts, and what each one is for</h3>
+<table>
+<tr><th>Part</th><th>Job</th></tr>
+<tr><td>Frame</td><td>Holds everything in the right places and takes the crash</td></tr>
+<tr><td>Motors</td><td>Spin the propellers. Four of them.</td></tr>
+<tr><td>Propellers</td><td>Turn that spin into lift</td></tr>
+<tr><td>Speed controllers</td><td>Tell each motor how fast to turn, many times a second</td></tr>
+<tr><td>Flight controller</td><td>The brain. Reads its sensors and decides the four speeds.</td></tr>
+<tr><td>Battery</td><td>Powers all of it, and is the heaviest single item</td></tr>
+<tr><td>Receiver</td><td>Hears your radio</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Why there are four separate speed controllers</span><p>The aircraft stays level by making one motor turn slightly faster than another, continuously. That is only possible if each motor can be commanded on its own.</p></div>
+<div class="warning"><span class="callout-label">Propellers are not optional safety equipment</span><p>They are the dangerous part. Take them off before you power anything up on the bench, every time, including when you are sure you do not need to.</p></div>`,
+      Intermediate: `<p>Each part has a specification that has to agree with the parts around it. A build fails more often on a mismatch than on a faulty component.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Racing_Drone.jpg/1280px-Racing_Drone.jpg" alt="A custom built FPV racing quadcopter with a carbon frame, four orange three-blade propellers, a green lithium polymer battery held on with a velcro strap, an action camera and a GPS antenna" loading="lazy"/>
+<figcaption><strong>Almost everything on this aircraft is a separate purchase.</strong> Carbon arms, four motors, four speed controllers in heatshrink, a flight controller stack under the battery tray, a strapped pack, a camera and an antenna. Nothing here is moulded into anything else, which is what makes it repairable and what makes the build order matter.<span class="credit">Photo: Commanderbryce, CC BY-SA 4.0, via Wikimedia Commons</span></figcaption>
+</figure>
+<h3>What has to agree with what</h3>
+<table>
+<tr><th>This</th><th>Must suit</th><th>Or else</th></tr>
+<tr><td>Propeller size</td><td>The motor and the frame</td><td>Props strike the arms, or the motor is overloaded</td></tr>
+<tr><td>Motor KV</td><td>The battery cell count</td><td>Overspeed on a high cell count, sluggish on a low one</td></tr>
+<tr><td>Speed controller rating</td><td>Peak motor current</td><td>It overheats and fails in flight</td></tr>
+<tr><td>Flight controller mount</td><td>The frame, 30.5 mm or 20 mm</td><td>It physically does not fit</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">KV is the one that confuses people</span><p>It is revolutions per volt with no load, so a 2400 KV motor on a 4 cell pack spins far faster than on a 3 cell one. Higher KV is not a better motor; it is a motor intended for a lower voltage and a smaller propeller.</p></div>
+<h3>The stack</h3>
+<p>On a modern build the flight controller and the speed controllers are two boards sandwiched on the same four bolts, connected by one ribbon cable. That saves a great deal of wiring and means a fault in either board takes the whole stack apart to reach.</p>`,
+      Advanced: `<p>Treat the aircraft as four subsystems and most diagnosis becomes a question of which one you are in rather than which component is broken.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Racing_Drone.jpg/1280px-Racing_Drone.jpg" alt="A custom built FPV racing quadcopter with a carbon frame, four orange three-blade propellers, a green lithium polymer battery held on with a velcro strap, an action camera and a GPS antenna" loading="lazy"/>
+<figcaption><strong>Almost everything on this aircraft is a separate purchase.</strong> Carbon arms, four motors, four speed controllers in heatshrink, a flight controller stack under the battery tray, a strapped pack, a camera and an antenna. Nothing here is moulded into anything else, which is what makes it repairable and what makes the build order matter.<span class="credit">Photo: Commanderbryce, CC BY-SA 4.0, via Wikimedia Commons</span></figcaption>
+</figure>
+<table>
+<tr><th>Subsystem</th><th>Contains</th><th>Typical symptom when it fails</th></tr>
+<tr><td>Power</td><td>Battery, distribution, regulators</td><td>Brown-outs, resets under throttle</td></tr>
+<tr><td>Propulsion</td><td>Motors, speed controllers, propellers</td><td>Desync, one corner weak, vibration</td></tr>
+<tr><td>Control</td><td>Flight controller, sensors, firmware</td><td>Drift, oscillation, refusal to arm</td></tr>
+<tr><td>Link</td><td>Receiver, transmitter, video</td><td>Failsafe, range loss, interference</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Vibration is the cross-cutting fault</span><p>It originates in propulsion, as a damaged prop or a bent shaft, and presents in control, as an aircraft that will not hold level. A learner who treats the symptom as a tuning problem will spend an evening on filter settings to fix a two rupee propeller.</p></div>
+<h3>What is worth paying for</h3>
+<p>The frame and the motors take the crash and the heat, and are the parts where a cheap purchase is felt. Speed controllers are the most common in-flight failure. A receiver is the component whose failure is least recoverable, because it fails by silence.</p>`,
+      Expert: `<p>The architecture is worth stating explicitly, because it explains why the failure modes are what they are: a quadcopter is an unstable plant held up by a control loop, so every component is in series with flight.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Racing_Drone.jpg/1280px-Racing_Drone.jpg" alt="A custom built FPV racing quadcopter with a carbon frame, four orange three-blade propellers, a green lithium polymer battery held on with a velcro strap, an action camera and a GPS antenna" loading="lazy"/>
+<figcaption><strong>Almost everything on this aircraft is a separate purchase.</strong> Carbon arms, four motors, four speed controllers in heatshrink, a flight controller stack under the battery tray, a strapped pack, a camera and an antenna. Nothing here is moulded into anything else, which is what makes it repairable and what makes the build order matter.<span class="credit">Photo: Commanderbryce, CC BY-SA 4.0, via Wikimedia Commons</span></figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">There is no gliding option</span><p>A fixed wing with a dead motor is a glider. A quadcopter with a dead motor is a falling object. The aircraft is not aerodynamically stable at any point, so a control loop interruption of a few hundred milliseconds is a crash rather than a wobble. That is the reason brown-outs matter so much more here than on a ground vehicle.</p></div>
+<h3>Redundancy is almost absent at this scale</h3>
+<p>Four motors is the minimum for control in all axes, so there is no spare. A hexacopter can survive one motor loss; a quadcopter cannot, and the extra arms are the main engineering reason commercial inspection aircraft are not quads.</p>
+<h3>Where the cost actually sits</h3>
+<table>
+<tr><th>Component</th><th>Share of cost</th><th>Share of failures</th></tr>
+<tr><td>Frame</td><td>Low</td><td>Crash damage only</td></tr>
+<tr><td>Motors</td><td>Moderate</td><td>Bearings and bent shafts</td></tr>
+<tr><td>Speed controllers</td><td>Moderate</td><td>The highest in-flight share</td></tr>
+<tr><td>Flight controller</td><td>High</td><td>Low, but takes the stack apart</td></tr>
+</table>
+<div class="field"><span class="callout-label">Which argues for a specific build habit</span><p>Spend on the parts whose failure is expensive to diagnose rather than on the parts that are expensive to buy. A known-good spare speed controller in the toolbox is worth more than an upgraded flight controller, because it converts an evening of measurement into a five minute substitution.</p></div>`,
     },
     parts: [
       {
@@ -631,24 +679,116 @@ const curriculum: CourseCurriculum = {
       "Storage charge": "About 3.8 V per cell, the state a LiPo should be left at for more than a day or two.",
     },
     body: {
-      Beginner: `<p>Three numbers on a LiPo label and all three matter.</p>
-<p><strong>Cell count,</strong> written 4S or 6S. That is cells in series, each 3.7 volts nominal and 4.2 fully charged. A 6S pack is 22.2 V nominal and 25.2 V full. Putting a 6S pack into a build designed for 4S destroys the electronics instantly.</p>
-<p><strong>Capacity,</strong> in milliamp hours. 1300 mAh means it can supply 1300 milliamps for an hour, or 13 amps for about six minutes.</p>
-<p><strong>C rating,</strong> a multiplier on the capacity giving maximum continuous current. 1.3 Ah at 100C is 130 amps. Manufacturers are optimistic about this number.</p>
-<p>Two safety rules that are not negotiable. <strong>Never charge an unattended LiPo</strong>, and charge in a fireproof bag or a metal box. And <strong>never store a pack fully charged</strong>: leave it at about 3.8 V per cell if it is going to sit for more than a day or two, because sitting full is what kills them.</p>
-<p>A puffed, dented or punctured pack is finished. Do not fly it, do not charge it, dispose of it properly.</p>`,
-      Intermediate: `<p>The useful way to read a C rating is as a statement about internal resistance rather than as a current limit. Drawing current through the pack's internal resistance drops the terminal voltage, and a high C pack is one whose resistance is low enough that the sag stays small. That is why a marginal pack does not fail dramatically, it simply delivers less power than your thrust calculation assumed.</p>
-<p>Depth of discharge governs cycle life far more than anything else you control. Landing at about 3.5 V per cell under load, which recovers to roughly 3.8 resting, is the convention, and it uses around 80 per cent of the nominal capacity. Running packs flat to squeeze out the last minute will visibly halve their useful life.</p>
-<p>Endurance is therefore computed on usable capacity rather than nameplate capacity, and on average current rather than hover current, since a freestyle flight spends very little time hovering. A 1300 mAh pack gives about 1040 mAh usable, and at a realistic average draw the flight time is minutes rather than the figure a hover calculation suggests.</p>
-<p>Storage voltage matters because the degradation mechanism is time spent at high state of charge, accelerated by temperature. A pack left full for a month loses capacity it does not get back. Most chargers have a storage mode and using it after every session is the single cheapest thing you can do for your batteries.</p>`,
-      Advanced: `<p>The C rating is the least trustworthy number in the hobby, because it is unregulated and routinely inflated, sometimes by a factor of two or three. The honest measurement is internal resistance per cell, which good chargers report, and a pack whose resistance has risen materially from new has aged regardless of what the label claims. Tracking resistance across the life of a pack is the only reliable way to know when to retire it.</p>
-<p>Voltage sag couples directly into the thrust calculation and is why a build can be marginal in a way that a static spreadsheet misses. Current draw rises roughly as the cube of rotational speed while thrust rises as the square, so demanding more thrust costs disproportionately more current, which sags the pack, which reduces available voltage and therefore thrust. A build whose ratio was computed from fully charged bench data can be meaningfully weaker at 70 per cent state of charge.</p>
-<p>Charging practice has a specific failure mode worth naming: a cell that has drifted out of balance will be driven above 4.2 V by a charger balancing to a pack average, and overcharge is the dominant cause of thermal runaway. Balance charging is not optional, and a pack whose cells refuse to balance has a cell on its way out and should be retired rather than coaxed.</p>
-<p>On transport, lithium batteries are classed as dangerous goods and air carriage is restricted by watt hour rating and by state of charge, with spares required in cabin baggage and terminals protected. A builder travelling to an event who has not checked the current rules will have packs confiscated, and the rules are enforced rather than advisory.</p>`,
-      Expert: `<p>Lithium polymer cells degrade through two broadly separable mechanisms: calendar ageing, driven by time at high state of charge and elevated temperature, and cycle ageing, driven by depth of discharge and by charge and discharge rate. The practical implications diverge, which is why storage charging addresses one and conservative depth of discharge addresses the other, and why a pack can be ruined by a month in a drawer without ever having been flown hard.</p>
-<p>Thermal runaway in a lithium polymer cell is an exothermic cascade: separator breakdown leads to internal short, which drives temperature up, which accelerates electrolyte decomposition and further breakdown. Once initiated it is self-sustaining and supplies its own oxidiser, which is why water and conventional extinguishers are ineffective and why the correct response to a fire is containment and evacuation rather than extinguishing. A metal container and sand are the realistic workshop provisions.</p>
-<p>The C rating's physical content, insofar as it has any, is a bound on current such that the cell's internal heating and voltage sag remain within design limits. Since internal resistance is temperature dependent and rises as the cell ages, the effective C rating of a given pack is a function of its temperature and its history rather than a constant. This is why bench-testing a new pack and flying an old one to the same numbers produces different results, and why resistance tracking is the measurement that actually means something.</p>
-<p>From a design standpoint the pack sizing optimum follows from the same power scaling that governs the airframe. Endurance is stored energy over power, power rises super-linearly with weight, and the pack is a large fraction of that weight, so there is an interior optimum in pack mass beyond which capacity is self-defeating. Differentiating the endurance expression with respect to pack mass locates it, and the result for typical five inch builds lands close to where the hobby has empirically settled, which is a pleasing confirmation that collective trial and error approximates the calculus.</p>`,
+      Beginner: `<p>The battery decides how long you fly and how hard the aircraft can pull. Two numbers on the label matter more than the rest.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="Battery voltage under load falling faster than resting voltage across a flight">
+<path d="M150 450 H960 M150 450 V50" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M170 110 C 400 150, 650 200, 900 330" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+<path d="M170 190 C 400 240, 650 300, 900 430" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>
+<text x="470" y="140" font-size="28" font-weight="800" fill="#0f766e">resting voltage</text>
+<text x="420" y="300" font-size="28" font-weight="800" fill="#be123c">under load</text>
+<path d="M620 232 V322" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<path d="M610 232 h20 M610 322 h20" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<text x="648" y="286" font-size="27" font-weight="800" fill="currentColor" opacity="0.85">this gap is the sag</text>
+<text x="170" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">TAKE OFF</text>
+<text x="950" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">LAND NOW</text>
+<text x="100" y="250" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 100 250)">VOLTAGE</text>
+<rect x="150" y="516" width="810" height="38" rx="9" fill="#be123c" opacity="0.14"/>
+<text x="555" y="544" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The alarm reads the sagged figure, not the resting one.</text>
+</svg>
+<figcaption><strong>A pack that reads 3.7 volts per cell in the air may rest at 3.9 once you land.</strong> That recovery is why a timer is a better endurance limit than a voltage alarm for a new pilot: the alarm fires late under hard throttle and early under gentle cruising, and neither is the state of charge you wanted to know.</figcaption>
+</figure>
+<h3>Reading the label</h3>
+<table>
+<tr><th>Marking</th><th>Means</th></tr>
+<tr><td>4S</td><td>Four cells in series, about 14.8 volts resting</td></tr>
+<tr><td>1500 mAh</td><td>How much charge it stores</td></tr>
+<tr><td>100C</td><td>The claimed maximum discharge rate</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Never run a cell below 3.5 volts</span><p>Lithium polymer cells are damaged by deep discharge and the damage is permanent. Land on the timer, not on the alarm, and store packs at about 3.8 volts per cell rather than full.</p></div>
+<div class="key-idea"><span class="callout-label">Treat a damaged pack as dangerous</span><p>A pack that is puffed, pierced or has been in a crash can catch fire hours later. Charge and store in a fireproof bag, away from anything that matters, and never leave one charging unattended.</p></div>`,
+      Intermediate: `<p>Capacity tells you how much energy is stored. The C rating is supposed to tell you how quickly you may take it out, and it is the number most often exaggerated.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="Battery voltage under load falling faster than resting voltage across a flight">
+<path d="M150 450 H960 M150 450 V50" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M170 110 C 400 150, 650 200, 900 330" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+<path d="M170 190 C 400 240, 650 300, 900 430" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>
+<text x="470" y="140" font-size="28" font-weight="800" fill="#0f766e">resting voltage</text>
+<text x="420" y="300" font-size="28" font-weight="800" fill="#be123c">under load</text>
+<path d="M620 232 V322" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<path d="M610 232 h20 M610 322 h20" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<text x="648" y="286" font-size="27" font-weight="800" fill="currentColor" opacity="0.85">this gap is the sag</text>
+<text x="170" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">TAKE OFF</text>
+<text x="950" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">LAND NOW</text>
+<text x="100" y="250" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 100 250)">VOLTAGE</text>
+<rect x="150" y="516" width="810" height="38" rx="9" fill="#be123c" opacity="0.14"/>
+<text x="555" y="544" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The alarm reads the sagged figure, not the resting one.</text>
+</svg>
+<figcaption><strong>A pack that reads 3.7 volts per cell in the air may rest at 3.9 once you land.</strong> That recovery is why a timer is a better endurance limit than a voltage alarm for a new pilot: the alarm fires late under hard throttle and early under gentle cruising, and neither is the state of charge you wanted to know.</figcaption>
+</figure>
+<h3>Working out the current a pack must supply</h3>
+<p>Multiply capacity in amp hours by the C rating. A 1500 mAh pack rated 100C claims 1.5 times 100, which is 150 amps. A four motor build drawing 30 amps each at full throttle needs 120 amps, so on paper there is headroom.</p>
+<div class="warning"><span class="callout-label">On paper</span><p>Published C ratings are marketing figures far more often than measurements, and a pack that sags badly under load is telling you its real rating regardless of what is printed on it. Voltage under load is the honest test.</p></div>
+<h3>Why flight time is not capacity divided by current</h3>
+<table>
+<tr><th>Assumption</th><th>Reality</th></tr>
+<tr><td>Use the full capacity</td><td>You land at about 20% remaining to protect the cells</td></tr>
+<tr><td>Hover current throughout</td><td>Real flying is throttle changes, which cost more</td></tr>
+<tr><td>Rated voltage throughout</td><td>Voltage falls, so current rises for the same thrust</td></tr>
+</table>
+<p>A realistic figure is around sixty to seventy per cent of the naive calculation, and that is before wind.</p>`,
+      Advanced: `<p>Internal resistance is the number that actually predicts behaviour, and it is measurable with a decent charger. Sag is current times internal resistance, so a pack with low resistance holds its voltage and a tired one does not.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="Battery voltage under load falling faster than resting voltage across a flight">
+<path d="M150 450 H960 M150 450 V50" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M170 110 C 400 150, 650 200, 900 330" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+<path d="M170 190 C 400 240, 650 300, 900 430" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>
+<text x="470" y="140" font-size="28" font-weight="800" fill="#0f766e">resting voltage</text>
+<text x="420" y="300" font-size="28" font-weight="800" fill="#be123c">under load</text>
+<path d="M620 232 V322" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<path d="M610 232 h20 M610 322 h20" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<text x="648" y="286" font-size="27" font-weight="800" fill="currentColor" opacity="0.85">this gap is the sag</text>
+<text x="170" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">TAKE OFF</text>
+<text x="950" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">LAND NOW</text>
+<text x="100" y="250" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 100 250)">VOLTAGE</text>
+<rect x="150" y="516" width="810" height="38" rx="9" fill="#be123c" opacity="0.14"/>
+<text x="555" y="544" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The alarm reads the sagged figure, not the resting one.</text>
+</svg>
+<figcaption><strong>A pack that reads 3.7 volts per cell in the air may rest at 3.9 once you land.</strong> That recovery is why a timer is a better endurance limit than a voltage alarm for a new pilot: the alarm fires late under hard throttle and early under gentle cruising, and neither is the state of charge you wanted to know.</figcaption>
+</figure>
+<table>
+<tr><th>Per cell resistance</th><th>Condition</th></tr>
+<tr><td class="num">Under 4 milliohms</td><td>Healthy, performs to specification</td></tr>
+<tr><td class="num">4 to 8</td><td>Aged, noticeably softer at full throttle</td></tr>
+<tr><td class="num">Over 10</td><td>Retire it; the sag will trip a low voltage cut</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">This is why the same build feels different on two packs</span><p>Identical labels, different internal resistance, and the aircraft has measurably less punch on the tired one. Logging resistance at every charge turns pack replacement into a scheduled decision rather than a surprise during a flight.</p></div>
+<h3>Temperature cuts both ways</h3>
+<p>Internal resistance rises sharply in the cold, so a winter first flight on a cold pack sags far more than the same pack warm. Packs should be flown warm and charged warm, and a pack that comes off the aircraft hot has been worked beyond its comfortable rate.</p>`,
+      Expert: `<p>The useful model is a voltage source behind a resistance, where both terms move with state of charge, temperature and age. Everything surprising about pack behaviour falls out of that.</p>
+<figure>
+<svg viewBox="0 0 1000 560" role="img" aria-label="Battery voltage under load falling faster than resting voltage across a flight">
+<path d="M150 450 H960 M150 450 V50" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M170 110 C 400 150, 650 200, 900 330" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+<path d="M170 190 C 400 240, 650 300, 900 430" fill="none" stroke="#be123c" stroke-width="8" stroke-linecap="round"/>
+<text x="470" y="140" font-size="28" font-weight="800" fill="#0f766e">resting voltage</text>
+<text x="420" y="300" font-size="28" font-weight="800" fill="#be123c">under load</text>
+<path d="M620 232 V322" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<path d="M610 232 h20 M610 322 h20" stroke="currentColor" opacity="0.6" stroke-width="4"/>
+<text x="648" y="286" font-size="27" font-weight="800" fill="currentColor" opacity="0.85">this gap is the sag</text>
+<text x="170" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55">TAKE OFF</text>
+<text x="950" y="498" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="end">LAND NOW</text>
+<text x="100" y="250" font-size="27" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 100 250)">VOLTAGE</text>
+<rect x="150" y="516" width="810" height="38" rx="9" fill="#be123c" opacity="0.14"/>
+<text x="555" y="544" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">The alarm reads the sagged figure, not the resting one.</text>
+</svg>
+<figcaption><strong>A pack that reads 3.7 volts per cell in the air may rest at 3.9 once you land.</strong> That recovery is why a timer is a better endurance limit than a voltage alarm for a new pilot: the alarm fires late under hard throttle and early under gentle cruising, and neither is the state of charge you wanted to know.</figcaption>
+</figure>
+<h3>Why low voltage cutoffs cause crashes</h3>
+<div class="warning"><span class="callout-label">The failure sequence</span><p>Hard throttle sags the pack below the cutoff, the controller reduces power, the aircraft drops, the pilot applies more throttle, and the pack sags further. A cutoff set on resting voltage rather than on sagged voltage turns a low battery into an uncommanded descent at the worst moment. Set it on what the pack does under load, and prefer a soft cutoff that reduces power gradually.</p></div>
+<h3>Energy density, and why it is the whole constraint</h3>
+<p>Lithium polymer stores roughly 150 to 200 watt hours per kilogram against about 12,000 for petrol. Electric multirotors are therefore endurance-limited in a way no amount of build quality fixes, and the entire design space, including the weight spiral, follows from that single number.</p>
+<div class="field"><span class="callout-label">Treat packs as consumables with a recorded life</span><p>Cycle count, internal resistance and the date of first use, written on the pack itself. A fleet operator who does this replaces packs on evidence; one who does not discovers a tired pack during a flight, which is the expensive way to find out. Retired packs are discharged to storage voltage and disposed of properly, never in household waste.</p></div>`,
     },
     worksheets: [
       {
@@ -1084,25 +1224,135 @@ const curriculum: CourseCurriculum = {
       "Motor screw length": "A screw that is too long contacts the motor windings and shorts them, destroying the motor.",
     },
     body: {
-      Beginner: `<p>Build in the right order and the whole thing takes an evening. Build in the wrong order and you will take it apart twice.</p>
-<p><strong>Motors first.</strong> They bolt from underneath the arms, and once the stack is in the middle those bolts are hard to reach.</p>
-<p><strong>Then ESCs,</strong> soldered to the motor wires while you still have space to work.</p>
-<p><strong>Then test the power path</strong> with a smoke stopper, before the flight controller goes on. This is the step people skip and the one that saves the most money: if you have a solder bridge, a current-limited lead blows a bulb rather than destroying a stack of boards.</p>
-<p><strong>Then the flight controller,</strong> arrow pointing forward.</p>
-<p><strong>Then receiver, then camera and video.</strong> <strong>Props last,</strong> always, after you have checked motor directions with the props off.</p>
-<p>Two things that destroy parts. <strong>Motor screws that are too long</strong> go through into the windings and short the motor; check the depth before you tighten. And <strong>no thread lock</strong> means your motor screws come out in flight, because a multirotor vibrates more than anything else you have built.</p>`,
-      Intermediate: `<p>Assembly order is determined by two constraints. Access: a fastener that becomes unreachable must be fitted before the thing that blocks it. And verification: anything that can be tested in isolation should be tested before something expensive is connected to it.</p>
-<p>The second constraint is the one that distinguishes a careful build. Powering the frame through a current-limited lead before the flight controller is fitted means a solder bridge, a reversed capacitor or a shorted motor lead reveals itself as a glowing bulb rather than as a destroyed stack. The test takes two minutes and the components it protects cost several thousand rupees.</p>
-<p>Dry fitting before any permanent work is worth the time. Standoff lengths, connector orientation, where the battery strap passes and whether the camera clears the top plate are all cheaper to discover before anything is soldered. Builders who skip it routinely discover that the stack is too tall for the frame after the stack is soldered into it.</p>
-<p>Fasteners need attention that beginners do not expect. Thread lock on anything that vibrates, which is everything, and motor screws checked for length against the depth of the motor's threaded holes. A screw a millimetre too long contacts the windings and destroys the motor the first time you power up, and it is a silent failure until it is not.</p>`,
-      Advanced: `<p>The sequencing problem is a dependency graph and treating it as one makes it teachable. Each operation has prerequisites of two kinds, physical access and verified state, and a valid build order is a topological sort of that graph. Most published build guides present one such order without explaining the constraints, which is why builders improvising a different order find themselves undoing work: they have violated a dependency they did not know existed.</p>
-<p>The verification nodes deserve particular attention because they are the ones most often omitted. Continuity and short checks before first power, current-limited first power before the flight controller, motor direction before propellers, and failsafe before flight. Each is cheap and each prevents a class of failure that is expensive after the fact, and the general principle is to test at the point where the state is simplest.</p>
-<p>Vibration is the environmental factor that makes a multirotor different from most assemblies. Unbalanced propellers and motor imbalance produce continuous excitation across a broad band, and the result is that unsecured fasteners migrate, wires work-harden at stress concentrations and solder joints with inadequate mechanical support crack. The mitigations are thread lock, strain relief at every joint and soft mounting of the flight controller, and all three are build-time decisions that cannot be retrofitted easily.</p>
-<p>On access, the stack is the usual constraint because it occupies the centre of the frame and covers the arm roots. Builders who fit it early find they cannot reach motor screws, cannot reflow an ESC joint and cannot route the receiver aerials. Keeping the centre clear until the arms are completely finished is the single most useful sequencing heuristic.</p>`,
-      Expert: `<p>Framing the build as a sequence of irreversible commitments clarifies where the risk sits. Soldering is irreversible in practice, since desoldering a pad on a thin board risks lifting it, so every soldered joint is a commitment made on the basis of the dry fit that preceded it. That asymmetry is the argument for an exhaustive dry fit: the information is nearly free before the commitment and expensive afterwards.</p>
-<p>Reliability engineering offers a useful lens on the verification steps, which function as detection points in a failure propagation chain. A short on the power rail, undetected, propagates to every connected component; detected at a current-limited first power-up, it is contained to a diagnostic event. The value of a detection point is the product of the probability of the fault and the difference in consequence between detection and propagation, which is why the pre-flight-controller power test has the highest value of any step in the build despite taking two minutes.</p>
-<p>The vibration environment is worth quantifying because it drives several design choices at once. Motor fundamental frequencies at typical RPMs sit in the low hundreds of hertz with harmonics well above, and the gyroscope samples in the kilohertz, so the noise is squarely in band. Soft mounting shifts the frame's transmission characteristics, balanced propellers reduce the excitation at source, and RPM-tracking filters remove what remains, and all three are necessary because none is sufficient.</p>
-<p>Finally, on fasteners, the reason thread lock rather than a lock washer is specified is that the joint is typically steel into aluminium with a short thread engagement, where a washer's preload relaxes quickly under vibration. A removable-strength anaerobic adhesive maintains the joint without preventing disassembly, and the common error is using the permanent grade, which turns a routine motor change into a destructive one.</p>`,
+      Beginner: `<p>Build in the right order and everything is reachable when you need it. Build in the wrong order and you will take the aircraft apart again to fix something you could have seen.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Build order with the two points after which a part can no longer be reached">
+<rect x="24" y="40" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="88" font-size="30" font-weight="800" fill="currentColor">1. Motors onto the arms</text>
+<text x="944" y="88" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">screws reachable from below</text>
+<rect x="24" y="130" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="178" font-size="30" font-weight="800" fill="currentColor">2. Speed controllers and power wiring</text>
+<text x="944" y="178" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">solder with the deck open</text>
+<rect x="24" y="220" width="952" height="60" rx="12" fill="#be123c" opacity="0.2"/>
+<text x="500" y="258" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">SMOKE STOPPER TEST, BEFORE THE EXPENSIVE BOARD GOES ON</text>
+<rect x="24" y="294" width="952" height="76" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="342" font-size="30" font-weight="800" fill="currentColor">3. Flight controller stack</text>
+<text x="944" y="342" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">now the deck is covered</text>
+<rect x="24" y="384" width="952" height="60" rx="12" fill="#b45309" opacity="0.2"/>
+<text x="500" y="422" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">PAST HERE, THE ARM SCREWS ARE UNDER THE STACK</text>
+<rect x="24" y="458" width="952" height="76" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="506" font-size="30" font-weight="800" fill="currentColor">4. Camera, antenna, straps</text>
+<text x="944" y="506" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">outside everything else</text>
+<text x="500" y="576" font-size="27" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Two of these steps cannot be undone cheaply.</text>
+</svg>
+<figcaption><strong>The order is set by two things: what becomes unreachable, and what has to be proved before something expensive is connected to it.</strong> Everything else about a build is preference. These two are not, and both of the marked lines cost real money to cross in the wrong direction.</figcaption>
+</figure>
+<h3>Two rules decide the order</h3>
+<table>
+<tr><th>Rule</th><th>Means</th></tr>
+<tr><td>Access</td><td>Fit the thing that gets buried before the thing that buries it</td></tr>
+<tr><td>Verification</td><td>Test what you can on its own before connecting anything expensive</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Dry fit everything first</span><p>Put the whole aircraft together with no screws tightened and nothing soldered. You will find out that the stack is too tall, or the camera does not clear the top plate, while those are still free problems.</p></div>
+<div class="warning"><span class="callout-label">Check your motor screws</span><p>A screw a millimetre too long reaches the motor windings. It will not look wrong and the motor will be destroyed the first time you power up. Measure them against the depth of the threaded hole before fitting.</p></div>`,
+      Intermediate: `<p>Assembly order is determined by two constraints, and they are worth separating because they fail in different ways.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Build order with the two points after which a part can no longer be reached">
+<rect x="24" y="40" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="88" font-size="30" font-weight="800" fill="currentColor">1. Motors onto the arms</text>
+<text x="944" y="88" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">screws reachable from below</text>
+<rect x="24" y="130" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="178" font-size="30" font-weight="800" fill="currentColor">2. Speed controllers and power wiring</text>
+<text x="944" y="178" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">solder with the deck open</text>
+<rect x="24" y="220" width="952" height="60" rx="12" fill="#be123c" opacity="0.2"/>
+<text x="500" y="258" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">SMOKE STOPPER TEST, BEFORE THE EXPENSIVE BOARD GOES ON</text>
+<rect x="24" y="294" width="952" height="76" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="342" font-size="30" font-weight="800" fill="currentColor">3. Flight controller stack</text>
+<text x="944" y="342" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">now the deck is covered</text>
+<rect x="24" y="384" width="952" height="60" rx="12" fill="#b45309" opacity="0.2"/>
+<text x="500" y="422" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">PAST HERE, THE ARM SCREWS ARE UNDER THE STACK</text>
+<rect x="24" y="458" width="952" height="76" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="506" font-size="30" font-weight="800" fill="currentColor">4. Camera, antenna, straps</text>
+<text x="944" y="506" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">outside everything else</text>
+<text x="500" y="576" font-size="27" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Two of these steps cannot be undone cheaply.</text>
+</svg>
+<figcaption><strong>The order is set by two things: what becomes unreachable, and what has to be proved before something expensive is connected to it.</strong> Everything else about a build is preference. These two are not, and both of the marked lines cost real money to cross in the wrong direction.</figcaption>
+</figure>
+<h3>Access</h3>
+<p>A fastener that becomes unreachable must be fitted before the thing that blocks it. On most frames the arm screws disappear under the flight controller stack, so arms are done first and are not casually revisited.</p>
+<h3>Verification</h3>
+<p>Powering the frame through a current limited lead before the flight controller is fitted means a solder bridge, a reversed capacitor or a shorted motor lead reveals itself as a glowing bulb rather than as a destroyed stack. The test takes two minutes and the components it protects cost several thousand rupees.</p>
+<div class="key-idea"><span class="callout-label">Where the two constraints conflict, verification wins</span><p>It is worth taking something apart to test it. It is not worth replacing a flight controller to avoid taking something apart.</p></div>
+<h3>Fasteners need more attention than beginners expect</h3>
+<table>
+<tr><th>Fastener</th><th>Treatment</th></tr>
+<tr><td>Motor screws</td><td>Checked for length, thread locked</td></tr>
+<tr><td>Stack bolts</td><td>Thread locked, not overtightened onto the board</td></tr>
+<tr><td>Arm bolts</td><td>Thread locked; they see the most vibration</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Thread lock on anything that vibrates</span><p>Which on this aircraft is everything. A loose motor screw is the most common cause of a mid-air that nobody can explain afterwards.</p></div>`,
+      Advanced: `<p>The order is really a dependency graph, and writing it out once for a frame is worth more than remembering it, because the irreversible edges are where the cost sits.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Build order with the two points after which a part can no longer be reached">
+<rect x="24" y="40" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="88" font-size="30" font-weight="800" fill="currentColor">1. Motors onto the arms</text>
+<text x="944" y="88" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">screws reachable from below</text>
+<rect x="24" y="130" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="178" font-size="30" font-weight="800" fill="currentColor">2. Speed controllers and power wiring</text>
+<text x="944" y="178" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">solder with the deck open</text>
+<rect x="24" y="220" width="952" height="60" rx="12" fill="#be123c" opacity="0.2"/>
+<text x="500" y="258" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">SMOKE STOPPER TEST, BEFORE THE EXPENSIVE BOARD GOES ON</text>
+<rect x="24" y="294" width="952" height="76" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="342" font-size="30" font-weight="800" fill="currentColor">3. Flight controller stack</text>
+<text x="944" y="342" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">now the deck is covered</text>
+<rect x="24" y="384" width="952" height="60" rx="12" fill="#b45309" opacity="0.2"/>
+<text x="500" y="422" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">PAST HERE, THE ARM SCREWS ARE UNDER THE STACK</text>
+<rect x="24" y="458" width="952" height="76" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="506" font-size="30" font-weight="800" fill="currentColor">4. Camera, antenna, straps</text>
+<text x="944" y="506" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">outside everything else</text>
+<text x="500" y="576" font-size="27" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Two of these steps cannot be undone cheaply.</text>
+</svg>
+<figcaption><strong>The order is set by two things: what becomes unreachable, and what has to be proved before something expensive is connected to it.</strong> Everything else about a build is preference. These two are not, and both of the marked lines cost real money to cross in the wrong direction.</figcaption>
+</figure>
+<table>
+<tr><th>Step</th><th>Blocks</th><th>Cost of doing it late</th></tr>
+<tr><td>Motors to arms</td><td>Nothing yet</td><td>Low</td></tr>
+<tr><td>Speed controller wiring</td><td>Access to the bottom plate</td><td>Desolder and redo</td></tr>
+<tr><td>Smoke stopper test</td><td>Nothing, and it protects everything after</td><td>A destroyed stack</td></tr>
+<tr><td>Stack fitted</td><td>Arm screws, bottom plate</td><td>Full teardown</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Wire length is the decision people get wrong</span><p>Cut motor leads to length with the arms in their final position, not with the frame flat on the bench. Leads cut short on a flat frame will not reach once the arms are angled, and a lead left long has to be coiled somewhere it will be cut by a propeller.</p></div>
+<h3>Strain relief is part of assembly, not tidying</h3>
+<p>Every soldered joint that moves will eventually fail, and on this aircraft everything moves. Secure the wire a short distance from the joint so the flexing happens in the wire rather than at the solder, which is where the whole of the next topic comes from.</p>`,
+      Expert: `<p>The useful framing is irreversibility. Most build steps are cheap to undo, a few are expensive, and the expensive ones should always be preceded by a test that can fail safely.</p>
+<figure>
+<svg viewBox="0 0 1000 600" role="img" aria-label="Build order with the two points after which a part can no longer be reached">
+<rect x="24" y="40" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="88" font-size="30" font-weight="800" fill="currentColor">1. Motors onto the arms</text>
+<text x="944" y="88" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">screws reachable from below</text>
+<rect x="24" y="130" width="952" height="76" rx="14" fill="#0f766e" opacity="0.14"/>
+<text x="56" y="178" font-size="30" font-weight="800" fill="currentColor">2. Speed controllers and power wiring</text>
+<text x="944" y="178" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">solder with the deck open</text>
+<rect x="24" y="220" width="952" height="60" rx="12" fill="#be123c" opacity="0.2"/>
+<text x="500" y="258" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">SMOKE STOPPER TEST, BEFORE THE EXPENSIVE BOARD GOES ON</text>
+<rect x="24" y="294" width="952" height="76" rx="14" fill="#0369a1" opacity="0.14"/>
+<text x="56" y="342" font-size="30" font-weight="800" fill="currentColor">3. Flight controller stack</text>
+<text x="944" y="342" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">now the deck is covered</text>
+<rect x="24" y="384" width="952" height="60" rx="12" fill="#b45309" opacity="0.2"/>
+<text x="500" y="422" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">PAST HERE, THE ARM SCREWS ARE UNDER THE STACK</text>
+<rect x="24" y="458" width="952" height="76" rx="14" fill="#7c3aed" opacity="0.14"/>
+<text x="56" y="506" font-size="30" font-weight="800" fill="currentColor">4. Camera, antenna, straps</text>
+<text x="944" y="506" font-size="26" fill="currentColor" opacity="0.75" text-anchor="end">outside everything else</text>
+<text x="500" y="576" font-size="27" font-weight="800" fill="currentColor" opacity="0.7" text-anchor="middle">Two of these steps cannot be undone cheaply.</text>
+</svg>
+<figcaption><strong>The order is set by two things: what becomes unreachable, and what has to be proved before something expensive is connected to it.</strong> Everything else about a build is preference. These two are not, and both of the marked lines cost real money to cross in the wrong direction.</figcaption>
+</figure>
+<div class="key-idea"><span class="callout-label">The general rule this is an instance of</span><p>Put a cheap reversible test immediately before every expensive irreversible commitment. The smoke stopper is that test for the power system; a props-off bench run is the same test for the control system; a hover in an open field is the same test for the whole aircraft. Every one of them exists to make a failure discoverable while it is still cheap.</p></div>
+<h3>Documenting a build pays for itself on the second one</h3>
+<p>Photographs at each stage, the motor order as wired, the lead lengths and the screw sizes, all take minutes to record and save an hour of measurement when something is replaced. This is why the evidence task for this topic asks for four photographs rather than one finished aircraft: the finished object does not show the decisions.</p>
+<h3>Where repairability is designed in or lost</h3>
+<p>A build that routes the video transmitter lead under the stack has saved two minutes and added a teardown to every future antenna change. Thinking about the second disassembly during the first assembly is most of what separates a maintainable aircraft from one that gets replaced.</p>
+<div class="field"><span class="callout-label">The habit worth forming</span><p>Before tightening anything permanently, ask what this step blocks and whether anything behind it is untested. Both answers are usually immediate, and the question costs nothing compared with the teardown it prevents.</p></div>`,
     },
     parts: [
       {
