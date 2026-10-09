@@ -555,6 +555,30 @@ let figureCount = 0;
  */
 const VOCATIONAL = [206, 207, 208, 209];
 
+/**
+ * How much prose a reading tier owes.
+ *
+ * The four trade courses shipped at a median of about 205 words per tier,
+ * which is two paragraphs. A learner who picks "Expert" and gets 180 words
+ * has been told the tier exists and then not given one.
+ *
+ * The floors escalate because the tiers do: Beginner is deliberately the
+ * shortest, Expert is meant to read like a short paper. Counted on prose only
+ * - svg label text and figure captions are stripped first, or a topic could
+ * pass on the strength of a diagram rather than on what it says.
+ */
+const TIER_FLOOR = { Beginner: 280, Intermediate: 450, Advanced: 550, Expert: 650 };
+
+function proseWords(html) {
+  return html
+    .replace(/<svg[\s\S]*?<\/svg>/g, " ")
+    .replace(/<figcaption>[\s\S]*?<\/figcaption>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&[a-z#0-9]+;/gi, " ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+}
+
 for (const file of files) {
   const src = fs.readFileSync(path.join(DIR, file), "utf8");
   const where = file.replace(".ts", "");
@@ -570,6 +594,17 @@ for (const file of files) {
       const tier = /(      Intermediate: `)([\s\S]*?)(`,\n)/.exec(body);
       if (!tier || !/<figure/.test(tier[2])) {
         fail(where, `topic ${t.id} has no figure on the Intermediate tier, which is the one learners land on`);
+      }
+      for (const [name, floor] of Object.entries(TIER_FLOOR)) {
+        const m = new RegExp(`      ${name}: \`([\\s\\S]*?)\`,\n`).exec(body);
+        if (!m) {
+          fail(where, `topic ${t.id} has no ${name} tier`);
+          continue;
+        }
+        const n = proseWords(m[1]);
+        if (n < floor) {
+          fail(where, `topic ${t.id} ${name} is ${n} words of prose, under the ${floor} this tier owes`);
+        }
       }
     }
   }

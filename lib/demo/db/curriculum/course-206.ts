@@ -84,7 +84,20 @@ const curriculum: CourseCurriculum = {
 <tr><td>Buy stock on credit for 60,000</td><td>Stock up</td><td>Supplier owed up</td></tr>
 </table>
 <div class="key-idea"><span class="callout-label">The test you can always apply</span><p>After any transaction, add up what the business has and add up where it came from. If the two numbers differ, something has been recorded once instead of twice.</p></div>
-<div class="warning"><span class="callout-label">A common first misunderstanding</span><p>The two sides are not money going out and money coming in. They are two descriptions of the same single event: what changed, and what explains it.</p></div>`,
+<div class="warning"><span class="callout-label">A common first misunderstanding</span><p>The two sides are not money going out and money coming in. They are two descriptions of the same single event: what changed, and what explains it.</p></div>
+<h3>Work one through, slowly</h3>
+<p>Hemant starts a trading business. He puts in 2,00,000 of his own money. The business now has 2,00,000 in the bank, and it owes that same 2,00,000 back to Hemant, because the business and the owner are separate things in accounting even when they are the same person in real life.</p>
+<p>He buys furniture for 35,000 in cash. The business has 35,000 less in the bank and 35,000 of furniture. Nothing was gained or lost; one thing became another.</p>
+<p>He buys stock worth 60,000 from a supplier and agrees to pay next month. The business has 60,000 of stock it did not have, and it owes a supplier 60,000 it did not owe. Both sides of the equation got bigger together.</p>
+<table>
+<tr><th>After</th><th class="num">Bank</th><th class="num">Other assets</th><th class="num">Owed out</th><th class="num">Owner</th></tr>
+<tr><td>Investment</td><td class="num">2,00,000</td><td class="num">0</td><td class="num">0</td><td class="num">2,00,000</td></tr>
+<tr><td>Furniture</td><td class="num">1,65,000</td><td class="num">35,000</td><td class="num">0</td><td class="num">2,00,000</td></tr>
+<tr><td>Stock on credit</td><td class="num">1,65,000</td><td class="num">95,000</td><td class="num">60,000</td><td class="num">2,00,000</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Check the last two columns against the first two</span><p>After every row, what the business has equals what it owes plus what the owner put in. It is true after the first transaction and it stays true forever, which is the only thing you need to hold on to at this stage.</p></div>
+<h3>The business is not the owner</h3>
+<p>This trips people up in a small family business, where one person's pocket and the till feel like the same thing. In the books they are not. Money the owner puts in is capital, money the owner takes out is drawings, and both are recorded as transactions between two separate parties. Without that separation you cannot tell whether the business made money or whether the owner simply spent less.</p>`,
       Intermediate: `<p>Double entry is often taught as a rule to memorise. It is better understood as a consequence: if you insist on recording both what changed and what explains it, two entries fall out automatically, and they are necessarily equal.</p>
 <figure>
 <svg viewBox="0 0 1000 560" role="img" aria-label="One transaction producing two entries, a debit and a credit of the same amount">
@@ -125,7 +138,29 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">Why that table is not arbitrary</span><p>Assets sit on the left of the equation and the things that fund them sit on the right. Debit is the left column and credit is the right one. The table is just the equation written out as columns, which is why learning it as a mnemonic makes it harder rather than easier.</p></div>
 <h3>Working out any entry from first principles</h3>
 <p>Ask two questions in order. What did the business get, or give up? And what explains it. The first answer is usually the debit, the second the credit, and for the handful of cases where that feels backwards the equation will tell you which way round it goes.</p>
-<div class="warning"><span class="callout-label">Drawings is the entry people get wrong</span><p>When an owner takes money out, cash falls, which is a credit to bank. The other side is a debit to drawings, because drawings reduce capital and capital is a credit balance. A reduction in a credit balance is a debit.</p></div>`,
+<div class="warning"><span class="callout-label">Drawings is the entry people get wrong</span><p>When an owner takes money out, cash falls, which is a credit to bank. The other side is a debit to drawings, because drawings reduce capital and capital is a credit balance. A reduction in a credit balance is a debit.</p></div>
+<h3>Working out an entry when you are not sure</h3>
+<p>Take a transaction you have not seen before: the business pays 12,000 for a year of insurance. Two questions settle it. What did the business get or give up? It gave up 12,000 of cash, so bank falls, and a fall in an asset is a credit. What explains it? It bought insurance, which is an expense, and an increase in an expense is a debit. So debit insurance, credit bank.</p>
+<p>Now a harder one: a customer pays 20,000 in advance for goods you have not delivered. Bank rises, which is a debit. But the credit is not sales, because you have not sold anything yet; you owe that customer goods. So the credit is a liability, usually called advances from customers. Recording it as sales would overstate both profit and tax.</p>
+<table>
+<tr><th>Transaction</th><th>Debit</th><th>Credit</th></tr>
+<tr><td>Paid rent 18,000</td><td>Rent expense</td><td>Bank</td></tr>
+<tr><td>Sold goods for cash 45,000</td><td>Bank</td><td>Sales</td></tr>
+<tr><td>Sold goods on credit 30,000</td><td>Trade receivables</td><td>Sales</td></tr>
+<tr><td>Customer pays that 30,000</td><td>Bank</td><td>Trade receivables</td></tr>
+<tr><td>Owner takes 10,000 out</td><td>Drawings</td><td>Bank</td></tr>
+<tr><td>Customer pays 20,000 in advance</td><td>Bank</td><td>Advances from customers</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Notice rows three and four</span><p>A credit sale is recorded twice over its life: once when the sale happens and once when the money arrives. The sale affects profit, the payment does not. That separation is the whole difference between profit and cash, and it is why a profitable business can still run out of money.</p></div>
+<h3>Where beginners most often go wrong</h3>
+<table>
+<tr><th>Mistake</th><th>Why it happens</th><th>Correct</th></tr>
+<tr><td>Crediting sales when cash arrives from a credit customer</td><td>Money came in, so it feels like a sale</td><td>Credit receivables; the sale was recorded earlier</td></tr>
+<tr><td>Debiting drawings to wages</td><td>The owner works there too</td><td>Drawings, unless there is a genuine salary arrangement</td></tr>
+<tr><td>Treating a loan receipt as income</td><td>The bank balance went up</td><td>Credit a liability; you have to give it back</td></tr>
+<tr><td>Treating an asset purchase as an expense</td><td>Money went out</td><td>Debit the asset; it will be used over years</td></tr>
+</table>
+<p>Every one of those keeps the trial balance in balance, which is precisely why none of them is caught by it.</p>`,
       Advanced: `<p>Every transaction a business can make falls into one of four shapes, and knowing which shape you are looking at is faster than reasoning about debits each time.</p>
 <figure>
 <svg viewBox="0 0 1000 620" role="img" aria-label="The four ways a transaction can move the accounting equation and still keep it balanced">
@@ -167,7 +202,20 @@ const curriculum: CourseCurriculum = {
 </table>
 <div class="key-idea"><span class="callout-label">Income and expenses are equity in disguise</span><p>There is no fifth shape for revenue because revenue is not a separate thing on the equation. Profit increases what the owner is owed, so income is an increase in equity and an expense is a decrease in it. Income and expense accounts exist so the year can be explained, then they close into capital and disappear.</p></div>
 <h3>The consequence for compound entries</h3>
-<p>A transaction with three or four lines is not an exception to any of this. It is two or more of these shapes recorded at once, and the test does not change: the debits total the credits, and the equation holds afterwards.</p>`,
+<p>A transaction with three or four lines is not an exception to any of this. It is two or more of these shapes recorded at once, and the test does not change: the debits total the credits, and the equation holds afterwards.</p>
+<h3>Compound entries, worked</h3>
+<p>A business buys a machine for 2,40,000, paying 90,000 by cheque and taking a loan for the rest. That is one transaction with three lines: debit machinery 2,40,000, credit bank 90,000, credit loan 1,50,000. The debits total the credits, and the equation holds because an asset of 2,40,000 arrived funded partly by giving up another asset and partly by taking on a liability.</p>
+<p>A more realistic one: goods are sold for 1,18,000 including tax at eighteen per cent. The sale itself is 1,00,000 and the tax collected is 18,000, which belongs to the government rather than to the business. So debit the customer 1,18,000, credit sales 1,00,000, credit output tax 18,000. A business that credits the whole 1,18,000 to sales overstates its revenue, overstates its profit and understates what it owes, all from one habit.</p>
+<table>
+<tr><th>Line</th><th class="num">Debit</th><th class="num">Credit</th></tr>
+<tr><td>Trade receivable</td><td class="num">1,18,000</td><td class="num"></td></tr>
+<tr><td>Sales</td><td class="num"></td><td class="num">1,00,000</td></tr>
+<tr><td>Output tax payable</td><td class="num"></td><td class="num">18,000</td></tr>
+</table>
+<h3>Why the equation survives accruals</h3>
+<p>The four shapes describe transactions. Year-end adjustments look like they break the pattern, because nothing moves and no money changes hands, yet entries are made. They do not break it. Accruing 9,000 of unpaid rent debits an expense, which reduces equity, and credits a liability. Equity down, liabilities up, assets unchanged, and the equation is intact.</p>
+<p>The same is true of depreciation. It debits an expense and credits accumulated depreciation, which reduces the carrying amount of an asset. Assets down, equity down by the same amount. Every adjusting entry is still one of the four shapes once you accept that income and expenses are movements in equity rather than a separate category.</p>
+<div class="key-idea"><span class="callout-label">Which gives you a check on any entry you are unsure of</span><p>Write it out, then ask what happened to total assets, total liabilities and total equity. If the three move in a way that keeps the equation true, the entry is at least structurally possible. If they do not, you have written something that cannot exist, and no amount of looking at account names will fix it.</p></div>`,
       Expert: `<p>Double entry is a redundancy mechanism. It records each event twice along independent axes, which makes a whole class of single errors detectable without any external evidence. Understanding precisely which class is detectable is what tells you where the rest of the controls have to go.</p>
 <figure>
 <svg viewBox="0 0 1000 560" role="img" aria-label="The journal to ledger to trial balance to accounts pipeline and the one step the trial balance checks">
@@ -217,7 +265,23 @@ const curriculum: CourseCurriculum = {
 </table>
 <div class="warning"><span class="callout-label">The practical reading of that table</span><p>Four of the six are invisible to the check that most people treat as the proof their books are right. Every one of the four is caught by comparing the books to something outside them, which is why reconciliation is not an optional tidy-up at month end.</p></div>
 <h3>Why the system survived five hundred years</h3>
-<p>It is cheap and it is local. The check requires no external data, runs on the entity's own records, and the arithmetic scales linearly with the number of entries. Modern systems enforce the balance at entry time, which removes exactly the errors the trial balance was invented to find and leaves the other four untouched. A ledger that cannot be unbalanced has not become more trustworthy; it has lost its only self-administered warning, and the controls that matter have all moved outward.</p>`,
+<p>It is cheap and it is local. The check requires no external data, runs on the entity's own records, and the arithmetic scales linearly with the number of entries. Modern systems enforce the balance at entry time, which removes exactly the errors the trial balance was invented to find and leaves the other four untouched. A ledger that cannot be unbalanced has not become more trustworthy; it has lost its only self-administered warning, and the controls that matter have all moved outward.</p>
+<h3>Why the parity check has the coverage it has</h3>
+<p>The trial balance tests one invariant: that the sum of debits equals the sum of credits. Any error that preserves that equality is invisible to it, and errors preserving it are not rare or exotic. Omitting a transaction entirely preserves it because nothing was recorded on either side. Posting to the wrong account of the same type preserves it because the column totals are unchanged. Two independent errors of equal and opposite size preserve it by coincidence. Reversing both legs preserves it exactly.</p>
+<table>
+<tr><th>Error class</th><th>Breaks parity?</th><th>Detected by</th></tr>
+<tr><td>Single-sided posting</td><td>Yes</td><td>Trial balance</td></tr>
+<tr><td>Transposition on one side</td><td>Yes</td><td>Trial balance; difference divides by nine</td></tr>
+<tr><td>Omission</td><td>No</td><td>Reconciliation to an external record</td></tr>
+<tr><td>Wrong account, right side</td><td>No</td><td>Analytical review against expectation</td></tr>
+<tr><td>Compensating errors</td><td>No</td><td>Substantive testing of balances</td></tr>
+<tr><td>Complete reversal</td><td>No</td><td>Reconciliation, or review of unusual entries</td></tr>
+</table>
+<h3>The divisible-by-nine test, and its limits</h3>
+<p>A transposition, writing 5,400 as 4,500, produces a difference that is always a multiple of nine, because the difference between a number and its digit-transposition is nine times the difference of the transposed digits. So a trial balance out by 900 is worth checking for a transposition before anything else. The test is useful and it is weak evidence: plenty of differences divisible by nine are not transpositions, and a difference of 90 could equally be a single posting of 90. Treat it as where to look first rather than as a diagnosis.</p>
+<h3>What changed when ledgers became software</h3>
+<p>Modern systems will not accept an unbalanced entry. That removes exactly the error class the trial balance was invented to catch, and leaves the other four untouched. The consequence is often misread: people conclude the books are more reliable, when what has actually happened is that the one self-administered warning has gone silent while the errors it never covered remain. A system that cannot be unbalanced has not become trustworthy; it has removed the symptom that used to prompt somebody to look.</p>
+<div class="field"><span class="callout-label">Which is why the control emphasis has moved outward</span><p>Bank reconciliation, supplier statement reconciliation, stock counts, and comparison against budget are all tests against something outside the ledger. They catch the four classes the parity check cannot see, and they are the only tests that do. An organisation whose month-end consists of confirming that the system balanced has performed no control at all, because the system was never going to let it do otherwise.</p></div>`,
     },
     questions: [
       {
@@ -489,7 +553,21 @@ const curriculum: CourseCurriculum = {
 </table>
 <h3>Try it on two events</h3>
 <p>When cash comes in, cash grows, and cash is an asset, so it goes on the left. When you pay rent, rent is an expense, so rent goes on the left, and cash is going down, so cash goes on the right this time.</p>
-<div class="warning"><span class="callout-label">Skip the acronyms</span><p>You will be offered mnemonics that promise to do this for you. They work until the first unusual transaction and then they fail silently, which is worse than not having a rule. The two-sided rule above never fails.</p></div>`,
+<div class="warning"><span class="callout-label">Skip the acronyms</span><p>You will be offered mnemonics that promise to do this for you. They work until the first unusual transaction and then they fail silently, which is worse than not having a rule. The two-sided rule above never fails.</p></div>
+<h3>Try it on five transactions</h3>
+<p>Cover the right-hand columns and work out each one before you look.</p>
+<table>
+<tr><th>What happened</th><th>Debit</th><th>Credit</th></tr>
+<tr><td>Paid the electricity bill, 4,200</td><td>Electricity expense</td><td>Bank</td></tr>
+<tr><td>Bought a computer, 55,000</td><td>Computer (an asset)</td><td>Bank</td></tr>
+<tr><td>Received 15,000 from a customer who owed you</td><td>Bank</td><td>Trade receivables</td></tr>
+<tr><td>Took a bank loan of 1,00,000</td><td>Bank</td><td>Loan (a liability)</td></tr>
+<tr><td>Owner withdrew 8,000 for personal use</td><td>Drawings</td><td>Bank</td></tr>
+</table>
+<p>Rows one and two both took money out of the bank, and they are recorded differently. Electricity is gone the moment it is used, so it is an expense. The computer will still be there next year, so it is an asset. That distinction decides where the entry goes and it decides whether this year's profit falls by 55,000 or not at all.</p>
+<div class="key-idea"><span class="callout-label">A question that settles most entries</span><p>Will the business still have something to show for this next year? If yes, it is an asset. If no, it is an expense. Not perfect, but it will get you through a great deal of ordinary bookkeeping.</p></div>
+<h3>Why the words are confusing</h3>
+<p>In everyday speech a credit sounds like money arriving and a debit sounds like money leaving, because that is how a bank describes your account. The bank is describing its own books, where your deposit is money it owes you, which is a credit for them. Your books are the other way round. Once you know that, the banking usage stops interfering.</p>`,
       Intermediate: `<p>Debit and credit are positional labels: debit is the left column of an account and credit is the right. The confusion they cause is almost entirely a vocabulary problem, because a bank uses the words from its own books rather than yours.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="Debit and credit as the left and right of the accounting equation">
@@ -523,7 +601,28 @@ const curriculum: CourseCurriculum = {
 <div class="worked"><span class="callout-label">Repaying 50,000 of a bank loan by cheque</span><p>The loan is a liability being reduced. Liabilities increase on the right, so a reduction is a left-side entry: debit Bank Loan 50,000. The bank balance is an asset being reduced, so it takes the right side: credit Bank 50,000. No acronym was consulted.</p></div>
 <h3>Where the errors actually come from</h3>
 <p>Name the two accounts before you decide the sides. Most mistakes at this stage are not side errors but account errors, where a learner debits Purchases for something that was in substance an asset acquisition, and the sides were never the problem.</p>
-<div class="field"><span class="callout-label">The bank statement lies to you</span><p>Your statement says "credit 25,000" because the bank is recording that it owes you more. In your books the asset grew, so Bank is debited. Copying the word straight off the statement is the single most common beginner error.</p></div>`,
+<div class="field"><span class="callout-label">The bank statement lies to you</span><p>Your statement says "credit 25,000" because the bank is recording that it owes you more. In your books the asset grew, so Bank is debited. Copying the word straight off the statement is the single most common beginner error.</p></div>
+<h3>The account types, with what sits in them</h3>
+<table>
+<tr><th>Type</th><th>Normal balance</th><th>Examples</th></tr>
+<tr><td>Asset</td><td>Debit</td><td>Bank, receivables, stock, furniture, machinery</td></tr>
+<tr><td>Expense</td><td>Debit</td><td>Rent, wages, purchases, electricity, repairs</td></tr>
+<tr><td>Drawings</td><td>Debit</td><td>Cash or goods taken by the owner</td></tr>
+<tr><td>Liability</td><td>Credit</td><td>Payables, loans, tax owed, advances received</td></tr>
+<tr><td>Income</td><td>Credit</td><td>Sales, commission, interest received</td></tr>
+<tr><td>Capital</td><td>Credit</td><td>What the owner has put in, plus profits kept</td></tr>
+</table>
+<h3>Two pairs that are routinely confused</h3>
+<p><strong>Purchases against an asset.</strong> Purchases means goods bought to resell, and it is an expense. Buying a van is not a purchase in this sense, it is an asset. A business that debits its van to purchases has turned a five year asset into this year's cost, understating both profit and the balance sheet.</p>
+<p><strong>Receivables against sales.</strong> A credit sale creates a receivable and records the sale at the same moment. When the customer pays, the receivable is cleared and nothing touches sales. Crediting sales again on payment records the same revenue twice, and because the debit is to bank the trial balance still balances.</p>
+<table>
+<tr><th>Event</th><th>Entry</th><th>Affects profit?</th></tr>
+<tr><td>Credit sale of 30,000</td><td>Dr Receivables, Cr Sales</td><td>Yes</td></tr>
+<tr><td>Customer pays the 30,000</td><td>Dr Bank, Cr Receivables</td><td>No</td></tr>
+<tr><td>Credit purchase of 18,000</td><td>Dr Purchases, Cr Payables</td><td>Yes</td></tr>
+<tr><td>You pay the supplier</td><td>Dr Payables, Cr Bank</td><td>No</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Half of these entries never touch profit</td></p><p>Settling a debt moves one asset or liability into another. The profit happened earlier, when the sale or purchase was recorded. Internalising which entries move profit and which only move cash is most of what separates bookkeeping from data entry.</p></div>`,
       Advanced: `<p>The debit and credit convention is a sign system chosen so that the invariant is checkable by addition rather than by subtraction. Assign debit as positive and credit as negative, and the requirement becomes that every transaction sums to zero across accounts.</p>
 <div class="key-idea"><span class="callout-label">Why this makes a trial balance possible at all</span><p>Journal validation becomes a single arithmetic test that holds at any level of aggregation, from one entry to a year of them.</p></div>
 <h3>Real, nominal and personal</h3>
@@ -531,7 +630,20 @@ const curriculum: CourseCurriculum = {
 <h3>The failure that arithmetic cannot catch</h3>
 <div class="warning"><span class="callout-label">Misclassification, not inversion</span><p>Debiting an expense for what is in substance a capital acquisition understates profit this year and overstates it in every later year. Because both sides of the entry are internally consistent the trial balance still balances. No arithmetic check will find it; only a reviewer asking whether the benefit extends beyond this period will.</p></div>
 <h3>Contra entries</h3>
-<p>A cash withdrawal from the business bank account moves value between two of the business's own asset accounts, so it debits Cash and credits Bank and touches neither income nor obligation. Treating it as an expense is a recurring error in small-business books and inflates both expenses and apparent cash discipline problems.</p>`,
+<p>A cash withdrawal from the business bank account moves value between two of the business's own asset accounts, so it debits Cash and credits Bank and touches neither income nor obligation. Treating it as an expense is a recurring error in small-business books and inflates both expenses and apparent cash discipline problems.</p>
+<h3>Contra accounts, and why they exist</h3>
+<p>Some accounts sit on the opposite side to the type they belong to, on purpose. Drawings is a debit balance inside a credit-balance area, because it reduces capital. Accumulated depreciation is a credit balance sitting against an asset, because it reduces the carrying amount without erasing the original cost.</p>
+<p>That second one matters. You could record depreciation by crediting the asset directly, and the balance sheet total would be identical. Using a separate contra account preserves two facts instead of one: what the asset cost, and how much of it has been used up. A reader can see a machine that cost 10,00,000 and is 80 per cent depreciated, which tells them replacement is coming. A single net figure of 2,00,000 hides that entirely.</p>
+<table>
+<tr><th>Contra account</th><th>Sits against</th><th>What it preserves</th></tr>
+<tr><td>Accumulated depreciation</td><td>Fixed assets</td><td>Original cost and age</td></tr>
+<tr><td>Provision for doubtful debts</td><td>Receivables</td><td>Gross owed and estimated loss</td></tr>
+<tr><td>Sales returns</td><td>Sales</td><td>Gross sales and the return rate</td></tr>
+<tr><td>Drawings</td><td>Capital</td><td>What was invested and what was taken</td></tr>
+</table>
+<h3>Closing entries, and the two kinds of account</h3>
+<p>Income, expense and drawings accounts are temporary. At the year end their balances are transferred into capital and they start the next year at zero, which is what makes it possible to say that a year made a profit. Assets, liabilities and capital are permanent and carry forward, because they describe a position rather than a period.</p>
+<p>That split is the structural reason there is both a profit and loss account and a balance sheet. One reports flow over a period and empties; the other reports a position at an instant and persists. Entries that confuse the two, such as putting an asset purchase through an expense account, do not just misstate a number; they put a permanent item into a statement that is about to be closed.</p>`,
       Expert: `<p>Formally, a journal entry is a vector in the free module over the set of accounts, constrained to the hyperplane where coordinates sum to zero. Debit and credit are the sign convention on that module, and the ledger is the running total of all posted vectors.</p>
 <div class="key-idea"><span class="callout-label">The consequence</span><p>Nothing in the formalism privileges either direction, which is why the words are arbitrary and why every attempt to teach them as semantic rather than positional eventually confuses somebody.</p></div>
 <h3>Chart design is a reporting decision taken at the point of recording</h3>
@@ -539,7 +651,20 @@ const curriculum: CourseCurriculum = {
 <h3>Capital against revenue</h3>
 <p>The highest-consequence judgement at this level, and deliberately not reducible to a rule. The tests in practice are whether the expenditure extends the asset's capacity or useful life, whether it merely restores previously assumed performance, and whether it is incurred to bring an asset into working condition for its intended use.</p>
 <div class="field"><span class="callout-label">Where learners diverge from the standard</span><p>The last test. It pulls installation, freight and non-refundable duties into cost, which is counterintuitive to anyone treating "cost" as the invoice total.</p></div>
-<div class="warning"><span class="callout-label">Why this is a control problem</span><p>Both halves of a misclassified entry are self-consistent, so detection is never arithmetic. That is the structural reason capital expenditure authorisation, asset registers and reviews of repairs accounts above a threshold exist as separate controls, and why an unqualified audit opinion is not evidence that classification was correct.</p></div>`,
+<div class="warning"><span class="callout-label">Why this is a control problem</span><p>Both halves of a misclassified entry are self-consistent, so detection is never arithmetic. That is the structural reason capital expenditure authorisation, asset registers and reviews of repairs accounts above a threshold exist as separate controls, and why an unqualified audit opinion is not evidence that classification was correct.</p></div>
+<h3>Why debit and credit survived the arrival of computers</h3>
+<p>A reasonable question is why software still uses a fifteenth century convention rather than signed numbers. Two reasons hold up. First, every entry is a transfer, and representing a transfer as a pair of opposing postings makes incomplete transfers structurally detectable rather than merely unlikely. Second, the sign of a number depends on the account it sits in, so a signed representation needs the account type to interpret it, while debit and credit are self-describing on the posting itself.</p>
+<p>The design is a double-entry bookkeeping system in the literal sense: redundancy is deliberately introduced so that a single corruption is detectable. It is the same idea as a parity bit, arrived at four hundred years earlier, and it has the same coverage profile.</p>
+<h3>Where the convention genuinely causes trouble</h3>
+<table>
+<tr><th>Problem</th><th>Why it arises</th></tr>
+<tr><td>Integrating with external systems</td><td>Most non-accounting systems think in signed amounts, so every interface needs a mapping, and the mapping is where sign errors live</td></tr>
+<tr><td>Reporting</td><td>A user wants expenses positive, which means flipping sign by account type, which means reports depend on the chart of accounts being classified correctly</td></tr>
+<tr><td>Teaching</td><td>The words contradict their everyday meaning, which costs most learners several weeks</td></tr>
+</table>
+<h3>The chart of accounts is the real design artefact</h3>
+<p>Debits and credits are mechanical. What determines whether a set of books is useful is how finely the accounts are cut, and that is a judgement with consequences. Too coarse and nobody can answer why costs rose. Too fine and every posting becomes a classification decision that different people make differently, which produces data that looks precise and is not comparable month to month.</p>
+<div class="field"><span class="callout-label">A practical test for whether a chart is right</span><p>Can somebody who did not make the entries answer the three questions the business actually asks of it? Usually they are where the money went, which customers owe us, and whether this month was better than last. An account structure that cannot answer those without a spreadsheet rebuild is too coarse; one where two people would file the same invoice differently is too fine, and the second failure is harder to see because the books still balance.</p></div>`,
     },
     questions: [
       {
@@ -773,7 +898,21 @@ const curriculum: CourseCurriculum = {
 <p>To answer "how much cash", you need everything about cash in one place. So each account gets its own page with a left and a right side, and you copy each journal line onto the page it names.</p>
 <h3>Finding the balance</h3>
 <div class="worked"><span class="callout-label">A page that adds up</span><p>If the left adds to 90,000 and the right to 55,000, the account has 35,000 left over on the debit side. That is the balance.</p></div>
-<div class="field"><span class="callout-label">The habit that prevents most errors</span><p>Tick each journal line as you post it. Almost every mistake at this stage is a line posted twice or not at all, and a tick stops both.</p></div>`,
+<div class="field"><span class="callout-label">The habit that prevents most errors</span><p>Tick each journal line as you post it. Almost every mistake at this stage is a line posted twice or not at all, and a tick stops both.</p></div>
+<h3>What a ledger account looks like</h3>
+<p>Each account has two sides. Debits go on the left, credits on the right. At the end of a period you add up both sides and the difference is the balance.</p>
+<table>
+<tr><th>Bank account</th><th class="num">Debit</th><th class="num">Credit</th></tr>
+<tr><td>Capital introduced</td><td class="num">2,00,000</td><td class="num"></td></tr>
+<tr><td>Furniture bought</td><td class="num"></td><td class="num">35,000</td></tr>
+<tr><td>Rent paid</td><td class="num"></td><td class="num">18,000</td></tr>
+<tr><td>Cash sale</td><td class="num">45,000</td><td class="num"></td></tr>
+<tr><th>Balance</th><th class="num">1,92,000</th><th class="num"></th></tr>
+</table>
+<p>Debits total 2,45,000, credits total 53,000, so the balance is 1,92,000 on the debit side. Bank is an asset, assets normally have debit balances, and this one does, which is a quick sanity check that nothing has gone badly wrong.</p>
+<div class="key-idea"><span class="callout-label">Posting cannot create or destroy anything</span><p>Every figure in the ledger came from a journal entry. If a total looks wrong, the error is either in the journal or in the copying, and the fix is to find it rather than to adjust the ledger to what you expected.</p></div>
+<h3>Why bother with two records</h3>
+<p>The journal answers what happened on a particular day. The ledger answers what this account has been doing. You need both: a question like what did we spend on rent this year is painful to answer from a date-ordered list and immediate from a rent account.</p>`,
       Intermediate: `<p>Posting is a transformation from one ordering to another. The journal is chronological, which makes it the evidential record. The ledger is organised by account, which makes it the analytical record, and it is the only form from which a balance can be read.</p>
 <figure>
 <svg viewBox="0 0 1000 420" role="img" aria-label="A journal entry becoming two ledger postings">
@@ -800,7 +939,20 @@ const curriculum: CourseCurriculum = {
 <tr><td>Real</td><td>Balance carried forward</td><td>Bank, Furniture, Trade Payables</td></tr>
 <tr><td>Nominal</td><td>Closed to profit and loss, reopens at zero</td><td>Rent Expense, Sales</td></tr>
 </table>
-<div class="field"><span class="callout-label">A consequence worth noticing</span><p>A Rent Expense account never has an opening balance. If you find one, something was carried forward that should have been closed.</p></div>`,
+<div class="field"><span class="callout-label">A consequence worth noticing</span><p>A Rent Expense account never has an opening balance. If you find one, something was carried forward that should have been closed.</p></div>
+<h3>Balancing an account, step by step</h3>
+<p>Add both sides. Put the larger total on both sides. The figure that makes the smaller side reach that total is the balance carried down, written on the smaller side. Then bring it down on the opposite side as the opening balance for the next period.</p>
+<p>That last step is where people slip. The balance carried down goes on the side that was short; the balance brought down appears on the other side. An account with debits of 80,000 and credits of 55,000 has a balance carried down of 25,000 on the credit side, and it is brought down as a 25,000 debit, which correctly says the account holds a debit balance.</p>
+<table>
+<tr><th>Account type</th><th>Expected balance</th><th>A balance the other way means</th></tr>
+<tr><td>Bank</td><td>Debit</td><td>An overdraft, or a posting error</td></tr>
+<tr><td>Trade receivables</td><td>Debit</td><td>A customer overpaid, or a credit note is unapplied</td></tr>
+<tr><td>Trade payables</td><td>Credit</td><td>You overpaid a supplier, or a payment is posted twice</td></tr>
+<tr><td>Sales</td><td>Credit</td><td>Returns exceed sales, which needs explaining</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">A balance on the wrong side is information, not an error to flip</span><p>Each of the explanations above is a real situation. The wrong response is to reverse the figure so it looks normal; the right one is to find out which of the explanations applies, because two of them are mistakes and two of them are facts about the business.</p></div>
+<h3>Control accounts</h3>
+<p>A business with four hundred customers does not want four hundred accounts in its main ledger. It keeps one receivables control account there and the individual customers in a subsidiary ledger. The control account total must equal the sum of the individual balances, and reconciling the two is a check that catches posting errors within the subsidiary ledger that the trial balance cannot see.</p>`,
       Advanced: `<p>In a manual system the folio reference is the control that makes posting auditable: each journal line records the ledger page it went to and each ledger line records the journal page it came from, so a line posted twice or not at all is findable by following references rather than by recomputing totals.</p>
 <div class="key-idea"><span class="callout-label">An account is a running signed total</span><p>Presenting it as two columns and a difference is a convention from pen and paper, and it survives because the two totals are themselves useful.</p></div>
 <h3>What the net movement conceals</h3>
@@ -814,14 +966,45 @@ const curriculum: CourseCurriculum = {
 <tr><td>Transposed digits within one side</td><td>Out by a multiple of nine</td></tr>
 <tr><td>Posted to the wrong account, correct side</td><td>Nothing. It still balances.</td></tr>
 <tr><td>Two errors that cancel</td><td>Nothing. It still balances.</td></tr>
-</table>`,
+</table>
+<h3>What posting errors look like, and which survive</h3>
+<table>
+<tr><th>Error</th><th>Effect</th><th>Caught by</th></tr>
+<tr><td>Posted to the right account, wrong side</td><td>Trial balance out by twice the amount</td><td>Trial balance</td></tr>
+<tr><td>Posted to the wrong customer</td><td>Control total still agrees</td><td>Statement sent to the customer</td></tr>
+<tr><td>Posted twice</td><td>Both sides overstated equally</td><td>Reconciliation, or an odd balance</td></tr>
+<tr><td>Not posted at all</td><td>Journal and ledger disagree</td><td>Control account reconciliation</td></tr>
+</table>
+<p>Row one is worth internalising: a wrong-side posting puts the trial balance out by double the entry, not by the entry. So a difference of 7,000 should prompt a search for an entry of 3,500 on the wrong side as well as for a missing 7,000.</p>
+<h3>Why the subsidiary ledger is where fraud hides</h3>
+<p>The control account is reconciled, the trial balance balances, and the total owed by customers is right. Within that total, an amount can be moved from one customer to another to conceal a misappropriated receipt, and nothing in the ledger structure objects. This is called lapping, and it is detected by sending statements to customers and by someone other than the cashier doing the reconciliation, not by any arithmetic check.</p>
+<div class="key-idea"><span class="callout-label">Which is the general pattern worth taking away</span><p>Totals are protected by arithmetic. Composition is protected only by comparison with something outside the books. Every control that actually catches misstatement is of the second kind.</p></div>
+<h3>Narration is part of the entry</h3>
+<p>A journal line that says only Dr Repairs 14,000 Cr Bank 14,000 is complete and useless six months later. The narration naming the supplier, the invoice and the asset repaired is what lets somebody reconstruct the decision, and it is what an auditor samples. Entries without narration are the ones that get questioned, not because they are wrong but because they cannot be shown to be right.</p>
+<h3>Reconciling a control account</h3>
+<p>Take the opening control balance, add credit sales, subtract receipts, subtract returns and write-offs, and compare with the sum of the subsidiary ledger. A difference means a posting went into one and not the other, and the usual culprits are a credit note entered only on the customer account, a receipt posted to the bank and never allocated, or a journal that bypassed the sales day book entirely.</p>
+<p>The reconciliation is worth doing monthly rather than yearly for a reason that is not obvious: the cost of finding a difference grows with the number of transactions you have to search. A month of discrepancy is an afternoon; a year of it is a week, and by then the people who could explain the entries have forgotten.</p>`,
       Expert: `<p>Posting is the materialisation of an index. The journal is the write-ahead log and the ledger is a projection of it grouped by account, which means the ledger is derived data and the journal is the system of record.</p>
 <div class="key-idea"><span class="callout-label">What follows from that</span><p>Every well-designed accounting system keeps the journal append-only and reconstructs balances by replay rather than by mutation. A system that permits editing a posted balance directly has collapsed the distinction and lost the ability to explain how any figure came to be.</p></div>
 <h3>It settles an argument practitioners keep having</h3>
 <p>Should correcting an error overwrite the original entry or add a reversing one? If the journal is the record, overwriting destroys evidence and a reversal is the only defensible mechanism, which is also why statutory audit trails and Ind AS alike require that a posted entry not be altered. The cost is a ledger containing both the mistake and its correction, and that cost is the price of being able to prove anything.</p>
 <h3>Control reconciliation is a completeness assertion</h3>
 <p>The subsidiary ledger and the control account are populated by different processes, one transaction by transaction and one in summary, so agreement between them is evidence that neither process dropped anything. When they disagree the difference localises the failure to one of a small number of mechanisms: an entry posted to the control but not the subsidiary, a direct posting to the control that bypassed the sales process, or a subsidiary entry outside the period.</p>
-<div class="field"><span class="callout-label">Three divisions before an unbounded hunt</span><p>A single transposition produces a difference divisible by nine. A single omission produces a difference equal to the omitted amount. A side error produces a difference equal to twice the amount. Testing those three costs a minute.</p></div>`,
+<div class="field"><span class="callout-label">Three divisions before an unbounded hunt</span><p>A single transposition produces a difference divisible by nine. A single omission produces a difference equal to the omitted amount. A side error produces a difference equal to twice the amount. Testing those three costs a minute.</p></div>
+<h3>The ledger as an index</h3>
+<p>Structurally the journal is an append-only log and the ledger is an index over it, maintained incrementally. Framing it that way makes several properties obvious. The log is the authority, so a ledger can always be rebuilt from it and a disagreement is resolved in the log's favour. The index exists for query performance, which is exactly why it was invented when the query had to be answered by a human with a pen.</p>
+<p>It also explains why the posting reference matters. Each ledger line carries the journal folio it came from, which makes the index traversable in reverse: from a balance, to the entries that produced it, to the documents behind them. An audit trail is that traversal, and a system that breaks it, by summarising before posting, has removed the property the structure exists for.</p>
+<h3>What changed, and what did not, in software</h3>
+<table>
+<tr><th>Then</th><th>Now</th><th>Consequence</th></tr>
+<tr><td>Posting was manual copying</td><td>Posting is automatic</td><td>Copying errors gone; classification errors remain</td></tr>
+<tr><td>The ledger was the only index</td><td>Any view can be generated</td><td>The ledger is now a convention rather than a necessity</td></tr>
+<tr><td>Balancing was periodic</td><td>Balances are continuous</td><td>Period-end loses its forcing function</td></tr>
+</table>
+<p>The third row is underappreciated. Closing a period used to be an event that forced somebody to look at every account. Continuous balances remove the event, and with it the only moment many organisations ever examined their own ledger. The discipline has to be reimposed deliberately, because the system no longer imposes it.</p>
+<div class="field"><span class="callout-label">Immutability is the property worth protecting</span><p>A journal that can be edited after posting is not a log, and the audit trail it supports is decorative. Serious systems post corrections as new reversing entries rather than amending the original, which keeps the history of what was believed at each point. The cost is a messier ledger; the benefit is that the question of what the books said in March can still be answered in November.</p></div>
+<h3>Why the folio reference is the whole audit trail</h3>
+<p>Each ledger line carries the journal reference it came from, and each journal line carries a document reference. That chain is what makes a balance explainable: from a number on a statement, to the postings that produced it, to the invoices behind those. Break any link and the balance becomes an assertion rather than a conclusion. Systems that post summarised totals from a subsidiary system, without keeping the detail addressable, break exactly that link while appearing to be complete, and the gap is only discovered when somebody is asked to justify a figure.</p>`,
     },
     worksheets: [
       {
@@ -938,7 +1121,31 @@ const curriculum: CourseCurriculum = {
 <p>They are equal because every single entry put the same amount on both sides, so when you add everything up the two sides have to match. If they do not, you have made a mechanical mistake somewhere, and you now know to go looking.</p>
 <div class="warning"><span class="callout-label">The part people miss</span><p>A trial balance agreeing does not mean your books are right. Pay the electricity bill and record it as rent, and both sides still match. You put the same amount on each side. You just put one of them in the wrong place.</p></div>
 <h3>What it is for</h3>
-<p>Treat it as a spell-check, not a proof-read. It finds one specific kind of error, and it is silent about several others.</p>`,
+<p>Treat it as a spell-check, not a proof-read. It finds one specific kind of error, and it is silent about several others.</p>
+<h3>Reading a trial balance</h3>
+<p>It is a list of every account and its balance, with debits in one column and credits in the other. Nothing clever happens; you are copying closing balances out of the ledger and adding up two columns.</p>
+<table>
+<tr><th>Account</th><th class="num">Debit</th><th class="num">Credit</th></tr>
+<tr><td>Bank</td><td class="num">1,55,000</td><td class="num"></td></tr>
+<tr><td>Purchases</td><td class="num">60,000</td><td class="num"></td></tr>
+<tr><td>Sales</td><td class="num"></td><td class="num">45,000</td></tr>
+<tr><td>Furniture</td><td class="num">35,000</td><td class="num"></td></tr>
+<tr><td>Trade payables</td><td class="num"></td><td class="num">35,000</td></tr>
+<tr><td>Capital</td><td class="num"></td><td class="num">2,00,000</td></tr>
+<tr><td>Drawings</td><td class="num">12,000</td><td class="num"></td></tr>
+<tr><td>Rent</td><td class="num">18,000</td><td class="num"></td></tr>
+<tr><th>Totals</th><th class="num">2,80,000</th><th class="num">2,80,000</th></tr>
+</table>
+<h3>If it does not balance</h3>
+<p>Work through these in order, because they are ordered by how often they turn out to be the answer.</p>
+<table>
+<tr><th>Check</th><th>Looking for</th></tr>
+<tr><td>Add the columns again</td><td>An addition slip, which is extremely common</td></tr>
+<tr><td>Halve the difference</td><td>An entry of that size on the wrong side</td></tr>
+<tr><td>Divide by nine</td><td>A transposition, such as 540 written as 450</td></tr>
+<tr><td>Look for the difference itself</td><td>An entry posted once instead of twice</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Never force it</span><p>Putting in a balancing figure to make the columns agree destroys the only thing the trial balance was telling you. The difference is a message; a suspense account is how you park it honestly while you find out what it means.</p></div>`,
       Intermediate: `<p>A trial balance tests exactly one property: that the sum of debit balances equals the sum of credit balances. Because every journal entry is constructed to sum to zero, the aggregate must too, and a difference is proof of a mechanical failure somewhere in posting or totalling.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="What a balanced trial balance proves and what it does not">
@@ -970,7 +1177,21 @@ const curriculum: CourseCurriculum = {
 </table>
 <h3>When a difference will not resolve</h3>
 <p>A suspense account holds the difference so work can continue, with the balance investigated and cleared before the accounts are finalised.</p>
-<div class="warning"><span class="callout-label">A suspense balance at year end</span><p>Is not a rounding issue. It is an unexplained error, and no set of final accounts should be signed off over one.</p></div>`,
+<div class="warning"><span class="callout-label">A suspense balance at year end</span><p>Is not a rounding issue. It is an unexplained error, and no set of final accounts should be signed off over one.</p></div>
+<h3>Suspense accounts, used properly</h3>
+<p>When a trial balance will not agree and the books have to move on, the difference is put into a suspense account so the statements can be prepared. That is a holding position, not a resolution. Every entry that later corrects part of the difference clears part of the suspense balance, and the account should be empty before the year is signed off.</p>
+<p>A suspense balance carried into the final accounts is a statement that the books contain an error of that size which nobody has found. Sometimes that is accepted for immateriality, and it should be a decision somebody takes rather than something that happens quietly.</p>
+<table>
+<tr><th>Error found</th><th>Correcting entry</th></tr>
+<tr><td>Rent of 18,000 posted as 1,800</td><td>Dr Rent 16,200, Cr Suspense 16,200</td></tr>
+<tr><td>Sale of 9,000 credited twice</td><td>Dr Sales 9,000, Cr Suspense 9,000</td></tr>
+<tr><td>Payment of 4,500 debited to bank</td><td>Cr Bank 9,000, Dr Suspense 9,000</td></tr>
+</table>
+<p>The third row is the doubling again: reversing a wrong-side entry costs twice the amount, once to cancel it and once to post it correctly.</p>
+<h3>What the extended trial balance adds</h3>
+<p>Working papers usually run extra column pairs: the trial balance as extracted, then adjustments, then the adjusted figures, then a split into profit and loss and balance sheet columns. The value is traceability. Anyone reviewing can see the original figure, the adjustment and the reason, instead of a final number whose origin is not recoverable. Most disputes in a year-end are about an adjustment nobody wrote down.</p>
+<h3>Where the figures come from</h3>
+<p>Every line is a ledger balance, copied across. Nothing is calculated at this stage and nothing is judged. That is worth saying because learners often expect the trial balance to be where adjustments happen; it is not, it is a photograph of the ledger before anybody has thought about the year end.</p>`,
       Advanced: `<p>Before searching line by line, read the shape of the difference. Three signatures account for most single-error cases, and testing them costs a minute against an unbounded hunt.</p>
 <div class="worked"><span class="callout-label">Three divisions</span>
 <table>
@@ -983,7 +1204,26 @@ const curriculum: CourseCurriculum = {
 <p>An internal consistency check on a closed arithmetic system, and such a check can never speak to the relationship between the system and the world outside it. Completeness is unverifiable from inside: a sale that was never invoiced leaves no trace anywhere in the ledger. That is why completeness assurance comes from reconciliation against external records rather than from the trial balance.</p>
 <h3>Error of principle</h3>
 <p>Both invisible to the trial balance and material to the numbers that matter. Expensing an asset reduces profit now and inflates it later; capitalising a repair does the reverse. Either can move a business from loss to profit.</p>
-<div class="field"><span class="callout-label">In software this has inverted</span><p>An unbalanced entry is usually rejected at input, so trial balance differences are nearly extinct. The errors that remain are almost entirely the ones it never caught. Spending review time on a check the software already enforces is a habit inherited from pen and paper.</p></div>`,
+<div class="field"><span class="callout-label">In software this has inverted</span><p>An unbalanced entry is usually rejected at input, so trial balance differences are nearly extinct. The errors that remain are almost entirely the ones it never caught. Spending review time on a check the software already enforces is a habit inherited from pen and paper.</p></div>
+<h3>The six error classes, in full</h3>
+<table>
+<tr><th>Class</th><th>Example</th><th>Balances?</th></tr>
+<tr><td>Omission</td><td>An invoice never entered</td><td>Yes</td></tr>
+<tr><td>Commission</td><td>Posted to the wrong customer</td><td>Yes</td></tr>
+<tr><td>Principle</td><td>An asset posted to an expense</td><td>Yes</td></tr>
+<tr><td>Compensating</td><td>Two errors of equal and opposite size</td><td>Yes</td></tr>
+<tr><td>Original entry</td><td>Wrong amount entered on both sides</td><td>Yes</td></tr>
+<tr><td>Reversal</td><td>Debit and credit swapped</td><td>Yes</td></tr>
+</table>
+<p>All six balance. That is the point of listing them: the trial balance does not catch any error that was made consistently on both sides, and five of the six are the kind an ordinary clerk makes on an ordinary day.</p>
+<h3>Error of principle is the costly one</h3>
+<p>Posting a 2,40,000 machine to repairs reduces this year's profit by 2,40,000, removes an asset from the balance sheet, and changes the tax position. Nothing in the arithmetic objects, and the error persists for the life of the asset because no later entry contradicts it. It is caught by somebody looking at the repairs account and asking why it is so large, which is analytical review rather than bookkeeping.</p>
+<div class="key-idea"><span class="callout-label">Which is why comparison is a control</span><p>This month against last month, this year against budget, this ratio against the industry. Each comparison asks whether the numbers are plausible, and plausibility is the only test that catches an error which is internally consistent. A set of books that is never compared to anything can be perfectly balanced and entirely wrong.</p></div>
+<h3>The difference that divides by nine, in detail</h3>
+<p>Transposing two adjacent digits changes a number by nine times the difference between them. Writing 54 as 45 changes it by nine; writing 5,400 as 4,500 changes it by nine hundred. So a trial balance difference divisible by nine is consistent with a transposition somewhere, and dividing the difference by nine tells you the gap between the two digits involved, which narrows the search further.</p>
+<p>It is weak evidence rather than a diagnosis. A difference of 180 could be a transposition of 2 and 0 in the hundreds, or an entirely unrelated posting of 180 that was missed. The value is in ordering the search rather than ending it.</p>
+<h3>Why two errors cancelling is more common than chance suggests</h3>
+<p>It sounds like a coincidence and often is not. The same misunderstanding applied twice produces two errors of the same size in opposite directions: a clerk who consistently treats a particular charge as net of tax will understate one account and overstate another by matching amounts. Systematic misunderstanding, not luck, is what makes compensating errors a real category rather than a textbook curiosity.</p>`,
       Expert: `<p>Cast the ledger as a vector space over accounts with the zero-sum constraint, and the trial balance is the assertion that the aggregate posting vector lies in the constraint hyperplane.</p>
 <div class="key-idea"><span class="callout-label">The limitation is a theorem, not a caution</span><p>The test has power only against operations that leave that hyperplane. Any error that is itself a valid zero-sum vector, including every misclassification and every compensating pair, is undetectable by construction.</p></div>
 <h3>Three assertions, three kinds of evidence</h3>
@@ -995,7 +1235,25 @@ const curriculum: CourseCurriculum = {
 </table>
 <h3>Suspense accounts carry a governance dimension</h3>
 <div class="warning"><span class="callout-label">How an error becomes permanent</span><p>A suspense balance that survives a period end tends to be written off to profit and loss as immaterial, converting an unknown error into a known adjustment without anyone establishing what happened. Material weaknesses have been reported over exactly this pattern. The control is a clearance window with named ownership.</p></div>
-<p>Note also that the extended trial balance, with adjustment and final-accounts columns beside the ledger balances, remains the working paper of choice even where software generates statements directly, because it makes every adjusting judgement visible in one place and reviewable by a second person.</p>`,
+<p>Note also that the extended trial balance, with adjustment and final-accounts columns beside the ledger balances, remains the working paper of choice even where software generates statements directly, because it makes every adjusting judgement visible in one place and reviewable by a second person.</p>
+<h3>Materiality is a judgement, and it is made in advance</h3>
+<p>Not every error is worth finding. The cost of investigation is real, and a difference of 40 rupees in a business turning over several crore is not worth a day of anyone's time. The professional position is to set a threshold before you start looking, based on a percentage of profit, revenue or assets, and to apply it consistently. Deciding after the fact that a difference is immaterial because you could not find it is the same action with the reasoning reversed.</p>
+<table>
+<tr><th>Common base</th><th>Typical range</th><th>Suits</th></tr>
+<tr><td>Profit before tax</td><td>5 to 10 per cent</td><td>Established profitable businesses</td></tr>
+<tr><td>Revenue</td><td>0.5 to 1 per cent</td><td>Loss-making or volatile businesses</td></tr>
+<tr><td>Total assets</td><td>1 to 2 per cent</td><td>Asset-heavy or investment entities</td></tr>
+</table>
+<h3>Qualitative materiality overrides the number</h3>
+<p>Some errors matter at any size. An amount that turns a profit into a loss, that breaches a loan covenant, that involves a director, or that indicates fraud is material whatever the arithmetic says. A 50,000 misstatement is immaterial in most businesses and material in all of them if it was taken by the finance manager, because what it reveals is not the amount.</p>
+<h3>Why the trial balance survives anyway</h3>
+<p>It is nearly free. It uses data you already have, it requires no external confirmation, it runs in seconds, and it eliminates one whole class of error with certainty. Judged as a control that is excellent value; judged as assurance that the books are right it is close to worthless. Most of the trouble it causes comes from people applying the second reading to a tool that only ever supported the first.</p>
+<div class="field"><span class="callout-label">The question to ask of any check</span><p>What would still be wrong if this passed? For the trial balance the answer is the five classes above, and naming them is what tells you which other procedures you cannot skip. A control whose blind spots nobody has enumerated is being trusted for more than it can carry.</p></div>
+<h3>Why the check is cheap and the assurance is not</h3>
+<p>The trial balance costs nothing because the data is already there and the test is arithmetic. Everything that actually provides assurance about the books costs real money: confirming balances with third parties, counting stock, inspecting documents, recomputing estimates. There is an unavoidable relationship between the cost of a procedure and how much of the error space it can reach, and the trial balance sits at the cheap, narrow end of it.</p>
+<p>Recognising that is what stops a finance function from mistaking activity for control. Running the same free check more often does not widen its coverage; it only tells you sooner that the one class it detects has not occurred.</p>
+<h3>What an auditor does with it</h3>
+<p>They take the trial balance as the starting population rather than as evidence. It defines what is in the books, the balances are then tested by other means, and the one assertion the trial balance supports on its own is completeness of posting, which is close to the weakest assertion on the list. An audit that relied on it would be no audit, and the fact that it is the first document requested says something about sequence rather than about weight.</p>`,
     },
     worksheets: [
       {
@@ -1300,7 +1558,18 @@ const curriculum: CourseCurriculum = {
 <tr><td>Paid 90,000 for six months, one month used</td><td>15,000</td><td>75,000 you have paid for and not used</td></tr>
 <tr><td>Used March electricity, bill arrives April</td><td>The full March cost</td><td>The amount you still owe</td></tr>
 </table>
-<p>The first is a prepayment, the second an accrual. Both exist because the month you pay and the month you use are different months.</p>`,
+<p>The first is a prepayment, the second an accrual. Both exist because the month you pay and the month you use are different months.</p>
+<h3>Two adjustments, worked</h3>
+<p><strong>A prepayment.</strong> Insurance of 24,000 is paid on 1 January for twelve months. The year ends on 31 March, so three months have been used and nine have not. This year's expense is 6,000; the other 18,000 is an asset, because the business has something it has paid for and not yet consumed.</p>
+<p><strong>An accrual.</strong> The electricity bill for March arrives in April for 5,500. The electricity was used in March, so March's accounts must carry the cost even though nothing has been paid. Debit electricity 5,500, credit accruals 5,500, and the liability clears when the bill is paid.</p>
+<table>
+<tr><th></th><th>Prepayment</th><th>Accrual</th></tr>
+<tr><td>Paid</td><td>Already</td><td>Not yet</td></tr>
+<tr><td>Used</td><td>Not yet</td><td>Already</td></tr>
+<tr><td>Creates</td><td>An asset</td><td>A liability</td></tr>
+<tr><td>Effect on profit</td><td>Raises it</td><td>Lowers it</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">One question answers both</span><p>Which period does this belong to? Not when was it paid, not when did the invoice arrive. Those are facts about paperwork; the period the benefit was consumed in is the fact about the business.</p></div>`,
       Intermediate: `<p>Cash movement and economic consumption are separate events, and the accrual basis records the second. The matching principle makes this concrete: a cost belongs in the period whose revenue it helped produce, which means the payment date is evidence of a transaction but not of its period.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="An expense paid in one period but belonging to another">
@@ -1329,14 +1598,36 @@ const curriculum: CourseCurriculum = {
 </table>
 <div class="field"><span class="callout-label">The pair that gets neglected</span><p>The income side. Income received in advance is money taken for undelivered goods, and it is a liability rather than revenue. That entry is what distinguishes a deposit from a sale.</p></div>
 <h3>Why reviewers test these first</h3>
-<div class="warning"><span class="callout-label">Scale</span><p>Getting an accrual wrong by 40,000 in a business making 3,00,000 of profit moves the reported figure by 13%, and since the adjustment reverses next period the error appears twice with opposite signs.</p></div>`,
+<div class="warning"><span class="callout-label">Scale</span><p>Getting an accrual wrong by 40,000 in a business making 3,00,000 of profit moves the reported figure by 13%, and since the adjustment reverses next period the error appears twice with opposite signs.</p></div>
+<h3>The four year-end adjustments you will meet</h3>
+<table>
+<tr><th>Adjustment</th><th>Entry</th><th>Why</th></tr>
+<tr><td>Accrued expense</td><td>Dr Expense, Cr Accruals</td><td>Used, not paid</td></tr>
+<tr><td>Prepaid expense</td><td>Dr Prepayments, Cr Expense</td><td>Paid, not used</td></tr>
+<tr><td>Accrued income</td><td>Dr Receivable, Cr Income</td><td>Earned, not received</td></tr>
+<tr><td>Deferred income</td><td>Dr Income, Cr Deferred income</td><td>Received, not earned</td></tr>
+</table>
+<p>The bottom two are the mirror image of the top two and are the ones people forget, because money arriving feels like income in a way that money leaving does not feel like an expense. A gym taking an annual membership in January has received cash and earned almost none of it, and recognising the whole amount in January overstates that month and starves the next eleven.</p>
+<h3>Reversing entries</h3>
+<p>Most accruals are reversed on the first day of the new period. Accrue 5,500 of electricity in March, reverse it on 1 April, then post the actual bill when it arrives. The expense lands in the right year and the clerk paying the bill in April does not have to remember that part of it was already provided for. Without the reversal, the April payment has to be split, and that split is exactly the kind of step that gets missed.</p>`,
       Advanced: `<p>Accruals are where the accounts stop being a transcription of the bank statement and start being a set of judgements. Each adjusting entry is an estimate about an amount, a period, or both.</p>
 <div class="key-idea"><span class="callout-label">The distribution of those estimates is not random</span><p>Management has an interest in the direction of each one, which is why the standard checks test the estimate rather than the arithmetic.</p></div>
 <h3>Cut-off is the sharper form of the problem</h3>
 <p>A business that leaves its purchase ledger open for an extra week after year end pulls next year's costs into this year, and one that closes it early does the reverse. Neither action requires a false entry, only a choice about when to stop, which is why cut-off testing traces transactions either side of the period end to delivery dates rather than to invoice dates.</p>
 <h3>Reversing entries are a control, not bookkeeping</h3>
 <p>If every accrual is reversed on the first day of the new period, the actual invoice can be posted in full when it arrives without anyone having to remember what was estimated. Releasing accruals by hand against invoices works until the person who made the estimate leaves.</p>
-<div class="warning"><span class="callout-label">Deferred revenue carries the heaviest consequences</span><p>A business that recognises annual subscription income on receipt reports a year of revenue in one month and nothing afterwards. It is both wrong and the single most common accounting failure among young subscription businesses.</p></div>`,
+<div class="warning"><span class="callout-label">Deferred revenue carries the heaviest consequences</span><p>A business that recognises annual subscription income on receipt reports a year of revenue in one month and nothing afterwards. It is both wrong and the single most common accounting failure among young subscription businesses.</p></div>
+<h3>Matching, and what it is actually asserting</h3>
+<p>The matching principle says costs are recognised in the period that the revenue they helped generate is recognised. That is a stronger claim than recognising costs when incurred, and it is why stock is carried as an asset rather than expensed on purchase: the cost of goods sits on the balance sheet until the sale it relates to happens, and then moves to the profit and loss account as cost of sales.</p>
+<p>The principle breaks down where the link between cost and revenue cannot be traced. Advertising might generate revenue for years, and the honest answer is that nobody knows how much or when, so it is expensed immediately. That is a deliberate retreat from matching in favour of not inventing an asset, and it is why accounting standards have steadily narrowed what may be capitalised.</p>
+<table>
+<tr><th>Cost</th><th>Treatment</th><th>Reason</th></tr>
+<tr><td>Goods for resale</td><td>Asset until sold</td><td>Directly traceable to a future sale</td></tr>
+<tr><td>Machine</td><td>Asset, depreciated</td><td>Benefit spread over a known life</td></tr>
+<tr><td>Advertising</td><td>Expense now</td><td>Benefit real but unmeasurable</td></tr>
+<tr><td>Staff training</td><td>Expense now</td><td>Benefit not controlled by the business</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The pattern in that table</span><p>Capitalisation requires a future benefit that is both probable and measurable, and that the business controls. Each exclusion above fails one of those three. Learning the three tests is more useful than memorising which costs go where, because new kinds of cost keep arriving.</p></div>`,
       Expert: `<p>Under Ind AS 115 the accrual question is reframed: revenue follows the satisfaction of performance obligations, and the contract rather than the invoice becomes the unit of account.</p>
 <div class="key-idea"><span class="callout-label">Where preparers diverge</span><p>Identifying the distinct performance obligations. A bundled sale of equipment with twelve months of maintenance is one invoice and at least two obligations, one satisfied at a point in time and one over time.</p></div>
 <h3>There is no symmetric expense standard, and that is instructive</h3>
@@ -1349,7 +1640,21 @@ const curriculum: CourseCurriculum = {
 <tr><td>Reliable estimate</td><td>A claim too uncertain to measure: disclosed, not provided</td></tr>
 </table>
 <p>The historical abuse this replaced was the big-bath provision, taken in a bad year and released into good ones to smooth reported earnings.</p>
-<div class="field"><span class="callout-label">The analytical signature</span><p>Accruals are the difference between accounting profit and operating cash flow, and a widening gap sustained over several periods is the most studied earnings-quality indicator in the literature. A growing business legitimately shows it, which is why the measure is read against revenue growth rather than alone.</p></div>`,
+<div class="field"><span class="callout-label">The analytical signature</span><p>Accruals are the difference between accounting profit and operating cash flow, and a widening gap sustained over several periods is the most studied earnings-quality indicator in the literature. A growing business legitimately shows it, which is why the measure is read against revenue growth rather than alone.</p></div>
+<h3>Accruals accounting against cash accounting</h3>
+<p>Cash accounting records movements of money and is objectively verifiable: a bank statement settles any dispute. Accruals accounting records economic events and requires judgement about periods, which makes it both more informative and more manipulable. The whole apparatus of standards, audit and disclosure exists because the second system was chosen, and almost all accounting scandals live in the gap it opens.</p>
+<table>
+<tr><th></th><th>Cash</th><th>Accruals</th></tr>
+<tr><td>Verifiability</td><td>High</td><td>Lower, needs judgement</td></tr>
+<tr><td>Comparability between periods</td><td>Poor</td><td>Good</td></tr>
+<tr><td>Predicts future cash flow</td><td>Poorly</td><td>Better, on average</td></tr>
+<tr><td>Open to manipulation</td><td>Little</td><td>Substantially</td></tr>
+</table>
+<h3>Cut-off is where period manipulation happens</h3>
+<p>Holding the sales ledger open for a few days after the year end pulls next year's revenue into this one. Delaying the recording of supplier invoices pushes this year's costs into next. Neither requires a false document, both are reversed by the following period, and both are among the most frequently found misstatements in practice. Auditors test cut-off by examining transactions either side of the year end for exactly this reason.</p>
+<h3>Why reversal does not make it harmless</h3>
+<p>A common defence is that it all comes out in the wash, since the next period corrects it. That is true of the cumulative total and false of everything decisions are based on. Bonuses, covenants, valuations and share prices respond to the period figure, and a misstatement that reverses has already done its work by the time it does.</p>
+<div class="field"><span class="callout-label">The practical control</span><p>A documented cut-off procedure with a hard date, applied to goods received notes, dispatch notes and the sales and purchase ledgers together. The control is not sophistication, it is that one date governs all four records, because the manipulations above all depend on different records closing at different moments.</p></div>`,
     },
     questions: [
       {
