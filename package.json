@@ -28,7 +28,8 @@
     "check:live": "node scripts/check-live-deploy.mjs",
     "check:mobile": "node scripts/check-mobile-practicals.mjs",
     "check:figures": "node scripts/check-article-figures.mjs",
-    "check:quiz-results": "node scripts/check-quiz-results.mjs"
+    "check:quiz-results": "node scripts/check-quiz-results.mjs",
+    "check:kit": "node scripts/check-sales-kit.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",

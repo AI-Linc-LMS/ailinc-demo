@@ -95,7 +95,13 @@ export function proxy(request: NextRequest) {
     // editor silently never appears.
     pathname.startsWith("/monaco/") ||
     // Brand lockups live here and are needed on the SIGNED-OUT login screen.
-    pathname.startsWith("/logos/")
+    pathname.startsWith("/logos/") ||
+    // The two platform guides, served as static files for the sales kit. They
+    // are large HTML and PDF documents sent to people who have no account, so
+    // they have to be reachable with no session. This matcher catches
+    // everything under public/ that is not _next, so without this line the
+    // links on /sales-kit would redirect a prospect to a login screen.
+    pathname.startsWith("/sales/")
   ) {
     return NextResponse.next();
   }
@@ -109,6 +115,9 @@ export function proxy(request: NextRequest) {
     "/auth/handoff",
     // Public credential verification pages — anyone (incl. LinkedIn's crawler) can open these.
     "/credentials",
+    // The sales kit. Opened by the team on phones between meetings, and by
+    // prospects who are not users of the product at all.
+    "/sales-kit",
   ];
   const isPublicRoute = publicRoutes.some((route) =>
     pathname.startsWith(route)
@@ -138,7 +147,10 @@ export function proxy(request: NextRequest) {
     pathname !== "/verify-email" &&
     !pathname.startsWith("/auth/") &&
     // Credential pages must render for signed-in users too (don't bounce to /dashboard).
-    !pathname.startsWith("/credentials")
+    !pathname.startsWith("/credentials") &&
+    // Nor the sales kit: the people who use it most are signed in, and
+    // bouncing them to the dashboard would make the link useless internally.
+    !pathname.startsWith("/sales-kit")
   ) {
     return NextResponse.redirect(
       new URL(isInstructor ? INSTRUCTOR_HOME : "/dashboard", request.url),
