@@ -73,21 +73,56 @@ for (const [label, viewport, isMobile] of [
     else if (size < 100000) problems.push(`${label}: ${href} is only ${size} bytes`);
   }
 
+  /**
+   * The brand font must survive being requested without a session.
+   *
+   * The root layout links /fonts/satoshi.css. That path went through the same
+   * auth redirect as a page, so it answered 307 to /login, the browser got
+   * HTML where it asked for CSS, and every signed-out visitor saw a fallback
+   * typeface. It was invisible because everyone testing was logged in.
+   */
+  const css = await page.request.get(BASE + "/fonts/satoshi.css");
+  const ctype = css.headers()["content-type"] || "";
+  if (!css.ok() || !/css/.test(ctype)) {
+    problems.push(`${label}: /fonts/satoshi.css served ${css.status()} as "${ctype}" - signed-out visitors lose the brand font`);
+  }
+
   // The viewer opens on demand rather than loading six iframes at once.
   const before = await page.locator("iframe").count();
   if (before !== 0) problems.push(`${label}: ${before} iframes present before anything was opened`);
-  const play = page.getByRole("button", { name: /^Play$/ }).first();
-  if (await play.count()) {
-    await play.click();
-    await page.waitForTimeout(1200);
-    if ((await page.locator(".viewer iframe").count()) !== 1) {
-      problems.push(`${label}: the viewer did not open an iframe`);
+  // Both kinds, because they are sized by different rules: a video keeps 16:9,
+  // a PDF carousel is given height. The carousel was the one that broke.
+  for (const [what, name] of [["video", /^Play$/], ["carousel", /^Open$/]]) {
+    const trigger = page.getByRole("button", { name }).first();
+    if (!(await trigger.count())) {
+      problems.push(`${label}: no ${what} control found`);
+      continue;
+    }
+    await trigger.click();
+    await page.waitForTimeout(1500);
+    const frame = page.locator(".viewer iframe");
+    if ((await frame.count()) !== 1) {
+      problems.push(`${label}: the ${what} viewer did not open an iframe`);
+    } else {
+      const m = await page.evaluate(() => {
+        const f = document.querySelector(".viewer iframe");
+        const r = f.getBoundingClientRect();
+        return { h: Math.round(r.height), w: Math.round(r.width), vh: window.innerHeight };
+      });
+      // A player that occupies a third of the screen is not usable. The
+      // carousel opened at 284px of an 839px phone before this was fixed.
+      const share = m.h / m.vh;
+      if (share < 0.5) {
+        problems.push(
+          `${label}: the ${what} viewer is ${m.h}px tall on a ${m.vh}px screen (${Math.round(share * 100)}%), too small to use`,
+        );
+      }
     }
     await page.keyboard.press("Escape");
-    await page.waitForTimeout(600);
-    if ((await page.locator(".viewer").count()) !== 0) problems.push(`${label}: Escape did not close the viewer`);
-  } else {
-    problems.push(`${label}: no Play control found`);
+    await page.waitForTimeout(700);
+    if ((await page.locator(".viewer").count()) !== 0) {
+      problems.push(`${label}: Escape did not close the ${what} viewer`);
+    }
   }
 
   console.log(

@@ -267,7 +267,7 @@ export default function SalesKitPage() {
 
       {open && (
         <div className="viewer" onClick={() => setOpen(null)} role="dialog" aria-modal="true" aria-label={open.title}>
-          <div className="viewerinner" onClick={(e) => e.stopPropagation()}>
+          <div className={`viewerinner ${open.kind}`} onClick={(e) => e.stopPropagation()}>
             <div className="viewerbar">
               <span>{open.title}</span>
               <div>
@@ -351,7 +351,12 @@ const CSS = `
 .kit .viewerbar{display:flex;align-items:center;justify-content:space-between;gap:12px;
   padding:12px 14px;border-bottom:1px solid var(--line);font-weight:800;font-size:.95rem;}
 .kit .viewerbar div{display:flex;gap:6px;align-items:center;}
-.kit .viewerinner iframe{width:100%;aspect-ratio:16/9;border:0;background:#000;}
+.kit .viewerinner iframe{width:100%;border:0;background:#000;flex:1 1 auto;min-height:0;}
+/* A video has a shape, so it keeps 16:9. A PDF carousel has no useful aspect
+   ratio and simply wants height: at 16:9 inside a phone-width modal it came
+   out 284px tall, which is a page of slides rendered into a letterbox. */
+.kit .viewerinner.video iframe{aspect-ratio:16/9;flex:0 0 auto;}
+.kit .viewerinner.deck{height:min(900px,92vh);}
 @media (max-width:640px){
   .kit .hero{padding:36px 0 28px;}
   .kit .body{padding:28px 16px 56px;}
@@ -359,5 +364,13 @@ const CSS = `
   .kit .grid{grid-template-columns:1fr;}
   .kit .viewerinner iframe{aspect-ratio:4/3;}
   .kit .actions .btn{flex:1 1 auto;justify-content:center;}
+  /* Full screen on a phone. A centred card with 16px of backdrop around it
+     wastes the only dimension that is scarce, and dvh rather than vh so the
+     browser chrome collapsing does not leave the bar off screen. */
+  .kit .viewer{padding:0;}
+  .kit .viewerinner,.kit .viewerinner.deck{width:100%;height:100vh;height:100dvh;
+    max-height:none;border-radius:0;border:0;}
+  .kit .viewerinner.video iframe{aspect-ratio:auto;flex:1 1 auto;}
+  .kit .viewerbar{padding:14px;}
 }
 `;

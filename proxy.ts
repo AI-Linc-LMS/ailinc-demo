@@ -96,6 +96,22 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/monaco/") ||
     // Brand lockups live here and are needed on the SIGNED-OUT login screen.
     pathname.startsWith("/logos/") ||
+    /**
+     * Static assets under public/.
+     *
+     * The matcher below catches everything that is not _next, so every one of
+     * these was being redirected to /login for anyone without a token. The
+     * visible symptom was the brand font: the root layout links
+     * /fonts/satoshi.css, that 307s to the login page, the browser gets HTML
+     * where it asked for CSS and refuses it, and every signed-out visitor -
+     * including everyone looking at the login screen - sees a fallback
+     * typeface. None of these paths has anything to protect.
+     */
+    pathname.startsWith("/fonts/") ||
+    pathname.startsWith("/images/") ||
+    pathname.startsWith("/assets/") ||
+    pathname.startsWith("/videos/") ||
+    pathname.startsWith("/noise-suppression/") ||
     // The two platform guides, served as static files for the sales kit. They
     // are large HTML and PDF documents sent to people who have no account, so
     // they have to be reachable with no session. This matcher catches
