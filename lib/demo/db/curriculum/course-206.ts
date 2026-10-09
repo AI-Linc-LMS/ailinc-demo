@@ -1609,7 +1609,10 @@ const curriculum: CourseCurriculum = {
 </table>
 <p>The bottom two are the mirror image of the top two and are the ones people forget, because money arriving feels like income in a way that money leaving does not feel like an expense. A gym taking an annual membership in January has received cash and earned almost none of it, and recognising the whole amount in January overstates that month and starves the next eleven.</p>
 <h3>Reversing entries</h3>
-<p>Most accruals are reversed on the first day of the new period. Accrue 5,500 of electricity in March, reverse it on 1 April, then post the actual bill when it arrives. The expense lands in the right year and the clerk paying the bill in April does not have to remember that part of it was already provided for. Without the reversal, the April payment has to be split, and that split is exactly the kind of step that gets missed.</p>`,
+<p>Most accruals are reversed on the first day of the new period. Accrue 5,500 of electricity in March, reverse it on 1 April, then post the actual bill when it arrives. The expense lands in the right year and the clerk paying the bill in April does not have to remember that part of it was already provided for. Without the reversal, the April payment has to be split, and that split is exactly the kind of step that gets missed.</p>
+<h3>Getting the direction right</h3>
+<p>The commonest error is posting an accrual as though it were a prepayment, because both involve a date mismatch and the names do not help. A one-line test fixes it: has the business already had the benefit? If yes, the cost belongs to this year and anything unpaid is a liability. If no, the money spent is still an asset because the benefit is coming.</p>
+<p>Applied to a 24,000 insurance premium paid three months before the year end, the business has had three months of cover. Three months of cost belongs here; the remaining nine months of premium is a prepayment sitting in current assets. Applied to an unbilled electricity usage, the business has had all of the benefit and paid none of it, so the whole amount is an accrual.</p>`,
       Advanced: `<p>Accruals are where the accounts stop being a transcription of the bank statement and start being a set of judgements. Each adjusting entry is an estimate about an amount, a period, or both.</p>
 <div class="key-idea"><span class="callout-label">The distribution of those estimates is not random</span><p>Management has an interest in the direction of each one, which is why the standard checks test the estimate rather than the arithmetic.</p></div>
 <h3>Cut-off is the sharper form of the problem</h3>
@@ -1627,7 +1630,17 @@ const curriculum: CourseCurriculum = {
 <tr><td>Advertising</td><td>Expense now</td><td>Benefit real but unmeasurable</td></tr>
 <tr><td>Staff training</td><td>Expense now</td><td>Benefit not controlled by the business</td></tr>
 </table>
-<div class="key-idea"><span class="callout-label">The pattern in that table</span><p>Capitalisation requires a future benefit that is both probable and measurable, and that the business controls. Each exclusion above fails one of those three. Learning the three tests is more useful than memorising which costs go where, because new kinds of cost keep arriving.</p></div>`,
+<div class="key-idea"><span class="callout-label">The pattern in that table</span><p>Capitalisation requires a future benefit that is both probable and measurable, and that the business controls. Each exclusion above fails one of those three. Learning the three tests is more useful than memorising which costs go where, because new kinds of cost keep arriving.</p></div>
+<h3>Estimates inside accruals</h3>
+<p>Many accruals are not known amounts. The March electricity bill has not arrived, so the figure is estimated from the meter reading or from last March adjusted for usage. That estimate is a judgement entering the accounts, and like every judgement it needs a basis somebody else could follow.</p>
+<p>The discipline is to record the basis alongside the number. An accrual of 5,500 described as estimated from the meter reading on 31 March at the current unit rate can be checked and defended. The same 5,500 with no note is indistinguishable from a round figure chosen because it looked about right, and when the actual bill comes in at 7,200 there is no way to tell whether the estimate was reasonable or careless.</p>
+<table>
+<tr><th>Accrual</th><th>Defensible basis</th></tr>
+<tr><td>Utilities</td><td>Meter reading times the tariff</td></tr>
+<tr><td>Audit fee</td><td>The engagement letter</td></tr>
+<tr><td>Staff bonus</td><td>The scheme rules applied to actual results</td></tr>
+<tr><td>Leave pay</td><td>Days untaken times daily cost</td></tr>
+</table>`,
       Expert: `<p>Under Ind AS 115 the accrual question is reframed: revenue follows the satisfaction of performance obligations, and the contract rather than the invoice becomes the unit of account.</p>
 <div class="key-idea"><span class="callout-label">Where preparers diverge</span><p>Identifying the distinct performance obligations. A bundled sale of equipment with twelve months of maintenance is one invoice and at least two obligations, one satisfied at a point in time and one over time.</p></div>
 <h3>There is no symmetric expense standard, and that is instructive</h3>
@@ -1654,7 +1667,12 @@ const curriculum: CourseCurriculum = {
 <p>Holding the sales ledger open for a few days after the year end pulls next year's revenue into this one. Delaying the recording of supplier invoices pushes this year's costs into next. Neither requires a false document, both are reversed by the following period, and both are among the most frequently found misstatements in practice. Auditors test cut-off by examining transactions either side of the year end for exactly this reason.</p>
 <h3>Why reversal does not make it harmless</h3>
 <p>A common defence is that it all comes out in the wash, since the next period corrects it. That is true of the cumulative total and false of everything decisions are based on. Bonuses, covenants, valuations and share prices respond to the period figure, and a misstatement that reverses has already done its work by the time it does.</p>
-<div class="field"><span class="callout-label">The practical control</span><p>A documented cut-off procedure with a hard date, applied to goods received notes, dispatch notes and the sales and purchase ledgers together. The control is not sophistication, it is that one date governs all four records, because the manipulations above all depend on different records closing at different moments.</p></div>`,
+<div class="field"><span class="callout-label">The practical control</span><p>A documented cut-off procedure with a hard date, applied to goods received notes, dispatch notes and the sales and purchase ledgers together. The control is not sophistication, it is that one date governs all four records, because the manipulations above all depend on different records closing at different moments.</p></div>
+<h3>Where accruals accounting is deliberately abandoned</h3>
+<p>Cash flow statements exist because accruals accounting, having improved the measurement of performance, made the measurement of liquidity worse. A business can report a healthy profit and be unable to pay its staff, and no amount of reading the profit and loss account reveals it. The cash flow statement reconstructs the cash position from accruals-based figures precisely so both questions can be answered from one set of books.</p>
+<p>That is worth noticing as a design pattern rather than a quirk. Having chosen the more informative and more manipulable system, the profession added a second statement that strips the judgement back out. The indirect method starts from profit and reverses every non-cash item one by one, which is a public reconciliation of exactly where the judgement was applied.</p>
+<h3>Why analysts watch the gap</h3>
+<p>Profit that persistently exceeds operating cash flow is the single most studied warning sign in financial analysis. Each individual accrual may be defensible; the pattern of them running one way for several periods is what suggests the judgement is being used rather than exercised. The gap is not evidence of anything on its own, and it is where almost every investigation starts.</p>`,
     },
     questions: [
       {
@@ -1869,7 +1887,20 @@ const curriculum: CourseCurriculum = {
 <tr><td>Straight line</td><td>The same amount every year</td><td class="num">1,00,000</td></tr>
 <tr><td>Written down value</td><td>A fixed percentage of what it is currently worth in the books</td><td class="num">1,80,000</td></tr>
 </table>
-<div class="field"><span class="callout-label">What depreciation is not</span><p>It is not a guess about the van's market price. It spreads a cost you have already paid. The van does not become more depreciated because second-hand prices fell.</p></div>`,
+<div class="field"><span class="callout-label">What depreciation is not</span><p>It is not a guess about the van's market price. It spreads a cost you have already paid. The van does not become more depreciated because second-hand prices fell.</p></div>
+<h3>What depreciation is for</h3>
+<p>A van costing 8,00,000 will be used for five years and then be worth very little. Charging the whole 8,00,000 to the year it was bought would make that year look terrible and the next four look better than they were, when all five years used the van. Depreciation spreads the cost over the years that get the benefit.</p>
+<h3>Two ways to spread it</h3>
+<p><strong>Straight line</strong> charges the same amount every year. Cost minus what you expect to sell it for, divided by the years you will use it. An 8,00,000 van with a 50,000 residual value over five years is 1,50,000 a year.</p>
+<p><strong>Reducing balance</strong> charges a percentage of whatever the van is currently worth in the books, so the charge is large early and small later. At 30 per cent, the first year is 2,40,000, the second is 30 per cent of the remaining 5,60,000, which is 1,68,000, and so on.</p>
+<table>
+<tr><th>Year</th><th class="num">Straight line</th><th class="num">Reducing balance at 30%</th></tr>
+<tr><td class="num">1</td><td class="num">1,50,000</td><td class="num">2,40,000</td></tr>
+<tr><td class="num">2</td><td class="num">1,50,000</td><td class="num">1,68,000</td></tr>
+<tr><td class="num">3</td><td class="num">1,50,000</td><td class="num">1,17,600</td></tr>
+<tr><td class="num">4</td><td class="num">1,50,000</td><td class="num">82,320</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">It is not money</span><p>No cash leaves the business when depreciation is charged. The cash left when the van was bought. Depreciation is the bookkeeping that spreads that single payment across the years it serves, which is why profit can fall without the bank balance moving.</p></div>`,
       Intermediate: `<p>Depreciation allocates the cost of a long-lived asset across the periods that benefit from it, which is the matching principle applied to something used over years rather than months.</p>
 <figure>
 <svg viewBox="0 0 1000 460" role="img" aria-label="Straight line depreciation compared with reducing balance on the same asset">
@@ -1896,14 +1927,50 @@ const curriculum: CourseCurriculum = {
 </table>
 <div class="key-idea"><span class="callout-label">Neither is more accurate</span><p>Both allocate the same total cost in different patterns. The question is which pattern matches how the benefit is consumed.</p></div>
 <h3>Three estimates, not three facts</h3>
-<p>Useful life, residual value and method are all estimates. Changing any of them changes reported profit, and under Ind AS 16 each is reviewed at least annually, with a change treated as a change in estimate applied prospectively rather than by restating the past.</p>`,
+<p>Useful life, residual value and method are all estimates. Changing any of them changes reported profit, and under Ind AS 16 each is reviewed at least annually, with a change treated as a change in estimate applied prospectively rather than by restating the past.</p>
+<h3>The entry, and why a contra account is used</h3>
+<p>Debit depreciation expense, credit accumulated depreciation. The asset account keeps the original cost untouched, and the contra account builds up alongside it. The balance sheet shows cost, accumulated depreciation and the net figure, so a reader can see both what was spent and how much life is left.</p>
+<table>
+<tr><th>At the end of year 3</th><th class="num">Straight line</th></tr>
+<tr><td>Van at cost</td><td class="num">8,00,000</td></tr>
+<tr><td>Accumulated depreciation</td><td class="num">4,50,000</td></tr>
+<tr><td>Carrying amount</td><td class="num">3,50,000</td></tr>
+</table>
+<h3>Choosing between the methods</h3>
+<p>The honest basis is the pattern in which the asset delivers benefit. A vehicle loses most of its value and most of its reliability early, which argues for reducing balance. A building used evenly argues for straight line. A machine whose life is measured in units produced argues for a units-of-production method rather than either.</p>
+<table>
+<tr><th>Asset</th><th>Usual method</th><th>Why</th></tr>
+<tr><td>Vehicles</td><td>Reducing balance</td><td>Value and reliability fall fastest early</td></tr>
+<tr><td>Buildings</td><td>Straight line</td><td>Benefit is even across a long life</td></tr>
+<tr><td>Production machinery</td><td>Units of production</td><td>Wear tracks output rather than time</td></tr>
+<tr><td>Computers</td><td>Straight line, short life</td><td>Obsolescence, not wear, ends the life</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Consistency is not optional</span><p>Switching method changes reported profit without anything happening in the business. It is permitted when the pattern of benefit genuinely changes, and it must be disclosed with its effect. Switching because this year needs to look better is the textbook example of earnings management.</p></div>
+<h3>Part years</h3>
+<p>An asset bought in August does not get a full year of depreciation under most policies. Two conventions are common: charge by the month owned, or charge a full year in the year of purchase and none in the year of sale. Either is acceptable and the policy must be applied consistently, because switching between them moves profit between years for no reason connected to the business.</p>`,
       Advanced: `<p>The written down value rate that fully depreciates an asset to its residual value over its life is determinable rather than conventional: r equals one minus the nth root of residual over cost.</p>
 <div class="worked"><span class="callout-label">Why Schedule II rates are not round numbers</span><p>For a 6,00,000 van with a 1,00,000 residual over five years, that is one minus the fifth root of one sixth, about 30.1%. Each published rate encodes an assumed life and residual, and reading them as arbitrary percentages hides what they are made of.</p></div>
 <h3>Component accounting changes the answer</h3>
 <p>Where parts of an asset have significantly different useful lives and costs significant relative to the whole, each is depreciated separately. An aircraft engine, a building's lifts and a plant's refractory lining all have lives unrelated to the structure around them. Treating the asset as a single unit both understates early depreciation and converts a later replacement into a repair that should have been a derecognition.</p>
 <h3>Depreciation and impairment are independent</h3>
 <p>Depreciation is a systematic allocation, indifferent to current value. Impairment under Ind AS 36 is a write-down to recoverable amount when the carrying amount is no longer supportable. An asset can be fully depreciated and still productive, or newly bought and already impaired.</p>
-<div class="warning"><span class="callout-label">Your books and your tax computation will never agree</span><p>The Income Tax Act prescribes block-of-assets written down value rates regardless of the book method, so the two differ by design and the gap is a timing difference producing deferred tax. Hunting for the error that reconciles them is a long and fruitless exercise.</p></div>`,
+<div class="warning"><span class="callout-label">Your books and your tax computation will never agree</span><p>The Income Tax Act prescribes block-of-assets written down value rates regardless of the book method, so the two differ by design and the gap is a timing difference producing deferred tax. Hunting for the error that reconciles them is a long and fruitless exercise.</p></div>
+<h3>Disposal, and the profit that is really a correction</h3>
+<p>Sell the van in year four for 2,00,000 when its carrying amount is 2,18,000, and the books show a loss on disposal of 18,000. That loss is not a trading loss. It is the accumulated error in four years of depreciation estimates, recognised at the moment the truth became known.</p>
+<table>
+<tr><th>Step</th><th class="num">Amount</th></tr>
+<tr><td>Cost</td><td class="num">8,00,000</td></tr>
+<tr><td>Accumulated depreciation</td><td class="num">5,82,000</td></tr>
+<tr><td>Carrying amount</td><td class="num">2,18,000</td></tr>
+<tr><td>Proceeds</td><td class="num">2,00,000</td></tr>
+<tr><td>Loss on disposal</td><td class="num">18,000</td></tr>
+</table>
+<p>Read that way, a business reporting large disposal profits year after year is telling you its depreciation rates are too aggressive, and one reporting persistent disposal losses is telling you the opposite. Either pattern is a signal about the estimates rather than about the disposals.</p>
+<h3>Three estimates, all revisable</h3>
+<p>Useful life, residual value and method are all estimates, and all three can be revised when circumstances change. A revision is applied prospectively: the remaining carrying amount is spread over the remaining revised life, and prior years are left alone. Restating the past would imply the original estimate was an error, and an estimate that later proved wrong is not the same thing as a mistake.</p>
+<div class="key-idea"><span class="callout-label">Which makes the revision a quiet lever</span><p>Extending the useful life of a large asset reduces this year's charge and raises profit, with no transaction and no cash effect. It is legitimate when the asset really will last longer and it is one of the easiest adjustments to make for the wrong reason, which is why the assumption is disclosed and why a change in it attracts attention.</p></div>
+<h3>Componentisation</h3>
+<p>Where parts of an asset have different lives, they are depreciated separately. A building whose structure lasts sixty years may have a roof lasting twenty and lifts lasting fifteen. Treating the whole as one asset over sixty years understates the charge and leaves a large write-off when the lifts are replaced; splitting it matches each component to its own life and makes the replacement a planned event rather than a surprise.</p>`,
       Expert: `<p>Ind AS 16 asks the method to reflect the pattern in which the asset's future economic benefits are expected to be consumed. That framing makes unit-of-production the conceptually cleanest where output is measurable, and it also makes the revenue-based method prohibited, since revenue reflects price and volume together rather than consumption.</p>
 <div class="field"><span class="callout-label">Why the prohibition exists</span><p>Revenue-based depreciation was being used to smooth margins.</p></div>
 <h3>Deferred tax, derived rather than memorised</h3>
@@ -1912,7 +1979,23 @@ const curriculum: CourseCurriculum = {
 <h3>Component accounting meets derecognition</h3>
 <p>If a component was never separately identified, replacing it has no carrying amount to remove, so the replacement either gets expensed, understating the asset, or capitalised on top of an undepreciated whole, double counting the part. Ind AS 16 permits using the replacement's cost as an indication of the replaced part's original cost, which is a pragmatic fiction and the only workable answer.</p>
 <h3>The governance consequence of prospective treatment</h3>
-<p>Extending a useful life reduces the annual charge immediately and never requires restating prior periods, so it is an available and entirely legal lever on reported profit. The control is disclosure plus a reviewer asking what changed about the asset, and life extensions concentrated in weak years are a recognised earnings-management signature.</p>`,
+<p>Extending a useful life reduces the annual charge immediately and never requires restating prior periods, so it is an available and entirely legal lever on reported profit. The control is disclosure plus a reviewer asking what changed about the asset, and life extensions concentrated in weak years are a recognised earnings-management signature.</p>
+<h3>Depreciation is allocation, not valuation</h3>
+<p>The carrying amount of an asset is cost less the part allocated to past periods. It is not an estimate of what the asset would fetch, and it is not intended to be. People read the balance sheet as a list of values and are then surprised that a fully depreciated machine still in daily use appears at zero. Nothing is wrong: the cost has been fully allocated, the machine is still working, and those two facts are unrelated by design.</p>
+<table>
+<tr><th>Question</th><th>Answered by</th></tr>
+<tr><td>How much of the cost has been used?</td><td>Accumulated depreciation</td></tr>
+<tr><td>What would it sell for?</td><td>Nothing in these accounts</td></tr>
+<tr><td>Has it lost value suddenly?</td><td>An impairment review</td></tr>
+<tr><td>Will it need replacing?</td><td>Age against useful life, not the carrying amount</td></tr>
+</table>
+<h3>Impairment is the separate mechanism</h3>
+<p>Where an asset's recoverable amount falls below its carrying amount, the difference is written off immediately rather than waiting for the depreciation schedule to catch up. That is the mechanism that handles a sudden loss of value, and keeping it separate from depreciation is deliberate: one is a planned allocation, the other is a response to an event.</p>
+<h3>Tax depreciation is a different calculation entirely</h3>
+<p>Tax authorities set their own rates and methods, so the depreciation in the accounts and the allowance claimed for tax rarely match. The difference is timing rather than amount, and it gives rise to deferred tax, which exists to stop the tax charge in the accounts swinging around purely because the two schedules run at different speeds.</p>
+<div class="field"><span class="callout-label">Why this matters when reading any set of accounts</span><p>Two identical businesses can report different profits solely through depreciation policy, and both can be correct. Comparing them means looking at the policy note rather than the profit line, and a comparison that skips it is comparing accounting choices rather than performance. This is the clearest everyday case of why the notes to the accounts are not optional reading.</p></div>
+<h3>Depreciation does not fund replacement</h3>
+<p>A persistent belief is that depreciation sets money aside to replace the asset. It does not. No cash moves, and nothing is reserved. What the charge does is reduce distributable profit, which indirectly discourages paying out cash the business will need, but there is no fund and there is no guarantee the cash still exists when replacement comes. A business that wants to fund replacement has to actually put money somewhere, as a separate decision.</p>`,
     },
     worksheets: [
       {
@@ -2079,7 +2162,17 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">No, and keeping it makes you look richer than you are</span><p>Remove it: the receivable goes down by 40,000 and you record a 40,000 expense called bad debts. That is a write-off, and you do it when you are reasonably sure a specific customer will not pay.</p></div>
 <h3>The softer version</h3>
 <p>Across all your customers you know from experience that some proportion never pays, even though you cannot yet say which ones. For that you make a provision: a cushion against the total, which reduces the receivables figure without accusing any particular customer.</p>
-<div class="field"><span class="callout-label">When somebody pays after a write-off</span><p>It happens. Record the receipt as income in the year it arrives rather than quietly undoing the write-off, because the write-off was a reasonable judgement at the time.</p></div>`,
+<div class="field"><span class="callout-label">When somebody pays after a write-off</span><p>It happens. Record the receipt as income in the year it arrives rather than quietly undoing the write-off, because the write-off was a reasonable judgement at the time.</p></div>
+<h3>When a customer will not pay</h3>
+<p>You sold goods on credit for 30,000. Months pass, the customer stops answering, and you accept the money is not coming. The sale already went through the books, so the receivable has to be removed and the loss recognised: debit bad debts, credit trade receivables.</p>
+<p>That is for a specific customer you have given up on. Separately, you know from experience that a proportion of everyone else will also fail to pay, even though you cannot yet say who. That expectation is a provision, and it is an estimate rather than a fact.</p>
+<table>
+<tr><th></th><th>Bad debt</th><th>Provision</th></tr>
+<tr><td>Which customer?</td><td>Named</td><td>Unknown</td></tr>
+<tr><td>Amount</td><td>Known</td><td>Estimated</td></tr>
+<tr><td>Entry</td><td>Remove the receivable</td><td>Leave it, add a contra</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Why a provision does not remove the debt</span><p>You still intend to collect, and you may. The provision sits against receivables as a contra so the balance sheet shows both what is owed and what you realistically expect to get, and if the customer does pay nothing has to be unpicked.</p></div>`,
       Intermediate: `<p>A write-off is specific and a provision is general, and keeping them apart matters because they answer different questions.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="A specific bad debt compared with a general provision">
@@ -2108,14 +2201,50 @@ const curriculum: CourseCurriculum = {
 <h3>Base the estimate on ageing, not a round percentage</h3>
 <p>Receivables are grouped by how long they have been outstanding and historical recovery rates applied to each band, because a balance 180 days old is a different risk from one 20 days old. A flat 5% of total receivables is defensible only where nothing better exists, and it reliably understates the provision of a business whose collection is deteriorating.</p>
 <h3>What prudence actually licenses</h3>
-<p>It sets the direction of error: where judgement is genuinely balanced, do not overstate the asset. It does not license deliberate understatement, and modern standards are explicit that prudence means caution rather than pessimism.</p>`,
+<p>It sets the direction of error: where judgement is genuinely balanced, do not overstate the asset. It does not license deliberate understatement, and modern standards are explicit that prudence means caution rather than pessimism.</p>
+<h3>The three entries</h3>
+<table>
+<tr><th>Event</th><th>Debit</th><th>Credit</th></tr>
+<tr><td>Write off a specific debt</td><td>Bad debts expense</td><td>Trade receivables</td></tr>
+<tr><td>Create or increase a provision</td><td>Bad debts expense</td><td>Provision for doubtful debts</td></tr>
+<tr><td>Reduce a provision</td><td>Provision for doubtful debts</td><td>Bad debts expense</td></tr>
+</table>
+<p>Only the movement in the provision goes through the profit and loss account, not the whole balance. If the provision was 40,000 last year and needs to be 55,000 this year, the charge is 15,000. Charging the full 55,000 again would double count the part already recognised.</p>
+<h3>An aged analysis is how the estimate is made</h3>
+<table>
+<tr><th>Age</th><th class="num">Owed</th><th class="num">Rate</th><th class="num">Provision</th></tr>
+<tr><td>Under 30 days</td><td class="num">4,00,000</td><td class="num">1%</td><td class="num">4,000</td></tr>
+<tr><td>30 to 60</td><td class="num">1,50,000</td><td class="num">5%</td><td class="num">7,500</td></tr>
+<tr><td>60 to 90</td><td class="num">60,000</td><td class="num">20%</td><td class="num">12,000</td></tr>
+<tr><td>Over 90</td><td class="num">40,000</td><td class="num">50%</td><td class="num">20,000</td></tr>
+<tr><th>Total</th><th class="num">6,50,000</th><th class="num"></th><th class="num">43,500</th></tr>
+</table>
+<div class="warning"><span class="callout-label">The rates are the judgement, and they need a basis</span><p>Derive them from your own collection history rather than from a textbook. A business selling to government departments on ninety day terms has a completely different profile from one selling to small retailers, and applying a generic rate to either produces a number that looks rigorous and means nothing.</p></div>
+<h3>Terms are the control, the provision is the measurement</h3>
+<p>A business selling on thirty day terms with no stop list and no chasing will have an ageing profile dominated by the over-ninety band within a year, and no provision rate makes that acceptable. The sequence that works is a credit limit agreed before the first supply, an invoice issued the day the goods go, a statement every month, a chase at seven days past due, and supply stopped at thirty. Each step is cheap; the combination is what keeps the ledger young.</p>`,
       Advanced: `<p>Ind AS 109 replaced the incurred-loss model with expected credit losses, and for trade receivables it permits a simplified approach: recognise lifetime expected losses from the outset, typically through a provision matrix built from ageing bands and observed historical loss rates.</p>
 <div class="key-idea"><span class="callout-label">A consequence worth stating plainly</span><p>A provision now exists against receivables that are not yet overdue. Businesses moving to this basis usually see the provision rise, and the increase is a change in measurement rather than evidence of deteriorating customers.</p></div>
 <h3>The forward-looking adjustment is where it gets fudged</h3>
 <p>Historical loss rates embed the conditions that produced them, so applying 2019 rates to a sector in contraction understates losses. The standard asks for reasonable and supportable information without undue cost, which is an invitation to judgement, and the defensible implementation documents the adjustment and its basis rather than picking a number.</p>
 <h3>Two mechanical traps</h3>
 <p>The provision must be adjusted to the required closing figure with only the movement charged, and the GST on a written-off debt is not recoverable merely because the customer failed to pay, so the write-off is of the gross amount. A recovery on a previously written-off debt is credited to income in the year received, not back to the customer account.</p>
-<div class="warning"><span class="callout-label">The signal auditors look for</span><p>Receivable days lengthening while the provision rate stays flat. The business is either unusually lucky or not revising its estimate, and the second explanation is far more common.</p></div>`,
+<div class="warning"><span class="callout-label">The signal auditors look for</span><p>Receivable days lengthening while the provision rate stays flat. The business is either unusually lucky or not revising its estimate, and the second explanation is far more common.</p></div>
+<h3>Recovery of a written-off debt</h3>
+<p>Occasionally a customer pays after the debt was written off. Do not reverse the original write-off; recognise the receipt as income. Debit bank, credit bad debts recovered. Reversing the write-off would reinstate a receivable and immediately clear it, which leaves the ledger harder to read and obscures the fact that a previous estimate turned out to be wrong.</p>
+<h3>Specific against general, and why the distinction has narrowed</h3>
+<p>Older practice allowed a general provision of a round percentage across the whole ledger. Modern standards push towards expected credit losses, which requires the estimate to be built from identifiable groups with similar risk and supported by data. The difference is accountability: a flat five per cent cannot be audited, whereas a rate per ageing band derived from history can be tested against what actually happened.</p>
+<table>
+<tr><th>Approach</th><th>Testable?</th><th>Weakness</th></tr>
+<tr><td>Flat percentage of ledger</td><td>No</td><td>Unconnected to actual risk</td></tr>
+<tr><td>Rates by ageing band</td><td>Yes</td><td>Assumes age predicts default</td></tr>
+<tr><td>Customer by customer</td><td>Yes</td><td>Impractical above a few hundred accounts</td></tr>
+<tr><td>Expected credit loss model</td><td>Yes</td><td>Needs data most small businesses lack</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Back-test the rates every year</span><p>Compare last year's provision with what was actually written off. Persistently over-providing understates profit and builds a cushion that can be released later, which is its own form of smoothing; persistently under-providing overstates receivables. Neither is visible without the comparison, and almost nobody does it.</p></div>
+<h3>Writing off is not forgiving</h3>
+<p>A written-off debt is removed from the ledger because it is no longer expected to be collected, not because the customer has been released from owing it. Legal recovery can continue, and a recovery is then recognised as income. Keeping those two ideas separate matters in practice: businesses sometimes avoid writing off a hopeless debt because it feels like giving up on the money, which leaves the receivables figure overstated for years and the ageing analysis useless.</p>
+<h3>Credit insurance changes the entry</h3>
+<p>Where receivables are insured, the expected recovery from the insurer is a separate asset rather than a reduction of the provision. Netting the two hides both the gross exposure and the dependence on the insurer paying, and the insurer declining a claim is exactly the circumstance in which the netted figure would have mattered.</p>`,
       Expert: `<p>The expected credit loss model is a probability-weighted estimate of cash shortfalls discounted at the original effective interest rate. The simplified matrix for trade receivables is a permitted shortcut rather than a different concept, and understanding it as a shortcut matters because the matrix's assumptions remain the model's assumptions.</p>
 <h3>What the matrix assumes, and where each assumption fails</h3>
 <table>
@@ -2127,7 +2256,24 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">Concentration is the practical limit</span><p>A portfolio where one customer is 40% of receivables has a loss distribution dominated by a single Bernoulli event. A matrix built on average rates returns an estimate that is right on average and wrong in every actual state of the world.</p></div>
 <h3>A presentation boundary worth naming</h3>
 <p>Under Ind AS 115 a receivable is recognised at the transaction price, and expected credit losses are presented separately as an impairment loss rather than as a reduction of revenue. That keeps the top line a statement about what was sold and pushes collectability into its own line.</p>
-<div class="field"><span class="callout-label">What an experienced reviewer tests first</span><p>Not the level of the provision but whether the methodology changed, because an unexplained change in method is a stronger signal than any level. The controls that constrain this lever are the ones that make the estimate reproducible: a documented matrix, consistent application, and retrospective comparison of prior provisions against subsequent write-offs.</p></div>`,
+<div class="field"><span class="callout-label">What an experienced reviewer tests first</span><p>Not the level of the provision but whether the methodology changed, because an unexplained change in method is a stronger signal than any level. The controls that constrain this lever are the ones that make the estimate reproducible: a documented matrix, consistent application, and retrospective comparison of prior provisions against subsequent write-offs.</p></div>
+<h3>Why provisions attract scrutiny</h3>
+<p>A provision is the first number in a set of accounts that is chosen rather than counted. It is supported by judgement, it affects profit directly, and it can be adjusted in either direction without any transaction taking place. That combination makes it the classic instrument of earnings management, and it is why auditors spend disproportionate time on it relative to its size.</p>
+<h3>Cookie jar reserves</h3>
+<p>The pattern is to over-provide in a good year, when the extra charge is affordable and nobody questions prudence, then release the excess in a bad year to support profit. Each individual provision is defensible; the sequence is not. It is detected by looking at the provision as a percentage of receivables over several years rather than at any single year, and by comparing provisions made with write-offs that followed.</p>
+<table>
+<tr><th>Signal</th><th>What it may indicate</th></tr>
+<tr><td>Provision rate rising while ledger ageing improves</td><td>Building a cushion</td></tr>
+<tr><td>Large release in a weak trading year</td><td>Using the cushion</td></tr>
+<tr><td>Write-offs consistently far below provisions</td><td>Systematic over-provision</td></tr>
+<tr><td>Write-offs consistently exceeding provisions</td><td>Receivables overstated</td></tr>
+</table>
+<h3>The commercial reading</h3>
+<p>Beyond the accounting, the provision is management telling you what they think of their own customer book. A rising provision rate is a statement about credit control, customer quality or the sector, and it usually precedes the revenue problem rather than following it. Read alongside the ageing profile and days sales outstanding, it is one of the more informative numbers in a small set of accounts.</p>
+<div class="field"><span class="callout-label">The control that matters more than the estimate</span><p>Credit control itself. Approving limits before supply, chasing at fixed intervals, and stopping supply when an account passes its terms prevent the loss rather than estimating it. A business with a large provision and no credit control process is measuring a problem it has chosen not to manage.</p></div>
+<h3>Expected credit loss, and why it moved recognition forward</h3>
+<p>The older model recognised a loss once there was objective evidence of impairment, which in practice meant waiting for something to go wrong. The criticism after the financial crisis was that this delayed recognition until losses were already unavoidable. Expected credit loss models require a loss allowance from the moment the receivable is recognised, based on what history and forward-looking information suggest will happen.</p>
+<p>The trade-off is explicit: earlier recognition at the cost of more judgement. For a small business selling on short terms the practical effect is modest, usually a provision matrix by ageing band. For a lender it is a substantial modelling exercise, and the difference in how much judgement the two situations involve is the reason the standards scale the requirement to the circumstances.</p>`,
     },
     questions: [
       {
@@ -2367,7 +2513,23 @@ const curriculum: CourseCurriculum = {
 <p>Put your sales on one side. On the other put what those goods cost you: the stock you started with, plus what you bought, minus the stock still sitting unsold. The difference is gross profit.</p>
 <h3>Statement two: the profit and loss account</h3>
 <p>Start with that gross profit and take off everything else: rent, salaries, electricity, depreciation. What is left is net profit, and that is the figure people mean when they ask how the business did.</p>
-<div class="warning"><span class="callout-label">Closing stock appears twice, and both are right</span><p>Once reducing your cost of goods in the trading account, and once as an asset on the balance sheet. The goods are both not-yet-a-cost and still-owned, which are two different statements saying two true things.</p></div>`,
+<div class="warning"><span class="callout-label">Closing stock appears twice, and both are right</span><p>Once reducing your cost of goods in the trading account, and once as an asset on the balance sheet. The goods are both not-yet-a-cost and still-owned, which are two different statements saying two true things.</p></div>
+<h3>The two halves, and what each one answers</h3>
+<p>The trading account asks whether you buy and sell at a sensible margin. Sales less the cost of the goods you sold gives gross profit. The profit and loss account then asks whether the business as a whole is worth running: gross profit less all the other costs gives net profit.</p>
+<table>
+<tr><th>Line</th><th class="num">Amount</th></tr>
+<tr><td>Sales</td><td class="num">4,50,000</td></tr>
+<tr><td>Opening stock</td><td class="num">40,000</td></tr>
+<tr><td>Purchases</td><td class="num">2,80,000</td></tr>
+<tr><td>Closing stock</td><td class="num">(50,000)</td></tr>
+<tr><td>Cost of goods sold</td><td class="num">2,70,000</td></tr>
+<tr><th>Gross profit</th><th class="num">1,80,000</th></tr>
+<tr><td>Rent, wages, other</td><td class="num">1,10,000</td></tr>
+<tr><th>Net profit</th><th class="num">70,000</th></tr>
+</table>
+<h3>Why stock appears twice</h3>
+<p>You did not sell everything you bought. Opening stock is added because it was available to sell this year; closing stock is taken away because it is still sitting there. What remains is the cost of what actually went out of the door, which is the only figure that belongs against this year's sales.</p>
+<div class="key-idea"><span class="callout-label">A healthy gross and a negative net</span><p>That combination says your pricing is fine and your overheads are too high for the volume. It points at a completely different fix from a thin gross margin, which is why the two profits are reported separately rather than as one number.</p></div>`,
       Intermediate: `<p>The trading account isolates trading margin from overhead, which is why it is kept separate rather than folded into one statement.</p>
 <figure>
 <svg viewBox="0 0 1000 460" role="img" aria-label="From sales down to net profit, and what each stage subtracts">
@@ -2400,7 +2562,21 @@ const curriculum: CourseCurriculum = {
 </table>
 <p>Expressing gross profit as a percentage of sales gives the most diagnostic ratio in a trading business, because it is largely insulated from overhead decisions and therefore comparable across years.</p>
 <h3>The order to work in</h3>
-<p>Accruals and prepayments, then depreciation, then bad debts and the provision, then closing stock, and only then draw up the statements. Attempting the statements first and adjusting afterwards is how figures get adjusted twice.</p>`,
+<p>Accruals and prepayments, then depreciation, then bad debts and the provision, then closing stock, and only then draw up the statements. Attempting the statements first and adjusting afterwards is how figures get adjusted twice.</p>
+<h3>Margins, and what they tell you</h3>
+<table>
+<tr><th>Measure</th><th>Calculation</th><th>In the example</th></tr>
+<tr><td>Gross margin</td><td>Gross profit over sales</td><td class="num">40%</td></tr>
+<tr><td>Net margin</td><td>Net profit over sales</td><td class="num">15.6%</td></tr>
+<tr><td>Mark-up</td><td>Gross profit over cost</td><td class="num">66.7%</td></tr>
+</table>
+<p>Margin and mark-up are routinely confused and they are not the same base. A 50 per cent mark-up is a 33 per cent margin. A business that sets prices on mark-up and reports performance on margin, without noticing the two differ, will believe it is more profitable than it is.</p>
+<h3>What belongs above the gross profit line</h3>
+<p>Only costs that vary directly with the goods sold: purchases, carriage inwards, import duty, direct wages where they are genuinely per unit. Rent, administration, selling costs and depreciation of office equipment sit below. The classification matters because gross margin is the number compared year on year and against the sector, and moving a cost across the line makes the comparison meaningless.</p>
+<div class="warning"><span class="callout-label">Carriage in and carriage out are different</span><p>Carriage inwards is the cost of getting goods to you and forms part of their cost, so it sits above the line. Carriage outwards is the cost of delivering to the customer and is a selling expense, so it sits below. They sound like a pair and they belong in different halves of the statement.</p></div>
+<h3>Returns, discounts and where they sit</h3>
+<p>Sales returns are deducted from sales rather than added to expenses, because they undo a sale that should not be counted. Purchase returns are deducted from purchases for the same reason. Trade discount never appears at all: it is deducted before the invoice is written, so the books only ever see the net figure. Settlement discount for early payment is different, because it depends on the customer's later behaviour, and it is treated as a cost of financing rather than as a reduction of the sale.</p>
+<p>Getting these in the wrong place leaves both sales and expenses overstated by the same amount. Profit is unaffected, every total balances, and the margin percentage is wrong, which is the number anyone analysing the business will look at first.</p>`,
       Advanced: `<p>Stock valuation is where the most judgement sits and where the most profit can be moved.</p>
 <div class="warning"><span class="callout-label">Item by item, never in aggregate</span><p>Lower of cost and net realisable value applied to the total would let a write-down on one line be offset against an unrealised gain on another.</p></div>
 <h3>Cost needs a flow assumption</h3>
@@ -2409,7 +2585,24 @@ const curriculum: CourseCurriculum = {
 <p>Ledger balances in one pair of columns, adjustments in the next, final figures in the last, with every judgement visible on one sheet and attributable to a person. A system that posts adjustments straight into the ledger produces the same statements and loses the audit surface, which is why practitioners who could skip the step do not.</p>
 <h3>Gross margin analysis is the cheapest completeness check there is</h3>
 <p>A margin that moves more than a point or two without an explanation in pricing, mix or input cost points at a short list: unrecorded sales, stock misstatement, purchases in the wrong period, or classification drift between trading and overhead. It is the first analytical procedure in most audit programmes for exactly that reason.</p>
-<div class="field"><span class="callout-label">Presentation is not cosmetic</span><p>Schedule III prescribes the format for a company, including the current and non-current division. A set of accounts in a free format is not merely untidy, it is non-compliant.</p></div>`,
+<div class="field"><span class="callout-label">Presentation is not cosmetic</span><p>Schedule III prescribes the format for a company, including the current and non-current division. A set of accounts in a free format is not merely untidy, it is non-compliant.</p></div>
+<h3>Why closing stock is where profit is most easily manipulated</h3>
+<p>Closing stock is deducted from cost of sales, so every rupee added to it adds a rupee to profit. It is counted and valued by the business itself, usually once a year, and both the count and the valuation involve judgement. That combination is why stock is one of the most heavily tested balances in an audit.</p>
+<table>
+<tr><th>Lever</th><th>Effect on profit</th></tr>
+<tr><td>Counting items that were already sold</td><td>Overstates</td></tr>
+<tr><td>Valuing obsolete stock at full cost</td><td>Overstates</td></tr>
+<tr><td>Including goods held on consignment</td><td>Overstates</td></tr>
+<tr><td>Omitting goods in transit that you own</td><td>Understates</td></tr>
+</table>
+<h3>Lower of cost and net realisable value</h3>
+<p>Stock is carried at the lower of what it cost and what it will actually fetch less the cost of selling it. The rule exists because the alternative, carrying at cost regardless, would let a business hold unsellable goods on its balance sheet indefinitely and defer the loss forever. Applying it means somebody has to look at the stock and form a view about what will sell, which is why a stock count is a judgement exercise rather than a counting exercise.</p>
+<div class="key-idea"><span class="callout-label">Gross margin is the check on the stock figure</span><p>If margin jumps three points with no change in pricing or supplier costs, closing stock is the first place to look. The relationship is arithmetic: an overstated closing stock understates cost of sales and inflates margin, and the margin movement is usually noticed before the stock error is.</p></div>
+<h3>Goods in transit and consignment stock</h3>
+<p>Ownership, not location, decides whether stock is yours at the year end. Goods despatched by a supplier on terms where title passes at despatch belong to you while they are still on a lorry, and they must be in your closing stock and in your payables. Goods sitting in your warehouse on consignment belong to the supplier and must be excluded from both.</p>
+<p>Both errors are easy to make because a stock count records what is physically present. Reconciling the count to the despatch and goods received records either side of the year end is what catches them, and it is the same cut-off procedure that protects revenue recognition.</p>
+<h3>Why the two stock figures must agree with the balance sheet</h3>
+<p>Closing stock appears twice: deducted in the trading account and shown as a current asset. They are the same number by construction, and a difference between them is a copying error that the trial balance will not see, because closing stock is inserted after the trial balance is drawn up rather than coming out of it.</p>`,
       Expert: `<p>The trading account is a presentational convention rather than a requirement of any standard, and Schedule III does not use it: a company reports revenue from operations, cost of materials consumed, changes in inventories and so on, from which gross margin is derivable but not stated.</p>
 <div class="field"><span class="callout-label">Worth knowing before you open audited accounts</span><p>It is a teaching and management device. Looking for it in a filed set and not finding it is a predictable confusion.</p></div>
 <h3>Inventory error is self-reversing, which is what makes it hard to see</h3>
@@ -2423,7 +2616,23 @@ const curriculum: CourseCurriculum = {
 <tr><td>Operating leverage</td><td>Reverses with volume</td></tr>
 <tr><td>One-off items</td><td>Does not recur, by definition</td></tr>
 </table>
-<p>Presenting a profit movement without that decomposition is the most common failure in management reporting, and it is why a board can be surprised by a result fully visible in the margin two quarters earlier.</p>`,
+<p>Presenting a profit movement without that decomposition is the most common failure in management reporting, and it is why a board can be surprised by a result fully visible in the margin two quarters earlier.</p>
+<h3>Cost formulas, and why the choice changes profit</h3>
+<p>Where identical items were bought at different prices, some assumption is needed about which ones were sold. First in first out assumes the oldest went first, so closing stock is valued at recent prices. Weighted average smooths across all purchases. In a period of rising prices the two give materially different profits from identical transactions.</p>
+<table>
+<tr><th>Formula</th><th>In rising prices</th><th>Closing stock</th></tr>
+<tr><td>FIFO</td><td>Higher profit</td><td>At recent, higher cost</td></tr>
+<tr><td>Weighted average</td><td>Between the two</td><td>Smoothed</td></tr>
+</table>
+<p>Last in first out produces the opposite effect and is prohibited under IFRS, largely because it can leave balance sheet stock valued at prices from many years earlier. The prohibition is a good illustration of standards choosing balance sheet faithfulness over income smoothing when the two conflict.</p>
+<h3>Reading a trading account as a diagnostic</h3>
+<p>Three movements worth separating. A falling gross margin with stable sales points at purchase prices, discounting, or theft. A falling net margin with a stable gross margin points at overheads growing faster than the business. Rising sales with falling net profit usually points at the cost of winning the extra sales, whether that is discounting, delivery or credit losses.</p>
+<div class="field"><span class="callout-label">The comparison that catches most problems</span><p>Monthly gross margin plotted across a year. A business that reviews it annually sees one number and cannot tell when anything changed; one that plots it monthly sees the month it moved, which usually identifies the cause without any further analysis. It costs nothing and it is the single most useful routine report a small business can produce.</p></div>
+<h3>Where the trading account stops being enough</h3>
+<p>A single gross margin for a business selling several product lines averages over them, and the average can be stable while the mix beneath it changes completely. A shift from a high margin line to a low margin one at constant total sales produces a falling margin that looks like a pricing problem and is a mix problem, and the two have opposite remedies.</p>
+<p>Segmental reporting exists for this reason at scale, and the small business version is simply to run the trading account by product group. It costs a classification on each sale and it converts the most important percentage in the accounts from an average into something actionable.</p>
+<h3>Service businesses have no trading account</h3>
+<p>With no goods bought and resold there is no cost of sales in the classical sense, and the distinction between gross and net profit becomes a matter of definition rather than structure. Many service businesses define direct costs as staff time charged to clients, which recreates a usable gross margin, but it is a management convention rather than something the bookkeeping imposes. Comparing a service business's gross margin with a retailer's is comparing two different definitions.</p>`,
     },
     worksheets: [
       {
@@ -2689,7 +2898,20 @@ const curriculum: CourseCurriculum = {
 <p>You wrote a cheque and recorded it, so your book has gone down. The supplier has not banked it yet, so the bank still shows the money. That difference disappears the day the cheque clears, and you do nothing.</p>
 <h3>The pile that needs you</h3>
 <p>The bank took 900 rupees of charges and paid you 1,200 of interest, and you only found out by reading the statement. Those are real transactions you have not recorded.</p>
-<div class="warning"><span class="callout-label">The output of a reconciliation is the second pile</span><p>Missing it is why some cash books are permanently a few thousand rupees out.</p></div>`,
+<div class="warning"><span class="callout-label">The output of a reconciliation is the second pile</span><p>Missing it is why some cash books are permanently a few thousand rupees out.</p></div>
+<h3>Why the two never match</h3>
+<p>Your cash book and the bank statement describe the same account from two sides, and they are recorded at different moments. You write a cheque today and record it today; the bank records it when it is presented, which may be next week. Neither of you is wrong.</p>
+<table>
+<tr><th>Difference</th><th>Who knows first</th></tr>
+<tr><td>Cheques written, not yet presented</td><td>You</td></tr>
+<tr><td>Deposits made, not yet cleared</td><td>You</td></tr>
+<tr><td>Bank charges and interest</td><td>The bank</td></tr>
+<tr><td>Direct debits you forgot</td><td>The bank</td></tr>
+<tr><td>A customer paying straight in</td><td>The bank</td></tr>
+</table>
+<h3>How to do one</h3>
+<p>Tick off every item that appears in both records. What is left over is the explanation. Items the bank knows about and you do not get written into your cash book, because they are genuine transactions you had not recorded. Items you know about and the bank does not are listed on the reconciliation as timing differences; nothing is posted for those, because they will clear by themselves.</p>
+<div class="key-idea"><span class="callout-label">The split is the whole technique</span><p>One group needs entries in your books. The other group needs only a note. Mixing them up, by posting the uncleared cheques, is the commonest way a reconciliation goes wrong.</p></div>`,
       Intermediate: `<p>A reconciliation explains the gap between two records of the same account maintained by two parties with different information. The business knows about cheques it has issued and deposits it has made; the bank knows about charges, interest, standing instructions and dishonoured cheques. Neither record is wrong.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="Why the bank statement and the cash book disagree">
@@ -2718,21 +2940,73 @@ const curriculum: CourseCurriculum = {
 </table>
 <h3>Direction, when laying the statement out</h3>
 <p>Starting from the bank statement balance: deduct unpresented cheques because the bank has not yet taken them, add uncredited deposits because the bank has not yet given credit, add back charges the bank took that you did not record, and deduct interest the bank credited that you did not record. The result should be the cash book balance.</p>
-<div class="key-idea"><span class="callout-label">Why this is more than arithmetic</span><p>It is the only routine procedure that tests completeness, because the bank statement is an independent population. A payment made but never recorded in the cash book cannot be found anywhere inside the ledger.</p></div>`,
+<div class="key-idea"><span class="callout-label">Why this is more than arithmetic</span><p>It is the only routine procedure that tests completeness, because the bank statement is an independent population. A payment made but never recorded in the cash book cannot be found anywhere inside the ledger.</p></div>
+<h3>A worked reconciliation</h3>
+<table>
+<tr><th>Line</th><th class="num">Amount</th></tr>
+<tr><td>Balance per bank statement</td><td class="num">1,62,400</td></tr>
+<tr><td>Less cheques not yet presented</td><td class="num">(12,900)</td></tr>
+<tr><td>Add deposits not yet cleared</td><td class="num">8,000</td></tr>
+<tr><th>Adjusted bank balance</th><th class="num">1,57,500</th></tr>
+<tr><td>Balance per cash book, before adjustment</td><td class="num">1,60,000</td></tr>
+<tr><td>Less bank charges</td><td class="num">(1,200)</td></tr>
+<tr><td>Less a direct debit not recorded</td><td class="num">(1,300)</td></tr>
+<tr><th>Adjusted cash book balance</th><th class="num">1,57,500</th></tr>
+</table>
+<p>The two adjusted figures agree, and the adjusted cash book figure is what goes on the balance sheet. The 1,60,000 originally in the cash book was simply incomplete.</p>
+<h3>What a reconciliation is really for</h3>
+<p>It is not tidiness. It is the only routine procedure in most small businesses that compares the books against a record produced by somebody else. Everything else is internally consistent by construction, so this is where an omitted transaction, a duplicated payment or an unauthorised withdrawal becomes visible.</p>
+<div class="warning"><span class="callout-label">An old uncleared item is a question</span><p>A cheque unpresented for six months has probably been lost or was never sent. Carrying it forward reconciliation after reconciliation makes the statement balance and hides the fact. Stale items should be investigated and written back, not rolled.</p></div>
+<h3>Starting from either end</h3>
+<p>The reconciliation above starts from the bank statement and works to the cash book. It can equally run the other way, starting from the cash book balance and adjusting to the statement. Both are correct and the choice is presentation. Starting from the statement is more common because the statement is the independent document, and ending at the cash book figure makes it obvious which number goes on the balance sheet.</p>
+<p>What matters is that the uncorrected cash book balance appears somewhere, with the adjustments shown. A reconciliation that presents only the corrected figure has hidden the two entries that needed posting, which are the part a reviewer most wants to see.</p>`,
       Advanced: `<p>The reconciliation is the primary fraud control in a small business, and that is a stronger claim than it sounds: the bank statement is produced by an independent party, so it is the one record a dishonest bookkeeper cannot edit.</p>
 <div class="warning"><span class="callout-label">Two ways the control fails while still being performed</span><p>When the person who makes payments also performs the reconciliation. And when stale unpresented cheques are allowed to accumulate as a parking space for differences nobody wants to explain.</p></div>
 <h3>Age the unpresented list before you check the addition</h3>
 <p>A cheque outstanding beyond about three months has almost certainly not been presented because it does not exist or was never sent, and carrying it forward quietly absorbs a shortfall of exactly that amount. Any review should start there.</p>
 <h3>Dishonoured cheques are the subtlest routine item</h3>
 <p>When a customer cheque bounces, the original receipt entry has to be reversed, the receivable reinstated, and any bank charge recorded. Reversing only the bank side leaves a receivable understated and a reconciliation that balances, which is the quiet kind of error.</p>
-<div class="field"><span class="callout-label">Automation moved the skill, it did not remove it</span><p>Matching is now largely automatic, so the professional work is investigating exceptions. An automated matcher keyed on amount and date will happily match two unrelated transactions of the same value, which means the exception report is the output worth reading and the clean match rate is not.</p></div>`,
+<div class="field"><span class="callout-label">Automation moved the skill, it did not remove it</span><p>Matching is now largely automatic, so the professional work is investigating exceptions. An automated matcher keyed on amount and date will happily match two unrelated transactions of the same value, which means the exception report is the output worth reading and the clean match rate is not.</p></div>
+<h3>Who should do it</h3>
+<p>Not the person who writes the cheques and not the person who banks the receipts. The reconciliation is the control that would detect their errors, and a control performed by the person it is designed to catch is not a control. In a business too small to separate the roles, the owner reviewing and initialling the completed reconciliation is the compensating control, and it has to be genuine review rather than a signature.</p>
+<h3>Frequency changes what it can find</h3>
+<table>
+<tr><th>Frequency</th><th>Detection lag</th><th>Search cost when something is wrong</th></tr>
+<tr><td>Daily</td><td>A day</td><td>Minutes</td></tr>
+<tr><td>Monthly</td><td>Up to a month</td><td>An afternoon</td></tr>
+<tr><td>Annually</td><td>Up to a year</td><td>Days, and memories have gone</td></tr>
+</table>
+<p>The search cost grows faster than the interval, because the number of transactions to examine grows with it and the ability of anyone to remember them falls. That non-linearity is the argument for monthly as a minimum rather than a preference.</p>
+<div class="key-idea"><span class="callout-label">Teeming and lading</span><p>Receipts from one customer are used to cover an earlier theft from another, and the total banked is always right. The bank reconciliation agrees perfectly, because the money did arrive. It is caught by sending customer statements and by matching individual receipts to individual invoices, not by the reconciliation itself, which is a useful reminder that a clean reconciliation is not a clean bill of health.</p></div>
+<h3>Overdrafts reverse every sign</h3>
+<p>Where the account is overdrawn the balance is a credit in the bank statement's terms and a credit in your cash book, and unpresented cheques increase the overdraft rather than reducing a positive balance. The arithmetic is identical and every sign flips, which is why people who learned the procedure as a sequence of additions and subtractions get it wrong the first time an account goes overdrawn.</p>
+<p>The reliable approach is to stop memorising the direction and ask what each item does to the true position: an unpresented cheque is money the business has committed and the bank has not yet taken, so the bank's figure is better than reality by that amount whichever side it sits on.</p>
+<h3>Foreign currency accounts</h3>
+<p>A reconciliation of a foreign currency account is done in the foreign currency, not in rupees. Converting first introduces exchange differences into the comparison and makes every line fail to tie. The translation to the reporting currency happens afterwards, as a separate step, and the resulting exchange gain or loss is an accounting entry rather than a reconciling item.</p>`,
       Expert: `<p>Framed as an assurance procedure, reconciliation to an externally generated record is the only routine control providing evidence over completeness of recorded cash transactions, and completeness is the assertion internal checks structurally cannot reach.</p>
 <div class="key-idea"><span class="callout-label">Why bank confirmations survive a fully testable ledger</span><p>The ledger is a closed system and the question is about events outside it.</p></div>
 <h3>Segregation is not negotiable by size</h3>
 <p>If one person initiates payments, records them and reconciles, then the reconciliation tests that person's own work against a record they can also obtain, and the control provides no assurance beyond their diligence. The compensating control in a business too small to segregate is owner review of the statement itself, not of the reconciliation, because the reconciliation is prepared by the person under test.</p>
 <h3>Stale items need a number, not judgement</h3>
 <p>A cheque unpresented beyond ninety days is written back to payables with the reason documented. Material weaknesses have been reported over reconciliations performed every month, signed every month, carrying the same unexplained item for two years.</p>
-<div class="warning"><span class="callout-label">Match confidence is not reconciliation evidence</span><p>A matcher keyed on amount and near date produces false positives at a rate proportional to transaction homogeneity, which is highest in exactly the businesses with the most transactions. A system reporting a 99% match rate with no owned exception queue has replaced a control with a metric.</p></div>`,
+<div class="warning"><span class="callout-label">Match confidence is not reconciliation evidence</span><p>A matcher keyed on amount and near date produces false positives at a rate proportional to transaction homogeneity, which is highest in exactly the businesses with the most transactions. A system reporting a 99% match rate with no owned exception queue has replaced a control with a metric.</p></div>
+<h3>Automated matching, and what it moves rather than removes</h3>
+<p>Bank feeds and rule-based matching clear the bulk of routine items automatically, which is a genuine saving. What they change is where the risk sits. A rule that posts anything from a given payee to a given account will keep doing so when the nature of the payment changes, and the exceptions queue becomes the only place a human looks. The quality of the control now depends on how exceptions are defined rather than on the matching.</p>
+<table>
+<tr><th>Manual</th><th>Automated</th></tr>
+<tr><td>Every item seen by a person</td><td>Only exceptions seen</td></tr>
+<tr><td>Errors from fatigue</td><td>Errors from rule drift</td></tr>
+<tr><td>Slow, consistent coverage</td><td>Fast, uneven coverage</td></tr>
+</table>
+<h3>Reconciliation as a general pattern</h3>
+<p>The same structure applies well beyond the bank: supplier statements against the purchase ledger, the stock count against stock records, the payroll register against payments, intercompany balances between two sets of books. In each case an internal record is compared with one produced independently, and in each case that independence is the entire source of the assurance.</p>
+<p>Stated that way, the test for whether a procedure is really a reconciliation becomes simple. If both sides of the comparison were produced by the same system, nothing has been reconciled; the system has been asked whether it agrees with itself.</p>
+<div class="field"><span class="callout-label">Which disqualifies more month-end routines than people expect</span><p>Comparing a report to the ledger it was generated from, or a subsidiary ledger to its own control account, tests posting rather than existence. Both are worth doing and neither is a substitute for one comparison a month against a document the business did not create.</p></div>
+<h3>What the procedure assumes, and when that fails</h3>
+<p>A bank reconciliation assumes the statement is reliable, which is almost always true and is an assumption rather than a fact. Statements obtained from the client rather than directly from the bank have been altered in real cases, which is why auditors request confirmations from the bank directly instead of relying on documents handed to them.</p>
+<p>The general principle is worth stating: the assurance from comparing against an external record is only as good as the independence of how that record reached you. A document that passed through the hands of the person it is meant to check is no longer independent evidence, whatever it says.</p>
+<h3>Why this is the control small businesses most often skip</h3>
+<p>It is unglamorous, it produces no output anybody reads when it agrees, and the software increasingly suggests it has been done. The consequence is predictable: unrecorded direct debits accumulate, a duplicated supplier payment goes unnoticed for months, and the cash figure in the management accounts drifts from reality. None of those is dramatic in isolation, and together they are the reason small businesses are routinely surprised by their own bank balance.</p>`,
     },
     worksheets: [
       {
@@ -2891,7 +3165,19 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">The tax is not yours</span><p>It is not your cost and it is not your income. It passes through you. The only part that is yours is the 9,000 you actually remit.</p></div>
 <h3>Two things to get right from day one</h3>
 <p>Intra-state sales carry CGST and SGST, half each; inter-state sales carry IGST at the full rate. And you can only claim credit if your supplier actually filed and paid.</p>
-<div class="warning"><span class="callout-label">Which means</span><p>A cheap invoice from a supplier who does not file is not cheap at all.</p></div>`,
+<div class="warning"><span class="callout-label">Which means</span><p>A cheap invoice from a supplier who does not file is not cheap at all.</p></div>
+<h3>Tax you collect and tax you pay</h3>
+<p>When you sell, you add tax to the invoice. That money is not yours; you are collecting it for the government. When you buy, your supplier adds tax to their invoice, and you have paid tax you can usually reclaim.</p>
+<table>
+<tr><th>Term</th><th>Means</th></tr>
+<tr><td>Output tax</td><td>Tax you charged on your sales</td></tr>
+<tr><td>Input tax</td><td>Tax you were charged on your purchases</td></tr>
+<tr><td>Input credit</td><td>The input tax you are allowed to reclaim</td></tr>
+<tr><td>Net liability</td><td>Output minus input, paid in cash</td></tr>
+</table>
+<h3>A simple month</h3>
+<p>You buy stock for 1,00,000 plus 18,000 tax, and sell it for 1,50,000 plus 27,000 tax. You collected 27,000 and paid 18,000, so you send 9,000 to the government. The tax on the 50,000 of value you added is exactly 9,000, which is the whole idea.</p>
+<div class="key-idea"><span class="callout-label">Tax never touches your profit</p><p>Profit on that trade is 50,000, not 59,000 and not 41,000. The tax passed through you. Recording tax as income or as an expense is the error that makes a set of books unusable.</p></div>`,
       Intermediate: `<p>GST is a destination-based consumption tax levied at each stage with credit for tax paid at earlier stages, so the cumulative burden lands on the final consumer and no business bears tax on its inputs.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="How input tax credit works through a supply chain">
@@ -2927,21 +3213,68 @@ const curriculum: CourseCurriculum = {
 <tr><td>Used for business purposes</td><td>Yes</td></tr>
 <tr><td>The supplier filed and paid</td><td><strong>No</strong></td></tr>
 </table>
-<p>The last one is why supplier compliance is a commercial question and not just a tax one. And some credits are blocked outright under section 17(5): motor vehicles below a seat threshold, food and beverage, club memberships, construction of immovable property.</p>`,
+<p>The last one is why supplier compliance is a commercial question and not just a tax one. And some credits are blocked outright under section 17(5): motor vehicles below a seat threshold, food and beverage, club memberships, construction of immovable property.</p>
+<h3>How it appears in the books</h3>
+<table>
+<tr><th>Event</th><th>Debit</th><th>Credit</th></tr>
+<tr><td>Purchase 1,00,000 plus 18,000 tax</td><td>Purchases 1,00,000; Input tax 18,000</td><td>Payables 1,18,000</td></tr>
+<tr><td>Sale 1,50,000 plus 27,000 tax</td><td>Receivables 1,77,000</td><td>Sales 1,50,000; Output tax 27,000</td></tr>
+<tr><td>Month-end offset</td><td>Output tax 18,000</td><td>Input tax 18,000</td></tr>
+<tr><td>Payment</td><td>Output tax 9,000</td><td>Bank 9,000</td></tr>
+</table>
+<p>Sales appear at 1,50,000 and purchases at 1,00,000. The tax sits in its own accounts and nets to a liability, which is settled in cash. Nothing about the tax has touched the trading account.</p>
+<h3>Registration, and why the threshold matters</h3>
+<p>Below the turnover threshold a business need not register, and then it charges no tax and reclaims none. That is simpler and it is not always cheaper: an unregistered business pays input tax on its purchases with no way to recover it, so the tax becomes a real cost buried in its margins. Selling mainly to registered businesses usually argues for registering voluntarily; selling mainly to consumers often argues the other way, because the price they see rises.</p>
+<div class="warning"><span class="callout-label">A tax invoice has required contents</span><p>Supplier registration number, invoice number and date, customer details, taxable value, rate and amount by rate. An invoice missing any of them may not support an input credit claim, so the credit is denied and the tax becomes a cost. The document is part of the entitlement, not paperwork around it.</p></div>
+<h3>Rates are by what, not by who</h3>
+<p>The rate depends on the goods or services supplied, not on the type of customer or the size of the business. The same item carries the same rate whether it goes to a company or a consumer. What changes with the customer is whether they can reclaim it, which affects how they experience your price but not what you charge.</p>`,
       Advanced: `<p>Understanding the credit chain as a chain explains the design of the compliance regime. Because your credit depends on your supplier having filed, the government has effectively deputised every buyer as an enforcement agent against their own vendors.</p>
 <div class="key-idea"><span class="callout-label">Which makes one routine the highest-value one you have</span><p>Reconciling purchase records against the auto-populated GSTR-2B monthly. A mismatch found in month one is a phone call; the same mismatch at the annual return is a cash cost.</p></div>
 <h3>Blocked credits convert a pass-through into a real cost</h3>
 <p>Construction of immovable property on own account is the largest in practice: a business fitting out a new office cannot recover the GST on the civil work, which adds about 18% to a capital project a naive budget treats as recoverable. The same logic makes the apportionment rules under sections 17(1) and 17(2) material for any business with both taxable and exempt outputs.</p>
 <h3>The composition scheme is a trade, not a concession</h3>
 <p>A low rate on turnover with no input credit suits a business selling to final consumers with low input tax. It is actively harmful for a business selling to other registered businesses, because the dealer cannot pass on credit and their customers therefore bear the full tax.</p>
-<div class="field"><span class="callout-label">A timing fact that strains project businesses</span><p>Liability arises on the earlier of invoice or payment for services, so a business can owe output tax before it has collected anything. Advances received for services carry tax at the time of receipt.</p></div>`,
+<div class="field"><span class="callout-label">A timing fact that strains project businesses</span><p>Liability arises on the earlier of invoice or payment for services, so a business can owe output tax before it has collected anything. Advances received for services carry tax at the time of receipt.</p></div>
+<h3>Blocked credits</h3>
+<p>Not every input tax amount is reclaimable. Certain categories are blocked regardless of business use, and tax on them is simply a cost that forms part of the expense it relates to.</p>
+<table>
+<tr><th>Typically blocked</th><th>Treatment</th></tr>
+<tr><td>Motor cars, with exceptions</td><td>Tax added to the asset cost</td></tr>
+<tr><td>Food, beverages, outdoor catering</td><td>Tax added to the expense</td></tr>
+<tr><td>Goods used for personal purposes</td><td>No credit; treat as drawings</td></tr>
+<tr><td>Inputs used for exempt supplies</td><td>Apportioned and partly blocked</td></tr>
+</table>
+<p>The last row is the one that creates ongoing work. A business making both taxable and exempt supplies can only reclaim the proportion of input tax relating to the taxable part, and that proportion has to be computed and periodically adjusted rather than estimated once.</p>
+<h3>Reverse charge inverts who accounts for the tax</h3>
+<p>On certain supplies, including many imported services, the recipient accounts for the tax rather than the supplier. The buyer records both an output and an input entry for the same amount, which usually nets to nothing in cash but must still appear in the return. Businesses frequently miss it entirely because no supplier invoice carried any tax, and the omission is visible to the authority from the other side of the transaction.</p>
+<div class="key-idea"><span class="callout-label">Timing is defined by law, not by payment</span><p>The time of supply rules fix which period a transaction falls in, and they usually key off the earlier of invoice date and payment. A business that accounts for tax when cash moves will be out of step with its own returns, and the mismatch surfaces as reconciliation differences nobody can explain.</p></div>
+<h3>Place of supply decides which tax applies</h3>
+<p>Where the supplier and the customer are in different states, the transaction is interstate and attracts the integrated tax rather than the central and state pair. Getting this wrong is not a rounding issue: the wrong tax has been collected and remitted to the wrong authority, and correcting it means claiming a refund from one and paying another, often across a period boundary.</p>
+<p>For goods the rule usually follows where the goods are delivered. For services it varies by service type, with specific rules for immovable property, events, transport and online supply. A business selling services across states cannot rely on intuition here, and the determination belongs on the invoice at the moment it is raised rather than at the return.</p>`,
       Expert: `<p>The structural tension in India's GST is between the credit chain, which requires matching, and federalism, which requires revenue attribution between the Centre and the states. IGST resolves the second without breaking the first: an inter-state supply bears a single levy collected by the Centre and apportioned to the destination state.</p>
 <h3>Utilisation order, and the cash surprise it produces</h3>
 <p>Sections 49, 49A and 49B mandate that IGST credit be exhausted first, and prohibit cross-utilisation between CGST and SGST.</p>
 <div class="warning"><span class="callout-label">What catches well-run businesses</span><p>An entity can hold a substantial SGST credit balance while paying CGST in cash, because the balances are not fungible. Modelling the cash position on a single net GST figure understates the outflow, and the error grows with the asymmetry between purchase and sale geographies.</p></div>
 <h3>Inverted duty structure</h3>
 <p>Where output rates sit below input rates, the refund formula in rule 89(5) restricts refund to credit on inputs, historically excluding input services, which was litigated to the Supreme Court in Union of India v VKC Footsteps. The holding upheld the exclusion, so a business with a high input-service cost base in an inverted structure bears unrecoverable credit by design rather than by error. That is a pricing issue rather than a compliance one.</p>
-<div class="field"><span class="callout-label">The provision practitioners forget exists</span><p>Anti-profiteering under section 171 requires a rate reduction or an additional credit benefit to be passed on by way of a commensurate price reduction. No methodology is prescribed, the determinations are inconsistent, and the exposure is real for any business that absorbed a rate cut into margin. It is one of the few places a tax statute directly constrains a pricing decision.</p></div>`,
+<div class="field"><span class="callout-label">The provision practitioners forget exists</span><p>Anti-profiteering under section 171 requires a rate reduction or an additional credit benefit to be passed on by way of a commensurate price reduction. No methodology is prescribed, the determinations are inconsistent, and the exposure is real for any business that absorbed a rate cut into margin. It is one of the few places a tax statute directly constrains a pricing decision.</p></div>
+<h3>Why the credit chain makes compliance contagious</h3>
+<p>Your entitlement to an input credit generally depends on your supplier having declared the corresponding output tax. That couples your tax position to another company's administrative behaviour, which is unusual and consequential: a supplier who files late or not at all imposes a direct cash cost on you, and no contract term fully protects against it.</p>
+<p>The design is deliberate. By making every buyer care whether their supplier filed, the system recruits the entire commercial chain as an enforcement mechanism, which is far cheaper than auditing every business. The cost is that compliance risk propagates along supply chains and lands on whoever is least able to absorb it.</p>
+<table>
+<tr><th>Consequence</th><th>Practical response</th></tr>
+<tr><td>Credits denied for supplier default</td><td>Reconcile purchases against the portal monthly</td></tr>
+<tr><td>Cash locked up pending resolution</td><td>Hold retention or pay on confirmation</td></tr>
+<tr><td>Repeated defaulters</td><td>Vendor compliance as a procurement criterion</td></tr>
+</table>
+<h3>The reconciliation nobody budgets for</h3>
+<p>Matching the purchase register against what suppliers have actually declared is a monthly exercise with no accounting output when it agrees, and it is the single highest-value routine in indirect tax compliance. Businesses that defer it to the annual return discover a year of unmatched credits at once, by which point several suppliers have disappeared and the amounts are unrecoverable.</p>
+<div class="field"><span class="callout-label">Treat tax as a cash flow question as well as a compliance one</span><p>Output tax is collected from customers who may pay in sixty days, and remitted to the government on a fixed date regardless. A growing business on long customer terms funds its own tax remittances out of working capital, and that drain is invisible in the profit and loss account because the tax never appears there. It is one of the more common reasons a profitable, growing business runs short of cash.</p></div>
+<h3>Credit notes, and the deadline that bites</h3>
+<p>A credit note reduces output tax only if it is issued and declared within the statutory window, which is tied to the following financial year rather than to the date of the original sale. A return negotiated eighteen months later may be commercially settled and no longer adjustable for tax, leaving the business to refund the customer the full amount while having permanently remitted the tax on it.</p>
+<p>The practical consequence is that sales disputes have a tax clock running on them. Settling a disputed invoice quickly is worth real money, and finance teams that treat long-running disputes as purely a receivables problem miss the second cost entirely.</p>
+<h3>Annual reconciliation is the backstop, not the control</h3>
+<p>The annual return reconciles declared turnover and credits against the audited accounts. Differences found there are differences that monthly working should have caught, and by then the correction window on many of them has closed. Treating the annual exercise as the compliance activity rather than as a confirmation is why businesses discover irrecoverable amounts at the point they can no longer act.</p>`,
     },
     questions: [
       {
@@ -3097,7 +3430,19 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">Group before you multiply</span><p>Your sales are at different rates, so you cannot add them up and apply one percentage. Group by rate, then apply each rate to its own group.</p></div>
 <h3>And halve every rate</h3>
 <p>For an intra-state sale the rate splits in half: an 18% item carries 9% CGST and 9% SGST. So a 7,00,000 rupee group at 18% gives 63,000 of CGST and 63,000 of SGST, not 1,26,000 of one thing.</p>
-<div class="warning"><span class="callout-label">Then subtract credit head by head</span><p>You cannot use SGST credit to pay CGST. You can be sitting on credit and still have to pay cash.</p></div>`,
+<div class="warning"><span class="callout-label">Then subtract credit head by head</span><p>You cannot use SGST credit to pay CGST. You can be sitting on credit and still have to pay cash.</p></div>
+<h3>Working out what to pay</h3>
+<p>Add up the tax you charged on sales for the month. Add up the tax you were charged on purchases and are allowed to reclaim. The difference is what you send.</p>
+<table>
+<tr><th>Line</th><th class="num">Amount</th></tr>
+<tr><td>Output tax on sales</td><td class="num">27,000</td></tr>
+<tr><td>Input credit available</td><td class="num">18,000</td></tr>
+<tr><th>Payable in cash</th><th class="num">9,000</th></tr>
+</table>
+<p>If input exceeds output, you do not get a cheque back automatically. The excess usually carries forward against next month, and refunds are available only in specific situations such as exports.</p>
+<h3>Keep the two registers</h3>
+<p>A sales register listing every invoice with its tax, and a purchase register listing every bill with its tax. The return is the totals of those two. Businesses that try to assemble the figures from the bank statement at the end of the month will miss credit transactions entirely, because the money has not moved yet.</p>
+<div class="warning"><span class="callout-label">The deadline does not move for your cash flow</span><p>The payment is due on a fixed date whether or not your customers have paid you. Late payment attracts interest from day one, and a pattern of late filing attracts attention beyond the interest.</p></div>`,
       Intermediate: `<p>GSTR-3B is a summary, which means every figure in it has to be derivable from something underneath it. Invoices are grouped by rate slab, the taxable value of each group totalled, and the rate applied to each group separately.</p>
 <figure>
 <svg viewBox="0 0 1000 420" role="img" aria-label="Working out a month's net tax liability">
@@ -3121,21 +3466,73 @@ const curriculum: CourseCurriculum = {
 <p>Utilisation follows a mandated order with IGST credit exhausted first, and cross-utilisation between CGST and SGST prohibited. A business whose purchases are mostly inter-state and whose sales are mostly intra-state accumulates IGST credit and pays CGST and SGST, and the balances are not interchangeable.</p>
 <h3>Before filing</h3>
 <p>Reconcile claimed credit against GSTR-2B, which is populated from what your suppliers actually filed.</p>
-<div class="warning"><span class="callout-label">The single most common cause of a notice</span><p>Credit claimed beyond 2B. The remedy is almost always a supplier who has not filed rather than an error in your own records.</p></div>`,
+<div class="warning"><span class="callout-label">The single most common cause of a notice</span><p>Credit claimed beyond 2B. The remedy is almost always a supplier who has not filed rather than an error in your own records.</p></div>
+<h3>A month with complications</h3>
+<table>
+<tr><th>Item</th><th class="num">Value</th><th class="num">Tax</th></tr>
+<tr><td>Sales, taxable</td><td class="num">1,50,000</td><td class="num">27,000</td></tr>
+<tr><td>Purchases, creditable</td><td class="num">90,000</td><td class="num">16,200</td></tr>
+<tr><td>Office catering, blocked</td><td class="num">10,000</td><td class="num">1,800</td></tr>
+<tr><td>Supplier who has not filed</td><td class="num">20,000</td><td class="num">3,600</td></tr>
+</table>
+<p>Only 16,200 of the 21,600 input tax is available this month. The catering is blocked permanently and becomes part of the catering cost. The unfiled supplier's 3,600 is not blocked but is not claimable yet, so it sits as a receivable to chase rather than as a credit. Cash payable is 27,000 less 16,200, which is 10,800.</p>
+<div class="key-idea"><span class="callout-label">The two unavailable amounts are different problems</span><p>One is a rule and will never change, so it should be posted to expense immediately. The other is a supplier behaviour problem and may resolve, so it stays visible as something owed to you. Lumping them together loses the distinction between a cost and a collection task.</p></div>
+<h3>Order of set-off</h3>
+<p>Where several tax heads exist, credits cannot be applied freely against any liability. There is a prescribed order, and integrated tax credit is generally used first against integrated liability and then against the others in sequence. A business that assumes it can offset whatever it likes will compute a net payable that the portal does not accept, and will then be late while it recalculates.</p>
+<p>The practical effect is that a business can hold a credit balance under one head and still owe cash under another. That is not an error and it is a genuine cash cost, which is why the set-off position is worth modelling before the due date rather than discovering on it.</p>
+<h3>File even when you owe nothing</h3>
+<p>A month with no sales still requires a return. Nil returns are a filing obligation rather than a formality, and a gap in the filing history blocks later periods and can suspend registration. Businesses that trade seasonally are the ones most often caught, because the quiet months feel like nothing to report.</p>`,
       Advanced: `<p>The return is a summary of a summary, which makes the audit trail beneath it the real deliverable.</p>
 <div class="key-idea"><span class="callout-label">What a defensible monthly file contains</span><p>The slab-wise reconciliation to book turnover, the 2B reconciliation with named mismatches and their reason, the utilisation computation in the mandated order, and the resulting cash payment. Practitioners who keep that file find annual reconciliation a morning's work.</p></div>
 <h3>Work the utilisation order rather than trusting the portal</h3>
 <p>IGST credit must be used first against IGST liability and then against CGST and SGST in any order; only after it is exhausted may CGST credit be used against CGST and SGST credit against SGST. The asymmetry means two businesses with identical net credit can have very different cash outflows depending on head composition.</p>
 <h3>Credit notes and amendments</h3>
 <p>A credit note reduces output tax liability only if issued within the statutory window and reported in the correct period. A sales return handled by raising a fresh purchase invoice instead overstates both turnover and input credit permanently. The two routes look equivalent in the books and are not equivalent in the return.</p>
-<div class="warning"><span class="callout-label">The liabilities that net to nil and still get you a notice</span><p>Reverse charge on freight, legal fees and imported services must be self-assessed and paid in cash, with the credit available in the same or a later period. Because the net effect is nil it is easy to omit entirely, and the omission is visible to the department from the expense side of a filed income tax return.</p></div>`,
+<div class="warning"><span class="callout-label">The liabilities that net to nil and still get you a notice</span><p>Reverse charge on freight, legal fees and imported services must be self-assessed and paid in cash, with the credit available in the same or a later period. Because the net effect is nil it is easy to omit entirely, and the omission is visible to the department from the expense side of a filed income tax return.</p></div>
+<h3>The reconciliation that protects the credit</h3>
+<p>Each month, compare your purchase register with what suppliers have actually declared on the portal. Three categories come out: matched, declared by the supplier but missing from your books, and in your books but not declared. The first needs nothing. The second is usually an invoice you have not entered, which means an understated cost as well as an unclaimed credit. The third is the one to act on.</p>
+<table>
+<tr><th>Category</th><th>Cause</th><th>Action</th></tr>
+<tr><td>In your books, not declared</td><td>Supplier late or defaulting</td><td>Chase before the window closes</td></tr>
+<tr><td>Declared, not in your books</td><td>Invoice never received or entered</td><td>Obtain and record it</td></tr>
+<tr><td>Amounts differ</td><td>Rate or value dispute</td><td>Agree a revised invoice or credit note</td></tr>
+</table>
+<h3>Why it has to be monthly</h3>
+<p>The window for claiming a credit closes, and it closes by reference to the financial year rather than rolling. A credit identified eleven months late may be worth nothing, and the supplier who could have fixed it has had eleven months to become uncontactable. The exercise takes an hour a month and recovers amounts that are simply lost if left.</p>
+<h3>Returns, amendments and what cannot be undone</h3>
+<p>A filed return can usually be corrected in a later period rather than refiled, by including the adjustment in the next return. That sounds forgiving and has a hard edge: corrections are only permitted until the window for the financial year closes. After that the figures stand, whichever direction the error ran, including when the error cost the business money.</p>
+<p>This asymmetry is worth planning around. An under-declaration found late still has to be paid, with interest, while an over-declaration found late may simply be lost. The incentive is therefore to reconcile early rather than to rely on the ability to amend.</p>
+<h3>Interest runs from the due date, not from discovery</h3>
+<p>Where a liability is understated and corrected months later, interest accrues from the original due date. The correction is therefore always more expensive than paying on time would have been, and the gap grows with the delay. That makes early self-identification materially cheaper than waiting to be asked, which is the opposite of the instinct in most other disputes.</p>`,
       Expert: `<p>The design asks the taxpayer to self-assess under a credit-matching regime, which produces an asymmetry worth naming: the cost of a supplier's non-compliance falls on the recipient, whose only remedies are commercial.</p>
 <div class="key-idea"><span class="callout-label">Which makes vendor GST compliance a procurement criterion</span><p>A mature purchase process holds back a portion of payment until the supply appears in 2B. Section 16(2)(c) is the statutory hook, challenged repeatedly without being struck down, so the allocation of risk is settled whether or not it is fair.</p></div>
 <h3>Rule 86B, the provision most often missed in cash planning</h3>
 <p>Certain taxpayers must discharge at least 1% of output liability in cash regardless of available credit. It targets credit-only filers as a fraud control, and the exclusions are specific enough that eligibility has to be tested rather than assumed. A business modelling outflow purely from net liability will be short by that 1% in every month the rule applies.</p>
 <h3>Interest, and why the history still matters</h3>
 <p>Section 50 as amended charges interest on the net cash liability for delayed filing rather than on gross output tax, which resolved a long-running dispute and materially reduced exposure for late filers holding credit. The amendment was given retrospective effect, and older demands computed on gross are occasionally still pursued.</p>
-<div class="field"><span class="callout-label">Where the quality of the monthly file is tested</span><p>GSTR-9C, reconciling turnover per audited accounts against turnover per returns. The recurring reconciling items are predictable: supplies without consideration, schedule I deemed supplies, credit notes in a later year, and the treatment of discounts. A business whose monthly file already explains each produces the reconciliation mechanically; one that does not is reverse-engineering a year of filings against signed accounts, which is where previously invisible errors surface with interest attached.</p></div>`,
+<div class="field"><span class="callout-label">Where the quality of the monthly file is tested</span><p>GSTR-9C, reconciling turnover per audited accounts against turnover per returns. The recurring reconciling items are predictable: supplies without consideration, schedule I deemed supplies, credit notes in a later year, and the treatment of discounts. A business whose monthly file already explains each produces the reconciliation mechanically; one that does not is reverse-engineering a year of filings against signed accounts, which is where previously invisible errors surface with interest attached.</p></div>
+<h3>Holding payment against compliance</h3>
+<p>A common commercial response is to withhold the tax portion of a supplier payment until the credit appears on the portal. It is effective and it has to be contractual: withholding without a term in the agreement is a breach, and the supplier is entitled to the full invoice amount regardless of their filing behaviour. A clause making the tax element payable on confirmation of declaration converts an unenforceable practice into an enforceable one.</p>
+<p>The negotiating position differs by relationship. A dominant buyer can impose it; a small business buying from a large supplier cannot, and its realistic protection is vendor selection rather than contract terms. That asymmetry is worth being explicit about, because advice that assumes contractual leverage is useless to the party that does not have it.</p>
+<h3>Where the cash actually goes</h3>
+<table>
+<tr><th>Effect</th><th>Visible in profit?</th></tr>
+<tr><td>Tax collected from customers</td><td>No</td></tr>
+<tr><td>Tax remitted on a fixed date</td><td>No</td></tr>
+<tr><td>Credit denied for supplier default</td><td>Yes, as a cost</td></tr>
+<tr><td>Credit delayed pending filing</td><td>No, but cash is gone</td></tr>
+</table>
+<p>Two of those four move real money and never appear in the profit and loss account. A business planning cash from its profit forecast alone will be wrong by the tax cycle every month, and most acutely in the months it grows fastest.</p>
+<div class="field"><span class="callout-label">Build the tax date into the cash forecast</span><p>Not as a monthly average but on the actual payment date, alongside payroll. Those two are the fixed, non-negotiable outflows in most small businesses, and a forecast that smooths them is a forecast that will be fine on average and wrong on the days that matter.</p></div>
+<h3>Why the liability belongs in the balance sheet, not the margin</h3>
+<p>Output tax collected is a liability from the moment the invoice is raised, and treating the receipt as cash available is one of the most common informal errors in small businesses. The money sits in the bank account and belongs to someone else, which is indistinguishable from the business's own cash without an explicit control.</p>
+<table>
+<tr><th>Practice</th><th>Effect</th></tr>
+<tr><td>Tax held in the main account, tracked only in the ledger</td><td>Workable with discipline, easy to spend</td></tr>
+<tr><td>Tax swept to a separate account on receipt</td><td>Hard to spend by accident</td></tr>
+<tr><td>No tracking until the return</td><td>The remittance is a monthly shock</td></tr>
+</table>
+<p>The middle row costs nothing and removes an entire class of problem. Businesses that have ever been caught short on a remittance date almost always adopt it afterwards, which suggests it is cheaper to adopt before.</p>`,
     },
     worksheets: [
       {
@@ -3386,7 +3783,20 @@ const curriculum: CourseCurriculum = {
 <div class="key-idea"><span class="callout-label">The strongest protection is boringly simple</span><p>The person who orders something should not be the person who pays for it, and neither should be the person who checks the bank statement. A single person then cannot both take the money and hide the fact.</p></div>
 <h3>The signs are mundane</h3>
 <p>A supplier nobody has heard of. Payments just under the limit that would need a second signature. A bookkeeper who never takes leave and gets uncomfortable when someone else opens the ledger. Lots of suspiciously round numbers.</p>
-<div class="warning"><span class="callout-label">None of those proves anything</span><p>Each is a reason to ask a question, and the question is the control. Most frauds that run for years ran because the anomaly was visible and nobody wanted the awkward conversation.</p></div>`,
+<div class="warning"><span class="callout-label">None of those proves anything</span><p>Each is a reason to ask a question, and the question is the control. Most frauds that run for years ran because the anomaly was visible and nobody wanted the awkward conversation.</p></div>
+<h3>How a fake supplier works</h3>
+<p>Somebody inside the business sets up a supplier that does not exist, with a bank account they control. Invoices arrive, they look ordinary, they are approved and paid. Nothing in the bookkeeping objects, because every payment has an invoice behind it and every entry balances.</p>
+<h3>What stops it</h3>
+<table>
+<tr><th>Control</th><th>What it prevents</th></tr>
+<tr><td>Someone else approves new suppliers</td><td>Inventing the supplier</td></tr>
+<tr><td>Someone else confirms goods arrived</td><td>Invoices for nothing</td></tr>
+<tr><td>Someone else releases payment</td><td>Paying yourself</td></tr>
+<tr><td>Bank details changed only on verified request</td><td>Diverting a real supplier's money</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The control is the separation</span><p>One person holding two of those four can usually make it work. One person holding all four needs no cleverness at all. The paperwork is not what protects the business; who is allowed to do what is.</p></div>
+<h3>Signs worth noticing</h3>
+<p>A supplier with no phone number, an address that is a residential flat, invoices with sequential numbers suggesting you are their only customer, round-sum amounts, and payments just under whatever threshold requires a second signature. None of these proves anything alone, and together they are the pattern.</p>`,
       Intermediate: `<p>The usual framing is the fraud triangle: pressure, opportunity and rationalisation. Only one of those is within an employer's control, which is why the practical emphasis sits on opportunity, and opportunity is created overwhelmingly by concentration of duties rather than by weak people.</p>
 <figure>
 <svg viewBox="0 0 1000 440" role="img" aria-label="The separation of duties that stops a fictitious supplier">
@@ -3416,7 +3826,20 @@ const curriculum: CourseCurriculum = {
 </table>
 <h3>Override is the mechanism behind nearly every large fraud</h3>
 <p>It is the one a control framework structurally cannot prevent, since the person overriding is the person the framework reports to. The only real mitigations are independent review, a channel for raising concerns that does not pass through the person concerned, and a culture where the question gets asked.</p>
-<div class="warning"><span class="callout-label">Escalate, do not investigate</span><p>A quiet enquiry destroys evidence, warns the person involved and places you personally at risk. It is the single most common mistake made in good faith.</p></div>`,
+<div class="warning"><span class="callout-label">Escalate, do not investigate</span><p>A quiet enquiry destroys evidence, warns the person involved and places you personally at risk. It is the single most common mistake made in good faith.</p></div>
+<h3>Three-way matching</h3>
+<p>Before an invoice is paid, three documents should agree: the purchase order showing what was ordered and at what price, the goods received note showing what actually arrived, and the invoice itself. A fictitious supplier invoice fails at the goods received note, because nothing arrived.</p>
+<table>
+<tr><th>Document</th><th>Created by</th><th>Answers</th></tr>
+<tr><td>Purchase order</td><td>Whoever is authorised to buy</td><td>Was this agreed in advance?</td></tr>
+<tr><td>Goods received note</td><td>Whoever receives deliveries</td><td>Did it arrive?</td></tr>
+<tr><td>Invoice</td><td>The supplier</td><td>What are we being asked to pay?</td></tr>
+</table>
+<p>The three are created by different people at different times, and that is the entire source of the assurance. A business where the same person raises the order, signs for the delivery and processes the invoice has three documents and one control.</p>
+<div class="warning"><span class="callout-label">Services are the weak point</span><p>Consultancy, marketing and maintenance have no goods received note. The substitute is a named person confirming the work was done and was what was commissioned, recorded against the invoice. Without it, services are the easiest category in which to invoice for nothing, and they are where most fictitious supplier cases sit.</p></div>
+<h3>Approval thresholds and how they get gamed</h3>
+<p>Most organisations require a second signature above some amount. The predictable response from somebody inside is to keep every transaction just below it. A supplier invoicing 49,000 repeatedly where the threshold is 50,000 is a pattern worth a query, and it is invisible to each individual approver because each transaction is legitimately within their authority.</p>
+<p>The defence is not a lower threshold, which simply moves the line. It is a periodic review of totals by supplier, which asks a question no single approval can: how much have we paid this party in a year, and does that match what we think we buy from them.</p>`,
       Advanced: `<p>The empirical profile is consistent across jurisdictions and contradicts intuition.</p>
 <table>
 <tr><th>Finding</th><th>Implication</th></tr>
@@ -3428,14 +3851,59 @@ const curriculum: CourseCurriculum = {
 <p>Benford's law describes leading digits in many naturally occurring multiplicative datasets, and genuine accounting populations often approximate it. A deviation is not evidence of fraud: it is evidence the population is not of that character, which happens for innocent reasons such as price points, authorisation thresholds and round-number contracting. The test selects where to look, and treating its output as a finding is the error.</p>
 <h3>Reporting duties are not discretionary</h3>
 <p>Suspicion triggers escalation under the applicable ethical code, and for a statutory auditor section 143(12) of the Companies Act requires reporting to the Board or Audit Committee and, above a threshold, to the Central Government within prescribed timelines. Those duties survive a client instruction to the contrary and cannot be discharged by resigning quietly.</p>
-<div class="field"><span class="callout-label">The subtler professional risk</span><p>Nobody asks you to falsify a figure. They ask you to accept an estimate slightly more favourable than the evidence supports, repeatedly, each time by a small margin. Because each step is defensible there is no obvious moment to object. Documenting the basis for each estimate at the time makes the drift visible in a way no single judgement does.</p></div>`,
+<div class="field"><span class="callout-label">The subtler professional risk</span><p>Nobody asks you to falsify a figure. They ask you to accept an estimate slightly more favourable than the evidence supports, repeatedly, each time by a small margin. Because each step is defensible there is no obvious moment to object. Documenting the basis for each estimate at the time makes the drift visible in a way no single judgement does.</p></div>
+<h3>Bank detail changes are the modern version</h3>
+<p>The fraud has largely moved on from inventing suppliers to redirecting real ones. An email arrives, apparently from a genuine supplier, asking for future payments to a new account. The supplier is real, the invoices are real, the goods arrived, and the money goes somewhere else.</p>
+<table>
+<tr><th>Weak control</th><th>Strong control</th></tr>
+<tr><td>Change made on an emailed request</td><td>Change made only on a call to a number already on file</td></tr>
+<tr><td>Confirmed by replying to the email</td><td>Confirmed through an independently obtained contact</td></tr>
+<tr><td>Processed by the person who received it</td><td>Processed by a second person</td></tr>
+<tr><td>No notification to the supplier</td><td>Change confirmed to the supplier's known contact</td></tr>
+</table>
+<p>The left column describes what most organisations actually do. The distinguishing feature of the right column is that verification uses a channel the requester did not supply, which is the only version of verification that survives a compromised email account.</p>
+<h3>Data analysis finds what review misses</h3>
+<p>Matching supplier bank accounts against payroll bank accounts, looking for duplicate addresses, and testing for payments clustering just below approval thresholds are all cheap queries over data the business already holds. They detect patterns no individual approver could see, because each approver only ever sees one transaction.</p>
+<h3>Master data is where the risk concentrates</h3>
+<p>Who can create a supplier record, and who can change one, matters more than who approves payments. A payment approver sees one transaction. Someone with master data access can change where every future payment to a genuine supplier goes, with no invoice and no approval involved, and the change is invisible on the payment run because the supplier name is unchanged.</p>
+<table>
+<tr><th>Master data action</th><th>Should require</th></tr>
+<tr><td>Create a supplier</td><td>Second person, with evidence of existence</td></tr>
+<tr><td>Change bank details</td><td>Second person, verified out of band</td></tr>
+<tr><td>Reactivate a dormant supplier</td><td>Same scrutiny as creating one</td></tr>
+</table>
+<p>The third row is the one usually missed. Dormant records already carry history, so they attract less suspicion than a new one, and reactivating an old supplier whose contact has long since left is a quieter route than inventing a new one.</p>`,
       Expert: `<p>Three factors in the standard model and only opportunity is tractable, which is why control design concentrates there. The harder result is that the concentration-of-duties problem has no solution at small scale.</p>
 <div class="key-idea"><span class="callout-label">The honest design for a three-person finance function</span><p>Substitute owner involvement for segregation, specifically owner review of the bank statement itself rather than of a reconciliation prepared by the person under test. A control matrix documenting a segregation nobody practises is worse than none.</p></div>
 <h3>Management override as a structural limit</h3>
 <p>Every control operates within an authority that can suspend it, so override risk is irreducible by internal design and can only be addressed from outside the reporting line: external audit, an audit committee with genuine independence, and a whistleblowing channel terminating somewhere other than at management. The empirical record is that the first two detect a modest fraction and the third detects the plurality, which is uncomfortable given where the profession puts its effort.</p>
 <h3>Accrual-based earnings quality measures, and their limit</h3>
 <p>Total accruals to assets, and the discretionary accruals residual from a Jones-type model, both carry real information in large samples and essentially none about any individual firm, because the standard errors swamp the point estimate at n equals one. Using them to select a population for closer work is sound; characterising a specific company with them is a statistical error dressed up as rigour, and it appears regularly in commentary.</p>
-<div class="field"><span class="callout-label">A convenient alignment worth being explicit about</span><p>A contemporaneous file documenting the evidential basis for each judgement is both a professional duty and the thing that distinguishes an accountant who was misled from one who participated.</p></div>`,
+<div class="field"><span class="callout-label">A convenient alignment worth being explicit about</span><p>A contemporaneous file documenting the evidential basis for each judgement is both a professional duty and the thing that distinguishes an accountant who was misled from one who participated.</p></div>
+<h3>The fraud triangle, and which corner is actionable</h3>
+<p>Fraud generally requires pressure, opportunity and rationalisation. An organisation has limited influence over an employee's personal financial pressure and over how they justify things to themselves. Opportunity is the corner that controls address, and that is why the response to fraud risk is almost entirely about segregation, authorisation and verification rather than about character.</p>
+<table>
+<tr><th>Corner</th><th>Organisational lever</th></tr>
+<tr><td>Pressure</td><td>Limited; support and awareness at best</td></tr>
+<tr><td>Opportunity</td><td>Direct; this is where controls work</td></tr>
+<tr><td>Rationalisation</td><td>Indirect; tone, consistency, consequences</td></tr>
+</table>
+<h3>Small organisations cannot segregate, and have to compensate</h3>
+<p>In a business of six people the same person inevitably does several incompatible things. The honest response is not to pretend otherwise but to install compensating controls: the owner reviewing the bank statement line by line each month, approving every new supplier personally, and receiving the statement directly from the bank rather than via the bookkeeper. Each is a few minutes and each closes a specific route.</p>
+<h3>Why detection matters as much as prevention</h3>
+<p>Most occupational fraud is found through tips rather than through audit, which is an argument for a route by which somebody can raise a concern without going through their own manager. Duration is the variable that determines cost: the amount lost depends far more on how long a scheme runs than on how large each transaction was, so anything that shortens detection time is worth more than it looks.</p>
+<div class="field"><span class="callout-label">Mandatory leave is an underrated control</span><p>Many schemes require continuous maintenance, moving balances between accounts so nothing sits long enough to be queried. Requiring that anyone handling payments takes a continuous block of leave each year, with someone else covering, breaks that maintenance. It costs nothing, it is easy to present as a wellbeing policy, and it has surfaced a significant number of cases.</p></div>
+<h3>Why audit finds less of this than people assume</h3>
+<p>An external audit is designed to give an opinion on whether the financial statements are materially misstated, not to detect fraud. A scheme extracting a few lakh a year from a business turning over fifty crore is immaterial to the opinion and ruinous over a decade. The mismatch between what audits are for and what people expect them to do is one of the more persistent misunderstandings in the field, and it is why relying on the annual audit as the fraud control leaves most schemes untouched.</p>
+<table>
+<tr><th>Mechanism</th><th>Typically detects</th></tr>
+<tr><td>Tips and whistleblowing</td><td>The largest share of cases</td></tr>
+<tr><td>Management review</td><td>A substantial second share</td></tr>
+<tr><td>Internal audit</td><td>Meaningful, where it exists</td></tr>
+<tr><td>External audit</td><td>A small minority</td></tr>
+</table>
+<h3>The cultural control that outperforms the procedural ones</h3>
+<p>Consistency about small things. An organisation where expense rules are enforced for everyone, including senior people, makes rationalisation harder. One where the rules visibly do not apply at the top supplies the justification that most schemes start with, and no amount of three-way matching addresses that. It is the cheapest control available and the hardest to install retrospectively.</p>`,
     },
     scenarios: [
       {
