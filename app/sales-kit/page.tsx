@@ -174,17 +174,6 @@ export default function SalesKitPage() {
             Six assets: two written guides, three videos and the carousel. Each one says what it is
             for, so you are picking rather than guessing.
           </p>
-          <div className="meta">
-            <span>
-              <Icon icon="mdi:link-variant" width={14} /> Shareable links
-            </span>
-            <span>
-              <Icon icon="mdi:cellphone" width={14} /> Works on a phone
-            </span>
-            <span>
-              <Icon icon="mdi:lock-open-variant-outline" width={14} /> No login needed
-            </span>
-          </div>
         </div>
       </header>
 
@@ -305,8 +294,6 @@ const CSS = `
 @media (prefers-color-scheme:dark){.kit .badge{background:rgba(167,139,250,.16);color:#c4b5fd;}}
 .kit h1{margin:16px 0 0;font-size:clamp(1.8rem,5.2vw,3rem);line-height:1.1;letter-spacing:-.025em;font-weight:800;}
 .kit .sub{margin:14px 0 0;max-width:620px;font-size:clamp(.97rem,2.3vw,1.08rem);line-height:1.6;color:var(--dim);}
-.kit .meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px;font-size:.82rem;color:var(--dim);font-weight:600;}
-.kit .meta span{display:inline-flex;align-items:center;gap:6px;}
 .kit .body{padding:40px 20px 72px;}
 .kit section{margin-bottom:40px;}
 .kit .sechead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
