@@ -357,7 +357,11 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
         },
         "& .fig-grid figure": { my: 0 },
         "& .fig-photo": { background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)" },
-        "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 0 },
+        // contain, not cover. These are reference images whose captions point at
+        // detail inside them - terminal numbering, a card wall, column headings
+        // - and a 16/9 crop removes that detail first. Letterboxing against the
+        // dark plate reads as deliberate; a sliced diagram reads as a bug.
+        "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "contain", borderRadius: 0 },
         // A diagram is not a photograph and must not be cropped to a frame.
         // Cover on a 16/9 box is right for a scene, where losing the edges
         // costs nothing, and wrong for a chart or a board: the first thing it

@@ -433,7 +433,11 @@ export function PracticalProse({ html }: { html: string }) {
         },
         "& .fig-grid figure": { my: 0 },
         "& .fig-photo": { background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)" },
-        "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 0 },
+        // contain, not cover. These are reference images whose captions point at
+        // detail inside them - terminal numbering, a card wall, column headings
+        // - and a 16/9 crop removes that detail first. Letterboxing against the
+        // dark plate reads as deliberate; a sliced diagram reads as a bug.
+        "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "contain", borderRadius: 0 },
         // See AdaptiveArticleBody: cropping a diagram to 16/9 removes the
         // labels first. Keep the two kinds of image on different rules.
         "& .fig-diagram": { background: "#ffffff" },
