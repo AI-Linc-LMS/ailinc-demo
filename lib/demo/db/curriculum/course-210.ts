@@ -104,6 +104,31 @@ const FIG_EXFIL = `<figure>
 <figcaption><strong>The vulnerable component is the renderer, not the model.</strong> An image tag in markdown is fetched the instant the reply paints, so the attacker needs nothing from the victim beyond having asked an ordinary question. Restricting which hosts may be loaded turns this from a silent transfer into a blocked request.</figcaption>
 </figure>`;
 
+const FIG_JAILBREAK = `<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Two different boundaries: the provider's refusal training and your application's rules">
+<rect x="24" y="40" width="464" height="250" rx="18" fill="#b45309" opacity="0.13"/>
+<rect x="24" y="40" width="464" height="250" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
+<text x="256" y="100" font-size="34" font-weight="800" fill="#b45309" text-anchor="middle">JAILBREAK</text>
+<text x="56" y="156" font-size="27" font-weight="800" fill="currentColor">Bypasses the provider</text>
+<text x="56" y="200" font-size="27" fill="currentColor" opacity="0.85">You cannot fix it</text>
+<text x="56" y="244" font-size="27" fill="currentColor" opacity="0.85">Usually reputational</text>
+<text x="256" y="278" font-size="26" font-weight="800" fill="#b45309" text-anchor="middle">their policy</text>
+<rect x="512" y="40" width="464" height="250" rx="18" fill="#be123c" opacity="0.13"/>
+<rect x="512" y="40" width="464" height="250" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<text x="744" y="100" font-size="34" font-weight="800" fill="#be123c" text-anchor="middle">INJECTION</text>
+<text x="544" y="156" font-size="27" font-weight="800" fill="currentColor">Bypasses your rules</text>
+<text x="544" y="200" font-size="27" fill="currentColor" opacity="0.85">You own the fix</text>
+<text x="544" y="244" font-size="27" fill="currentColor" opacity="0.85">Data, money, actions</text>
+<text x="744" y="278" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">your policy</text>
+<rect x="24" y="320" width="952" height="196" rx="16" fill="#0f766e" opacity="0.13"/>
+<text x="500" y="372" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">They converge when the model is your enforcement point.</text>
+<text x="500" y="420" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">If the only thing stopping a refund is a sentence asking the</text>
+<text x="500" y="454" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">model not to issue one, then persuading the model is enough,</text>
+<text x="500" y="488" font-size="28" fill="currentColor" opacity="0.85" text-anchor="middle">and which category it falls into stops mattering.</text>
+</svg>
+<figcaption><strong>The split is useful right up until you make the model the thing that enforces your rules.</strong> At that point a content-policy bypass and an authorisation bypass produce the same outcome, which is the argument for putting consequential decisions somewhere the model does not get a vote.</figcaption>
+</figure>`;
+
 const curriculum: CourseCurriculum = {
   5118: {
     topicId: 5118,
@@ -896,6 +921,226 @@ ${FIG_EXFIL}
 <div class="field"><span class="callout-label">The copy-and-paste row is not a joke</span><p>It scores low and it is the one you cannot fix, because it is a human carrying text out deliberately. Every system has a residual channel of that kind, and naming it in the assessment is what stops somebody later claiming the feature was proved leak-proof.</p></div>`,
         minutes: 18,
         skills: ["Exfiltration", "Allowlist", "Output handling", "Side channel"],
+      },
+    ],
+  },
+  5121: {
+    topicId: 5121,
+    title: "Jailbreaks, and why refusal training is not a boundary",
+    summary:
+      "Two different failures get called the same thing. One is the provider's problem and one is yours, and confusing them sends teams to fix the wrong layer.",
+    concepts: ["Jailbreak", "Refusal training", "Alignment", "Defence in depth", "Threat model"],
+    glossary: {
+      Jailbreak: "Getting a model to produce content its provider trained it to refuse.",
+      "Refusal training": "Training that makes a model decline certain requests. A behavioural tendency, not an enforced rule.",
+      Alignment: "Shaping a model's behaviour toward intended norms. Distinct from access control.",
+      "Defence in depth": "Layered controls, so that one failing does not expose everything behind it.",
+      "Threat model": "A written statement of who you are defending against, what they want, and what they can reach.",
+    },
+    body: {
+      Beginner: `<p>Two things get called jailbreaking and they are not the same problem. Telling them apart is the first useful thing in this topic, because they are fixed in different places by different people.</p>
+${FIG_JAILBREAK}
+<h3>The two failures</h3>
+<table>
+<tr><th></th><th>Jailbreak</th><th>Prompt injection</th></tr>
+<tr><td>What is bypassed</td><td>The provider's safety training</td><td>Your application's instructions</td></tr>
+<tr><td>Who fixes it</td><td>The model provider</td><td>You</td></tr>
+<tr><td>Typical goal</td><td>Content the model should refuse</td><td>Data, or an action in your system</td></tr>
+<tr><td>Your exposure</td><td>Reputational, mostly</td><td>Direct, and sometimes financial</td></tr>
+</table>
+<p>A user who persuades your chatbot to write something offensive has jailbroken the model. A user who persuades it to reveal another customer's order has injected your application. The first is embarrassing. The second is a breach.</p>
+<div class="key-idea"><span class="callout-label">Refusals are trained behaviour, not a lock</span><p>When a model declines, nothing stopped it. It produced a refusal because refusals were the most likely continuation given its training. A different framing of the same request can make a different continuation more likely, which is why jailbreaks keep working and keep needing new patches.</p></div>
+<h3>Why this matters for what you build</h3>
+<p>If you rely on the model refusing as a safety control, you have outsourced your security to a tendency that the provider tunes for general use and that an attacker is actively working against. It is reasonable to benefit from it. It is not reasonable to depend on it for anything that costs money or exposes data.</p>
+<div class="warning"><span class="callout-label">A common wrong conclusion</span><p>Teams see a model refuse a hostile request in testing and record the risk as handled. What they tested was the default behaviour against an unskilled attempt. The relevant question is what happens on the fiftieth attempt by somebody who reads the research.</p></div>`,
+      Intermediate: `<p>Refusal training is a behavioural prior produced by fine-tuning and preference optimisation. It shifts the probability of a refusal upward for inputs that resemble the training examples. Everything about how jailbreaks work follows from the word resemble.</p>
+${FIG_JAILBREAK}
+<h3>The families of technique</h3>
+<table>
+<tr><th>Family</th><th>Mechanism</th></tr>
+<tr><td>Role play</td><td>Reframe the request as fiction, so refusal no longer looks like the fitting continuation</td></tr>
+<tr><td>Hypothetical framing</td><td>Ask what a system would say rather than asking directly</td></tr>
+<tr><td>Incremental escalation</td><td>Establish harmless context over several turns, then move one step</td></tr>
+<tr><td>Encoding and translation</td><td>Express the request in a form less represented in refusal training</td></tr>
+<tr><td>Instruction stacking</td><td>Bury the request among many benign ones</td></tr>
+</table>
+<p>Notice none of them finds a bug. Each shifts the input away from the region where refusal is the likely output, which is why a specific jailbreak gets patched and the family survives.</p>
+<h3>What this means for your layer</h3>
+<p>Your application sits on top of a control you do not own, cannot inspect and cannot guarantee. That is an acceptable position for a reputational concern and an unacceptable one for an authorisation decision. The practical rule is to write down which of your risks depend on the model declining to do something, and to move every risk on that list onto a control you own.</p>
+<div class="key-idea"><span class="callout-label">A quick test for whether you are over-relying on it</span><p>Delete the sentence in your system prompt that forbids the dangerous thing, and ask what now stops it. If the answer is nothing, that sentence was your access control, and sentences are not access control.</p></div>
+<div class="warning"><span class="callout-label">Model upgrades change behaviour you depended on</span><p>A new version can be more or less willing in ways nobody documents. If a behaviour matters to you, pin it with your own evaluation suite and run it on every model change, because the provider is tuning for their aggregate users rather than for your feature.</p></div>
+<h3>Multi-turn is where single-turn testing fails</h3>
+<p>Most evaluation harnesses send one message and score the reply. A large share of effective techniques need three or four turns: establish a frame, get agreement to something harmless inside it, then move one step. Each individual message would pass a single-turn test, and the sequence succeeds.</p>
+<p>If your evaluation does not include conversations, it is not measuring the thing attackers actually do. Adding even a small set of scripted multi-turn probes usually finds behaviour the single-turn suite reported as safe.</p>
+<h3>Output filtering catches what the model was persuaded to produce</h3>
+<p>A classifier on the way out is independent of whatever happened in the prompt, so it survives the model being convinced. It is still probabilistic and still attackable through encoding, and it has one genuine advantage over input filtering: it inspects the thing you actually care about rather than guessing at intent. For content risk specifically, it is usually the better place to spend the effort.</p>`,
+      Advanced: `<p>It is worth being exact about why this cannot be closed by better training. Refusal is a property of the output distribution conditioned on the input. An attacker is searching the input space for a point where the conditional probability of compliance is high. Training reduces the measure of that region; it does not eliminate it, because the model must remain able to discuss, summarise and reason about the same topics in legitimate contexts.</p>
+${FIG_JAILBREAK}
+<div class="key-idea"><span class="callout-label">The dual-use problem is structural</span><p>A model that could never describe how something harmful works also could not summarise a security advisory, teach a chemistry course or review a threat report. The capability and the refusal target overlap, so the boundary is drawn through content rather than around it, and any boundary drawn through content has an interior an attacker can reach by rephrasing.</p></div>
+<h3>Layering, concretely</h3>
+<table>
+<tr><th>Layer</th><th>Owner</th><th>Strength</th></tr>
+<tr><td>Provider refusal training</td><td>The provider</td><td>Probabilistic, opaque, changes without notice</td></tr>
+<tr><td>Your system prompt</td><td>You</td><td>Probabilistic, competes with attacker text</td></tr>
+<tr><td>Input and output classifiers</td><td>You or a vendor</td><td>Probabilistic, adversarially attackable</td></tr>
+<tr><td>Capability scoping in code</td><td>You</td><td>Deterministic within its scope</td></tr>
+<tr><td>Human confirmation</td><td>You</td><td>Deterministic, costs latency and attention</td></tr>
+</table>
+<p>The first three are the ones teams invest in and the last two are the ones that hold. A sensible architecture uses all five and is honest about which lines are load-bearing.</p>
+<h3>Where jailbreaks become your security problem</h3>
+<p>The usual split, that jailbreaks are reputational and injections are security, breaks in one case: when the thing the model has been trained to refuse is also the thing your application has been told not to do. If your system prompt says never reveal another customer's data and the only enforcement is the model declining, then a jailbreak and an injection converge on the same outcome. The boundary moved because you made the model the enforcement point.</p>
+<h3>Why a refusal is not evidence of a boundary</h3>
+<p>Observing a model decline tells you the sampled continuation was a refusal for that input at that temperature on that version. It does not tell you the region is closed, and repeated sampling of the same prompt can produce different outcomes. Teams that test once and record the risk as mitigated have measured a single draw from a distribution.</p>
+<p>Where a behaviour matters, test it repeatedly, at the temperature you ship, on the model version you ship, and keep the suite so the next version is compared rather than assumed.</p>
+<h3>The provider relationship is a dependency to manage</h3>
+<table>
+<tr><th>Risk</th><th>Mitigation you own</th></tr>
+<tr><td>Behaviour shifts on upgrade</td><td>Pin a version; run your suite before moving</td></tr>
+<tr><td>Provider deprecates a model</td><td>Keep the prompt portable; test on a second provider</td></tr>
+<tr><td>Refusals become stricter and break your feature</td><td>Monitor refusal rate as a product metric</td></tr>
+</table>
+<p>The third row surprises people. Over-refusal is a real failure mode for a legitimate product: a security course assistant that will not discuss attacks is useless, and that has happened to teams after an upgrade tightened content handling.</p>`,
+      Expert: `<p>The deeper point is a category error that recurs across the field: treating an alignment property as an access control. Alignment makes a model more likely to behave as intended across a broad distribution of ordinary use. Access control makes a specific action impossible for a specific principal. They differ in kind, not in degree, and no amount of improvement in the first produces the second.</p>
+${FIG_JAILBREAK}
+<table>
+<tr><th></th><th>Alignment</th><th>Access control</th></tr>
+<tr><td>Guarantee</td><td>Statistical, over a distribution</td><td>Per request, deterministic</td></tr>
+<tr><td>Adversary assumed</td><td>Largely benign users</td><td>A motivated attacker</td></tr>
+<tr><td>Failure</td><td>Graceful and frequent</td><td>Rare and total</td></tr>
+<tr><td>Auditable</td><td>By sampling behaviour</td><td>By reading the rule</td></tr>
+</table>
+<h3>Evaluating your own position</h3>
+<p>Benchmark pass rates on public jailbreak suites are weak evidence for a deployed product. They measure recall over a published corpus, which is exactly the corpus providers optimise against, and they say nothing about the attack that matters to you, which is specific to what your feature can do. A useful evaluation is adversarial, scoped to your capabilities, and scored by severity rather than count.</p>
+<h3>Disclosure and expectation setting</h3>
+<p>Because the control is probabilistic and the provider changes it, any public claim about what your product will refuse is a claim you cannot keep. The defensible formulation describes the controls you own: what the feature can do, what requires a human, what is logged. Teams that instead promise the model will not say certain things end up issuing corrections every time somebody posts a screenshot.</p>
+<div class="field"><span class="callout-label">The question that settles most design arguments</span><p>If the model complied with this request, what would actually happen? If the answer is an awkward paragraph, the provider's training is a reasonable place to leave the risk. If the answer is a refund, an email sent, or a record disclosed, then the control has to be somewhere the model does not decide, and the argument about prompt wording is beside the point.</p></div>
+<h3>Red teaming as a discipline rather than an afternoon</h3>
+<p>Ad hoc attempts by the team that built the feature find the attacks that team already imagined. Useful red teaming is adversarial in structure: somebody who did not build it, given the system description and the capabilities, with time and an incentive to succeed, reporting by severity. The output is a list of what worked with what consequence, not a pass rate.</p>
+<table>
+<tr><th>Weak</th><th>Useful</th></tr>
+<tr><td>The author tries their own prompts</td><td>Somebody else, with the architecture in hand</td></tr>
+<tr><td>Fixed payload list</td><td>Open-ended, multi-turn, goal-directed</td></tr>
+<tr><td>Score as a percentage</td><td>Findings ranked by what they reached</td></tr>
+<tr><td>Run once before launch</td><td>Re-run on every model and prompt change</td></tr>
+</table>
+<h3>Governance: who accepts what is left</h3>
+<p>Because the residual risk is real and permanent, somebody has to accept it by name. In practice that means a written statement of what the feature can do without a human, which risks are carried by provider behaviour, and who signed. Without it the position defaults to whoever is in the incident call, and the question of whether this was an accepted risk or an oversight gets answered retrospectively under pressure.</p>
+<h3>What to tell users</h3>
+<p>Accuracy and willingness both vary, and promising specific refusals is a commitment you do not control. The durable formulation describes your own controls: what the assistant can and cannot do, what requires confirmation, what is logged and for how long. That survives a model upgrade, which a promise about what the model will never say does not.</p>
+<div class="field"><span class="callout-label">The habit that distinguishes mature teams</span><p>They can name, without looking it up, which of their risks are carried by the provider's training and which by their own code. Teams that cannot make that list have usually assumed the first category is empty, and it never is.</p></div>`,
+    },
+    questions: [
+      {
+        n: 1,
+        question: "A user persuades your assistant to reveal another customer's order. Is this a jailbreak or a prompt injection?",
+        options: [
+          "An injection, because your application's instructions and access rules were bypassed",
+          "A jailbreak, because the model produced something it should have refused",
+          "Neither, because the data was already in the context",
+          "Both, and the distinction has no practical consequence",
+        ],
+        answer: 0,
+        explanation:
+          "The boundary crossed is yours. Your application decided which data to place in the context and what the assistant was allowed to disclose, and the attacker got past that. A jailbreak is about the provider's content policy, which is a different owner and a different fix. The distinction matters because it determines who can act: filing this with the model provider wastes a week, while scoping retrieval to the current customer closes it. The fourth option is the error that causes that wasted week.",
+        difficulty: "Easy",
+        skill: "Jailbreak",
+      },
+      {
+        n: 2,
+        question: "Why do jailbreak techniques survive being patched?",
+        options: [
+          "Patches address specific inputs, while the technique is a family of reframings",
+          "Providers do not actually patch them",
+          "The model's weights cannot be changed after release",
+          "Each patch introduces a new vulnerability",
+        ],
+        answer: 0,
+        explanation:
+          "Refusal is a tendency conditioned on how the input looks. Training against a specific prompt shifts behaviour near that point in input space; it does not cover every rephrasing, translation, fictional framing or multi-turn approach to the same request. So the published example stops working and the family continues. This is also why testing against a list of known payloads measures recall of that list rather than your resilience.",
+        difficulty: "Medium",
+        skill: "Refusal training",
+      },
+      {
+        n: 3,
+        question: "You delete the system prompt line forbidding refunds above a threshold. What should still stop a large refund?",
+        options: [
+          "A check in application code against the amount before the payment call",
+          "The model's trained reluctance to authorise unusual transactions",
+          "An input classifier that flags refund requests",
+          "A few-shot example showing a refusal",
+        ],
+        answer: 0,
+        explanation:
+          "This is the deletion test for whether a sentence was doing security work. If removing one line of prose removes the only thing preventing a financial action, that line was your access control, and prose is not access control. Only the first option runs outside the model and cannot be reasoned with. The other three are all probabilistic, all operate on text in the same stream as a potential attack, and all are worth having as noise reduction rather than as the limit.",
+        difficulty: "Medium",
+        skill: "Defence in depth",
+      },
+      {
+        n: 4,
+        question: "Why is a high pass rate on a public jailbreak benchmark weak evidence for a deployed product?",
+        options: [
+          "It measures recall over a corpus providers already optimise against, and ignores your capabilities",
+          "Benchmarks are run on different hardware",
+          "Public benchmarks use older models",
+          "Benchmark scores are not reproducible",
+        ],
+        answer: 0,
+        explanation:
+          "Two problems at once. The published suites are exactly what providers tune against, so a good score partly measures that tuning rather than robustness to a new attack. And the benchmark has no knowledge of what your feature can do, which is what sets severity: a model that says something awkward and a model that issues a refund score identically. A useful evaluation is adversarial, scoped to your own capabilities, and weighted by consequence.",
+        difficulty: "Hard",
+        skill: "Threat model",
+      },
+      {
+        n: 5,
+        question: "When does a jailbreak become a security problem rather than a reputational one?",
+        options: [
+          "When the model's refusal is the only thing enforcing an application rule",
+          "When the output is published publicly",
+          "When the attacker is an authenticated user",
+          "When the model provider declines to patch it",
+        ],
+        answer: 0,
+        explanation:
+          "The usual split holds only while the two boundaries are separate. If your rule about not disclosing another customer's data is enforced solely by the model declining, then persuading the model to comply achieves the same result as an injection, and the category distinction stops protecting you. You moved the enforcement point onto the model, so the model's failure mode became your security failure mode. The fix is to move enforcement back into code rather than to argue about terminology.",
+        difficulty: "Hard",
+        skill: "Alignment",
+      },
+      {
+        n: 6,
+        question: "Why should a behaviour you depend on be pinned with your own evaluation suite?",
+        options: [
+          "Provider model updates change willingness in undocumented ways",
+          "Evaluation suites make the model more reliable",
+          "Providers require customers to run evaluations",
+          "It prevents the model from being updated",
+        ],
+        answer: 0,
+        explanation:
+          "You are building on a component whose behaviour is tuned for the provider's aggregate users and can shift with any release, in either direction, without a changelog entry that mentions your case. If a specific behaviour matters to your feature, the only way to know it still holds after an upgrade is to test for it yourself. The suite does not improve the model, which is the second option's error; it tells you when something you relied on has moved.",
+        difficulty: "Medium",
+        skill: "Refusal training",
+      },
+    ],
+    decks: [
+      {
+        n: 1,
+        title: "Telling the two failures apart, fast",
+        blurb:
+          "Ten cards drilling the distinction that decides who fixes a problem and how urgent it is. Most arguments in an incident call come from getting this wrong.",
+        mode: "flip",
+        cards: [
+          { id: 1, front: "Model writes something offensive", back: "Jailbreak. Provider layer. Reputational.", extra: { "Your action": "Report it, add an output filter if it recurs" }, hint: "Whose policy was broken?", tags: ["Classify"] },
+          { id: 2, front: "Model reveals another customer's record", back: "Injection. Your layer. Security incident.", extra: { "Root cause": "That record was in the context at all" }, hint: "Who put the data there?", tags: ["Classify"] },
+          { id: 3, front: "Model issues a refund it should not have", back: "Injection, and an authorisation failure", extra: { "Real fix": "A limit checked in code before the payment call" }, hint: "What would have stopped it without the model?", tags: ["Classify"] },
+          { id: 4, front: "Refusal training", back: "A behavioural tendency from fine-tuning", extra: { "Is not": "A lock, a rule, or a guarantee", "Changes": "With every model version, undocumented" }, hint: "Statistical or deterministic?", tags: ["Concepts"] },
+          { id: 5, front: "The deletion test", back: "Remove the prompt line and ask what still stops it", extra: { "If the answer is nothing": "That sentence was your access control" }, hint: "A one-minute audit of any system prompt", tags: ["Technique"] },
+          { id: 6, front: "Role play jailbreak", back: "Reframing the request as fiction", extra: { Why: "Refusal stops being the fitting continuation" }, hint: "Nothing is exploited; the framing moved", tags: ["Families"] },
+          { id: 7, front: "Incremental escalation", back: "Harmless context over turns, then one step further", extra: { "Why it works": "Each turn is a small move from the last" }, hint: "Multi-turn, not single-shot", tags: ["Families"] },
+          { id: 8, front: "Alignment against access control", back: "Statistical over a distribution, versus per request and deterministic", extra: { "The category error": "Treating the first as if it were the second" }, hint: "Differ in kind, not degree", tags: ["Concepts"] },
+          { id: 9, front: "Dual use", back: "The refused content overlaps with legitimate discussion of it", extra: { Consequence: "The boundary runs through content, so it has an interior" }, hint: "Why perfect refusal would break the product", tags: ["Concepts"] },
+          { id: 10, front: "The question that settles design arguments", back: "If the model complied, what would actually happen?", extra: { "Awkward paragraph": "Provider's training is fine", "Money moves": "Put the control in code" }, hint: "Consequence, not probability", tags: ["Technique"] },
+        ],
+        skills: ["Jailbreak", "Refusal training", "Alignment", "Defence in depth", "Threat model"],
       },
     ],
   },
