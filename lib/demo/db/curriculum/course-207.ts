@@ -866,7 +866,7 @@ const curriculum: CourseCurriculum = {
 <circle cx="520" cy="100" r="9" fill="currentColor"/>
 <text x="286" y="330" font-size="27" font-weight="800" fill="#0369a1" text-anchor="end">LIQUID</text>
 <text x="548" y="372" font-size="26" font-weight="800" fill="currentColor" opacity="0.5" text-anchor="middle">BOILING</text>
-<text x="898" y="330" font-size="27" font-weight="800" fill="#c2410c">VAPOUR</text>
+<text x="968" y="330" font-size="27" font-weight="800" fill="#c2410c" text-anchor="end">VAPOUR</text>
 <path d="M400 220 H930" stroke="currentColor" stroke-width="6"/>
 <path d="M880 440 H400" stroke="currentColor" stroke-width="6"/>
 <path d="M880 440 L930 220" stroke="currentColor" stroke-width="6"/>

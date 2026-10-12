@@ -175,10 +175,10 @@ const curriculum: CourseCurriculum = {
 <text x="542" y="96" font-size="32" font-weight="800" fill="#7c3aed">ASSET UP, LIABILITY UP</text>
 <text x="542" y="152" font-size="28" fill="currentColor" opacity="0.85">Buy stock on credit</text>
 <text x="542" y="204" font-size="28" font-weight="800" fill="currentColor">Both sides grow.</text>
-<text x="542" y="252" font-size="28" fill="currentColor" opacity="0.7">The business is bigger, and owes more.</text>
+<text x="542" y="252" font-size="28" fill="currentColor" opacity="0.7">Bigger, and owes more.</text>
 <rect x="24" y="312" width="466" height="256" rx="18" fill="#b45309" opacity="0.1"/>
 <rect x="24" y="312" width="466" height="256" rx="18" fill="none" stroke="#b45309" stroke-width="3"/>
-<text x="56" y="372" font-size="32" font-weight="800" fill="#b45309">ASSET DOWN, LIABILITY DOWN</text>
+<text x="56" y="372" font-size="29" font-weight="800" fill="#b45309">ASSET AND LIABILITY DOWN</text>
 <text x="56" y="428" font-size="28" fill="currentColor" opacity="0.85">Pay a supplier</text>
 <text x="56" y="480" font-size="28" font-weight="800" fill="currentColor">Both sides shrink.</text>
 <text x="56" y="528" font-size="28" fill="currentColor" opacity="0.7">Less cash, and less owed.</text>

@@ -56,8 +56,8 @@ const FIG_INDIRECT = `<figure>
 <path d="M528 95 H580" stroke="currentColor" opacity="0.5" stroke-width="5"/>
 <path d="M592 95 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="600" y="40" width="376" height="110" rx="14" fill="#b45309" opacity="0.2"/>
-<text x="788" y="86" font-size="27" font-weight="800" fill="#b45309" text-anchor="middle">A PAGE SOMEBODY ELSE CONTROLS</text>
-<text x="788" y="126" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">white text, a comment, an alt attribute</text>
+<text x="788" y="86" font-size="27" font-weight="800" fill="#b45309" text-anchor="middle">A PAGE THEY CONTROL</text>
+<text x="788" y="126" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">white text, or an alt attribute</text>
 <path d="M788 160 V206" stroke="#be123c" stroke-width="6"/>
 <path d="M788 220 l-16 -24 h32 z" fill="#be123c"/>
 <rect x="160" y="236" width="680" height="110" rx="14" fill="#be123c" opacity="0.18"/>
@@ -82,7 +82,7 @@ const FIG_EXFIL = `<figure>
 <path d="M384 100 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="392" y="40" width="290" height="120" rx="14" fill="#be123c" opacity="0.18"/>
 <text x="537" y="90" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">MODEL OUTPUT</text>
-<text x="537" y="128" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">an image, URL carries the data</text>
+<text x="537" y="128" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">a URL carrying the data</text>
 <path d="M688 100 H740" stroke="currentColor" opacity="0.5" stroke-width="5"/>
 <path d="M752 100 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="760" y="40" width="216" height="120" rx="14" fill="#0369a1" opacity="0.16"/>
@@ -164,7 +164,7 @@ const FIG_TOOL = `<figure>
 <path d="M308 92 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="316" y="40" width="300" height="104" rx="14" fill="#be123c" opacity="0.16"/>
 <text x="466" y="86" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">THE MODEL CHOOSES</text>
-<text x="466" y="122" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">which tool, which arguments</text>
+<text x="466" y="122" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">the tool and its arguments</text>
 <path d="M624 92 H672" stroke="currentColor" opacity="0.5" stroke-width="5"/>
 <path d="M684 92 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="692" y="40" width="284" height="104" rx="14" fill="#0369a1" opacity="0.2"/>
@@ -226,12 +226,12 @@ const FIG_REDTEAM = `<figure>
 <path d="M304 94 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="312" y="40" width="216" height="108" rx="14" fill="#be123c" opacity="0.16"/>
 <text x="420" y="88" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">ATTEMPT</text>
-<text x="420" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">exact input, recorded</text>
+<text x="420" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">input recorded</text>
 <path d="M536 94 H580" stroke="currentColor" opacity="0.5" stroke-width="5"/>
 <path d="M592 94 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
 <rect x="600" y="40" width="216" height="108" rx="14" fill="#b45309" opacity="0.16"/>
 <text x="708" y="88" font-size="27" font-weight="800" fill="#b45309" text-anchor="middle">FINDING</text>
-<text x="708" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">rated by what it reached</text>
+<text x="708" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">rated by reach</text>
 <path d="M708 160 V206" stroke="currentColor" opacity="0.5" stroke-width="5"/>
 <path d="M708 220 l-16 -24 h32 z" fill="currentColor" opacity="0.5"/>
 <rect x="600" y="234" width="376" height="108" rx="14" fill="#0f766e" opacity="0.16"/>
@@ -241,7 +241,7 @@ const FIG_REDTEAM = `<figure>
 <path d="M256 288 l24 -12 v24 z" fill="#0f766e"/>
 <rect x="24" y="234" width="232" height="108" rx="14" fill="#7c3aed" opacity="0.16"/>
 <text x="140" y="282" font-size="27" font-weight="800" fill="#7c3aed" text-anchor="middle">REGRESSION</text>
-<text x="140" y="318" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">re-run on every change</text>
+<text x="140" y="318" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">re-run on change</text>
 <rect x="24" y="374" width="952" height="126" rx="16" fill="#be123c" opacity="0.13"/>
 <text x="500" y="422" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">A finding is closed when the reproduction fails,</text>
 <text x="500" y="462" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">not when a fix is deployed.</text>

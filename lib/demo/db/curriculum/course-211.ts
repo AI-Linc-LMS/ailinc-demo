@@ -27,8 +27,8 @@ const FIG_THREE = `<figure>
 <rect x="350" y="40" width="300" height="250" rx="18" fill="#0f766e" opacity="0.14"/>
 <rect x="350" y="40" width="300" height="250" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
 <text x="500" y="100" font-size="34" font-weight="800" fill="#0f766e" text-anchor="middle">KANBAN</text>
-<text x="500" y="152" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">fixes WORK IN PROGRESS</text>
-<text x="500" y="200" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">a column has a hard limit</text>
+<text x="500" y="152" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">fixes WIP</text>
+<text x="500" y="200" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">work in progress, capped</text>
 <text x="500" y="244" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">full means go and help</text>
 <text x="500" y="278" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">flow becomes visible</text>
 <rect x="676" y="40" width="300" height="250" rx="18" fill="#b45309" opacity="0.14"/>
