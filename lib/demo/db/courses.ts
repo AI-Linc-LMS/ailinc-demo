@@ -729,6 +729,98 @@ const COURSE_SEEDS: readonly CourseSeed[] = [
       ),
     ],
   },
+  {
+    id: 210,
+    title: "Secure Prompt Engineering",
+    subtitle: "Build an LLM feature that survives a hostile user",
+    description:
+      "Two weeks on the part of working with language models that is actually hard: making a "
+      + "prompt hold up when somebody is attacking it. You will classify real injection "
+      + "techniques, trace how untrusted text reaches a model through a document nobody "
+      + "inspected, design a system prompt against a threat model rather than a wish, gate a "
+      + "tool call that could spend money, and red-team your own build and write up what broke.",
+    slug: "secure-prompt-engineering",
+    difficulty: "Intermediate",
+    durationHours: 24,
+    tags: ["LLM security", "Prompt injection", "Threat modelling", "Tool use", "Red teaming"],
+    instructor: TRADE_FACULTY[4],
+    enrolled: true,
+    accent: ["#be123c", "#f43f5e"],
+    icon: "mdi:shield-lock-outline",
+    dueInDays: 14,
+    certificateThreshold: 75,
+    enrolledCount: 946,
+    rating: 4.9,
+    ratingCount: 218,
+    modules: [
+      courseModule(
+        "Week 1: how prompts fail",
+        "The attacks, in the order they actually get used against a deployed feature.",
+        [
+          topic("What a prompt is, and where the trust boundary sits", ["article", "quiz", "deck"], 100),
+          topic("Prompt injection: direct, indirect and invisible", ["article", "quiz", "scenario"], 60),
+          topic("Exfiltration: how data leaves through a rendered answer", ["article", "worksheet", "quiz"], 0),
+          topic("Jailbreaks, and why refusal training is not a boundary", ["article", "quiz", "deck"], 0),
+        ],
+      ),
+      courseModule(
+        "Week 2: building something defensible",
+        "Design, gate and then attack your own feature before somebody else does.",
+        [
+          topic("Writing a system prompt against a threat model", ["article", "worksheet", "quiz"], 0),
+          topic("Tool use is where injection becomes action", ["article", "lab", "quiz"], 0),
+          topic("Treating model output as untrusted input", ["article", "worksheet", "quiz"], 0),
+          topic("Red-teaming your own feature, and writing it up", ["article", "deliverable", "evidence"], 0),
+        ],
+      ),
+    ],
+  },
+  {
+    id: 211,
+    title: "Agile Project Management: Scrum, Kanban, XP",
+    subtitle: "Three systems, what each one is for, and how to run them",
+    description:
+      "Two weeks on the three frameworks teams actually use, taught as systems with "
+      + "mechanisms rather than as ceremonies to perform. You will size a backlog and watch "
+      + "velocity mislead you, set a WIP limit and feel why it is uncomfortable, read a board "
+      + "as a queueing system, decide what to do when a sprint is going wrong, and produce a "
+      + "sprint plan and a retrospective another team could pick up and run.",
+    slug: "agile-project-management-scrum-kanban-xp",
+    difficulty: "Beginner",
+    durationHours: 22,
+    tags: ["Scrum", "Kanban", "Extreme programming", "Estimation", "Flow"],
+    instructor: TRADE_FACULTY[5],
+    enrolled: true,
+    accent: ["#0369a1", "#38bdf8"],
+    icon: "mdi:view-column-outline",
+    dueInDays: 14,
+    certificateThreshold: 70,
+    enrolledCount: 1382,
+    rating: 4.7,
+    ratingCount: 391,
+    modules: [
+      courseModule(
+        "Week 1: the three systems",
+        "What each framework claims, what it actually constrains, and where it breaks.",
+        [
+          topic("What agile claims, and what it does not", ["article", "quiz", "deck"], 100),
+          topic("Scrum: the roles, events and artefacts that carry it", ["article", "quiz", "partid"], 70),
+          topic("Kanban: flow, WIP limits and why they feel wrong", ["article", "worksheet", "quiz"], 0),
+          topic("Extreme programming: the practices nobody adopted", ["article", "quiz", "scenario"], 0),
+        ],
+      ),
+      courseModule(
+        "Week 2: running it",
+        "Estimation, the board as a system, and the two documents a team hands over.",
+        [
+          topic("Estimation, velocity and the numbers that lie", ["article", "worksheet", "quiz"], 0),
+          topic("Reading a board as a queueing system", ["article", "partid", "worksheet"], 0),
+          topic("Ceremonies that earn their time", ["article", "scenario", "deck"], 0),
+          topic("A sprint plan and a retro somebody could run", ["article", "deliverable", "evidence"], 0),
+        ],
+      ),
+    ],
+  },
 ];
 
 /**

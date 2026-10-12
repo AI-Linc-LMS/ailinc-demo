@@ -253,6 +253,16 @@ export const TRADE_FACULTY: readonly DemoPerson[] = [
     headline: "Remote Pilot Instructor | DGCA certified, 900 logged hours",
     college: "DGCA Remote Pilot Certificate, Small category",
   }),
+  buildPerson(1205, "Nandita", "Iyer", "instructor", {
+    profile_pic_url: portraitAt("women/62"),
+    headline: "Application Security | LLM red teaming and secure design review",
+    college: "OWASP chapter lead, 9 years in appsec",
+  }),
+  buildPerson(1206, "Daniel", "Okoro", "instructor", {
+    profile_pic_url: portraitAt("men/52"),
+    headline: "Agile Coach | Scrum, Kanban and XP in delivery teams",
+    college: "Coached 40+ teams across product and platform",
+  }),
 ];
 
 /** The learner body. Ids start at 2000 to stay clearly distinct from staff. */
