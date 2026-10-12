@@ -74,6 +74,23 @@ const FIG_WIP = `<figure>
 <figcaption><strong>Nobody works faster in the right-hand picture.</strong> The same five items take the same total effort; they are simply not all in flight at once, so each one spends less time waiting. That is the whole of Little's law, drawn, and it is why limiting work in progress is the cheapest intervention in this course.</figcaption>
 </figure>`;
 
+const FIG_VELOCITY = `<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="What happens to velocity when it is used as a target">
+<path d="M150 400 H950 M150 400 V60" stroke="currentColor" opacity="0.3" stroke-width="3"/>
+<path d="M180 330 H250 M280 336 H350 M380 326 H450" stroke="#0f766e" stroke-width="14" stroke-linecap="round"/>
+<path d="M480 300 H550 M580 262 H650 M680 214 H750 M780 160 H850" stroke="#be123c" stroke-width="14" stroke-linecap="round"/>
+<path d="M465 70 V400" stroke="currentColor" opacity="0.5" stroke-width="4" stroke-dasharray="10 8"/>
+<text x="465" y="56" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">velocity becomes a target</text>
+<text x="300" y="376" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">stable</text>
+<text x="700" y="130" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">rising</text>
+<text x="104" y="230" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle" transform="rotate(-90 104 230)">POINTS</text>
+<text x="550" y="440" font-size="26" font-weight="800" fill="currentColor" opacity="0.55" text-anchor="middle">SPRINTS</text>
+<rect x="24" y="456" width="952" height="56" rx="14" fill="#b45309" opacity="0.14"/>
+<text x="500" y="494" font-size="28" font-weight="800" fill="currentColor" text-anchor="middle">Delivered work did not change. The scale did.</text>
+</svg>
+<figcaption><strong>Points are defined by the team being measured, so compliance needs no change to anything real.</strong> Nobody has to act dishonestly: each re-sizing is small, defensible and made under pressure, and the aggregate is inflation. That is why the remedy is to stop using the number as a target rather than to ask for more rigour.</figcaption>
+</figure>`;
+
 const curriculum: CourseCurriculum = {
   5126: {
     topicId: 5126,
@@ -551,6 +568,282 @@ ${FIG_WIP}
 <div class="field"><span class="callout-label">How to run the conversation</span><p>Do not argue the theory. Measure your own WIP and throughput for six weeks, compute the current cycle time, and show that the number matches what people already feel. Once the model predicts the present correctly, its prediction about a lower WIP is much harder to dismiss, and you have turned a philosophical argument into an experiment with a date on it.</p></div>`,
         minutes: 18,
         skills: ["Littles law", "Work in progress", "Cycle time", "Throughput"],
+      },
+    ],
+  },
+  5129: {
+    topicId: 5129,
+    title: "Extreme programming: the practices nobody adopted",
+    summary:
+      "The framework that made the strongest engineering claims and spread least, because its practices cost something the ceremonies do not.",
+    concepts: ["Test first", "Continuous integration", "Refactoring", "Pair programming", "Collective ownership"],
+    glossary: {
+      "Test first": "Writing a failing test before the code that makes it pass.",
+      "Continuous integration": "Merging everyone's work to a shared trunk many times a day, with automated verification.",
+      Refactoring: "Changing structure without changing behaviour, continuously rather than as a project.",
+      "Pair programming": "Two people, one piece of work, continuous review as it is written.",
+      "Collective ownership": "Anyone may change any part of the code, so no module has a single gatekeeper.",
+    },
+    body: {
+      Beginner: `<p>Extreme programming is not about meetings. It is a set of engineering practices designed to keep the cost of changing software flat as the software grows, which is the thing that normally does not happen.</p>
+<h3>The practices you will hear about</h3>
+<table>
+<tr><th>Practice</th><th>What it is for</th></tr>
+<tr><td>Write the test first</td><td>Forces you to decide what done means before you start</td></tr>
+<tr><td>Integrate continuously</td><td>Keeps merges tiny, so conflicts stay small</td></tr>
+<tr><td>Refactor constantly</td><td>Stops structure decaying faster than it is repaired</td></tr>
+<tr><td>Pair on the work</td><td>Review happens as it is written, not days later</td></tr>
+<tr><td>Everyone owns all the code</td><td>No single person becomes a bottleneck</td></tr>
+</table>
+<h3>Why they reinforce each other</h3>
+<p>Refactoring without tests is dangerous, because you cannot tell whether behaviour changed. Continuous integration without tests just merges broken code faster. Collective ownership without tests means anyone can break anything. The tests are the foundation and the rest sits on them, which is why adopting one practice in isolation often disappoints.</p>
+<div class="key-idea"><span class="callout-label">The claim worth remembering</span><p>In most projects the cost of a change rises over time, so late changes are feared. XP is a bet that with the right practices that curve can be kept flat, which is what makes responding to change affordable rather than merely desirable.</p></div>
+<div class="warning"><span class="callout-label">This is the part no ceremony can substitute for</span><p>A team with a slow, flaky test suite and a long-lived branch will not become responsive by holding a stand-up. The constraint is technical, and only technical work moves it.</p></div>`,
+      Intermediate: `<p>XP spread least of the three and made the strongest claims, and the reason is cost. Scheduling a meeting costs calendar time. Writing tests first costs a change in how every engineer works, every day, and it is slower before it is faster.</p>
+<h3>What each practice actually buys</h3>
+<table>
+<tr><th>Practice</th><th>Buys</th><th>Costs</th></tr>
+<tr><td>Test first</td><td>A regression net, and clearer design</td><td>Slower for the first few weeks</td></tr>
+<tr><td>Continuous integration</td><td>Small conflicts, early breakage</td><td>Discipline, and a fast build</td></tr>
+<tr><td>Refactoring</td><td>Structure that keeps up with the code</td><td>Visible time not spent on features</td></tr>
+<tr><td>Pairing</td><td>Review, knowledge spread, fewer defects</td><td>Two people on one task, which reads as inefficient</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Every cost is immediate and visible; every benefit is deferred and diffuse</span><p>That asymmetry, rather than disagreement about the benefits, is why these practices lose budget arguments. The team that skipped tests looks faster for about two months, and the comparison is never run again after that.</p></div>
+<h3>Continuous integration means something specific</h3>
+<p>It is not a build server. It is everyone merging to a shared trunk at least daily, with automated verification on every merge. A team with a CI server and three-week feature branches does not have continuous integration; it has automated builds of code that has not been integrated, which is a different and much weaker thing.</p>
+<div class="warning"><span class="callout-label">A flaky test suite is worse than no suite</span><p>If failures are routinely ignored because they are often spurious, the suite has stopped being a signal and is now a tax. Fixing or deleting flaky tests is higher value than adding new ones, and teams consistently do the opposite.</p></div>`,
+      Advanced: `<p>Test-driven development is usually sold as a testing practice and is mostly a design practice. Writing the test first forces you to use the interface before you build it, which surfaces awkward dependencies immediately and tends to produce smaller, more separable units because those are the ones that are easy to set up in a test.</p>
+<table>
+<tr><th>What people expect</th><th>What it mostly delivers</th></tr>
+<tr><td>Fewer defects</td><td>Some, and the evidence is mixed</td><td></td></tr>
+<tr><td>A safety net</td><td>Yes, and this is reliable</td><td></td></tr>
+<tr><td>Better design</td><td>Yes, through the feedback of using the interface first</td><td></td></tr>
+<tr><td>Faster delivery immediately</td><td>No. It is slower first.</td><td></td></tr>
+</table>
+<h3>Pairing, and why it is argued about</h3>
+<p>The objection is that two people on one task halves output. The response is that review, knowledge transfer and defect prevention happen inside the activity rather than after it, so the comparison should be against the full cost of the alternative, including the review queue and the bus factor. The honest position is that the evidence is mixed, it suits some work and some people far better than others, and mandating it universally produces resentment while banning it loses a genuinely useful tool.</p>
+<div class="key-idea"><span class="callout-label">The strongest case for pairing is onboarding and hard problems</span><p>Those two uses are rarely disputed even by sceptics, and they are enough to justify keeping it available. Treating it as a default for all work is where the argument usually starts.</p></div>
+<h3>Collective ownership needs the net</h3>
+<p>Letting anybody change anything is only safe when the tests will catch what they break. Without that, collective ownership degrades into collective fear, and the team reverts to informal gatekeeping with no record of who decides. The sequence matters: the net comes first, the ownership policy second.</p>`,
+      Expert: `<p>What has survived from XP is interesting. The specific brand largely disappeared and several of its practices became industry defaults, usually without attribution: continuous integration, automated testing, short release cycles, refactoring as routine work rather than as a project.</p>
+<table>
+<tr><th>Practice</th><th>Status today</th></tr>
+<tr><td>Continuous integration</td><td>Mainstream, often in name only</td></tr>
+<tr><td>Automated testing</td><td>Mainstream</td></tr>
+<tr><td>Refactoring</td><td>Widely accepted in principle</td></tr>
+<tr><td>Test-first specifically</td><td>Minority practice</td></tr>
+<tr><td>Pair programming</td><td>Minority, contested</td></tr>
+<tr><td>On-site customer</td><td>Rare, and the gap is keenly felt</td></tr>
+</table>
+<p>The pattern is that practices which could be bought as tooling were adopted and practices requiring a change in daily behaviour were not. That is a statement about how organisations absorb change rather than about the merits.</p>
+<h3>Where the evidence is strongest</h3>
+<p>The delivery research that replicates most consistently points at trunk-based development, automated testing and deployment automation as predictors of both throughput and stability, which is close to the XP engineering core without the social practices. That is the most defensible claim available: the technical half has support, and the social half remains contested.</p>
+<h3>The on-site customer, and why its absence hurts</h3>
+<p>XP assumed somebody who could answer questions about what to build, present and available. Almost nobody does this, and the substitute is a product owner in meetings plus a ticketing system, which reintroduces exactly the latency the practice existed to remove. A great deal of what teams experience as unclear requirements is the gap left by this one unadopted practice.</p>
+<div class="field"><span class="callout-label">If a team can change one thing</span><p>Make the build fast and trustworthy, and merge to trunk daily. Those two unlock the others: refactoring becomes safe, collective ownership becomes tenable, and feedback arrives in minutes rather than weeks. Teams that start with pairing or with test-first against a slow unreliable suite usually abandon both, and conclude the practices do not work when what failed was the order.</p></div>`,
+    },
+    questions: [
+      { n: 1, question: "Why does adopting one XP practice in isolation often disappoint?", options: ["They reinforce each other, and most of them depend on the test suite", "They must be adopted alphabetically", "The method forbids partial adoption", "Each requires separate tooling"], answer: 0, explanation: "Refactoring without tests is unsafe because you cannot tell whether behaviour changed. Continuous integration without tests merges broken code faster. Collective ownership without tests means anyone can break anything unnoticed. The suite is the foundation the others stand on, which is why order matters and why a team that starts elsewhere often concludes the practices do not work when what failed was the sequence.", difficulty: "Medium", skill: "Test first" },
+      { n: 2, question: "A team has a CI server and three-week feature branches. Do they have continuous integration?", options: ["No. Integration means merging to a shared trunk at least daily", "Yes, that is what a CI server provides", "Yes, provided the build passes", "Only if they also pair"], answer: 0, explanation: "The practice is about merge frequency, not about owning a build server. Automated builds of code that has not been integrated for three weeks give you fast feedback on an isolated branch and tell you nothing about whether the work combines, so the conflicts arrive at the end exactly as they would have without it. This is among the most commonly claimed and least commonly practised items in the whole field.", difficulty: "Medium", skill: "Continuous integration" },
+      { n: 3, question: "What does test-driven development most reliably deliver?", options: ["A regression net and design feedback from using the interface first", "A large reduction in defects, consistently shown in studies", "Faster delivery from the first week", "Elimination of the need for other testing"], answer: 0, explanation: "The safety net is reliable and the design effect is the underrated one: writing the test first makes you use the interface before building it, which surfaces awkward dependencies immediately and pushes toward smaller separable units. The defect evidence is genuinely mixed rather than overwhelming, and it is slower before it is faster, so overselling either is how the practice gets abandoned after a month.", difficulty: "Hard", skill: "Test first" },
+      { n: 4, question: "Why is a flaky test suite worse than no suite?", options: ["Failures get ignored, so it costs time while providing no signal", "It runs more slowly", "It uses more compute", "It prevents deployment"], answer: 0, explanation: "A suite whose failures are routinely spurious trains everybody to re-run rather than investigate, at which point a real failure is indistinguishable from noise. You are paying the full cost in time and attention and receiving no information. Fixing or deleting flaky tests therefore has higher value than adding new ones, and teams consistently do the opposite because adding feels like progress.", difficulty: "Medium", skill: "Continuous integration" },
+      { n: 5, question: "Why did XP's tooling practices spread while its social practices did not?", options: ["Tooling can be bought; changing daily behaviour cannot", "The social practices were disproved", "Tooling practices are more valuable", "Certification covered only tooling"], answer: 0, explanation: "Continuous integration, automated testing and deployment automation can be adopted by procuring and configuring something, so they fit how organisations normally absorb change. Test-first and pairing require every engineer to work differently every day, which no purchase achieves. That is an observation about adoption mechanics rather than about merit, and it explains the pattern better than any claim about which practices work.", difficulty: "Hard", skill: "Pair programming" },
+      { n: 6, question: "What is the strongest first move for a team wanting XP's benefits?", options: ["Make the build fast and trustworthy, and merge to trunk daily", "Start pairing on all work", "Mandate test-first for every change", "Introduce collective ownership"], answer: 0, explanation: "Those two unlock the rest: refactoring becomes safe, collective ownership becomes tenable, and feedback arrives in minutes instead of weeks. Starting with pairing or test-first against a slow, unreliable suite usually ends with both abandoned, because the feedback loop they depend on is not there yet. The sequence is the practical content of this topic.", difficulty: "Medium", skill: "Refactoring" },
+    ],
+    scenarios: [
+      {
+        n: 1,
+        title: "The suite nobody trusts",
+        blurb: "Forty minutes to run, fails about a third of the time for no reason, and the team has stopped reading it. You have been asked to make the team faster.",
+        role: "You are the tech lead on a team of six, three months into a product nobody wants to slow down.",
+        start: "n1",
+        minutes: 12,
+        idealPath: ["n1", "n2", "n3", "end-ideal"],
+        nodes: [
+          {
+            id: "n1",
+            situation: `<p>The build takes forty minutes. Roughly one run in three fails for reasons unrelated to the change, so everybody re-runs it until it passes. Two people have started merging without waiting.</p><p>Your manager has asked you to improve delivery speed and offered you a sprint of capacity.</p>`,
+            prompt: "Where do you spend the sprint?",
+            choices: [
+              { id: "a", label: "Fix the flaky tests and cut the build time", outcome: "Unglamorous, and it restores the signal everything else depends on. Within two weeks people stop re-running and start reading failures again.", next: "n2", delta: 3 },
+              { id: "b", label: "Add more tests, since coverage is low", outcome: "Coverage rises and so does the run time. The flake rate is unchanged, so the new tests are ignored alongside the old ones.", next: "n2", delta: -2, cost: { minutes: 2400 } },
+              { id: "c", label: "Introduce pairing to catch defects earlier", outcome: "A reasonable practice landing on an unreliable foundation. Pairs still cannot tell whether a failure is real, and the team resents the change.", next: "n2", delta: -1 },
+            ],
+          },
+          {
+            id: "n2",
+            situation: `<p>The suite is now eleven minutes and the flake rate is under two per cent. People are reading failures again.</p><p>You notice the two longest-lived branches are nineteen and twenty-six days old.</p>`,
+            prompt: "What next?",
+            choices: [
+              { id: "a", label: "Get both branches merged, then agree a daily merge rule", outcome: "Both merges are painful, which is the argument. With a trustworthy build, daily merging becomes cheap and the pain does not recur.", next: "n3", delta: 3 },
+              { id: "b", label: "Leave the branches; they are nearly done", outcome: "One lands two weeks later with a day of conflict resolution and a regression the suite would have caught on day two.", next: "n3", delta: -2, cost: { minutes: 900 } },
+              { id: "c", label: "Add a merge-queue tool", outcome: "It serialises merges, which helps a little. The branches are still weeks old, so the conflicts are the same size when they arrive.", next: "n3", delta: 0 },
+            ],
+          },
+          {
+            id: "n3",
+            situation: `<p>Build is fast, trunk is current, and the team is visibly quicker. Your manager asks what to do with the next sprint of capacity.</p>`,
+            prompt: "What do you ask for?",
+            choices: [
+              { id: "a", label: "Keep a standing allocation for this work, and say what it bought", outcome: "You show the build time, the flake rate and the merge age before and after, and ask for a continuing share rather than another one-off.", next: "end-ideal", delta: 3 },
+              { id: "b", label: "Declare it finished and return all capacity to features", outcome: "Within four months the suite is slow again, because nothing was reserved to keep it fast.", next: "end-poor", delta: -3 },
+            ],
+          },
+          {
+            id: "end-ideal",
+            situation: "<p>Done.</p>",
+            prompt: "",
+            ending: {
+              verdict: "ideal",
+              title: "You fixed the foundation before building on it",
+              debrief: `<p>Every option you turned down was a legitimate practice. Pairing, more tests and a merge queue are all good things, and all three were going to fail because the feedback loop underneath them was broken.</p>
+<p>The order is the content of this topic. A trustworthy, fast build is what makes refactoring safe, collective ownership tenable and daily merging cheap. Teams that start anywhere else usually abandon the practice and conclude it does not work, when what failed was the sequence.</p>
+<div class="key-idea"><span class="callout-label">And the last choice is the one that makes it stick</span><p>Technical health decays unless something reserves capacity for it. Reporting what the sprint bought, in numbers, is how you get that allocation made standing rather than exceptional.</p></div>`,
+            },
+          },
+          {
+            id: "end-poor",
+            situation: "<p>Done.</p>",
+            prompt: "",
+            ending: {
+              verdict: "poor",
+              title: "You fixed it once, and did not change what caused it",
+              debrief: `<p>The work was right and it was treated as a project rather than as maintenance. Suites get slower because tests are added faster than they are pruned, and branches get older because merging is nobody's explicit job. Both resume the moment the attention stops.</p>
+<p>The ask that would have held is a standing share of capacity, justified with the before-and-after numbers you had in hand. Without it the next person to notice will be asking for the same sprint in a year, and the argument will start from zero again.</p>`,
+            },
+          },
+        ],
+        skills: ["Continuous integration", "Refactoring", "Test first"],
+      },
+    ],
+  },
+  5130: {
+    topicId: 5130,
+    title: "Estimation, velocity and the numbers that lie",
+    summary:
+      "Story points are not units, velocity is not productivity, and the most accurate forecast on most teams needs no estimates at all.",
+    concepts: ["Story point", "Velocity", "Forecasting", "Goodharts law", "Relative sizing"],
+    glossary: {
+      "Story point": "A relative size, meaningful only within one team and only against their own past items.",
+      Velocity: "Points completed per sprint. A capacity planning input, not a measure of output.",
+      Forecasting: "Predicting a completion date with a stated confidence, ideally from measured history.",
+      "Goodharts law": "When a measure becomes a target, it stops being a good measure.",
+      "Relative sizing": "Judging items against each other rather than estimating absolute time.",
+    },
+    body: {
+      Beginner: `<p>People are poor at estimating how long something will take and considerably better at saying whether one thing is bigger than another. Relative sizing is built on that difference.</p>
+${FIG_VELOCITY}
+<h3>How points are supposed to work</h3>
+<p>Pick a smallish item everybody understands and call it a two. Size everything else against it. After a few sprints you know roughly how many points the team finishes, and you can use that to plan the next one.</p>
+<table>
+<tr><th>Points</th><th>Means</th></tr>
+<tr><td class="num">1</td><td>Smaller than the reference item</td></tr>
+<tr><td class="num">2</td><td>About the reference item</td></tr>
+<tr><td class="num">5</td><td>Noticeably bigger, more unknowns</td></tr>
+<tr><td class="num">13</td><td>Too big. Split it before committing.</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Points are not hours and do not convert</span><p>The moment a team agrees that a point is about half a day, they have reinvented hour estimates with an extra translation step, and lost the one property that made relative sizing useful.</p></div>
+<div class="warning"><span class="callout-label">Velocity does not compare across teams</span><p>Two teams with the same velocity may be doing wildly different amounts of work, because each calibrated their scale independently. Comparing them is meaningless, and using velocity as a performance measure guarantees the numbers inflate.</p></div>`,
+      Intermediate: `<p>Velocity is a planning input. It tells one team roughly how much to pull into the next sprint, given their own recent history. It is not output, it is not productivity, and it does not travel.</p>
+${FIG_VELOCITY}
+<h3>What happens when it becomes a target</h3>
+<p>Points are defined by the team, so a team asked to raise velocity can do so without changing anything real. This is Goodhart's law operating with unusual speed, because the measure is not merely gameable, it is defined by the people being measured.</p>
+<table>
+<tr><th>Pressure applied</th><th>Predictable response</th></tr>
+<tr><td>Raise velocity</td><td>Estimates inflate</td></tr>
+<tr><td>Hit the sprint commitment</td><td>Padding, and smaller commitments</td></tr>
+<tr><td>Reduce carry-over</td><td>Definition of done quietly relaxes</td></tr>
+<tr><td>Compare teams</td><td>All scales drift upward</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">None of this requires anybody to behave dishonestly</span><p>The adjustments are small, individually defensible and made under pressure. That is why the failure is structural rather than a matter of integrity, and why the remedy is to stop using the number that way rather than to ask people to be more rigorous.</p></div>
+<h3>Counting items is usually as good</h3>
+<p>For most teams the number of items finished per sprint is about as predictive as the number of points, because item sizes cluster once anything large is split. Teams that measure both for a quarter frequently find the estimation effort bought them very little, which is the most common path to dropping it.</p>`,
+      Advanced: `<p>Probabilistic forecasting replaces the estimate with measured history. Take the last thirty completed items, look at how long each took, and read the distribution. The eighty-fifth percentile is a commitment you can defend with a number rather than a feeling.</p>
+${FIG_VELOCITY}
+<table>
+<tr><th>Approach</th><th>Input</th><th>Output</th></tr>
+<tr><td>Estimate and sum</td><td>Opinions about the future</td><td>A single date, usually optimistic</td></tr>
+<tr><td>Velocity planning</td><td>Points per sprint</td><td>A sprint-level capacity figure</td></tr>
+<tr><td>Probabilistic forecast</td><td>Measured cycle times</td><td>A date with a confidence attached</td></tr>
+</table>
+<p>The third is both more honest and usually more accurate, because it is derived from what actually happened rather than from what people expected before they started.</p>
+<h3>Why estimates are biased in a predictable direction</h3>
+<p>People estimate the path where nothing goes wrong, because that is the version they can picture. Interruptions, reviews, environment problems and the second round of feedback are all real and none of them appear in the mental simulation. This is why multiplying an estimate by a constant works surprisingly well and why the constant is stable per team, which is itself a hint that measurement would serve better than estimation.</p>
+<div class="key-idea"><span class="callout-label">The single most useful question in planning</span><p>What is the largest item here, and can it be split? Large items carry most of the variance, so splitting them improves forecast accuracy more than any amount of refining the estimates on small ones.</p></div>`,
+      Expert: `<p>The no-estimates argument is narrower than it sounds. It is not that forecasting is unnecessary; it is that per-item estimation is an expensive input to a forecast that measured history provides more cheaply and more accurately.</p>
+${FIG_VELOCITY}
+<table>
+<tr><th>Estimation is worth it when</th><th>It is not worth it when</th></tr>
+<tr><td>The decision is go or no-go on a large commitment</td><td>Items are already small and similar</td></tr>
+<tr><td>The work is genuinely novel, with no history</td><td>Thirty comparable items have been delivered</td></tr>
+<tr><td>Discussion during sizing surfaces hidden scope</td><td>The number is the only output anybody uses</td></tr>
+</table>
+<p>The third row on the left is the part most worth defending. Much of the value of planning poker is the argument that happens when two people give wildly different numbers, because it reveals that they understood the item differently. That conversation is worth having even if the resulting number is then discarded.</p>
+<h3>Why the number travels upward and the caveats do not</h3>
+<p>A team explains carefully that velocity is a local planning figure. It appears in a status report. The next layer sees a number with a trend. By the time it reaches a dashboard, it is being compared across teams and tracked quarter on quarter, and the caveats that made it meaningful are three layers down. This is a structural property of how numbers move through organisations rather than a failure of anyone's explanation.</p>
+<h3>What to report upward instead</h3>
+<p>Dates with confidence levels, derived from cycle time history, and a short statement of what changed. Those answer the question an executive is actually asking, which is when will it be done and what is in the way, and they do not create an incentive to inflate anything.</p>
+<div class="field"><span class="callout-label">A cheap experiment worth running</span><p>For one quarter, record both the estimate and the actual cycle time for every item, and also record a forecast made purely from item counts. Then compare. Most teams discover the count-based forecast is at least as good, at which point the estimation question answers itself with their own data rather than with an argument.</p></div>`,
+    },
+    questions: [
+      { n: 1, question: "Why should story points not be converted to hours?", options: ["It reinvents hour estimates with an extra translation step, losing what made relative sizing useful", "Hours are harder to add up", "Points are always larger than hours", "Conversion is forbidden by Scrum"], answer: 0, explanation: "Relative sizing works because people judge comparisons better than absolutes. Fixing a conversion rate throws that away and reintroduces the absolute estimate the technique was avoiding, now with a pointless intermediate unit. It also makes the number look transferable between teams, which it is not, so the conversion causes the comparison problem as well.", difficulty: "Easy", skill: "Story point" },
+      { n: 2, question: "A manager asks a team to increase velocity by twenty per cent. What is the predictable result?", options: ["Estimates inflate, with no change in delivered work", "The team works twenty per cent faster", "Carry-over falls", "Cycle time improves"], answer: 0, explanation: "Points are defined by the team being measured, so compliance requires no change to anything real. This is Goodhart's law with unusually little friction. The important part is that nobody has to act dishonestly: each re-sizing is small and defensible, made under pressure, and the aggregate is inflation. That is why the remedy is to stop using velocity as a target rather than to appeal for rigour.", difficulty: "Medium", skill: "Goodharts law" },
+      { n: 3, question: "What makes a probabilistic forecast more defensible than a summed estimate?", options: ["It is derived from measured history and carries a stated confidence", "It uses larger numbers", "It does not require a backlog", "It is produced by a tool rather than people"], answer: 0, explanation: "A summed estimate is an aggregate of opinions about a future nobody has seen, and it conventionally describes the path where nothing goes wrong. A forecast from the cycle time distribution says most items finish within this many days and attaches a confidence to the date. It is both more honest and usually more accurate, because it reflects what the team actually did rather than what they pictured.", difficulty: "Medium", skill: "Forecasting" },
+      { n: 4, question: "Why does splitting the largest item improve a forecast more than refining small estimates?", options: ["Large items carry most of the variance", "Small items are always estimated correctly", "Splitting reduces total work", "Forecasts ignore small items"], answer: 0, explanation: "Forecast error is dominated by the few items that could take far longer than expected, and those are the large ones with the most unknowns. Splitting converts one high-variance item into several lower-variance ones, which tightens the whole distribution. Time spent arguing whether something is a two or a three is effort applied where the variance is not.", difficulty: "Hard", skill: "Forecasting" },
+      { n: 5, question: "What is the strongest argument for keeping estimation sessions?", options: ["The disagreement surfaces that people understood the item differently", "The numbers are needed for reporting", "It is required by the framework", "It improves individual accountability"], answer: 0, explanation: "When two people give wildly different sizes, the useful output is the conversation that follows, which usually reveals hidden scope or a misunderstanding about what is being built. That value survives even if the resulting number is discarded afterwards. Teams dropping estimation entirely sometimes lose this and only notice when more scope starts arriving as surprises during the sprint.", difficulty: "Hard", skill: "Relative sizing" },
+      { n: 6, question: "What should be reported upward instead of velocity?", options: ["Dates with confidence levels, from cycle time history, and what changed", "Velocity with a written caveat attached", "Points completed per person", "Estimated hours remaining"], answer: 0, explanation: "A number and its caveats travel at different speeds through an organisation: the figure reaches a dashboard and the explanation does not. Dates with confidence answer the question being asked, which is when and what is in the way, and they create no incentive to inflate anything. Per-person points is the worst of the options, since it adds individual comparison to a measure that was already not comparable.", difficulty: "Medium", skill: "Velocity" },
+    ],
+    worksheets: [
+      {
+        n: 1,
+        title: "Forecast two ways, and compare",
+        difficulty: "Medium",
+        brief: `<p>A team must deliver 40 remaining items. You have two sources: their estimates, and their measured history.</p>
+<p><strong>Estimates:</strong> the 40 items were sized at 160 points in total, and the team averages 20 points per two-week sprint.</p>
+<p><strong>History:</strong> over the last quarter they finished 5 items per week.</p>
+<p>Work out the forecast from each method in weeks, then the difference between them.</p>
+<div class="key-idea"><span class="callout-label">Neither is the truth</span><p>One is built from opinions formed before the work started, the other from what actually happened. The gap between them is the interesting number.</p></div>`,
+        stubLabel: "Method",
+        columns: [
+          { key: "a", label: "Input A", type: "number", align: "right" },
+          { key: "b", label: "Input B", type: "number", align: "right" },
+          { key: "weeks", label: "Weeks", type: "number", align: "right" },
+        ],
+        rows: [
+          { key: "est", label: "From estimates: points / points per week" },
+          { key: "hist", label: "From history: items / items per week" },
+          { key: "gap", label: "Difference, estimate minus history", kind: "total" },
+        ],
+        cells: [
+          { row: "est", col: "a", expected: 160, marks: 1, feedback: "Total points remaining." },
+          { row: "est", col: "b", expected: 10, marks: 2, feedback: "Twenty points per two-week sprint is ten points per week. The sprint length is the trap here." },
+          { row: "est", col: "weeks", expected: 16, marks: 2, derivedFrom: { op: "quotient", from: ["est:a", "est:b"] }, methodMarks: 1 },
+          { row: "hist", col: "a", expected: 40, marks: 1, feedback: "Items remaining." },
+          { row: "hist", col: "b", expected: 5, marks: 1 },
+          { row: "hist", col: "weeks", expected: 8, marks: 2, derivedFrom: { op: "quotient", from: ["hist:a", "hist:b"] }, methodMarks: 1 },
+          { row: "gap", col: "weeks", expected: 8, marks: 3, derivedFrom: { op: "difference", from: ["est:weeks", "hist:weeks"] }, methodMarks: 2 },
+        ],
+        invariants: [
+          { key: "gap-ok", label: "The two forecasts together come to 24 weeks", kind: "column-total", cols: ["weeks"], value: 24, marks: 2, hint: "A total row is excluded from its own column sum, so this adds the two forecast rows only: sixteen plus eight. The difference row is checked separately by its own derivation." },
+        ],
+        hints: [
+          "Twenty points per sprint is not twenty points per week. Check the sprint length.",
+          "Each forecast is a division: work remaining divided by the rate.",
+          "The difference row subtracts the history forecast from the estimate forecast.",
+        ],
+        workedAnswer: `<h3>The marked sheet</h3>
+<table>
+<tr><th>Method</th><th class="num">Input A</th><th class="num">Input B</th><th class="num">Weeks</th></tr>
+<tr><td>From estimates</td><td class="num">160 pts</td><td class="num">10 pts/wk</td><td class="num">16</td></tr>
+<tr><td>From history</td><td class="num">40 items</td><td class="num">5 items/wk</td><td class="num">8</td></tr>
+<tr><th>Difference</th><th class="num"></th><th class="num"></th><th class="num">8</th></tr>
+</table>
+<h3>A factor of two, from the same team</h3>
+<p>The estimate-based forecast says sixteen weeks and the measured one says eight. Both used real data from the same team, and they disagree by a factor of two. Which you believe determines whether this project is a quarter or half a quarter.</p>
+<div class="worked"><span class="callout-label">Why they diverge</span><p>Points were assigned before the work started, so they reflect what people imagined. Items per week reflects what actually happened, including the interruptions, reviews and rework that nobody pictures while estimating. When these two disagree, the measured one is usually closer, and the direction of the error is almost always the same: estimates describe the path where nothing goes wrong.</p></div>
+<div class="field"><span class="callout-label">The trap in the arithmetic, and why it is in the sheet</span><p>Twenty points per two-week sprint is ten points per week, not twenty. Getting that wrong halves the first forecast and makes the two methods agree, which would have produced a comfortable and entirely false conclusion. Unit errors in planning arithmetic are common and they tend to resolve in the direction that avoids an awkward conversation.</p></div>`,
+        minutes: 18,
+        skills: ["Forecasting", "Velocity", "Story point"],
       },
     ],
   },
