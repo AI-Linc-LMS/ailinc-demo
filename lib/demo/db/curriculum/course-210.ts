@@ -187,6 +187,69 @@ const FIG_TOOL = `<figure>
 <figcaption><strong>Everything you can do about tool safety happens in the last step.</strong> The model picks the action and the arguments under the influence of anything in its context, including text an attacker wrote. The gap between the proposed call and its execution is the only place a rule holds regardless of how convincing the attack was.</figcaption>
 </figure>`;
 
+const FIG_SINK = `<figure>
+<svg viewBox="0 0 1000 540" role="img" aria-label="Model output reaching five downstream components, four of which act on it">
+<rect x="356" y="40" width="288" height="96" rx="14" fill="#be123c" opacity="0.18"/>
+<text x="500" y="82" font-size="28" font-weight="800" fill="#be123c" text-anchor="middle">MODEL OUTPUT</text>
+<text x="500" y="118" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">influenced by the context</text>
+<path d="M500 142 V176 M140 176 H860 M140 176 V210 M360 176 V210 M640 176 V210 M860 176 V210" fill="none" stroke="currentColor" opacity="0.45" stroke-width="4"/>
+<rect x="24" y="216" width="232" height="132" rx="14" fill="#b45309" opacity="0.16"/>
+<text x="140" y="262" font-size="26" font-weight="800" fill="#b45309" text-anchor="middle">MARKDOWN</text>
+<text x="140" y="300" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">fetches images</text>
+<text x="140" y="332" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">acts</text>
+<rect x="276" y="216" width="232" height="132" rx="14" fill="#0369a1" opacity="0.16"/>
+<text x="392" y="262" font-size="26" font-weight="800" fill="#0369a1" text-anchor="middle">YOUR CODE</text>
+<text x="392" y="300" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">trusts a field</text>
+<text x="392" y="332" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">acts</text>
+<rect x="528" y="216" width="232" height="132" rx="14" fill="#7c3aed" opacity="0.16"/>
+<text x="644" y="262" font-size="26" font-weight="800" fill="#7c3aed" text-anchor="middle">CONSOLE</text>
+<text x="644" y="300" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">staff read it</text>
+<text x="644" y="332" font-size="26" font-weight="800" fill="#be123c" text-anchor="middle">acts</text>
+<rect x="780" y="216" width="196" height="132" rx="14" fill="#0f766e" opacity="0.16"/>
+<text x="878" y="262" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">TEXT FILE</text>
+<text x="878" y="300" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">sits there</text>
+<text x="878" y="332" font-size="26" font-weight="800" fill="#0f766e" text-anchor="middle">inert</text>
+<rect x="24" y="380" width="952" height="140" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="428" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">Four of these are parsers written assuming friendly text.</text>
+<text x="500" y="472" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">Two of them are internal, which is why nobody threat-modelled</text>
+<text x="500" y="504" font-size="27" fill="currentColor" opacity="0.85" text-anchor="middle">them, and why their readers hold the broadest access.</text>
+</svg>
+<figcaption><strong>Input security feels like security; this feels like frontend work.</strong> That split in ownership is why the output path is reviewed to a lower standard, and the vulnerability lives in the composition where neither team is looking.</figcaption>
+</figure>`;
+
+const FIG_REDTEAM = `<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The red team loop from goal through finding to regression test">
+<rect x="24" y="40" width="216" height="108" rx="14" fill="#0369a1" opacity="0.16"/>
+<text x="132" y="88" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">GOAL</text>
+<text x="132" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">an asset, not a trick</text>
+<path d="M248 94 H292" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M304 94 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="312" y="40" width="216" height="108" rx="14" fill="#be123c" opacity="0.16"/>
+<text x="420" y="88" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">ATTEMPT</text>
+<text x="420" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">exact input, recorded</text>
+<path d="M536 94 H580" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M592 94 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="600" y="40" width="216" height="108" rx="14" fill="#b45309" opacity="0.16"/>
+<text x="708" y="88" font-size="27" font-weight="800" fill="#b45309" text-anchor="middle">FINDING</text>
+<text x="708" y="124" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">rated by what it reached</text>
+<path d="M708 160 V206" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M708 220 l-16 -24 h32 z" fill="currentColor" opacity="0.5"/>
+<rect x="600" y="234" width="376" height="108" rx="14" fill="#0f766e" opacity="0.16"/>
+<text x="788" y="282" font-size="27" font-weight="800" fill="#0f766e" text-anchor="middle">FIX, AND ITS RESIDUAL</text>
+<text x="788" y="318" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">removes a class, or bounds one</text>
+<path d="M600 288 H268" stroke="#0f766e" stroke-width="5" stroke-dasharray="11 8"/>
+<path d="M256 288 l24 -12 v24 z" fill="#0f766e"/>
+<rect x="24" y="234" width="232" height="108" rx="14" fill="#7c3aed" opacity="0.16"/>
+<text x="140" y="282" font-size="27" font-weight="800" fill="#7c3aed" text-anchor="middle">REGRESSION</text>
+<text x="140" y="318" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">re-run on every change</text>
+<rect x="24" y="374" width="952" height="126" rx="16" fill="#be123c" opacity="0.13"/>
+<text x="500" y="422" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">A finding is closed when the reproduction fails,</text>
+<text x="500" y="462" font-size="29" font-weight="800" fill="#be123c" text-anchor="middle">not when a fix is deployed.</text>
+<text x="500" y="492" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">Keep the reproduction. The model will change under you.</text>
+</svg>
+<figcaption><strong>The loop closes back on itself, which is the part teams skip.</strong> A one-off exercise before launch describes a system that will not exist in three months, because the prompt will be edited and the model will be upgraded. Reproductions kept as tests are what turn the exercise into a control.</figcaption>
+</figure>`;
+
 const curriculum: CourseCurriculum = {
   5118: {
     topicId: 5118,
@@ -1293,7 +1356,9 @@ ${FIG_ENFORCE}
 <tr><td>An output format that is hard to describe</td><td>A rule that must hold; put it in code</td></tr>
 <tr><td>Tone, which is easier shown than stated</td><td>A rare edge case, which it will overgeneralise</td></tr>
 <tr><td>How to say I do not know</td><td>Anything you will forget to update</td></tr>
-</table>`,
+</table>
+<h3>Instruction conflicts are resolved unpredictably</h3>
+<p>Two rules that quietly contradict each other, added months apart, do not produce an error. The model picks one, differently on different inputs, and the behaviour looks random to whoever is debugging it. Reading the whole assembled prompt out loud, in order, is a crude and effective way to find these, and it is worth doing whenever behaviour becomes hard to explain.</p>`,
       Expert: `<p>Prompts drift. They accumulate a line per incident, each added under pressure, none removed, until the instruction set contradicts itself and nobody can say which rules are load-bearing. Treating the prompt as code addresses this: version control, review, a changelog, and an evaluation suite that runs on every change.</p>
 ${FIG_ENFORCE}
 <table>
@@ -1321,7 +1386,9 @@ ${FIG_ENFORCE}
 <p>Nobody thinks of a retrieval tuning change as a prompt change, and it alters how much material sits between your instructions and the task. A team that doubles the number of retrieved chunks has moved its constraints further from the decision point and may see compliance fall with no edit to the prompt at all.</p>
 <h3>The organisational version of the same problem</h3>
 <p>In most teams the prompt lives in a config file, a database row or an admin UI, and can be changed without review by somebody who is not on the engineering team. That is convenient and it means behaviour ships without a build, without a diff and without a test run. Putting the prompt in version control with a review step is unpopular precisely because it removes that convenience, and it is the single change that most reduces the rate at which these systems drift.</p>
-<div class="field"><span class="callout-label">A prompt changelog is worth more than it sounds</span><p>One line per change saying what it was for. Without it, nobody will ever delete an instruction, because nobody can establish what it was protecting against. Prompts grow monotonically for exactly this reason, and a changelog is the cheapest thing that lets them shrink.</p></div>`,
+<div class="field"><span class="callout-label">A prompt changelog is worth more than it sounds</span><p>One line per change saying what it was for. Without it, nobody will ever delete an instruction, because nobody can establish what it was protecting against. Prompts grow monotonically for exactly this reason, and a changelog is the cheapest thing that lets them shrink.</p></div>
+<h3>Context assembly is the part nobody reviews</h3>
+<p>The prompt that reaches the model is not the template in the repository. It is the template plus retrieved chunks plus history plus tool schemas plus whatever a summariser produced, assembled at runtime by code that usually nobody reviews as prompt. Logging the fully resolved prompt for a sample of requests, and reading a few, is routinely the fastest way to discover that the thing being sent bears little resemblance to the thing that was written.</p>`,
     },
     questions: [
       {
@@ -1551,7 +1618,9 @@ ${FIG_TOOL}
 <tr><td>Tell the user plainly it was not permitted</td><td>Silent failure looks like a bug and generates support load</td></tr>
 <tr><td>Do not explain the exact threshold</td><td>It is a free hint for the next attempt</td></tr>
 <tr><td>Alert if rejections cluster</td><td>Repeated rejections on one account is a signal</td></tr>
-</table>`,
+</table>
+<h3>The tool description is part of the prompt</h3>
+<p>Function descriptions are sent to the model and influence its behaviour exactly as the system prompt does. A description reading use this whenever the customer seems unhappy will produce refunds for mild complaints, and a vague one will produce calls in situations you did not intend. Write them as precisely as you would write the system prompt, and review them when you review it.</p>`,
       Advanced: `<p>Confirmation is the control teams reach for, and it is routinely implemented in a way that provides no assurance. The question is what the human is shown.</p>
 ${FIG_TOOL}
 <table>
@@ -1578,7 +1647,9 @@ ${FIG_TOOL}
 </table>
 <p>No single framing is complete, which is the argument for a cumulative budget alongside the per-call check rather than instead of it.</p>
 <h3>Tool results re-enter the context</h3>
-<p>Whatever a tool returns goes back into the window and becomes input to the next decision. A lookup tool that returns a record containing attacker-written text has just delivered a fresh injection in the middle of the loop, with the model now several steps from any human. Treating tool output as untrusted, and keeping it out of the planning step where the architecture allows, is the same discipline applied one layer in.</p>`,
+<p>Whatever a tool returns goes back into the window and becomes input to the next decision. A lookup tool that returns a record containing attacker-written text has just delivered a fresh injection in the middle of the loop, with the model now several steps from any human. Treating tool output as untrusted, and keeping it out of the planning step where the architecture allows, is the same discipline applied one layer in.</p>
+<h3>Fail closed, and say so</h3>
+<p>If the guard cannot establish whether a call is permitted, because a lookup timed out or the user context is missing, it must refuse. The tempting alternative, allowing the call because the check was inconclusive, converts every transient failure into an authorisation bypass and is reachable by an attacker who can induce load. Write the default explicitly in the code rather than letting it fall out of a try block.</p>`,
       Expert: `<p>The cleanest architectural answer currently available is to separate planning from execution and to keep untrusted content out of the component that decides. A planner that never sees retrieved text, emitting a plan over a fixed vocabulary of actions, cannot be redirected by a document; an executor that handles the text has no authority to change the plan.</p>
 ${FIG_TOOL}
 <table>
@@ -1779,6 +1850,628 @@ ${FIG_TOOL}
           },
         ],
         skills: ["Tool use", "Confused deputy", "Capability scoping", "Human in the loop"],
+      },
+    ],
+  },
+  5124: {
+    topicId: 5124,
+    title: "Treating model output as untrusted input",
+    summary:
+      "Everything downstream of the model is a parser, and most of them were written assuming the text was friendly.",
+    concepts: ["Output handling", "Sink", "Sanitisation", "Schema validation", "Defence in depth"],
+    glossary: {
+      "Output handling": "What the application does with model output before anything acts on it.",
+      Sink: "A component that consumes output and does something with it: a renderer, a parser, a shell, another model.",
+      Sanitisation: "Removing dangerous constructs from content while keeping the rest.",
+      "Schema validation": "Checking structured output against a strict definition and rejecting anything that does not fit.",
+      "Defence in depth": "Layered controls, so one failure does not expose everything behind it.",
+    },
+    body: {
+      Beginner: `<p>You have spent five topics worrying about what goes into the model. This one is about what comes out, and it is the half that teams skip.</p>
+${FIG_SINK}
+<h3>Model output is user input to whatever reads it next</h3>
+<p>If an attacker can influence what the model writes, and the model's text is handed to something that acts on it, then the attacker is supplying input to that component. The usual rules apply: validate it, escape it, or refuse it.</p>
+<table>
+<tr><th>Where the output goes</th><th>What it becomes</th></tr>
+<tr><td>A markdown renderer</td><td>Images and links that fetch</td></tr>
+<tr><td>An HTML surface</td><td>Markup, and possibly script</td></tr>
+<tr><td>A JSON parser</td><td>Fields your code will trust</td></tr>
+<tr><td>A terminal or notebook</td><td>Commands</td></tr>
+<tr><td>Another model</td><td>Instructions, one hop on</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The question to ask of every feature</span><p>What reads this output, and what does it do with text it does not like? If the answer is nobody has checked, that is your next task rather than another line in the system prompt.</p></div>
+<div class="warning"><span class="callout-label">Your own code is a sink too</span><p>If you parse the model's reply for a number and act on it, you are trusting output. A model persuaded to write a different number has reached your business logic without touching a renderer.</p></div>
+<h3>Check one thing today</h3>
+<p>Open your product, ask the assistant a question, and look at what the reply is allowed to contain. Can it show a picture? Can it make a clickable link? Does any part of the answer get read by code rather than by a person?</p>
+<p>Each yes is a place where text the model wrote causes something to happen. That is the list this topic is about, and most teams have never written it down.</p>`,
+      Intermediate: `<p>Treat the model as an untrusted producer and enumerate its sinks. The exercise takes an hour and usually finds two nobody had thought of.</p>
+${FIG_SINK}
+<h3>Structured output needs strict validation</h3>
+<p>Asking for JSON and parsing it is not validation. Validate against a schema that specifies types, permitted values and required fields, and reject anything that does not conform rather than coercing it. Three failures recur: extra fields that downstream code happens to read, enum values outside the permitted set, and numbers outside a sane range.</p>
+<table>
+<tr><th>Weak</th><th>Strong</th></tr>
+<tr><td>JSON.parse and use</td><td>Parse, then validate against a schema</td></tr>
+<tr><td>Coerce unexpected values</td><td>Reject and handle the failure</td></tr>
+<tr><td>Allow extra properties</td><td>Refuse them explicitly</td></tr>
+<tr><td>Trust a numeric field</td><td>Range check against your own records</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Constrained decoding helps and is not sufficient</span><p>Provider features that force output to match a schema remove malformed output, which is a real benefit. They do not constrain the values inside valid output, so a well-formed object with a hostile amount in it still arrives. Shape and content are different problems.</p></div>
+<h3>Rendering, in order of preference</h3>
+<p>First ask whether the capability is needed at all. If a product does not need model-generated images, removing them is stronger and cheaper than curating which hosts are allowed. If it is needed, allowlist. Sanitising is the weakest of the three because it commits you to tracking every bypass class indefinitely.</p>
+<div class="warning"><span class="callout-label">Never pass model output to a raw HTML sink</span><p>Rendering model text with an interface that interprets markup is the same mistake as rendering user comments that way, and the fact that your own model produced it changes nothing about who influenced it.</p></div>
+<h3>Where the output goes next is often not in your repository</h3>
+<p>A generated summary emailed to a customer is rendered by their mail client. A reply posted into a chat tool is rendered by that tool. An answer written into a ticket is rendered by the helpdesk. In each case the sink belongs to somebody else and behaves however they configured it, which usually means remote images load.</p>
+<table>
+<tr><th>Destination you do not control</th><th>Assume</th></tr>
+<tr><td>Email clients</td><td>Remote images may load</td></tr>
+<tr><td>Chat platforms</td><td>Links unfurl automatically</td></tr>
+<tr><td>Helpdesk tools</td><td>Markup rendered, links clickable</td></tr>
+</table>
+<p>You cannot configure those, so the control has to be applied before the text leaves: strip or allowlist on your side, because the receiving system will not do it for you.</p>
+<h3>Treat your own parsing code as a sink</h3>
+<p>Any place your application reads a value out of the model's reply and acts on it is a sink, even with nothing rendered. Extracting a category to route a ticket, a score to rank a result, or a flag to skip a step are all decisions handed to an influenced component. Range-check them, constrain them to an enum you own, and decide what happens when the value is absent rather than letting a default fall through.</p>`,
+      Advanced: `<p>The useful formulation is that a language model converts influence over input into influence over output, so any trust the pipeline places in output is trust extended to whoever could reach the input. Drawing that line explicitly tends to relocate several controls.</p>
+${FIG_SINK}
+<h3>Chained models inherit everything</h3>
+<p>Where one model's output becomes another's input, injection travels. A summariser feeding a planner means a document can reach the planner's context in summarised form, and summarisation is not sanitisation: the summary was produced by a component that was already influenced.</p>
+<table>
+<tr><th>Stage</th><th>Treat its input as</th></tr>
+<tr><td>Retrieval into summariser</td><td>Untrusted</td></tr>
+<tr><td>Summary into planner</td><td>Untrusted, still</td></tr>
+<tr><td>Plan into executor</td><td>Untrusted, and constrain to a fixed vocabulary</td></tr>
+</table>
+<h3>Citations and grounding are not verification</h3>
+<p>A model asked to cite its sources can produce plausible citations that do not support the claim, including to documents that exist. If the citation matters, resolve it in code and check the quoted span actually appears in the source. Displaying an unverified citation gives the answer an authority the system has not earned, and users reasonably read a link as evidence somebody checked.</p>
+<div class="key-idea"><span class="callout-label">Verification has to be mechanical to mean anything</span><p>Comparing the quoted text against the retrieved document is a string operation your code can do. Asking the model whether its own citation is accurate is asking the influenced component to audit itself, which is the pattern this whole course argues against.</p></div>
+<h3>Unfurling is a sink almost nobody lists</h3>
+<p>Post model output containing a URL into a chat platform and the platform fetches it to build a preview, from its own servers, with no user action. The data has left, the fetch did not come from the victim's browser, and no control in your application was involved. Any integration that writes model output into a third-party surface inherits that behaviour.</p>
+<h3>Deciding between strip, allowlist and escape</h3>
+<table>
+<tr><th>Situation</th><th>Choice</th></tr>
+<tr><td>The product never needs the capability</td><td>Strip it</td></tr>
+<tr><td>It needs a small fixed set of sources</td><td>Allowlist, and audit what is on it</td></tr>
+<tr><td>It must display arbitrary user-visible text</td><td>Escape and render as text, never as markup</td></tr>
+</table>
+<p>The third row is the default for anything you are unsure about. Rendering as plain text loses formatting and loses nothing that matters in a security review, and it can be relaxed deliberately later rather than being relaxed by accident on day one.</p>
+<h3>Defaults are where unchecked values do their damage</h3>
+<p>Code that reads a field and falls back to a default when it is missing will also fall back when the value is nonsense, and the default is frequently the permissive option because that is what keeps the demo working. A model persuaded to omit a field has selected the default, so the attacker chooses the behaviour by leaving something out rather than by putting something in.</p>
+<p>The fix is to distinguish absent from invalid, handle both explicitly, and make the failure path the restrictive one. That is ordinary defensive coding, and it is skipped in LLM glue code more often than anywhere else because the output is treated as a result rather than as input.</p>
+<h3>Rendering context matters as much as the content</h3>
+<p>The same string is safe in one position and dangerous in another: inside a text node, inside an attribute, inside a URL, inside a script block. Escaping correctly requires knowing which context the value lands in, which is why passing model output through a templating layer that escapes by context is far safer than cleaning the string once and reusing it everywhere.</p>`,
+      Expert: `<p>Mapping sinks is the same discipline as taint analysis. Mark the model output as tainted, follow it through the system, and identify every point where tainted data reaches a sink that can cause an effect. The difference from classical taint tracking is that no sanitiser fully untaints natural language, so the only reliable step is to constrain what the sink can do.</p>
+${FIG_SINK}
+<table>
+<tr><th>Sink</th><th>Constraint that actually holds</th></tr>
+<tr><td>Markdown renderer</td><td>Remove remote images, or allowlist hosts</td></tr>
+<tr><td>HTML surface</td><td>Render as text; never as markup</td></tr>
+<tr><td>Shell or notebook</td><td>Human confirmation showing the literal command</td></tr>
+<tr><td>Structured consumer</td><td>Schema plus range checks against your own data</td></tr>
+<tr><td>Downstream model</td><td>Fixed action vocabulary, not free text</td></tr>
+</table>
+<h3>Logs and consoles are sinks nobody classifies</h3>
+<p>Model output lands in log aggregators, support consoles and admin dashboards, many of which render HTML or auto-link URLs, and all of which are viewed by staff with higher privileges than any customer. An injection whose payload targets the internal console is attacking the best-privileged audience in the organisation through a surface that was never threat-modelled because it is internal.</p>
+<h3>Why this topic is the one that gets skipped</h3>
+<p>Input security feels like security and output handling feels like frontend work, so it is owned by a different team and reviewed under a different standard. The practical remedy is to put the sink inventory in the same document as the input inventory and have one person responsible for both, because the vulnerability lives in the composition and neither team can see it alone.</p>
+<div class="field"><span class="callout-label">A ten-minute audit worth running today</span><p>Take one feature. List every component that receives the model's output, including logs and internal tools. For each, write what it does with text it does not expect. Most teams find at least one sink that renders markup or fetches a URL, and finding it costs a short meeting rather than an incident.</p></div>
+<h3>Taint tracking, and where the analogy stops</h3>
+<p>Classical taint analysis has sanitisers that genuinely untaint: escape a string for HTML and it is safe in that context, provably. There is no equivalent for natural language, because the dangerous property is meaning rather than syntax. So the discipline transfers and the final step does not: you can track the taint, and you cannot clear it.</p>
+<p>What follows is that the only reliable move is at the sink. Either the sink cannot be made to act by text, or a human sees the literal payload before it acts. Everything else is probability reduction, which is worth having and is not the same claim.</p>
+<h3>Structured output deserves the same scrutiny as free text</h3>
+<p>Teams relax when the model is constrained to JSON, because the shape is guaranteed. The values are not. A schema-valid object with an amount of ninety-nine thousand, an enum your code falls through on, or a string that reaches a template is the same vulnerability in a tidier wrapper. Range checks against your own records, and rejecting unknown fields, are what make structured output safer rather than merely neater.</p>
+<h3>The review that catches composition bugs</h3>
+<p>Put the input inventory and the sink inventory on one page and have one person walk the whole path: what can write into the context, what the model can emit, and what every consumer does with it. The vulnerabilities in this topic live between teams, so a review that is split between teams cannot find them, and that is an organisational observation rather than a technical one.</p>
+<h3>Why sink inventories go stale faster than input inventories</h3>
+<p>Input paths change when somebody adds a data source, which is a deliberate architectural act. Sinks change when somebody adds a notification, an export, a dashboard panel or an integration, which happens weekly and never reads as a security change. An inventory that is not revisited on a schedule describes the product as it was at the last review, and the newest sink is the least likely to have been considered.</p>`,
+    },
+    questions: [
+      {
+        n: 1,
+        question: "Why is asking the model for JSON and calling parse on it insufficient?",
+        options: [
+          "Parsing checks shape, not whether the values are permitted or within range",
+          "Models cannot produce valid JSON reliably",
+          "Parsing is too slow for production",
+          "JSON cannot express the required types",
+        ],
+        answer: 0,
+        explanation:
+          "A successful parse tells you the text was well-formed and nothing about whether the amount is sane, the enum value is one you support, or extra fields are present that some downstream code will happily read. Validation against a strict schema with range checks is a separate step. Constrained decoding helps with the shape problem and does not touch the content problem, which is why a well-formed object carrying a hostile value is the case to design for.",
+        difficulty: "Medium",
+        skill: "Schema validation",
+      },
+      {
+        n: 2,
+        question: "A summariser's output is fed to a planner model. What is the correct way to treat that summary?",
+        options: [
+          "As untrusted input, because the summariser was already exposed to untrusted text",
+          "As trusted, since it came from your own model",
+          "As sanitised, because summarising removes instructions",
+          "As trusted if the summariser used a strict system prompt",
+        ],
+        answer: 0,
+        explanation:
+          "The summariser read attacker-influenced content, so anything it produced may carry that influence forward. Summarisation is not a sanitisation step: it is performed by a component that was itself in scope for the attack. This is the chained-model case, and the general rule is that every stage treats its input as untrusted regardless of which component produced it, with the planner constrained to a fixed action vocabulary rather than free text.",
+        difficulty: "Hard",
+        skill: "Sink",
+      },
+      {
+        n: 3,
+        question: "Which approach to model-generated images is strongest?",
+        options: [
+          "Remove the capability if the product does not need it",
+          "Sanitise image URLs for suspicious patterns",
+          "Instruct the model not to emit images",
+          "Log all image URLs for later review",
+        ],
+        answer: 0,
+        explanation:
+          "Removing the capability eliminates the class, costs nothing ongoing, and fails visibly if the product turns out to need it. Allowlisting hosts is the next best and requires auditing what is on the list. Sanitising commits you to tracking every bypass indefinitely, a prompt instruction competes with the attacker, and logging is detection rather than prevention. The order in that list is the order worth applying generally, not just to images.",
+        difficulty: "Easy",
+        skill: "Sanitisation",
+      },
+      {
+        n: 4,
+        question: "A model returns a citation with a quoted passage. What makes the citation meaningful?",
+        options: [
+          "Code resolving the source and confirming the quoted span appears in it",
+          "The model stating that it checked the source",
+          "The citation being a well-formed URL",
+          "Asking the model to rate its own confidence",
+        ],
+        answer: 0,
+        explanation:
+          "Only a mechanical check establishes anything. Comparing the quoted text against the retrieved document is a string operation your code can perform, and it catches both fabricated quotes and real quotes attached to the wrong source. The other three ask the influenced component to vouch for itself. Displaying an unverified citation is worse than displaying none, because users reasonably read a link as evidence that somebody checked.",
+        difficulty: "Medium",
+        skill: "Output handling",
+      },
+      {
+        n: 5,
+        question: "Why are internal admin consoles a notable sink?",
+        options: [
+          "They often render markup and are viewed by staff with higher privileges than any customer",
+          "They are slower than customer-facing surfaces",
+          "They do not log activity",
+          "They always use a different model",
+        ],
+        answer: 0,
+        explanation:
+          "Internal tools are frequently built quickly, render HTML or auto-link URLs, and were never threat-modelled because internal reads as trusted. The audience is the most privileged in the organisation, so a payload aimed at the console is targeting the best account available through the least scrutinised surface. Any sink inventory that only covers customer-facing rendering has skipped the highest-value target.",
+        difficulty: "Hard",
+        skill: "Sink",
+      },
+      {
+        n: 6,
+        question: "Why does output handling get skipped more often than input handling?",
+        options: [
+          "It looks like frontend work, so it sits with a different team under a different standard",
+          "It is technically harder",
+          "There are no known attacks against output",
+          "Providers handle it automatically",
+        ],
+        answer: 0,
+        explanation:
+          "Input security feels like security and rendering feels like presentation, so ownership splits and each side makes a locally reasonable decision while the vulnerability lives in the composition. Neither team can see it alone, which is why the practical remedy is organisational rather than technical: one inventory covering both input sources and output sinks, with one person accountable for the whole path from context assembly to rendered pixel.",
+        difficulty: "Medium",
+        skill: "Defence in depth",
+      },
+    ],
+    worksheets: [
+      {
+        n: 1,
+        title: "Audit the sinks on one feature",
+        difficulty: "Medium",
+        brief: `<p>A research assistant answers questions from retrieved documents. Its output reaches five places. For each, decide whether that component can be made to cause an effect by text alone, and whether a control is currently required.</p>
+<p>Enter 1 under Acts if the component does something beyond displaying characters, such as fetching, executing or being trusted by later code. Enter 1 under Needs control if you would not ship without a specific control on that path. Total both columns.</p>
+<div class="warning"><span class="callout-label">Two of these are internal and easy to skip</span><p>Internal does not mean trusted. Ask who reads that surface and what privileges they hold.</p></div>`,
+        stubLabel: "Where the output goes",
+        columns: [
+          { key: "acts", label: "Acts (1/0)", type: "number", align: "right" },
+          { key: "ctrl", label: "Needs control (1/0)", type: "number", align: "right" },
+        ],
+        rows: [
+          { key: "md", label: "Markdown panel in the web app" },
+          { key: "plain", label: "A plain-text export the user downloads" },
+          { key: "json", label: "A JSON field your code reads to set a filter" },
+          { key: "console", label: "The internal support console" },
+          { key: "log", label: "The log aggregator, viewed by engineers" },
+          { key: "total", label: "Totals", kind: "total" },
+        ],
+        cells: [
+          { row: "md", col: "acts", expected: 1, marks: 1, feedback: "It fetches images and resolves links, so text alone causes a network request." },
+          { row: "md", col: "ctrl", expected: 1, marks: 1 },
+          { row: "plain", col: "acts", expected: 0, marks: 1, feedback: "Characters in a file do nothing until something else opens it." },
+          { row: "plain", col: "ctrl", expected: 0, marks: 1 },
+          { row: "json", col: "acts", expected: 1, marks: 1, feedback: "Your own code acts on the value, which makes it a sink even though nothing is rendered." },
+          { row: "json", col: "ctrl", expected: 1, marks: 1 },
+          { row: "console", col: "acts", expected: 1, marks: 1, feedback: "It renders markup and is read by staff with broad access. Internal is not trusted." },
+          { row: "console", col: "ctrl", expected: 1, marks: 1 },
+          { row: "log", col: "acts", expected: 1, marks: 1, feedback: "Many aggregators auto-link URLs, and engineers click them." },
+          { row: "log", col: "ctrl", expected: 1, marks: 1 },
+          { row: "total", col: "acts", expected: 4, marks: 2, derivedFrom: { op: "sum", from: ["md:acts", "plain:acts", "json:acts", "console:acts", "log:acts"] }, methodMarks: 1 },
+          { row: "total", col: "ctrl", expected: 4, marks: 2, derivedFrom: { op: "sum", from: ["md:ctrl", "plain:ctrl", "json:ctrl", "console:ctrl", "log:ctrl"] }, methodMarks: 1 },
+        ],
+        invariants: [
+          { key: "t-acts", label: "The Acts total equals the column", kind: "cell-is-column-sum", cols: ["acts"], cell: "total:acts", marks: 2, hint: "The total row is excluded from its own sum: add the five destination rows in the Acts column." },
+          { key: "t-ctrl", label: "The control total equals the column", kind: "cell-is-column-sum", cols: ["ctrl"], cell: "total:ctrl", marks: 2, hint: "Same mechanism as the Acts column: five destination rows add to the total, which is not itself counted." },
+        ],
+        hints: [
+          "Acts means the component does something with the text beyond showing it. Fetching counts. Being trusted by your own code counts.",
+          "Only one of these five is genuinely inert, and it is the one nothing opens automatically.",
+          "The two internal destinations are read by people with more access than any customer.",
+        ],
+        workedAnswer: `<h3>The marked sheet</h3>
+<table>
+<tr><th>Destination</th><th class="num">Acts</th><th class="num">Needs control</th></tr>
+<tr><td>Markdown panel</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><td>Plain-text export</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>JSON field read by your code</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><td>Internal support console</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><td>Log aggregator</td><td class="num">1</td><td class="num">1</td></tr>
+<tr><th>Totals</th><th class="num">4</th><th class="num">4</th></tr>
+</table>
+<h3>Four of five, and two of them are internal</h3>
+<p>The markdown panel is the one everybody writes down. The JSON field is a sink without rendering anything, because your own code trusts the value. The console and the log are the two that get missed, and they are read by the people with the most access in the organisation.</p>
+<div class="worked"><span class="callout-label">The controls, in order of cost</span><p>Remove remote image loading from the panel. Schema-validate the JSON with a range check against your own records. Render the console as text rather than markup. Disable auto-linking in the log view, or accept it and tell engineers not to click. None of these is a large change and none of them involves the prompt.</p></div>
+<div class="field"><span class="callout-label">Why the export scores zero and still belongs on the list</span><p>It is inert today. The moment somebody adds a preview, or the file is opened by a tool that follows links, it becomes a sink. Keeping inert destinations in the inventory with a zero is how you notice when that changes, and it costs one row.</p></div>`,
+        minutes: 16,
+        skills: ["Sink", "Output handling", "Schema validation", "Defence in depth"],
+      },
+    ],
+  },
+  5125: {
+    topicId: 5125,
+    title: "Red-teaming your own feature, and writing it up",
+    summary:
+      "Attack the thing you built, with the architecture in front of you, and produce the document somebody can act on.",
+    concepts: ["Red teaming", "Severity", "Residual risk", "Reproduction", "Disclosure"],
+    glossary: {
+      "Red teaming": "Deliberate adversarial testing of your own system, by somebody trying to make it fail.",
+      Severity: "What an attack actually reached, rather than how clever it was.",
+      "Residual risk": "What remains possible after the fixes, stated explicitly.",
+      Reproduction: "The exact steps and inputs that make a finding happen again.",
+      Disclosure: "What you tell users, customers and vendors about what you found.",
+    },
+    body: {
+      Beginner: `<p>Red teaming is attacking your own feature on purpose, before somebody else does it by accident or on purpose. The useful version is structured: a goal, a list of attempts, and a written record of what worked.</p>
+${FIG_REDTEAM}
+<h3>Set goals, not a vague intention to try things</h3>
+<p>Trying to break it produces a scattered hour. Pick targets that correspond to real consequences for your feature.</p>
+<table>
+<tr><th>Goal</th><th>Succeeds if</th></tr>
+<tr><td>Extract the system prompt</td><td>You see the instructions quoted back</td></tr>
+<tr><td>Read another user's data</td><td>Any record you should not have appears</td></tr>
+<tr><td>Trigger a tool you should not reach</td><td>The call is proposed, whether or not it ran</td></tr>
+<tr><td>Get data out of the browser</td><td>A request leaves to a host you chose</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">A blocked attempt is still a finding</span><p>If the model proposed a refund and the guard refused, your control worked and your prompt did not. Record both. The guard might be removed next quarter by somebody who does not know it is load bearing.</p></div>
+<h3>Write it down as you go</h3>
+<p>Exact input, what you expected, what happened, and whether it is repeatable. Reconstructing a finding from memory an hour later is how half of them get lost, and an unrepeatable finding cannot be fixed or verified.</p>
+<div class="warning"><span class="callout-label">Attack a copy, not production</span><p>Use a staging environment with fixture data. A successful test against production is a real incident, with real data, that you will have to report as one.</p></div>
+<h3>Keep the session short and the notes immediate</h3>
+<p>Two focused hours beat a whole day. Write each attempt down as you make it, not afterwards, because the exact wording is the part that matters and it is the first thing you will misremember.</p>`,
+      Intermediate: `<p>Red teaming your own work has a known weakness: you test the attacks you imagined when building, which are the ones you already defended. Structure is what compensates.</p>
+${FIG_REDTEAM}
+<h3>Work from the architecture, not from a payload list</h3>
+<p>Start with the input inventory and the capability list from earlier topics. For each input path, ask what the most valuable thing reachable from it is, then try to reach it. This produces attacks specific to your system rather than a replay of published examples.</p>
+<table>
+<tr><th>Input path</th><th>Try to reach</th></tr>
+<tr><td>User message</td><td>The system prompt, tool access beyond scope</td></tr>
+<tr><td>Uploaded document</td><td>Anything in the reviewer's session</td></tr>
+<tr><td>Retrieved record</td><td>Another tenant's data, the exfil channel</td></tr>
+<tr><td>Tool result</td><td>The next step of the agent loop</td></tr>
+</table>
+<h3>Rate by what it reached</h3>
+<p>Severity is about consequence, not ingenuity. A one-line payload that moves money outranks an elaborate multi-turn construction that produces a rude sentence, and reports that score by cleverness mislead whoever has to prioritise the fixes.</p>
+<table>
+<tr><th>Severity</th><th>Reached</th></tr>
+<tr><td>Critical</td><td>Money moved, or another user's data left the system</td></tr>
+<tr><td>High</td><td>A tool call outside scope was proposed, or data reached a sink</td></tr>
+<tr><td>Medium</td><td>System prompt extracted, or scope rules bypassed</td></tr>
+<tr><td>Low</td><td>Tone or format violated, no asset touched</td></tr>
+</table>
+<div class="warning"><span class="callout-label">Do not report a pass rate</span><p>Forty attempts, three succeeded sounds like ninety-three per cent safe. If one of the three moved money, the number is actively misleading. Report the findings and their severity, and leave the arithmetic out.</p></div>
+<h3>Four attacks worth trying on any feature</h3>
+<table>
+<tr><th>Attempt</th><th>What a success tells you</th></tr>
+<tr><td>Ask the assistant to repeat its instructions verbatim</td><td>The prompt is readable; stop treating it as secret</td></tr>
+<tr><td>Put an instruction in a field another user can write</td><td>You have a cross-user path</td></tr>
+<tr><td>Ask for an image whose URL contains the conversation</td><td>The renderer is a live exfiltration channel</td></tr>
+<tr><td>Request an action just above any limit you know of</td><td>Whether the limit is in code or in prose</td></tr>
+</table>
+<p>None is sophisticated, all four take a few minutes, and between them they cover the four categories this course has been about. A feature that survives all four is not secure, and a feature that fails any of them has a finding you can act on this week.</p>
+<h3>Record the near misses as carefully as the hits</h3>
+<p>An attempt that changed the assistant's behaviour without reaching the goal is usually a partial success: the injection landed and the consequence was bounded by something. Noting which control bounded it is how you learn what is carrying your risk, and those notes are what let somebody later distinguish a deliberate design from a lucky accident.</p>
+<h3>Vary one thing at a time</h3>
+<p>Changing the payload, the delivery path and the goal together produces a result you cannot attribute. Hold two fixed and move the third, which is slower per attempt and far faster to a finding you can explain, because an unexplained success is not actionable and will not survive review.</p>`,
+      Advanced: `<p>The report is the deliverable, and most of its value is in being usable by somebody who was not in the room. Three sections carry that: reproduction, consequence, and the fix with its residual.</p>
+${FIG_REDTEAM}
+<table>
+<tr><th>Section</th><th>Must contain</th><th>Common failure</th></tr>
+<tr><td>Reproduction</td><td>Exact input, environment, model version</td><td>Paraphrased prompt that no longer works</td></tr>
+<tr><td>Consequence</td><td>What it reached, in business terms</td><td>Describing the technique instead</td></tr>
+<tr><td>Fix</td><td>Where the control goes, and why there</td><td>Add a line to the prompt</td></tr>
+<tr><td>Residual</td><td>What is still possible after the fix</td><td>Omitted, so the fix reads as closure</td></tr>
+</table>
+<h3>Why model version belongs in reproduction</h3>
+<p>A finding that reproduces on one version may not on the next, and may return on the one after. Without the version recorded, a later tester who cannot reproduce it will close the finding, and nobody will know whether it was fixed or merely moved. Record the version, the temperature and the date.</p>
+<div class="key-idea"><span class="callout-label">Separate what you fixed from what you bounded</span><p>Removing remote image rendering fixes a class. Adding a confirmation step bounds a consequence without removing the attack. Both are legitimate and they are different claims, and a report that blurs them leaves the next reader thinking the attack is gone.</p></div>
+<h3>Re-test after the fix, and keep the test</h3>
+<p>A finding is not closed because a fix was deployed; it is closed when the original reproduction fails against the fixed system. Keep that reproduction as a regression test. The prompt will be edited, the model will be upgraded, and the guard will be refactored, and the test is what tells you when one of those undid the work.</p>
+<h3>Inconclusive results are worth recording</h3>
+<p>Attempts that neither clearly succeeded nor clearly failed are the ones most likely to be a real finding somebody gave up on. A tool call that was proposed but not executed, an answer that changed subtly, a response that took much longer than usual: each is a signal that the attack had an effect somewhere. Record them with what you observed, and return to them before the easier successes.</p>
+<h3>Time-box and rotate</h3>
+<p>Sustained attempts against the same target produce diminishing returns quickly, because you converge on your own assumptions. Rotating goals every twenty minutes, and swapping testers between features if more than one person is available, finds more in the same wall-clock time than depth on a single target.</p>
+<h3>Testing the guard, not only the model</h3>
+<p>Half the value of a red-team session on an agent is in attacking the enforcement code rather than the prompt. Call the tool endpoint directly with arguments the model would never produce. Send a well-formed request with no authenticated user. Retry the same idempotency key twice. Submit an amount that is negative, or one that is just under a threshold, repeatedly.</p>
+<p>These are ordinary API tests and they belong in this exercise because the guard is the thing the whole architecture rests on. A model-side attack that is blocked tells you the guard fired once; a direct test tells you whether it holds in cases the model never explores.</p>`,
+      Expert: `<p>An internal red team has a structural blind spot and a structural advantage. The blind spot is shared assumptions: you will not test the thing nobody on the team considered possible. The advantage is architectural knowledge, which lets you aim at the valuable targets rather than probing blindly. A programme that acknowledges both uses internal testing for depth and brings in outside eyes for breadth.</p>
+${FIG_REDTEAM}
+<table>
+<tr><th>Source</th><th>Finds</th><th>Misses</th></tr>
+<tr><td>The team that built it</td><td>Deep, system-specific issues</td><td>Anything outside its own mental model</td></tr>
+<tr><td>Another internal team</td><td>Crossed assumptions</td><td>Techniques nobody internally follows</td></tr>
+<tr><td>External specialists</td><td>Current techniques, fresh framing</td><td>Business-specific consequence, at first</td></tr>
+<tr><td>A bug bounty</td><td>Breadth, continuously</td><td>Depth; and it needs clear scope and rules</td></tr>
+</table>
+<h3>Scope and safety for the testers</h3>
+<p>Write down what is in scope, what data may be used, and what to do on finding something severe. Without that, somebody tests against production because it was easier, or keeps a critical finding to themselves while writing it up properly. Both have happened repeatedly, and both are process failures rather than individual ones.</p>
+<h3>Disclosure, to three audiences</h3>
+<p>Internally, findings go to whoever can fix them with enough detail to act. To customers, the useful statement describes what you have changed and what the feature can do, not the technique. To a vendor whose model or component is implicated, report with reproduction and give them a reasonable window before publishing. Confusing these audiences produces either a leak of a live technique or a customer notice nobody can act on.</p>
+<div class="field"><span class="callout-label">The part teams skip, and the part that compounds</span><p>Run it again after every model upgrade and every significant prompt change, with the previous findings as the starting suite. A one-off exercise before launch tells you about a system that will not exist in three months. The teams that get value from this are the ones where the report is a living document with dates against each finding, and the single most common failure is treating it as a launch gate that is passed once.</p></div>
+<h3>Writing for the reader who will be under pressure</h3>
+<p>The report will most likely be read during an incident, by somebody who did not write it, quickly. That argues for a one-page summary with the critical findings and their consequences first, the detail behind it, and the reproduction in a form that can be pasted rather than retyped. A chronological narrative of the testing session is the most common structure and the least usable one.</p>
+<table>
+<tr><th>Structure</th><th>Usable under pressure?</th></tr>
+<tr><td>Chronological narrative</td><td>No; the reader has to parse it all</td></tr>
+<tr><td>Findings ranked by severity, detail below</td><td>Yes</td></tr>
+<tr><td>Raw transcript with highlights</td><td>Only by the author</td></tr>
+</table>
+<h3>Who the report protects</h3>
+<p>Partly the users, and also the team. A finding that was identified, assessed and deliberately accepted with a named owner is a defensible engineering decision. The same issue, unrecorded, is an oversight. The work is identical; the difference is entirely in whether somebody wrote down that they had seen it and why they left it.</p>
+<h3>Knowing when to stop</h3>
+<p>There is no point at which the testing is complete, so the stopping rule has to be external: a time budget, a set of goals covered, or a severity threshold below which you stop chasing. Without one, red teaming either runs indefinitely or stops arbitrarily when somebody loses interest, and the second is far more common and leaves no record of what was and was not examined.</p>
+<h3>Reporting upward without overstating</h3>
+<p>Executives want a sentence. The honest sentence names what is bounded and by what, rather than offering a grade: critical paths require a human and a code-enforced limit, the exfiltration channel is closed at the renderer, and prompt-level controls reduce but do not eliminate the remainder. That is defensible later, and a claim that the feature is secure against prompt injection is not, because the first screenshot on social media will contradict it.</p>`,
+    },
+    questions: [
+      {
+        n: 1,
+        question: "Why should a blocked attack still be recorded as a finding?",
+        options: [
+          "It shows which control is load bearing, so nobody removes it later unknowingly",
+          "Blocked attacks count toward the pass rate",
+          "It proves the system prompt is working",
+          "Auditors require a minimum number of findings",
+        ],
+        answer: 0,
+        explanation:
+          "If the model proposed a refund and a code guard refused it, the prompt did not hold and the guard did. That is valuable information: it identifies the control that is actually carrying the risk, and without it somebody refactoring in six months may remove the guard believing the prompt handles it. The third option inverts the lesson, since what the test showed is that the prompt failed and something else saved it.",
+        difficulty: "Medium",
+        skill: "Red teaming",
+      },
+      {
+        n: 2,
+        question: "Why is reporting forty attempts, three succeeded misleading?",
+        options: [
+          "It implies a safety percentage while hiding what the three reached",
+          "The sample is too small to be statistically valid",
+          "Attempt counts vary between testers",
+          "It understates the number of attacks",
+        ],
+        answer: 0,
+        explanation:
+          "A ratio invites the reader to conclude the system is ninety-three per cent safe, which is not a meaningful property. If one of the three moved money, the correct summary is that the feature has a critical finding, and the denominator is noise. Severity-ranked findings give whoever prioritises the work the information they need; a pass rate gives them false comfort and no direction.",
+        difficulty: "Easy",
+        skill: "Severity",
+      },
+      {
+        n: 3,
+        question: "Why must the model version be recorded in a reproduction?",
+        options: [
+          "A finding may not reproduce on another version, and could return later",
+          "Providers require version reporting",
+          "Different versions have different APIs",
+          "It determines the cost of the test",
+        ],
+        answer: 0,
+        explanation:
+          "Behaviour shifts across versions in both directions and without documentation. Without the version, a later tester who cannot reproduce the issue will close it, and nobody will be able to say whether it was genuinely fixed or has merely gone quiet until the next upgrade. Record the version, temperature and date, and keep the reproduction as a regression test so an upgrade surfaces a return rather than hiding it.",
+        difficulty: "Medium",
+        skill: "Reproduction",
+      },
+      {
+        n: 4,
+        question: "What is the difference between fixing and bounding a finding?",
+        options: [
+          "A fix removes the class; bounding limits the consequence while the attack still works",
+          "Fixing is permanent and bounding is temporary",
+          "Bounding applies only to prompt changes",
+          "There is no practical difference",
+        ],
+        answer: 0,
+        explanation:
+          "Removing remote image rendering removes an exfiltration class outright. Adding a confirmation step leaves the injection working and limits what it achieves. Both are legitimate engineering responses and they support different claims, so a report that blurs them leaves the next reader believing the attack is gone. Saying which one you did is what makes the residual risk section honest rather than decorative.",
+        difficulty: "Hard",
+        skill: "Residual risk",
+      },
+      {
+        n: 5,
+        question: "What is the main structural weakness of a team red-teaming its own feature?",
+        options: [
+          "They test the attacks they already imagined, which are the ones they defended",
+          "They lack access to the architecture",
+          "They are not motivated to find problems",
+          "They cannot write reproductions",
+        ],
+        answer: 0,
+        explanation:
+          "Shared assumptions bound the test. Anything nobody on the team considered possible will not be attempted, and that set is invisible from inside. The compensating strength is architectural knowledge, which lets internal testers aim at valuable targets rather than probing blindly. A sensible programme uses internal testing for depth and external eyes for breadth, because neither covers the other.",
+        difficulty: "Medium",
+        skill: "Red teaming",
+      },
+      {
+        n: 6,
+        question: "Why should red teaming repeat after a model upgrade?",
+        options: [
+          "Behaviour changes, so previously blocked attacks may work and fixes may regress",
+          "Providers invalidate old findings",
+          "The report expires after a fixed period",
+          "Upgrades always reduce safety",
+        ],
+        answer: 0,
+        explanation:
+          "The system under test is the prompt and the model together, so changing either changes the system. A one-off exercise before launch describes something that will not exist in three months. Keeping prior reproductions as a regression suite and re-running them on every upgrade converts the exercise from a launch gate passed once into a control that keeps working. Upgrades move safety in both directions, which is why the fourth option is wrong and the suite is necessary.",
+        difficulty: "Medium",
+        skill: "Disclosure",
+      },
+    ],
+    deliverables: [
+      {
+        n: 1,
+        title: "A red-team report somebody else could act on",
+        brief: `<p>Red-team an LLM feature. Use one you have built, one from this course, or a feature you are assessing at work with permission to test it.</p>
+<p>The test is whether an engineer who was not present could read your report, reproduce every finding, and know exactly what to change and what would still be possible afterwards.</p>
+<h3>What to submit</h3>
+<ol>
+<li>A test plan: the feature's input paths, its capabilities, and the goals you set yourself, written before you started.</li>
+<li>A findings log: every attempt, with the exact input, what happened, and whether it repeated. Blocked attempts included.</li>
+<li>A remediation table: for each finding, the fix, where the control sits, whether it removes the class or bounds the consequence, and what residual remains.</li>
+</ol>
+<div class="warning"><span class="callout-label">Test a copy</span><p>Staging, fixture data, a mock for anything that moves money or sends messages. A successful test against production is an incident, and you will have to report it as one.</p></div>
+<div class="key-idea"><span class="callout-label">Blocked attempts are part of the deliverable</span><p>They identify which controls are carrying risk. A report containing only successes tells the reader nothing about what is holding the system up.</p></div>`,
+        requires: [
+          { key: "plan", label: "The test plan", formats: ["PDF", "DOCX", "MD"], note: "Input paths, capabilities and goals, written before testing. Dated, because the point is that it preceded the work." },
+          { key: "log", label: "The findings log", formats: ["PDF", "XLSX", "MD"], note: "Exact inputs, model version, temperature, outcome, repeatability. Blocked attempts recorded alongside successes." },
+          { key: "fixes", label: "The remediation table", formats: ["PDF", "DOCX", "XLSX"], note: "Fix, enforcement point, whether it removes or bounds, and the residual risk in plain terms." },
+        ],
+        rubric: [
+          {
+            key: "repro",
+            label: "Findings can actually be reproduced",
+            bands: [
+              "Paraphrased inputs; nobody could repeat these",
+              "Inputs given but environment or version missing",
+              "Exact inputs with version and settings recorded",
+              "All of that, plus each reproduction kept as a regression test",
+            ],
+            weight: 9,
+          },
+          {
+            key: "severity",
+            label: "Severity reflects what was reached",
+            bands: [
+              "No severity, or ranked by how clever the attack was",
+              "Severity present but inconsistently applied",
+              "Severity tied to the asset reached, applied consistently",
+              "That, plus a stated rationale for the boundaries between bands",
+            ],
+            weight: 9,
+          },
+          {
+            key: "fix",
+            label: "Remediations name an enforcement point",
+            bands: [
+              "Fixes are prompt edits for issues that need code",
+              "Mixed; some controls in the right place",
+              "Each fix names where it is enforced and why there",
+              "That, plus explicitly separating what removes a class from what bounds a consequence",
+            ],
+            weight: 9,
+          },
+          {
+            key: "residual",
+            label: "Residual risk is stated honestly",
+            bands: [
+              "Absent, so the report reads as closure",
+              "Mentioned generically",
+              "Specific residual named per finding",
+              "That, plus who accepts it and what would change the assessment",
+            ],
+            weight: 9,
+          },
+        ],
+        modelAnswer: `<h3>What a strong submission looks like</h3>
+<p>The plan is short and was clearly written first: four input paths, three capabilities, five goals. The goals name assets rather than techniques, which is what makes the findings prioritisable later.</p>
+<h3>The findings log</h3>
+<p>Eleven attempts, four successes, three blocked, four inconclusive. Each row carries the literal input in a code block, the model version and date, and a yes or no on repeatability. The three blocked attempts each name the control that stopped them, which is how the reader learns that the refund guard rather than the prompt is holding the money path.</p>
+<h3>The remediation table, where most submissions fall down</h3>
+<table>
+<tr><th>Finding</th><th>Fix</th><th>Enforced</th><th>Removes or bounds</th><th>Residual</th></tr>
+<tr><td>Exfiltration via image</td><td>Host allowlist in the renderer</td><td>Code</td><td>Removes</td><td>Copy and paste by the user</td></tr>
+<tr><td>Prompt extracted</td><td>None; prompt treated as public</td><td>Design decision</td><td>Neither</td><td>Accepted, nothing secret in it</td></tr>
+<tr><td>Refund above limit proposed</td><td>Limit checked before the call</td><td>Code</td><td>Bounds</td><td>Repeated calls under the limit</td></tr>
+</table>
+<p>Row two is the mark of a serious report: a finding assessed and deliberately not fixed, with the reasoning recorded. Row three distinguishes bounding from removing, and names the sequence attack the per-call limit does not address, which becomes the next work item rather than a surprise.</p>
+<div class="field"><span class="callout-label">What separates a four from a three</span><p>The reproductions are checked in as tests, and the residual column names who accepted each one. Those two things turn a document that was true on the day it was written into a control that keeps working through the next model upgrade.</p></div>`,
+        minutes: 180,
+        skills: ["Red teaming", "Severity", "Residual risk", "Reproduction"],
+      },
+    ],
+    evidence: [
+      {
+        n: 1,
+        title: "Film one attack landing, and the same attack failing after the fix",
+        brief: `<p>Record a single unbroken screen capture showing one finding before and after remediation. This is the artefact that proves a fix works, and it takes about four minutes once the work is done.</p>
+<h3>What the recording has to show</h3>
+<ol>
+<li>The feature in its vulnerable state, with the attack succeeding and the consequence visible.</li>
+<li>The change you made, shown in the code or configuration rather than described.</li>
+<li>The same attack, unchanged, now failing, with the rejection visible in a log or on screen.</li>
+</ol>
+<div class="warning"><span class="callout-label">The same attack, not a similar one</span><p>Retyping a slightly different payload after the fix proves nothing. Paste the identical input both times. If it has to change to work before and fail after, say so and explain why.</p></div>`,
+        captures: [
+          { key: "before", label: "The attack succeeding", medium: "video", seconds: 90, mustShow: "The exact input, the response or action it produced, and the consequence: a tool call in a log, a request leaving, or data appearing that should not." },
+          { key: "change", label: "The change itself", medium: "video", seconds: 45, mustShow: "The diff or configuration change on screen, with enough context to see where the control sits." },
+          { key: "after", label: "The same attack failing", medium: "video", seconds: 60, mustShow: "The identical input pasted again, and the refusal with its reason visible in the log or UI." },
+        ],
+        integrity: [
+          "One continuous recording covering all three stages, not three separate clips edited together",
+          "Your enrolment id written on paper or in a terminal, visible at the start",
+          "The system clock visible at least once, so the sequence can be placed in time",
+          "The model version shown on screen, since a finding is specific to a version",
+        ],
+        rubric: [
+          {
+            key: "same",
+            label: "The input is demonstrably identical before and after",
+            bands: [
+              "Different inputs, so nothing is proved",
+              "Similar inputs, difference unexplained",
+              "Identical input, visibly pasted both times",
+              "Identical input, with the variation that still works also demonstrated",
+            ],
+            weight: 9,
+          },
+          {
+            key: "consequence",
+            label: "The consequence is shown rather than asserted",
+            bands: [
+              "The narration claims an effect nothing on screen supports",
+              "Effect partly visible",
+              "The actual effect visible in a log or UI",
+              "Effect visible, and its absence after the fix equally visible",
+            ],
+            weight: 9,
+          },
+          {
+            key: "control",
+            label: "The control is shown where it actually sits",
+            bands: [
+              "Only the prompt is changed for an issue needing code",
+              "Change shown but its location unclear",
+              "Change shown in code, at a sensible enforcement point",
+              "That, plus the rejection path demonstrated with its log line",
+            ],
+            weight: 9,
+          },
+        ],
+        exemplar: [
+          { criterion: "same", band: 3, note: "Clipboard visibly reused for both runs, so there is no question the payload was unchanged." },
+          { criterion: "consequence", band: 3, note: "The mock payments log is on screen in both halves: a call appears in the first, nothing in the second." },
+          { criterion: "control", band: 2, note: "The guard is shown and the submission never displays the rejection log line, so the refusal is inferred rather than seen." },
+        ],
+        minutes: 45,
+        skills: ["Reproduction", "Red teaming", "Residual risk"],
       },
     ],
   },
