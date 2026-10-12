@@ -34,8 +34,9 @@ const CASES = [
   { course: 211, topic: 5130, tier: "Intermediate", label: "burndown chart" },
   { course: 207, topic: 5087, tier: "Intermediate", label: "DIN rail contactor" },
   { course: 207, topic: 5084, tier: "Intermediate", label: "manifold gauge set" },
-  { course: 207, topic: 5085, tier: "Intermediate", label: "manifold on the service ports" },
-  { course: 209, topic: 5107, tier: "Intermediate", label: "racing drone" },
+  { course: 207, topic: 5085, tier: "Advanced", label: "manifold on the service ports" },
+  { course: 209, topic: 5106, tier: "Beginner", label: "racing drone" },
+  { course: 209, topic: 5106, tier: "Expert", label: "racing drone, Expert tier" },
 ];
 
 const browser = await chromium.launch();
