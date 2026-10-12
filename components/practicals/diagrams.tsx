@@ -462,7 +462,110 @@ export function DronePowerDiagram() {
   );
 }
 
+/* ------------------------------------------------------------ scrum flow --- */
+
+export function ScrumFlowDiagram() {
+  return (
+    <Frame label="The Scrum cycle: backlog, sprint, increment and the events around them">
+      <rect x="30" y="200" width="180" height="200" rx="16" fill="currentColor" opacity="0.06" />
+      <text x="120" y="245" fontSize="24" fontWeight="700" fill={LABEL} textAnchor="middle">
+        PRODUCT
+      </text>
+      <text x="120" y="275" fontSize="24" fontWeight="700" fill={LABEL} textAnchor="middle">
+        BACKLOG
+      </text>
+      <path d="M60 310 h120 M60 340 h120 M60 370 h120" stroke="currentColor" opacity="0.3" strokeWidth="8" strokeLinecap="round" />
+      <path d="M215 300 H295" stroke="currentColor" opacity="0.45" strokeWidth="6" />
+      <path d="M310 300 l-26 -13 v26 z" fill="currentColor" opacity="0.45" />
+      <rect x="320" y="150" width="360" height="300" rx="18" fill="#0369a1" opacity="0.1" />
+      <rect x="320" y="150" width="360" height="300" rx="18" fill="none" stroke="#0369a1" strokeWidth="4" />
+      <text x="500" y="196" fontSize="26" fontWeight="800" fill="#0369a1" textAnchor="middle">
+        THE SPRINT
+      </text>
+      <rect x="352" y="222" width="296" height="60" rx="12" fill="currentColor" opacity="0.08" />
+      <text x="500" y="260" fontSize="24" fontWeight="700" fill={LABEL} textAnchor="middle">
+        SPRINT BACKLOG
+      </text>
+      <circle cx="500" cy="350" r="62" fill="none" stroke="currentColor" strokeWidth="6" opacity="0.5" />
+      <path d="M500 288 a62 62 0 0 1 54 31" fill="none" stroke="#0f766e" strokeWidth="10" strokeLinecap="round" />
+      <text x="500" y="344" fontSize="22" fontWeight="700" fill={LABEL} textAnchor="middle">
+        DAILY
+      </text>
+      <text x="500" y="372" fontSize="22" fontWeight="700" fill={LABEL} textAnchor="middle">
+        SCRUM
+      </text>
+      <text x="500" y="436" fontSize="22" fill={LABEL} textAnchor="middle">
+        scope frozen once it starts
+      </text>
+      <path d="M686 300 H766" stroke="currentColor" opacity="0.45" strokeWidth="6" />
+      <path d="M780 300 l-26 -13 v26 z" fill="currentColor" opacity="0.45" />
+      <rect x="790" y="230" width="180" height="140" rx="16" fill="#0f766e" opacity="0.14" />
+      <text x="880" y="290" fontSize="24" fontWeight="700" fill="#0f766e" textAnchor="middle">
+        INCREMENT
+      </text>
+      <text x="880" y="326" fontSize="22" fill={LABEL} textAnchor="middle">
+        done, usable
+      </text>
+      <path d="M880 382 C 880 470, 120 470, 120 414" fill="none" stroke="currentColor" opacity="0.4" strokeWidth="5" strokeDasharray="12 9" />
+      <path d="M120 400 l-13 26 h26 z" fill="currentColor" opacity="0.4" />
+      <text x="500" y="494" fontSize="23" fontWeight="700" fill={LABEL} textAnchor="middle">
+        review and retrospective feed the next one
+      </text>
+      <text x="120" y="140" fontSize="23" fontWeight="700" fill={LABEL} textAnchor="middle">
+        ordered by value
+      </text>
+    </Frame>
+  );
+}
+
+/* --------------------------------------------------------- kanban board --- */
+
+export function KanbanBoardDiagram() {
+  const cols = [
+    { x: 40, label: "BACKLOG", wip: "", n: 5 },
+    { x: 232, label: "IN PROGRESS", wip: "3", n: 3 },
+    { x: 424, label: "REVIEW", wip: "2", n: 2 },
+    { x: 616, label: "TEST", wip: "2", n: 1 },
+    { x: 808, label: "DONE", wip: "", n: 3 },
+  ];
+  return (
+    <Frame label="A Kanban board with work in progress limits in the column headers">
+      {cols.map((c) => (
+        <g key={c.label}>
+          <rect x={c.x} y="60" width="152" height="470" rx="14" fill="currentColor" opacity="0.05" />
+          <rect x={c.x} y="60" width="152" height="60" rx="14" fill="currentColor" opacity="0.1" />
+          <text x={c.x + 76} y="92" fontSize="21" fontWeight="800" fill={LABEL} textAnchor="middle">
+            {c.label}
+          </text>
+          {c.wip && (
+            <text x={c.x + 76} y="114" fontSize="21" fontWeight="800" fill="#be123c" textAnchor="middle">
+              limit {c.wip}
+            </text>
+          )}
+          {Array.from({ length: c.n }).map((_, i) => (
+            <rect
+              key={i}
+              x={c.x + 16}
+              y={140 + i * 68}
+              width="120"
+              height="52"
+              rx="8"
+              fill="#b45309"
+              opacity="0.35"
+            />
+          ))}
+        </g>
+      ))}
+      <text x="500" y="566" fontSize="23" fontWeight="700" fill={LABEL} textAnchor="middle">
+        Test is under its limit; Review is at it. Nothing new may start in Review.
+      </text>
+    </Frame>
+  );
+}
+
 export const DIAGRAMS: Record<string, () => ReactNode> = {
+  "scrum-flow": ScrumFlowDiagram,
+  "kanban-board": KanbanBoardDiagram,
   "refrigeration-cycle": RefrigerationCycleDiagram,
   "ac-wiring": AcWiringDiagram,
   "drone-exploded": DroneExplodedDiagram,

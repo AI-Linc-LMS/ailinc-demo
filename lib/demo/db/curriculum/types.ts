@@ -458,7 +458,13 @@ export interface AuthoredPartTask {
   n: number;
   title: string;
   /** Which bundled diagram to draw. See components/practicals/diagrams. */
-  diagram: "drone-exploded" | "refrigeration-cycle" | "ac-wiring" | "drone-power";
+  diagram:
+    | "drone-exploded"
+    | "refrigeration-cycle"
+    | "ac-wiring"
+    | "drone-power"
+    | "scrum-flow"
+    | "kanban-board";
   /** HTML. */
   brief: string;
   hotspots: PartHotspot[];
