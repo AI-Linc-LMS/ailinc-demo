@@ -31,7 +31,7 @@
     "check:quiz-results": "node scripts/check-quiz-results.mjs",
     "check:kit": "node scripts/check-sales-kit.mjs",
     "check:svg": "node scripts/check-svg-overflow.mjs",
-    "check:covers": "node scripts/check-covers.mjs",
+    "check:covers": "node scripts/check-covers.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.1057.0",
