@@ -434,6 +434,16 @@ export function PracticalProse({ html }: { html: string }) {
         "& .fig-grid figure": { my: 0 },
         "& .fig-photo": { background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)" },
         "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 0 },
+        // See AdaptiveArticleBody: cropping a diagram to 16/9 removes the
+        // labels first. Keep the two kinds of image on different rules.
+        "& .fig-diagram": { background: "#ffffff" },
+        "& .fig-diagram > img": {
+          aspectRatio: "auto",
+          objectFit: "contain",
+          borderRadius: 0,
+          maxHeight: 520,
+          background: "#ffffff",
+        },
         "& .stat-strip": {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(126px, 1fr))",

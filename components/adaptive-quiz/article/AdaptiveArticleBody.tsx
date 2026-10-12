@@ -358,6 +358,19 @@ export function AdaptiveArticleBody({ html, explainTerms, onExplain, reveal = fa
         "& .fig-grid figure": { my: 0 },
         "& .fig-photo": { background: "linear-gradient(135deg, #0f172a 0%, #334155 100%)" },
         "& .fig-photo > img": { aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 0 },
+        // A diagram is not a photograph and must not be cropped to a frame.
+        // Cover on a 16/9 box is right for a scene, where losing the edges
+        // costs nothing, and wrong for a chart or a board: the first thing it
+        // cuts is the row of column headings or the axis labels, which is
+        // usually the exact thing the caption is pointing at.
+        "& .fig-diagram": { background: "#ffffff" },
+        "& .fig-diagram > img": {
+          aspectRatio: "auto",
+          objectFit: "contain",
+          borderRadius: 0,
+          maxHeight: 520,
+          background: "#ffffff",
+        },
         // A row of headline numbers. Used where the figures ARE the point and
         // burying them in a sentence loses them.
         "& .stat-strip": {
