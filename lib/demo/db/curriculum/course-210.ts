@@ -155,6 +155,38 @@ const FIG_ENFORCE = `<figure>
 <figcaption><strong>Both piles are legitimate, and only one of them is security.</strong> Rules about tone belong in the prompt and are allowed to fail. Rules about money, data and irreversible actions belong in code, because a sentence competing with an attacker's sentence is not an access control.</figcaption>
 </figure>`;
 
+const FIG_TOOL = `<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The tool calling loop, with the one point where application code decides">
+<rect x="24" y="40" width="216" height="104" rx="14" fill="#0f766e" opacity="0.16"/>
+<text x="132" y="86" font-size="27" font-weight="800" fill="#0f766e" text-anchor="middle">YOU DEFINE</text>
+<text x="132" y="122" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">the tool surface</text>
+<path d="M248 92 H296" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M308 92 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="316" y="40" width="300" height="104" rx="14" fill="#be123c" opacity="0.16"/>
+<text x="466" y="86" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">THE MODEL CHOOSES</text>
+<text x="466" y="122" font-size="26" fill="currentColor" opacity="0.8" text-anchor="middle">which tool, which arguments</text>
+<path d="M624 92 H672" stroke="currentColor" opacity="0.5" stroke-width="5"/>
+<path d="M684 92 l-22 -11 v22 z" fill="currentColor" opacity="0.5"/>
+<rect x="692" y="40" width="284" height="104" rx="14" fill="#0369a1" opacity="0.2"/>
+<text x="834" y="86" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">YOUR CODE DECIDES</text>
+<text x="834" y="122" font-size="26" font-weight="800" fill="currentColor" text-anchor="middle">run it, or refuse</text>
+<path d="M834 158 V206" stroke="#0369a1" stroke-width="7"/>
+<path d="M834 220 l-16 -24 h32 z" fill="#0369a1"/>
+<rect x="500" y="236" width="476" height="150" rx="16" fill="#0369a1" opacity="0.12"/>
+<text x="738" y="282" font-size="27" font-weight="800" fill="#0369a1" text-anchor="middle">CHECK AGAINST YOUR RECORDS</text>
+<text x="738" y="322" font-size="26" fill="currentColor" opacity="0.85" text-anchor="middle">Is this the user's order?</text>
+<text x="738" y="358" font-size="26" fill="currentColor" opacity="0.85" text-anchor="middle">Is the amount within the limit?</text>
+<rect x="24" y="236" width="440" height="150" rx="16" fill="#be123c" opacity="0.12"/>
+<text x="244" y="282" font-size="27" font-weight="800" fill="#be123c" text-anchor="middle">INFLUENCED BY EVERYTHING</text>
+<text x="244" y="322" font-size="26" fill="currentColor" opacity="0.85" text-anchor="middle">the user, a document,</text>
+<text x="244" y="358" font-size="26" fill="currentColor" opacity="0.85" text-anchor="middle">a record, a tool result</text>
+<rect x="24" y="414" width="952" height="92" rx="16" fill="#b45309" opacity="0.14"/>
+<text x="500" y="460" font-size="29" font-weight="800" fill="#b45309" text-anchor="middle">Prompt wording influences the middle box.</text>
+<text x="500" y="494" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Only the right-hand box is yours to enforce.</text>
+</svg>
+<figcaption><strong>Everything you can do about tool safety happens in the last step.</strong> The model picks the action and the arguments under the influence of anything in its context, including text an attacker wrote. The gap between the proposed call and its execution is the only place a rule holds regardless of how convincing the attack was.</figcaption>
+</figure>`;
+
 const curriculum: CourseCurriculum = {
   5118: {
     topicId: 5118,
@@ -1447,6 +1479,306 @@ ${FIG_ENFORCE}
 <div class="field"><span class="callout-label">What to do with the result</span><p>For each row scoring zero, decide deliberately whether it is specification or whether it needs moving. The rows that need moving are almost always the ones touching money, data or an irreversible action, and moving them is usually a smaller change than the team fears.</p></div>`,
         minutes: 20,
         skills: ["Enforcement point", "Least privilege", "Threat model", "System prompt"],
+      },
+    ],
+  },
+  5123: {
+    topicId: 5123,
+    title: "Tool use is where injection becomes action",
+    summary:
+      "A model that can only write text is a content risk. A model that can call a function is a deputy acting with your credentials, and the same attack now does something.",
+    concepts: ["Tool use", "Confused deputy", "Human in the loop", "Capability scoping", "Idempotency"],
+    glossary: {
+      "Tool use": "Letting a model call functions in your application, with arguments it chooses.",
+      "Confused deputy": "A component with privileges acting on instructions from somebody who lacks them.",
+      "Human in the loop": "A person approving an action, with the real parameters shown, before it happens.",
+      "Capability scoping": "Limiting what a tool can do, by design, rather than by instruction.",
+      Idempotency: "A property where repeating the same call has no additional effect.",
+    },
+    body: {
+      Beginner: `<p>Up to now the worst case has been the model saying something it should not. Give it a tool and the worst case becomes the model doing something it should not, with your application's permissions.</p>
+${FIG_TOOL}
+<h3>What a tool call actually is</h3>
+<p>You describe some functions to the model. It replies with the name of one and the arguments it wants. Your code runs that function. Nothing in that loop checks whether the request originated from your user or from text an attacker put in a document.</p>
+<table>
+<tr><th>Step</th><th>Who decides</th></tr>
+<tr><td>Which tools exist</td><td>You, at build time</td></tr>
+<tr><td>Which tool to call</td><td>The model, influenced by everything in its context</td></tr>
+<tr><td>What arguments to pass</td><td>The model, same</td></tr>
+<tr><td>Whether to run it</td><td>Your code. This is the only place you get a vote.</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The last row is the whole topic</span><p>Everything you can do about tool safety happens between receiving the model's proposed call and executing it. Instructions in the prompt influence the second and third rows; only code controls the fourth.</p></div>
+<h3>Three rules worth adopting immediately</h3>
+<p>Make each tool do one narrow thing. Check the arguments in code against the current user's rights, not against what the model claims. And put a human in front of anything that cannot be undone.</p>
+<div class="warning"><span class="callout-label">Read-only tools are not automatically safe</span><p>A lookup tool that can fetch any record is a data disclosure tool. Narrowness matters as much for reads as for writes, because the model decides the arguments.</p></div>
+<h3>A worked example of the difference</h3>
+<p>Two assistants, same model, same attack. One can look things up and answer. The other can also issue refunds.</p>
+<table>
+<tr><th></th><th>Text only</th><th>With a refund tool</th></tr>
+<tr><td>Attack lands</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Result</td><td>A wrong or embarrassing answer</td><td>Money leaves the business</td></tr>
+<tr><td>Reversible</td><td>Yes, by correcting it</td><td>Sometimes, and not quietly</td></tr>
+<tr><td>Who finds out</td><td>Whoever read it</td><td>Finance, eventually</td></tr>
+</table>
+<p>Nothing about the attack changed. The capability did, and that is what moved it from a content problem to an incident.</p>`,
+      Intermediate: `<p>This is the confused deputy problem, which is well understood outside this field. Your application holds credentials the attacker does not. The attacker supplies instructions. The application acts on them with its own authority. The literature already tells you the fix: act with the requester's authority, not your own.</p>
+${FIG_TOOL}
+<h3>Scoping credentials to the acting user</h3>
+<p>If the agent runs with a service account that can read every record, then a successful injection reads every record. If it runs with a token scoped to the authenticated user, the same injection reaches exactly what that user could have reached anyway, which is usually an acceptable outcome.</p>
+<table>
+<tr><th>Design</th><th>What an injection gets</th></tr>
+<tr><td>Service account, full access</td><td>Everything the service can see</td></tr>
+<tr><td>Per-user token</td><td>What that user could already access</td></tr>
+<tr><td>Per-request scope, narrowed further</td><td>Only what this task needs</td></tr>
+</table>
+<h3>Designing the tool surface</h3>
+<p>Narrow, typed tools remove whole classes of attack rather than reducing their likelihood. Compare two designs for the same feature.</p>
+<table>
+<tr><th>Broad</th><th>Narrow</th></tr>
+<tr><td>run_query(sql)</td><td>get_order(order_id)</td></tr>
+<tr><td>http_request(url, method, body)</td><td>check_delivery(tracking_number)</td></tr>
+<tr><td>send_email(to, subject, body)</td><td>email_receipt(order_id)</td></tr>
+</table>
+<p>In the right-hand column the model chooses an identifier and nothing else. The destination of the email comes from the order record, not from the model, so an injected instruction to mail the data elsewhere has nowhere to put the address.</p>
+<div class="key-idea"><span class="callout-label">Remove the parameter rather than validating it</span><p>Validating a model-supplied email address against a policy is a filter you will have to keep correct. Taking the address from your own database means there is no parameter to attack. Whenever a value can come from your own records instead of from the model, that is the stronger design.</p></div>
+<h3>Validate against your records, not the model's claims</h3>
+<p>A frequent mistake is to have the model pass both the action and the justification, then check one against the other. If the model proposes refund 4,800 for order 991 and also states that order 991 is worth 4,800, verifying the first against the second verifies nothing: both came from the same influenced source.</p>
+<p>The check has to load order 991 from your database and compare. That sounds obvious written down and it is a bug that ships regularly, because the model's arguments arrive together and look like independent facts.</p>
+<h3>What to do when a guard rejects</h3>
+<table>
+<tr><th>Response</th><th>Why</th></tr>
+<tr><td>Log the proposed call and the reason</td><td>You cannot investigate what you did not record</td></tr>
+<tr><td>Tell the user plainly it was not permitted</td><td>Silent failure looks like a bug and generates support load</td></tr>
+<tr><td>Do not explain the exact threshold</td><td>It is a free hint for the next attempt</td></tr>
+<tr><td>Alert if rejections cluster</td><td>Repeated rejections on one account is a signal</td></tr>
+</table>`,
+      Advanced: `<p>Confirmation is the control teams reach for, and it is routinely implemented in a way that provides no assurance. The question is what the human is shown.</p>
+${FIG_TOOL}
+<table>
+<tr><th>Weak confirmation</th><th>Strong confirmation</th></tr>
+<tr><td>The model's summary of what it will do</td><td>The actual resolved parameters</td></tr>
+<tr><td>Approve this refund?</td><td>Refund 4,800 to account ending 3321</td></tr>
+<tr><td>A single approve for a batch</td><td>One decision per consequential action</td></tr>
+<tr><td>Shown after the call is queued</td><td>Shown before anything is executed</td></tr>
+</table>
+<p>The first row is the important one. If the model writes the description the human reads, a compromised model can describe a small refund and request a large one. The confirmation UI must render the arguments that will actually be passed, taken from the call object rather than from any prose the model produced.</p>
+<h3>Approval fatigue is a real failure mode</h3>
+<p>A system that asks for confirmation on everything trains people to approve without reading, and then the control exists on paper and not in practice. Reserve confirmation for actions that are irreversible, move value, or touch another party, and let everything else proceed. A smaller number of meaningful prompts is a stronger control than a larger number of ignored ones.</p>
+<div class="key-idea"><span class="callout-label">Make the dangerous actions rare by design</span><p>If confirmation is firing constantly, that is usually a signal that the tool surface is too broad rather than that the threshold is too low. Splitting a tool so that the common case needs no approval and only the unusual case does is better than lowering the bar.</p></div>
+<h3>Loops need their own limits</h3>
+<p>An agent that can call tools repeatedly needs a cap on iterations, a budget on total spend or tokens, and a timeout. Without them an injected instruction can keep the loop running, and the failure shows up as a cost spike rather than as an alert. These limits are trivial to add at build time and awkward to retrofit after an incident.</p>
+<h3>Sequences, not just single calls</h3>
+<p>A guard that evaluates each call in isolation can be defeated by a sequence that is individually innocuous. Ten refunds of 499 against a 500 threshold is the obvious case, and the general version is any limit expressed per call rather than per session, per user or per period.</p>
+<table>
+<tr><th>Limit expressed as</th><th>Defeated by</th></tr>
+<tr><td>Per call</td><td>Repetition</td></tr>
+<tr><td>Per session</td><td>A new session</td></tr>
+<tr><td>Per user per day</td><td>Patience, or several accounts</td></tr>
+<tr><td>Per user per day plus anomaly alerting</td><td>Considerably less</td></tr>
+</table>
+<p>No single framing is complete, which is the argument for a cumulative budget alongside the per-call check rather than instead of it.</p>
+<h3>Tool results re-enter the context</h3>
+<p>Whatever a tool returns goes back into the window and becomes input to the next decision. A lookup tool that returns a record containing attacker-written text has just delivered a fresh injection in the middle of the loop, with the model now several steps from any human. Treating tool output as untrusted, and keeping it out of the planning step where the architecture allows, is the same discipline applied one layer in.</p>`,
+      Expert: `<p>The cleanest architectural answer currently available is to separate planning from execution and to keep untrusted content out of the component that decides. A planner that never sees retrieved text, emitting a plan over a fixed vocabulary of actions, cannot be redirected by a document; an executor that handles the text has no authority to change the plan.</p>
+${FIG_TOOL}
+<table>
+<tr><th>Property</th><th>Single agent</th><th>Planner and executor split</th></tr>
+<tr><td>Untrusted text reaches the decider</td><td>Yes</td><td>No, by construction</td></tr>
+<tr><td>Action vocabulary</td><td>Open</td><td>Fixed and enumerable</td></tr>
+<tr><td>Cost and latency</td><td>Lower</td><td>Higher, two calls</td></tr>
+<tr><td>Expressiveness</td><td>Higher</td><td>Constrained, sometimes usefully</td></tr>
+</table>
+<p>The split is not free and it is not always warranted. It is warranted when the agent holds authority that an attacker would want, which is the same test as everywhere else in this course.</p>
+<h3>Idempotency and replay</h3>
+<p>A retried tool call that issues a second refund is a correctness bug and an exploitable one, because an attacker who can induce retries can multiply the effect. Passing an idempotency key derived from the request, and having the downstream service deduplicate on it, turns repetition into a no-op. This is ordinary distributed systems hygiene and it is frequently absent in agent code because the loop was written as a prototype.</p>
+<h3>Observability for actions, not just for text</h3>
+<p>Log the proposed call, the resolved arguments, the decision, who or what approved it, and the outcome. Without the proposed call you cannot tell whether a guard fired; without the resolved arguments you cannot tell what would have happened; without the approver you cannot establish accountability. Most agent logging captures the conversation and not the action, which is exactly backwards for incident response.</p>
+<div class="field"><span class="callout-label">The design review question for any agent</span><p>List every tool, and for each one say what the worst single call could do, assuming the arguments were chosen by an attacker. If any answer is unbounded, that is the work item, and it will be fixed by narrowing the tool rather than by improving the prompt. Teams find this exercise uncomfortable because it usually identifies one tool that was added for convenience and is now the whole exposure.</p></div>
+<h3>Why agent frameworks make this worse by default</h3>
+<p>Most frameworks optimise for getting something working quickly, which means broad tools, a service credential, no confirmation and no budget. Each default is reasonable for a demo and wrong for production, and because the demo works the defaults are rarely revisited. A team adopting a framework inherits a threat model nobody chose.</p>
+<table>
+<tr><th>Common default</th><th>Production requirement</th></tr>
+<tr><td>Shell or HTTP tool included</td><td>Remove, or allowlist destinations in code</td></tr>
+<tr><td>Single service credential</td><td>Per-user, per-request scoping</td></tr>
+<tr><td>Unlimited loop iterations</td><td>Capped, with a budget and a timeout</td></tr>
+<tr><td>No approval step</td><td>Required for irreversible or value-moving actions</td></tr>
+</table>
+<h3>Testing a guard properly</h3>
+<p>Unit tests for a guard should include the cases an attacker would construct, not only the happy path: an order belonging to somebody else, an amount above the order value, a negative amount, an amount just under the threshold repeated, and a well-formed call arriving when no user is authenticated. Each is a line of test code and each corresponds to a real reported class of failure.</p>
+<h3>The economics argument for narrowness</h3>
+<p>Broad tools are added because they are faster to build and seem flexible. The cost arrives later and lands on a different team: an unbounded action space cannot be enumerated, which means it cannot be fully tested, which means security review becomes a matter of opinion. Narrow tools are more code up front and turn the review into a checklist of finite length, which is the only version of that review that can be completed.</p>
+<div class="field"><span class="callout-label">What to write in the design doc</span><p>One table: every tool, its arguments, where each argument's value comes from, what the worst hostile call achieves, and which control bounds it. If a row has no control, it is either acceptable and should say so, or it is the work. Teams that produce this table find their exposure concentrated in one or two tools almost every time, which makes the remediation unexpectedly small.</p></div>`,
+    },
+    questions: [
+      {
+        n: 1,
+        question: "At which point in a tool-calling loop does your code get a genuine decision?",
+        options: [
+          "Between receiving the proposed call and executing it",
+          "When deciding which tools to describe to the model",
+          "When the model selects the arguments",
+          "When the model picks which tool to call",
+        ],
+        answer: 0,
+        explanation:
+          "Defining the tool surface at build time matters enormously, and it is not a per-request decision. Selection and arguments are chosen by the model, influenced by everything in its context including anything an attacker placed there. The only point where your code evaluates a specific proposed action against the current user's rights is immediately before execution, which is why every durable tool control lives there.",
+        difficulty: "Easy",
+        skill: "Tool use",
+      },
+      {
+        n: 2,
+        question: "An agent uses a service account that can read all customer records. Why is this worse than a per-user token?",
+        options: [
+          "A successful injection reaches everything the service can see, not just the user's own data",
+          "Service accounts are slower to authenticate",
+          "Per-user tokens are required by most providers",
+          "Service accounts cannot be logged",
+        ],
+        answer: 0,
+        explanation:
+          "This is the confused deputy problem stated concretely. The agent is acting with authority the requester does not have, so an attacker who influences it borrows that authority. Scoping to the acting user means a successful injection reaches only what that user could already have reached, which is usually acceptable. The change is frequently small, often a token swap, and it converts an unbounded breach into a non-event.",
+        difficulty: "Medium",
+        skill: "Confused deputy",
+      },
+      {
+        n: 3,
+        question: "A confirmation dialog shows the model's own summary of the action. What is wrong with it?",
+        options: [
+          "A compromised model can describe a small action while requesting a large one",
+          "Summaries are harder to read than raw parameters",
+          "It adds latency to the approval step",
+          "Nothing, provided the summary is accurate",
+        ],
+        answer: 0,
+        explanation:
+          "The confirmation exists to protect against the model having been influenced, so taking the description from the model defeats the purpose. The dialog must render the resolved arguments from the call object: refund 4,800 to account ending 3321, not the model's sentence about issuing a small goodwill refund. The fourth option is the trap, because the summary being accurate is precisely what cannot be assumed in the case the control was built for.",
+        difficulty: "Hard",
+        skill: "Human in the loop",
+      },
+      {
+        n: 4,
+        question: "Why is replacing send_email(to, subject, body) with email_receipt(order_id) a structural improvement?",
+        options: [
+          "The destination comes from your records, so there is no address parameter to attack",
+          "It sends fewer emails",
+          "It is easier for the model to call correctly",
+          "It avoids needing an email template",
+        ],
+        answer: 0,
+        explanation:
+          "In the narrow version the model chooses an order id and nothing else, and the address is looked up from the order. An injected instruction to mail the data elsewhere has nowhere to put the address, so the attack is not filtered, it is unrepresentable. The general principle is to remove the parameter rather than validate it: whenever a value can be taken from your own records instead of from the model, that is the stronger design.",
+        difficulty: "Medium",
+        skill: "Capability scoping",
+      },
+      {
+        n: 5,
+        question: "A team adds a confirmation step to every tool call. What is the likely result?",
+        options: [
+          "Approval fatigue, so people confirm without reading and the control stops working",
+          "Stronger security, proportional to the number of confirmations",
+          "The model stops proposing dangerous actions",
+          "No change, since confirmations are cheap",
+        ],
+        answer: 0,
+        explanation:
+          "A control that fires constantly trains the people operating it to dismiss it, after which it exists on paper and nowhere else. Reserve confirmation for actions that are irreversible, move value or affect a third party. If confirmation is firing constantly, the usual diagnosis is that the tool surface is too broad rather than that the threshold is too low, and the fix is to split the tool so the common case needs no approval.",
+        difficulty: "Medium",
+        skill: "Human in the loop",
+      },
+      {
+        n: 6,
+        question: "Why does an agent tool call need an idempotency key?",
+        options: [
+          "A retry would otherwise repeat the effect, and an attacker who induces retries multiplies it",
+          "It makes the call faster",
+          "Providers require one for function calling",
+          "It prevents the model from calling the tool twice",
+        ],
+        answer: 0,
+        explanation:
+          "Agent loops retry: on a timeout, on a parse failure, or because the model proposes the call again after an ambiguous result. Without deduplication each retry issues another refund or sends another email, which is a correctness bug that an attacker can deliberately trigger. A key derived from the request, deduplicated downstream, turns repetition into a no-op. It is ordinary distributed systems hygiene that is missing from most agent code because the loop started as a prototype.",
+        difficulty: "Hard",
+        skill: "Idempotency",
+      },
+    ],
+    labs: [
+      {
+        n: 1,
+        title: "Gate a refund tool, then try to talk your way past it",
+        objective:
+          "Build a guard that sits between a proposed tool call and its execution, prove it holds against an injected instruction, and record what it rejected.",
+        ppe: [
+          "Working against a sandbox or mock payments service, never a production account",
+          "No live customer data in the context; use fixtures",
+          "A spend cap configured on the sandbox account as a second layer",
+          "Logging enabled, so every proposed call is recorded whether or not it runs",
+        ],
+        tools: [
+          "A model with function calling enabled",
+          "A mock refund endpoint that records calls",
+          "A fixture order with a known value",
+          "A document containing an injected instruction, for the attack step",
+        ],
+        steps: [
+          {
+            n: 1,
+            title: "Define the tool as narrowly as the job allows",
+            detail: `<p>Declare one function, issue_refund, taking an order id and an amount. Nothing else. Resist adding a reason string, a destination account or a currency override, because each is a parameter an attacker can choose.</p><p>Write down what the worst single call could do if the arguments were chosen by somebody hostile. That sentence is the thing the rest of the lab has to bound.</p>`,
+            tools: ["Function schema"],
+            minutes: 10,
+          },
+          {
+            n: 2,
+            title: "Run it with no guard and watch it work",
+            detail: `<p>Ask the assistant, as an ordinary user would, to refund the fixture order. Confirm the call is proposed and the mock endpoint records it. You now have a working baseline and a feature with no protection at all.</p>`,
+            tools: ["Mock endpoint log"],
+            minutes: 8,
+          },
+          {
+            n: 3,
+            title: "Inject through the document, not the chat box",
+            detail: `<p>Put an instruction inside the order notes field of your fixture, phrased as an ordinary internal note asking for a full refund of a larger amount. Then ask the assistant a neutral question about that order.</p><p>This is the step that makes the point: you are not typing the attack. A field somebody else could write is.</p>`,
+            hazard: { level: "warning", text: "Do this against the mock endpoint only. If this is wired to anything that moves real money, stop and rewire it first." },
+            tools: ["Fixture record"],
+            minutes: 12,
+          },
+          {
+            n: 4,
+            title: "Record what the model proposed",
+            detail: `<p>Read the proposed call from the log rather than from the assistant's reply. Note the amount it asked for. The reply may describe something entirely different from what it requested, and the gap between those two is exactly why confirmation dialogs must render resolved arguments.</p>`,
+            reading: { label: "Amount in the proposed call", unit: "rupees", min: 0, max: 100000, hint: "Take it from the call object in the log, not from the assistant's sentence." },
+            minutes: 8,
+          },
+          {
+            n: 5,
+            title: "Add the guard in code",
+            detail: `<p>Before executing, check three things against your own records rather than against anything the model said: that the order belongs to the authenticated user, that the amount does not exceed the order value, and that the amount is under your automatic threshold. Reject otherwise, and log the rejection with the reason.</p>`,
+            hazard: { level: "danger", text: "The check must read the order from your database. Validating against a value the model supplied in another argument is not a check; it is the model marking its own work." },
+            tools: ["Guard function", "Order repository"],
+            minutes: 20,
+          },
+          {
+            n: 6,
+            title: "Re-run the attack and confirm the rejection",
+            detail: `<p>Repeat step three with the guard in place. The model may still propose the inflated refund; the guard must refuse it. Record the amount at which the rejection fired.</p><p>Note the distinction you have just demonstrated: the attack still succeeds against the model and now fails against the system. That is what it looks like when the control is in the right place.</p>`,
+            reading: { label: "Amount the guard rejected", unit: "rupees", min: 1, max: 100000, hint: "The value in the rejected call, from the guard's log line." },
+            minutes: 12,
+          },
+          {
+            n: 7,
+            title: "Add confirmation for the band above the threshold",
+            detail: `<p>For amounts between the automatic threshold and the order value, require a human decision. Render the resolved order id and amount in the prompt, taken from the call object. Do not render the model's description of the action.</p>`,
+            tools: ["Confirmation UI or console prompt"],
+            minutes: 15,
+          },
+          {
+            n: 8,
+            title: "Write down what is still possible",
+            detail: `<p>List what an attacker can still achieve: proposing calls that get rejected and logged, consuming tokens, and influencing the assistant's text. Then list what they cannot: exceeding the threshold without a human, refunding an order that is not the user's, or sending money anywhere other than the original payment method.</p><p>That pair of lists is the deliverable. A guard whose residual risk has not been written down tends to be described, later, as having made the feature safe.</p>`,
+            minutes: 10,
+          },
+        ],
+        skills: ["Tool use", "Confused deputy", "Capability scoping", "Human in the loop"],
       },
     ],
   },
