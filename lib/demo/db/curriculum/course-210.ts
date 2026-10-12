@@ -2203,7 +2203,9 @@ ${FIG_REDTEAM}
 <p>Sustained attempts against the same target produce diminishing returns quickly, because you converge on your own assumptions. Rotating goals every twenty minutes, and swapping testers between features if more than one person is available, finds more in the same wall-clock time than depth on a single target.</p>
 <h3>Testing the guard, not only the model</h3>
 <p>Half the value of a red-team session on an agent is in attacking the enforcement code rather than the prompt. Call the tool endpoint directly with arguments the model would never produce. Send a well-formed request with no authenticated user. Retry the same idempotency key twice. Submit an amount that is negative, or one that is just under a threshold, repeatedly.</p>
-<p>These are ordinary API tests and they belong in this exercise because the guard is the thing the whole architecture rests on. A model-side attack that is blocked tells you the guard fired once; a direct test tells you whether it holds in cases the model never explores.</p>`,
+<p>These are ordinary API tests and they belong in this exercise because the guard is the thing the whole architecture rests on. A model-side attack that is blocked tells you the guard fired once; a direct test tells you whether it holds in cases the model never explores.</p>
+<h3>Severity needs a written boundary</h3>
+<p>Without one, severity is assigned by whoever writes the finding and drifts between testers and between sessions. Write down what separates critical from high, in terms of the asset reached rather than the technique used, and apply it to every finding including your own. The document takes ten minutes and it is what makes a severity-ranked list prioritisable by somebody who was not there.</p>`,
       Expert: `<p>An internal red team has a structural blind spot and a structural advantage. The blind spot is shared assumptions: you will not test the thing nobody on the team considered possible. The advantage is architectural knowledge, which lets you aim at the valuable targets rather than probing blindly. A programme that acknowledges both uses internal testing for depth and brings in outside eyes for breadth.</p>
 ${FIG_REDTEAM}
 <table>
@@ -2231,7 +2233,9 @@ ${FIG_REDTEAM}
 <h3>Knowing when to stop</h3>
 <p>There is no point at which the testing is complete, so the stopping rule has to be external: a time budget, a set of goals covered, or a severity threshold below which you stop chasing. Without one, red teaming either runs indefinitely or stops arbitrarily when somebody loses interest, and the second is far more common and leaves no record of what was and was not examined.</p>
 <h3>Reporting upward without overstating</h3>
-<p>Executives want a sentence. The honest sentence names what is bounded and by what, rather than offering a grade: critical paths require a human and a code-enforced limit, the exfiltration channel is closed at the renderer, and prompt-level controls reduce but do not eliminate the remainder. That is defensible later, and a claim that the feature is secure against prompt injection is not, because the first screenshot on social media will contradict it.</p>`,
+<p>Executives want a sentence. The honest sentence names what is bounded and by what, rather than offering a grade: critical paths require a human and a code-enforced limit, the exfiltration channel is closed at the renderer, and prompt-level controls reduce but do not eliminate the remainder. That is defensible later, and a claim that the feature is secure against prompt injection is not, because the first screenshot on social media will contradict it.</p>
+<h3>Report the date, because findings expire</h3>
+<p>A result is true of one prompt against one model version on one day, and all three move.</p>`,
     },
     questions: [
       {

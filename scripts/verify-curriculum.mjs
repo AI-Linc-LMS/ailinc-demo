@@ -576,7 +576,9 @@ let figureCount = 0;
  * Intermediate, so that is the one that has to carry something visual; a
  * diagram on the Expert tier is a diagram almost nobody sees.
  */
-const VOCATIONAL = [206, 207, 208, 209];
+// The courses held to the full authoring standard: a figure on the tier
+// learners land on, and the per-tier word floors below.
+const VOCATIONAL = [206, 207, 208, 209, 210, 211];
 
 /**
  * How much prose a reading tier owes.
@@ -615,7 +617,12 @@ for (const file of files) {
     for (const [i, t] of topics.entries()) {
       const body = src.slice(t.at, i + 1 < topics.length ? topics[i + 1].at : src.length);
       const tier = /(      Intermediate: `)([\s\S]*?)(`,\n)/.exec(body);
-      if (!tier || !/<figure/.test(tier[2])) {
+      // Two authoring styles, both legitimate: the trade courses write the
+      // figure inline, the newer ones hold it in a template constant and
+      // interpolate it. Checking only for the literal tag reported five
+      // topics as having no figure when every one of them had one.
+      const hasFigure = tier && (/<figure/.test(tier[2]) || /\$\{FIG_[A-Z_]+\}/.test(tier[2]));
+      if (!hasFigure) {
         fail(where, `topic ${t.id} has no figure on the Intermediate tier, which is the one learners land on`);
       }
       for (const [name, floor] of Object.entries(TIER_FLOOR)) {
