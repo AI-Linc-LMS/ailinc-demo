@@ -155,6 +155,18 @@ const COVERS: Record<number, string> = {
   // An FPV quadcopter mid-build: carbon frame, flight controller stack, ESC
   // wiring, motors and props.
   209: "photo-1774553988130-ccda57774818",
+  // An open padlock standing on a white keyboard, in a calm teal and white
+  // palette. Chosen over the neon light-trail padlock, which is the 2010s
+  // hacker stock cliche and fights every other card in the grid, and over two
+  // ChatGPT splash screens, which would put a competitor's branding on an
+  // AI Linc card. The padlock being OPEN is the point: the course is about the
+  // ways a prompt gets levered open, not about reassurance.
+  210: "photo-1654588834398-f594db5164d3",
+  // Two people holding up three sticky notes reading TO DO, DOING and DONE:
+  // the three columns of a Kanban board, in the handwriting they are actually
+  // written in. The literal subject of the course rather than a generic
+  // meeting-room shot.
+  211: "photo-1611224885990-ab7363d1f2a9",
 };
 
 /** The cover photo for a course, or "" when none is mapped. */
