@@ -1588,7 +1588,11 @@ const curriculum: CourseCurriculum = {
 </table>
 <h3>Terminal identification is pure arithmetic</h3>
 <p>The two smaller readings should add up to the largest. The terminal common to both smaller readings is C, the lower of those two goes to R, the higher to S.</p>
-<div class="warning"><span class="callout-label">When they do not add up</span><p>You have an open or shorted winding, not a terminal identification problem. That distinction saves re-measuring a motor that is already condemned.</p></div>`,
+<div class="warning"><span class="callout-label">When they do not add up</span><p>You have an open or shorted winding, not a terminal identification problem. That distinction saves re-measuring a motor that is already condemned.</p></div>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Contactor_DIN_IEK.jpg/1280px-Contactor_DIN_IEK.jpg" alt="A DIN rail contactor with its terminals numbered: L1 L2 L3 on the line side, T1 T2 T3 on the load side, 13 and 14 for the auxiliary contact and A1 A2 for the coil" loading="lazy"/>
+<figcaption><strong>The numbering is the whole diagnostic map.</strong> L1 to L3 is the supply side, T1 to T3 the load side, 13 and 14 the auxiliary contact, and A1 to A2 the coil. Voltage across A1 and A2 tells you the control circuit arrived; voltage between an L and its matching T, with the coil energised, tells you the contact is burnt.<span class="credit">Photo: Kae, CC BY-SA 3.0, via Wikimedia Commons</span></figcaption>
+</figure>`,
       Advanced: `<p>The sum rule follows from the windings being in series between run and start with common tapped between them, so C to R plus C to S equals R to S for a healthy motor.</p>
 <h3>Insulation resistance separates a motor worth saving</h3>
 <p>A megohmmeter reading between any winding and the shell should be in the tens of megohms; low megohms or below indicates breakdown. A compressor that passes a winding resistance check can still be on its way to an earth fault that will trip the supply. It is the test most often skipped because it needs a different instrument.</p>
