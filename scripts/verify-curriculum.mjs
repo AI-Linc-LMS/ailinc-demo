@@ -55,6 +55,26 @@ try {
   process.exit(1);
 }
 
+/**
+ * The diagrams the part-identification player can actually draw.
+ *
+ * Parsed out of components/practicals/diagrams.tsx so this cannot disagree
+ * with reality. The previous version was a literal array that had to be
+ * edited by hand whenever a diagram was added, which is exactly the kind of
+ * duplication that fails quietly in the direction of a false pass.
+ */
+const KNOWN_DIAGRAMS = (() => {
+  const src = fs.readFileSync("components/practicals/diagrams.tsx", "utf8");
+  const map = src.slice(src.indexOf("export const DIAGRAMS"));
+  const body = map.slice(map.indexOf("{"), map.indexOf("};") + 1);
+  const keys = [...body.matchAll(/["']?([a-z][a-z0-9-]*)["']?\s*:/g)].map((m) => m[1]);
+  if (!keys.length) {
+    console.error("could not parse the DIAGRAMS map; the part-id check would pass vacuously");
+    process.exit(1);
+  }
+  return keys;
+})();
+
 const problems = [];
 const fail = (where, msg) => problems.push(`${where}: ${msg}`);
 
@@ -455,7 +475,10 @@ for (const file of files) {
     }
 
     // part identification
-    const KNOWN_DIAGRAMS = ["drone-exploded", "refrigeration-cycle", "ac-wiring", "drone-power"];
+    // Read from the component rather than restating it. A hardcoded copy of
+    // this list silently went stale the first time a diagram was added, and a
+    // check that can drift from the thing it checks is worth less than it
+    // looks: it would have kept passing for a diagram that had been deleted.
     for (const pt of topic.parts ?? []) {
       practicalCount++;
       const tw = `${where} parts ${pt.n} (${pt.title})`;

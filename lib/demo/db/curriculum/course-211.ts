@@ -48,6 +48,32 @@ const FIG_THREE = `<figure>
 <figcaption><strong>They are answers to different questions, not competitors.</strong> A team that cannot finish anything has a work-in-progress problem. A team that finishes things nobody wanted has a feedback problem. A team whose code fights every change has an engineering problem, and no ceremony fixes that one.</figcaption>
 </figure>`;
 
+const FIG_WIP = `<figure>
+<svg viewBox="0 0 1000 520" role="img" aria-label="The same five items worked all at once compared with two at a time">
+<rect x="24" y="40" width="464" height="230" rx="18" fill="#be123c" opacity="0.12"/>
+<rect x="24" y="40" width="464" height="230" rx="18" fill="none" stroke="#be123c" stroke-width="3"/>
+<text x="256" y="92" font-size="30" font-weight="800" fill="#be123c" text-anchor="middle">ALL FIVE AT ONCE</text>
+<rect x="56" y="118" width="400" height="26" rx="6" fill="#be123c" opacity="0.45"/>
+<rect x="56" y="152" width="400" height="26" rx="6" fill="#be123c" opacity="0.45"/>
+<rect x="56" y="186" width="400" height="26" rx="6" fill="#be123c" opacity="0.45"/>
+<text x="256" y="246" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">everything finishes at the end</text>
+<rect x="512" y="40" width="464" height="230" rx="18" fill="#0f766e" opacity="0.12"/>
+<rect x="512" y="40" width="464" height="230" rx="18" fill="none" stroke="#0f766e" stroke-width="3"/>
+<text x="744" y="92" font-size="30" font-weight="800" fill="#0f766e" text-anchor="middle">TWO AT A TIME</text>
+<rect x="544" y="118" width="150" height="26" rx="6" fill="#0f766e" opacity="0.55"/>
+<rect x="544" y="152" width="260" height="26" rx="6" fill="#0f766e" opacity="0.45"/>
+<rect x="544" y="186" width="390" height="26" rx="6" fill="#0f766e" opacity="0.35"/>
+<text x="744" y="246" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">the first one finishes early</text>
+<rect x="24" y="300" width="952" height="92" rx="16" fill="#0369a1" opacity="0.14"/>
+<text x="500" y="344" font-size="30" font-weight="800" fill="#0369a1" text-anchor="middle">cycle time = work in progress / throughput</text>
+<text x="500" y="380" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Halve the first and the third halves with it.</text>
+<rect x="24" y="410" width="952" height="96" rx="16" fill="#b45309" opacity="0.13"/>
+<text x="500" y="454" font-size="28" font-weight="800" fill="#b45309" text-anchor="middle">Same people, same speed, same total work.</text>
+<text x="500" y="490" font-size="27" font-weight="800" fill="currentColor" text-anchor="middle">Only the waiting changed.</text>
+</svg>
+<figcaption><strong>Nobody works faster in the right-hand picture.</strong> The same five items take the same total effort; they are simply not all in flight at once, so each one spends less time waiting. That is the whole of Little's law, drawn, and it is why limiting work in progress is the cheapest intervention in this course.</figcaption>
+</figure>`;
+
 const curriculum: CourseCurriculum = {
   5126: {
     topicId: 5126,
@@ -261,6 +287,270 @@ ${FIG_THREE}
           { id: 12, front: "What the evidence supports", back: "Small batches, short lead times, automated testing and deployment", extra: { Notable: "None of those is a meeting" }, hint: "Where to spend effort if you can pick one thing", tags: ["Theory"] },
         ],
         skills: ["Iteration", "Feedback loop", "Empirical process", "Constraint", "Cargo cult"],
+      },
+    ],
+  },
+  5127: {
+    topicId: 5127,
+    title: "Scrum: the roles, events and artefacts that carry it",
+    summary:
+      "Three accountabilities, five events, three artefacts. Each exists to make one specific failure visible, and each is routinely kept after its mechanism has gone.",
+    concepts: ["Product owner", "Sprint", "Increment", "Definition of done", "Accountability"],
+    glossary: {
+      "Product owner": "The single person accountable for what the team builds and in what order.",
+      Sprint: "A fixed period, unchanged in length, inside which scope does not grow.",
+      Increment: "Something usable produced by the end of the sprint, meeting the definition of done.",
+      "Definition of done": "The shared written standard work must meet before it counts as finished.",
+      Accountability: "A named person answerable for an outcome, as distinct from a job title.",
+    },
+    body: {
+      Beginner: `<p>Scrum is small. Three accountabilities, five events, three artefacts, and a rule that the sprint length does not change. Everything else a team does around it is their own invention, which is worth knowing because most complaints about Scrum are about those inventions.</p>
+<h3>The three accountabilities</h3>
+<table>
+<tr><th>Who</th><th>Accountable for</th></tr>
+<tr><td>Product owner</td><td>What gets built, and in what order</td></tr>
+<tr><td>Developers</td><td>How it gets built, and that it meets the definition of done</td></tr>
+<tr><td>Scrum master</td><td>That the process is understood and obstacles are removed</td></tr>
+</table>
+<p>These are accountabilities rather than job titles. One person can hold more than one on a small team. A product owner who is really a committee is the commonest structural failure, because ordering a backlog requires somebody to decide and a committee decides slowly or not at all.</p>
+<h3>The five events</h3>
+<table>
+<tr><th>Event</th><th>Question it answers</th></tr>
+<tr><td>Sprint planning</td><td>What will we attempt, and how?</td></tr>
+<tr><td>Daily scrum</td><td>Are we still on track for the goal?</td></tr>
+<tr><td>Sprint review</td><td>Did we build the right thing?</td></tr>
+<tr><td>Retrospective</td><td>How do we work better next time?</td></tr>
+<tr><td>The sprint</td><td>It is itself an event, containing the others</td></tr>
+</table>
+<h3>The three artefacts</h3>
+<p>The product backlog is everything that might be built, ordered. The sprint backlog is what was selected plus the plan for it. The increment is what actually got finished. Each has a commitment attached: a product goal, a sprint goal, and the definition of done.</p>
+<div class="key-idea"><span class="callout-label">The daily is not a status report</span><p>It is the team re-planning its own next day against the sprint goal. If it is a round of people reporting upward to one person, the mechanism has been replaced by a meeting that produces no decisions and takes the same fifteen minutes.</p></div>
+<div class="warning"><span class="callout-label">The definition of done is load bearing</span><p>Without a shared written standard, done means whatever each person assumed, and the increment is not usable. Most arguments about velocity turn out to be arguments about this document.</p></div>`,
+      Intermediate: `<p>Each event exists to make a specific failure visible. Knowing which one tells you when the event is working and when it has become theatre, and the theatre version is always cheaper to run.</p>
+<table>
+<tr><th>Event</th><th>Failure it exposes</th><th>Theatre version</th></tr>
+<tr><td>Planning</td><td>Taking on more than can be finished</td><td>Filling to capacity every time</td></tr>
+<tr><td>Daily</td><td>Work quietly stuck</td><td>Three questions answered to a manager</td></tr>
+<tr><td>Review</td><td>Building the wrong thing</td><td>A slide deck, no working software</td></tr>
+<tr><td>Retrospective</td><td>The process itself failing</td><td>The same observations, never actioned</td></tr>
+</table>
+<h3>The sprint goal does more work than the backlog</h3>
+<p>A sprint goal is one sentence saying why this sprint matters. Without it a sprint is a list of unrelated items, any of which can be dropped without consequence, so there is nothing to protect and nothing to steer by. With one, the team can swap items that do not serve it and still succeed, which is the flexibility the framework is supposed to provide.</p>
+<div class="key-idea"><span class="callout-label">Scope is frozen; the plan is not</span><p>The common misreading is that nothing may change during a sprint. What is fixed is the goal and the capacity commitment. How the team reaches the goal is theirs to change daily, and finding a better route mid-sprint is a success rather than a deviation.</p></div>
+<h3>What to do with urgent work</h3>
+<p>Three honest options. It waits for the next sprint. It displaces something of equal size, with the product owner agreeing. Or the sprint is cancelled because the goal no longer makes sense. The dishonest fourth, adding it on top, is the one most teams take, and it is why their velocity is unstable and their forecasts are worthless.</p>
+<table>
+<tr><th>Response</th><th>Visible cost</th><th>Keeps the mechanism?</th></tr>
+<tr><td>Wait</td><td>Delay to the new work</td><td>Yes</td></tr>
+<tr><td>Displace</td><td>Something agreed gets dropped</td><td>Yes</td></tr>
+<tr><td>Cancel the sprint</td><td>Replanning, visibly</td><td>Yes</td></tr>
+<tr><td>Add on top</td><td>None visible, all hidden</td><td>No</td></tr>
+</table>
+<p>The pattern is that the three honest options all have a price somebody can see, and that visibility is the mechanism. Interruption without cost increases until it fills the sprint.</p>`,
+      Advanced: `<p>Scrum is deliberately incomplete: it specifies a container and leaves the engineering practices out, which is why it is so often paired with XP. That incompleteness is also why it can be adopted without changing anything that matters. A team can run every event correctly and still release quarterly from a branch nobody integrates.</p>
+<h3>Where Scrum teams break</h3>
+<table>
+<tr><th>Symptom</th><th>Underlying cause</th></tr>
+<tr><td>Velocity swings wildly</td><td>Work injected mid-sprint, or a weak definition of done</td></tr>
+<tr><td>Carry-over every sprint</td><td>Items too large to finish inside one</td></tr>
+<tr><td>Review has nothing to show</td><td>No increment; integration happens at the end</td></tr>
+<tr><td>Retro actions never land</td><td>No capacity reserved, so they lose to feature work</td></tr>
+</table>
+<p>The last has a mechanical remedy: carry at most one or two actions, give each an owner and a sprint, and put them in the sprint backlog as work rather than as intentions. A retrospective whose output competes for unreserved slack will produce nothing indefinitely, and the team will conclude that retrospectives do not work.</p>
+<div class="key-idea"><span class="callout-label">The product owner role is where organisations cheat</span><p>Scrum requires one person who can decide. Organisations frequently appoint somebody with the title and withhold the authority, so every ordering decision escalates and the team experiences the framework as overhead. It is overhead, in that configuration, because the role that makes it function is nominal.</p></div>
+<h3>Reading a definition of done</h3>
+<p>A good one is checkable by somebody who was not involved: tested at a stated level, reviewed, documented where applicable, deployed to a named environment, no known defects above a stated severity. A weak one contains words like appropriate and sufficient, which leave the judgement with whoever is under pressure at the time.</p>
+<p>The test is whether two reasonable people could disagree about whether an item meets it. If they can, it is a statement of intent rather than a definition, and it will be interpreted generously in exactly the sprints where it matters most.</p>
+<h3>Why carry-over compounds</h3>
+<p>An item that does not finish is re-estimated, re-planned and re-discussed, so the cost of not finishing is paid several times. Teams that tolerate routine carry-over are usually sizing items against a sprint rather than against a few days, and the fix is splitting rather than extending the sprint.</p>`,
+      Expert: `<p>The framework's authors describe it as a container for other practices. The honest reading of thirty years of adoption is that the container travels well and the practices do not, and the reason is cost rather than comprehension.</p>
+<table>
+<tr><th>Element</th><th>Adoption cost</th><th>Genuinely present</th></tr>
+<tr><td>The events</td><td>Calendar time</td><td>Almost always</td></tr>
+<tr><td>A real definition of done</td><td>Engineering investment</td><td>Sometimes</td></tr>
+<tr><td>An empowered product owner</td><td>Organisational change</td><td>Least often</td></tr>
+</table>
+<p>That ordering explains ceremony without benefit entirely: the cheapest element has the least independent effect and is adopted first and alone. Any assessment of a Scrum adoption should start at the bottom row rather than the top.</p>
+<h3>The scrum master as a disappearing role</h3>
+<p>The accountability is to make the team able to run the process without help, so a successful scrum master makes their own full-time role unnecessary. Organisations that staff it permanently and measure it by activity create an incentive against that outcome, and the role drifts toward meeting administration and status reporting, which is neither what it is for nor valuable.</p>
+<h3>Commitment, and a word that was deliberately changed</h3>
+<p>Earlier versions had teams commit to a sprint scope. The word was replaced by forecast because commitment was being used to hold teams to estimates made under uncertainty, which converted a planning tool into a contract. The current framing commits the team to the sprint goal rather than to the item list, and the distinction matters: the goal is something a team can take responsibility for, and a list of estimates is not.</p>
+<h3>When Scrum is the wrong choice</h3>
+<p>Interrupt-driven work, because a protected sprint is fiction. Single-person work, because most of the apparatus is coordination. Research with no definable increment, because the review has nothing to inspect. Each is better served by flow, and recognising it in advance avoids the common outcome of a team performing sprint ceremonies around work that never fitted a sprint, then concluding the method is useless.</p>
+<div class="field"><span class="callout-label">The question that reveals whether Scrum is doing anything</span><p>Ask what the team decided not to do last sprint, and who decided it. A functioning Scrum produces a steady stream of explicit prioritisation decisions attributable to one person. If nobody can name one, the backlog is not being ordered, and the central mechanism is absent however well the events are run.</p></div>`,
+    },
+    questions: [
+      { n: 1, question: "What is the daily scrum for?", options: ["The developers re-planning their next day against the sprint goal", "Reporting status to the scrum master or a manager", "Assigning tasks to individuals for the day", "Reviewing finished work with stakeholders"], answer: 0, explanation: "It is a planning event owned by the people doing the work, so its output should be changed plans rather than transferred information. The status-report version is the commonest degradation: it produces no decisions, takes the same fifteen minutes, and is indistinguishable from the real thing to an observer. The diagnostic is whether anything about the day changes as a result.", difficulty: "Easy", skill: "Sprint" },
+      { n: 2, question: "Urgent work arrives mid-sprint. Which response is NOT one of the honest options?", options: ["Add it on top of the existing sprint scope", "Let it wait for the next sprint", "Displace something of equal size, with the product owner agreeing", "Cancel the sprint, because the goal no longer makes sense"], answer: 0, explanation: "Adding on top destroys the mechanism while appearing cooperative. It breaks the capacity commitment, makes velocity meaningless, and removes any cost from interrupting, so interruptions increase until they fill the sprint. The other three are legitimate and each has a visible price, which is the point: the sprint boundary works by making the cost of a change explicit, not by forbidding change.", difficulty: "Medium", skill: "Sprint" },
+      { n: 3, question: "How can you tell a definition of done is actually a definition?", options: ["Two reasonable people could not disagree about whether an item meets it", "It has more than ten items", "It has been approved by management", "It mentions testing"], answer: 0, explanation: "Checkability is the property that matters. Tested at a stated level, reviewed, deployed to a named environment, no known defects above a stated severity are all verifiable by somebody who was not involved. Words like appropriate and sufficient leave the judgement with whoever is under pressure, which is exactly the circumstance the document exists for. Length and sign-off are unrelated.", difficulty: "Medium", skill: "Definition of done" },
+      { n: 4, question: "Why do retrospective actions so often fail to happen?", options: ["They compete with committed feature work for unreserved slack, and lose", "Teams identify the wrong problems", "Retrospectives are held too often", "They need management approval"], answer: 0, explanation: "An action with no owner, no sprint and no capacity is an intention, and intentions lose to committed work every time. The remedy is mechanical: at most one or two actions, each with an owner, placed in the sprint backlog as work. A team whose last three retrospectives produced no change does not have an insight problem, it has a scheduling problem, and treating it as the former produces better-facilitated meetings and the same outcome.", difficulty: "Medium", skill: "Accountability" },
+      { n: 5, question: "Which element is adopted most often and has least effect on its own?", options: ["The events", "A real definition of done", "An empowered product owner", "The increment"], answer: 0, explanation: "Scheduling meetings costs calendar time and nothing else, so it is adopted first and nearly always. A definition of done requires engineering investment, and an empowered product owner requires an organisation to delegate authority it may not wish to delegate. That ordering by cost is the whole explanation for ceremony without benefit, and it is why an assessment should start with whether anyone can actually decide.", difficulty: "Hard", skill: "Accountability" },
+      { n: 6, question: "Why was the word commitment replaced with forecast for sprint scope?", options: ["Commitment was being used to hold teams to estimates made under uncertainty", "Forecast is a more modern term", "Teams stopped meeting their commitments", "It simplified the certification exam"], answer: 0, explanation: "The change was substantive rather than cosmetic. Treating an estimate as a promise converts a planning tool into a contract, which incentivises padding and punishes honest uncertainty. The current framing commits the team to the sprint goal rather than to the item list, and that distinction is meaningful: a goal is something a team can take responsibility for, while a list of estimates made before the work started is not.", difficulty: "Hard", skill: "Sprint" },
+    ],
+    parts: [
+      {
+        n: 1,
+        title: "Name the parts of the Scrum cycle, and order the events",
+        diagram: "scrum-flow",
+        brief: `<p>This is one sprint, with the backlog feeding it and the increment coming out. Name each numbered point.</p>
+<p>The label list has more names than there are points. The extras are what each one gets confused with, and the reveal tells you how to separate the pair, so guessing is more useful here than skipping.</p>
+<div class="key-idea"><span class="callout-label">Watch the two backlogs</span><p>The product backlog and the sprint backlog are different artefacts with different owners. Telling them apart is the thing this exercise catches most often.</p></div>`,
+        hotspots: [
+          { key: "product-backlog", label: "Product backlog", x: 12, y: 50, does: "Everything that might be built, ordered by value. Owned by the product owner and never finished.", confusedWith: "The sprint backlog, which is a selected subset the developers own for one sprint." },
+          { key: "sprint", label: "The sprint", x: 50, y: 32, does: "A fixed period whose length does not change. The container for every other event.", confusedWith: "An iteration of convenient length; the fixed duration is the mechanism." },
+          { key: "sprint-backlog", label: "Sprint backlog", x: 50, y: 43, does: "What the developers selected, plus their plan for it. Theirs to change during the sprint.", confusedWith: "The product backlog, which the product owner orders and which covers everything." },
+          { key: "daily", label: "Daily scrum", x: 50, y: 58, does: "The developers re-planning the next day against the sprint goal.", confusedWith: "A status meeting, which transfers information and changes no plans." },
+          { key: "increment", label: "Increment", x: 88, y: 50, does: "Something usable meeting the definition of done. The only honest evidence of progress.", confusedWith: "A demo, which can be assembled from work that is not actually finished." },
+          { key: "feedback", label: "Review and retrospective", x: 50, y: 82, does: "Inspect the product, then the process, and let both change what happens next.", confusedWith: "A sign-off meeting, which inspects nothing and adapts nothing." },
+        ],
+        sequence: [
+          { key: "refine", label: "Order and refine the product backlog", why: "Nothing can be selected sensibly from an unordered list, so this precedes planning rather than being part of it." },
+          { key: "plan", label: "Planning sets a goal and selects work", why: "The goal comes first and the selection serves it. A sprint with items and no goal has nothing to steer by." },
+          { key: "build", label: "Daily scrums while the work is built", why: "Re-planning runs throughout, which is what makes a sprint adaptive rather than a small waterfall." },
+          { key: "review", label: "Review inspects the increment", why: "Product first, with stakeholders, because that is the feedback the next ordering decision needs." },
+          { key: "retro", label: "Retrospective inspects the process", why: "Process last and separately, or it gets crowded out by discussion of the product." },
+        ],
+        minutes: 16,
+        skills: ["Sprint", "Increment", "Product owner", "Definition of done"],
+      },
+    ],
+  },
+  5128: {
+    topicId: 5128,
+    title: "Kanban: flow, WIP limits and why they feel wrong",
+    summary:
+      "The only part of this course with a theorem behind it. Limit work in progress and cycle time falls, by a relationship you can compute and then check.",
+    concepts: ["Work in progress", "Cycle time", "Throughput", "Littles law", "Bottleneck"],
+    glossary: {
+      "Work in progress": "Items started and not finished. The variable Kanban holds down.",
+      "Cycle time": "How long one item takes from start to finish.",
+      Throughput: "How many items finish per unit of time.",
+      "Littles law": "In a stable system, cycle time equals work in progress divided by throughput.",
+      Bottleneck: "The step that limits the whole system's throughput, wherever work piles up in front of it.",
+    },
+    body: {
+      Beginner: `<p>Kanban has four parts: make the work visible, limit how much is in progress at once, watch how long things take, and improve from what you see. The second one is the part that does the work and the part teams remove.</p>
+${FIG_WIP}
+<h3>Why limiting work speeds it up</h3>
+<p>This feels backwards. Starting fewer things cannot possibly finish more, until you notice that an item sitting half-done is not progress, it is inventory. Every started item occupies attention, goes stale, needs re-reading, and blocks somebody downstream who is waiting for it.</p>
+<table>
+<tr><th>Five items at once</th><th>Two items at once</th></tr>
+<tr><td>Everything is in progress</td><td>Two are in progress, three are waiting</td></tr>
+<tr><td>Nothing finishes for a long time</td><td>Something finishes soon</td></tr>
+<tr><td>Switching between them constantly</td><td>Switching rarely</td></tr>
+<tr><td>Problems surface at the end</td><td>Problems surface on the first item</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">The discomfort is the mechanism</span><p>When a column is full you cannot start anything new, so you go and help finish something. That reallocation is the entire intervention. A team that raises the limit whenever it binds has removed the effect and kept the board.</p></div>
+<div class="warning"><span class="callout-label">Visible does not mean managed</span><p>Putting the work on a wall is step one and achieves nothing by itself. Plenty of teams have a beautiful board, no limits, and exactly the same delivery as before.</p></div>`,
+      Intermediate: `<p>Little's law states that cycle time equals work in progress divided by throughput, for any stable system. It is arithmetic rather than opinion, which makes Kanban the one part of this course where an argument can be settled by measurement.</p>
+${FIG_WIP}
+<h3>Using it</h3>
+<p>A team with twelve items in progress finishing three per week has a cycle time of four weeks. Halve the work in progress to six, with throughput unchanged, and cycle time becomes two weeks. Nothing about the team changed; the queue got shorter.</p>
+<table>
+<tr><th>WIP</th><th>Throughput per week</th><th>Cycle time</th></tr>
+<tr><td class="num">12</td><td class="num">3</td><td class="num">4 weeks</td></tr>
+<tr><td class="num">6</td><td class="num">3</td><td class="num">2 weeks</td></tr>
+<tr><td class="num">3</td><td class="num">3</td><td class="num">1 week</td></tr>
+</table>
+<div class="warning"><span class="callout-label">The stable qualifier matters</span><p>The law holds when arrivals and departures are roughly balanced over the period you measure. A team whose backlog is growing without limit is not stable, and the arithmetic will mislead. Measure over a period long enough to cover your normal variation, and treat a wildly growing queue as the thing to fix first.</p></div>
+<h3>Where to put the limit</h3>
+<p>Not on the board as a whole, which is too coarse to bind. Per column, so it exposes the specific step where work accumulates. The first limit is usually wrong and that is fine: set something slightly uncomfortable, watch where queues form, and move it.</p>
+<p>A common starting point is roughly one and a half items per person in the active columns, then tightening. The goal is not the number; it is that the limit binds often enough to force conversations about finishing.</p>`,
+      Advanced: `<p>Blocked items are the thing boards are worst at showing. An item sitting in a column for three weeks looks identical to one that arrived yesterday, so the ageing has to be made visible deliberately.</p>
+${FIG_WIP}
+<table>
+<tr><th>Signal</th><th>Shows</th></tr>
+<tr><td>A cumulative flow diagram</td><td>Where the band widens, which is where work accumulates</td></tr>
+<tr><td>Item age on the card</td><td>Which specific item is stuck, now, before it is late</td></tr>
+<tr><td>A cycle time scatter plot</td><td>The spread, not just the average</td></tr>
+<tr><td>Blocked markers with a reason</td><td>Whether the blocker is internal or external</td></tr>
+</table>
+<p>The scatter plot matters more than the average. Two teams can both average ten days, one finishing everything between eight and twelve and the other between two and forty. The second cannot forecast anything, and the average conceals that completely.</p>
+<h3>Forecasting from the distribution</h3>
+<p>Once you have a few dozen completed items, the eighty-fifth percentile of cycle time is a far more useful commitment than an average or an estimate: most items will finish within it, and you can say so with a stated confidence. That is probabilistic forecasting, it requires no story points, and it is usually more accurate than estimation because it is measured rather than imagined.</p>
+<div class="key-idea"><span class="callout-label">Bottlenecks move, so the limit must too</span><p>Fix the constraint at one step and it reappears at the next. A board whose limits were set once and never revisited is optimising for a bottleneck the team no longer has, which is why reviewing them is a standing item rather than a setup task.</p></div>`,
+      Expert: `<p>Kanban arrives from manufacturing with queueing theory attached, and the theory explains things teams otherwise find mysterious. Utilisation and queue length are related non-linearly: as a resource approaches full utilisation, waiting time rises sharply rather than gradually.</p>
+${FIG_WIP}
+<p>That is why a team loaded to ninety-five per cent delivers dramatically worse than one loaded to eighty, and why the instinct to fill every hour of everyone's time produces slower delivery rather than more of it. Slack is not waste in a variable system; it is what keeps queues from exploding.</p>
+<table>
+<tr><th>Utilisation</th><th>Relative queue time</th></tr>
+<tr><td class="num">50%</td><td>Low and stable</td></tr>
+<tr><td class="num">80%</td><td>Noticeably longer</td></tr>
+<tr><td class="num">95%</td><td>Dramatically longer, and volatile</td></tr>
+</table>
+<h3>Why this is the hardest idea to sell</h3>
+<p>It contradicts an intuition that is correct in other settings. For predictable, uniform work, high utilisation is efficient. For variable work with dependencies, it is not, and software is firmly the second case. The argument that wins is usually the measurement rather than the theory: show the cycle time distribution before and after a WIP limit on the team's own data.</p>
+<h3>Classes of service, used carefully</h3>
+<p>Expedite lanes are legitimate and self-destructing if unbounded. The discipline is a hard cap, commonly one expedite item at a time, and a written definition of what qualifies. Without both, everything becomes urgent, the lane becomes the normal path, and the system reverts to having no limits at all with extra vocabulary.</p>
+<div class="field"><span class="callout-label">What to measure first on a real team</span><p>Cycle time per item and work in progress, nothing else, for six weeks. Those two give you Little's law, a distribution to forecast from, and evidence for the WIP conversation. Teams that start by instrumenting everything produce a dashboard nobody reads; teams that start with two numbers usually change something.</p></div>`,
+    },
+    questions: [
+      { n: 1, question: "A team halves its work in progress and throughput stays the same. What happens to cycle time?", options: ["It halves", "It stays the same", "It doubles", "It cannot be predicted"], answer: 0, explanation: "Little's law: cycle time equals work in progress divided by throughput, so halving the numerator with the denominator unchanged halves the result. It is arithmetic rather than a heuristic, which is why this is the one claim in the course a team can verify against their own data. The qualifier is stability: if the backlog is growing without limit the system is not stable and the law will mislead.", difficulty: "Medium", skill: "Littles law" },
+      { n: 2, question: "Why does a WIP limit need to bind to work?", options: ["Being unable to start forces people to help finish, which is the whole intervention", "It makes the board tidier", "It reduces the number of meetings", "It prevents new work from being requested"], answer: 0, explanation: "The reallocation of effort toward finishing is the mechanism, and it only happens when the limit stops somebody starting something. A limit raised whenever it binds is a label on a column. This is also why the discomfort is the signal rather than the problem, and why teams that optimise it away keep the vocabulary and lose the effect.", difficulty: "Easy", skill: "Work in progress" },
+      { n: 3, question: "Two teams both average ten days cycle time. One ranges 8 to 12, the other 2 to 40. What does the average hide?", options: ["Predictability, which is what a commitment actually depends on", "Throughput, which differs between them", "The number of people on each team", "Which team has more work in progress"], answer: 0, explanation: "The average is identical and the two teams are not comparable. The first can promise twelve days and be right nearly always; the second cannot promise anything, because a given item might take two days or forty. This is why a cycle time scatter plot is more useful than a mean, and why the eighty-fifth percentile makes a better commitment than an estimate.", difficulty: "Hard", skill: "Cycle time" },
+      { n: 4, question: "Why does a team loaded to 95 per cent deliver worse than one at 80 per cent?", options: ["Queue time rises non-linearly as utilisation approaches full", "They have less time for meetings", "High utilisation causes more defects", "The relationship is linear, so it does not"], answer: 0, explanation: "Queueing theory: as a resource approaches saturation, waiting time rises sharply rather than proportionally, because any variation has no slack to absorb it. This is why filling every hour produces slower delivery rather than more of it, and why slack is not waste in a variable system. The intuition that high utilisation is efficient holds for predictable uniform work, which software is not.", difficulty: "Hard", skill: "Throughput" },
+      { n: 5, question: "What makes an expedite lane self-destructing?", options: ["Without a hard cap and a written definition, everything becomes urgent", "It is forbidden by the method", "It requires a separate board", "It only works for defects"], answer: 0, explanation: "An unbounded fast path is used until it is the normal path, at which point the system has no limits again with extra vocabulary. The discipline is a hard cap, commonly one expedite item at a time, plus a written definition of what qualifies, agreed before anybody is under pressure. Classes of service are legitimate; what fails is introducing one without the constraint that makes it meaningful.", difficulty: "Medium", skill: "Bottleneck" },
+      { n: 6, question: "What should a team measure first when adopting Kanban?", options: ["Cycle time per item and work in progress, and nothing else", "Velocity and story points", "Utilisation per person", "Number of items in the backlog"], answer: 0, explanation: "Those two give you Little's law, a distribution to forecast from, and the evidence for the WIP conversation, which is almost everything the method needs. Teams that instrument broadly produce a dashboard nobody reads. Per-person utilisation is actively counterproductive here, because it encourages the high-utilisation behaviour the method exists to discourage.", difficulty: "Medium", skill: "Work in progress" },
+    ],
+    worksheets: [
+      {
+        n: 1,
+        title: "Apply Little's law, then set the limits",
+        difficulty: "Medium",
+        brief: `<p>A team of five has measured six weeks of delivery. Work in progress has averaged 15 items and they finish 5 items per week.</p>
+<p>Compute cycle time now, then for two reduced WIP levels, assuming throughput holds. Then total the three cycle times as a check figure.</p>
+<table>
+<tr><th>Known</th><th>Value</th></tr>
+<tr><td>Current work in progress</td><td class="num">15 items</td></tr>
+<tr><td>Throughput</td><td class="num">5 items per week</td></tr>
+</table>
+<div class="key-idea"><span class="callout-label">Throughput is assumed constant on purpose</span><p>In practice it usually improves when WIP falls, because less switching and less stale work. Holding it fixed makes the arithmetic clean and makes the answer a conservative floor rather than an optimistic claim.</p></div>`,
+        stubLabel: "Scenario",
+        columns: [
+          { key: "wip", label: "WIP", type: "number", align: "right" },
+          { key: "tput", label: "Throughput", type: "number", align: "right" },
+          { key: "ct", label: "Cycle time (weeks)", type: "number", align: "right" },
+        ],
+        rows: [
+          { key: "now", label: "Today" },
+          { key: "cut", label: "WIP cut to 10" },
+          { key: "tight", label: "WIP cut to 5" },
+          { key: "total", label: "Sum of the three cycle times", kind: "total" },
+        ],
+        cells: [
+          { row: "now", col: "wip", expected: 15, marks: 1 },
+          { row: "now", col: "tput", expected: 5, marks: 1 },
+          { row: "now", col: "ct", expected: 3, marks: 2, derivedFrom: { op: "quotient", from: ["now:wip", "now:tput"] }, methodMarks: 1, feedback: "Fifteen items divided by five per week is three weeks." },
+          { row: "cut", col: "wip", expected: 10, marks: 1 },
+          { row: "cut", col: "tput", expected: 5, marks: 1 },
+          { row: "cut", col: "ct", expected: 2, marks: 2, derivedFrom: { op: "quotient", from: ["cut:wip", "cut:tput"] }, methodMarks: 1 },
+          { row: "tight", col: "wip", expected: 5, marks: 1 },
+          { row: "tight", col: "tput", expected: 5, marks: 1 },
+          { row: "tight", col: "ct", expected: 1, marks: 2, derivedFrom: { op: "quotient", from: ["tight:wip", "tight:tput"] }, methodMarks: 1 },
+          { row: "total", col: "ct", expected: 6, marks: 2, derivedFrom: { op: "sum", from: ["now:ct", "cut:ct", "tight:ct"] }, methodMarks: 1 },
+        ],
+        invariants: [
+          { key: "t-ct", label: "The check figure equals the three cycle times added", kind: "cell-is-column-sum", cols: ["ct"], cell: "total:ct", marks: 2, hint: "The total row is excluded from its own sum: add the three scenario rows in the cycle time column." },
+        ],
+        hints: [
+          "Cycle time is work in progress divided by throughput. Both are already given per row.",
+          "Throughput is the same in all three rows, because the exercise holds it constant.",
+          "The three cycle times are 3, 2 and 1 weeks, and the check figure adds them.",
+        ],
+        workedAnswer: `<h3>The marked sheet</h3>
+<table>
+<tr><th>Scenario</th><th class="num">WIP</th><th class="num">Throughput</th><th class="num">Cycle time</th></tr>
+<tr><td>Today</td><td class="num">15</td><td class="num">5</td><td class="num">3 weeks</td></tr>
+<tr><td>WIP cut to 10</td><td class="num">10</td><td class="num">5</td><td class="num">2 weeks</td></tr>
+<tr><td>WIP cut to 5</td><td class="num">5</td><td class="num">5</td><td class="num">1 week</td></tr>
+<tr><th>Check figure</th><th class="num"></th><th class="num"></th><th class="num">6</th></tr>
+</table>
+<h3>What this buys the team</h3>
+<p>Cutting work in progress by two thirds takes an item from three weeks to one, with no change in how fast anybody works and no new tooling. The team finishes the same five items per week throughout; what changes is how long each one waits.</p>
+<div class="worked"><span class="callout-label">And the real answer is better than this</span><p>Throughput was held constant to keep the arithmetic clean, and in practice it usually rises when WIP falls, because there is less context switching, less stale work to re-read, and fewer half-finished items going out of date. So one week is a conservative floor rather than an optimistic target.</p></div>
+<div class="field"><span class="callout-label">How to run the conversation</span><p>Do not argue the theory. Measure your own WIP and throughput for six weeks, compute the current cycle time, and show that the number matches what people already feel. Once the model predicts the present correctly, its prediction about a lower WIP is much harder to dismiss, and you have turned a philosophical argument into an experiment with a date on it.</p></div>`,
+        minutes: 18,
+        skills: ["Littles law", "Work in progress", "Cycle time", "Throughput"],
       },
     ],
   },
