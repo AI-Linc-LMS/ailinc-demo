@@ -473,7 +473,11 @@ ${FIG_SCRUM_FAIL}
 <h3>Refinement is the event that is not on the list</h3>
 <p>Scrum names five events and backlog refinement is not one of them, yet nearly every functioning team does it. It is treated as ongoing work rather than a ceremony, which in practice means it either happens continuously or it does not happen and planning absorbs the cost. A planning session that runs long is almost always paying for refinement that never occurred.</p>
 <h3>The three artefacts each carry a commitment</h3>
-<p>The product backlog carries a product goal, the sprint backlog carries the sprint goal, and the increment carries the definition of done. Each commitment is what makes the artefact more than a list, and each is the part most often missing.</p>`,
+<p>The product backlog carries a product goal, the sprint backlog carries the sprint goal, and the increment carries the definition of done. Each commitment is what makes the artefact more than a list, and each is the part most often missing.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Scrum_Framework.png/960px-Scrum_Framework.png" alt="A diagram of the Scrum framework: a product backlog feeding sprint planning, which produces a sprint backlog, which enters a sprint of at most one month containing a daily scrum loop, ending in a sprint review, a sprint retrospective and a potentially releasable increment." loading="lazy"/>
+<figcaption><strong>Every box here is a commitment, and the framework breaks where one is dropped.</strong> Read it as a closed loop rather than a pipeline. The retrospective feeds the next planning, and the daily scrum is inside the sprint rather than before it. Teams that report Scrum not working have almost always kept the events and quietly removed one artefact, most often the increment: a sprint that ends without something releasable has no review worth holding, so the loop stops closing and the ceremonies become a calendar.<span class="credit">Diagram: Dr Ian Mitchell, CC BY-SA 4.0, via Wikimedia Commons</span></figcaption>
+</figure>`,
       Advanced: `<p>Scrum is deliberately incomplete: it specifies a container and leaves the engineering practices out, which is why it is so often paired with XP. That incompleteness is also why it can be adopted without changing anything that matters. A team can run every event correctly and still release quarterly from a branch nobody integrates.</p>
 <h3>Where Scrum teams break</h3>
 <table>
@@ -608,7 +612,11 @@ ${FIG_WIP}
 <h3>Why cycle time beats estimates for promising a date</h3>
 <p>An estimate is a guess about one item made before it starts. A cycle time distribution is a record of what happened to thirty comparable items. Promising from the second is both easier and more accurate, and it requires no estimation effort at all, which is why many mature teams drop sizing entirely once they have enough history.</p>
 <h3>Limits apply to the column, not to people</h3>
-<p>A limit of three means three items in that column, regardless of who is working on them. Teams that read it as three per person have removed the constraint entirely while believing they adopted it.</p>`,
+<p>A limit of three means three items in that column, regardless of who is working on them. Teams that read it as three per person have removed the constraint entirely while believing they adopted it.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Kanban_board_example.jpg/960px-Kanban_board_example.jpg" alt="A Kanban board with columns headed Backlog, In Progress limit three, Peer Review limit three, In Test limit one, Done and Blocked, holding yellow cards, plus a fast track and defect swimlane at the bottom." loading="lazy"/>
+<figcaption><strong>The numbers in the column headings are the whole system.</strong> In Progress is capped at three and is holding three, so nothing new may start there: the next person free has to help finish something rather than begin something. That is the constraint teams find uncomfortable, and it is the one doing the work. Note also what the board makes visible for free. Peer Review holds two of its three, In Test holds one of one, and Blocked is a column of its own rather than a status buried on a card.<span class="credit">Diagram: Dr Ian Mitchell, CC BY-SA 2.5, via Wikimedia Commons</span></figcaption>
+</figure>`,
       Advanced: `<p>Blocked items are the thing boards are worst at showing. An item sitting in a column for three weeks looks identical to one that arrived yesterday, so the ageing has to be made visible deliberately.</p>
 <table>
 <tr><th>Signal</th><th>Shows</th></tr>
@@ -782,7 +790,11 @@ ${FIG_XP_ORDER}
 <h3>Why the costs are visible and the benefits are not</h3>
 <p>Writing a test takes time you can watch. The defect it prevents in four months is invisible, because it never happens. Every XP practice has that shape, which is why they lose budget arguments to work with legible output, and why the team that skipped tests looks faster for about two months.</p>
 <h3>Collective ownership needs the net first</h3>
-<p>Letting anybody change anything is only safe when the tests catch what they break. Without that it becomes collective fear, the team reverts to informal gatekeeping, and nobody can say who decides. The order is the net, then the policy.</p>`,
+<p>Letting anybody change anything is only safe when the tests catch what they break. Without that it becomes collective fear, the team reverts to informal gatekeeping, and nobody can say who decides. The order is the net, then the policy.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Pair_programming_1.jpg/960px-Pair_programming_1.jpg" alt="Two developers working at a single computer, one pointing at the screen while the other has a hand on the mouse, in a team room whose walls are covered in index cards and a whiteboard." loading="lazy"/>
+<figcaption><strong>Two people, one keyboard, and a wall of cards behind them.</strong> This is what the practice actually looks like, and why it is the one most often cut first. It reads as two salaries on one task. The argument for it was never comfort: it was that review, design discussion and knowledge transfer all happen at the moment the code is written rather than days later in a queue. Teams that drop pairing and keep nothing in its place do not save the time, they move it into the review backlog.<span class="credit">Photo: Lisamarie Babik, CC BY 2.0, via Wikimedia Commons</span></figcaption>
+</figure>`,
       Advanced: `<p>Test-driven development is usually sold as a testing practice and is mostly a design practice. Writing the test first forces you to use the interface before you build it, which surfaces awkward dependencies immediately and tends to produce smaller, more separable units because those are the ones that are easy to set up in a test.</p>
 <table>
 <tr><th>What people expect</th><th>What it mostly delivers</th></tr>
@@ -957,7 +969,11 @@ ${FIG_VELOCITY}
 <h3>Planning poker is mostly a conversation device</h3>
 <p>The number is the visible output and the argument is the valuable one. When two people give wildly different sizes, what follows usually reveals that they understood the item differently, which is scope discovered before the sprint rather than during it. Teams that drop estimation entirely sometimes lose this and only notice when surprises start arriving mid-sprint.</p>
 <h3>Re-estimating mid-sprint achieves nothing</h3>
-<p>The estimate was an input to a decision already taken. Changing it does not change the work and does not improve the forecast, because the forecast should be coming from measured throughput rather than from the sum of current estimates. Teams that re-estimate are usually trying to make a burndown look right, which is managing the chart rather than the work.</p>`,
+<p>The estimate was an input to a decision already taken. Changing it does not change the work and does not improve the forecast, because the forecast should be coming from measured throughput rather than from the sum of current estimates. Teams that re-estimate are usually trying to make a burndown look right, which is managing the chart rather than the work.</p>
+<figure class="fig-photo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/SampleBurndownChart.svg/960px-SampleBurndownChart.svg.png" alt="A burndown chart over twenty-one days showing a straight ideal line falling to zero, an actual remaining-effort line that stays above the ideal until about day eleven and then falls below it, and bars for tasks completed each day." loading="lazy"/>
+<figcaption><strong>Watch where the real line sits against the straight one, and when.</strong> For the first half of this sprint the team is behind the ideal line every single day, and from around day eleven it is ahead. Neither half is the signal people read it as. Work is not discovered at a constant rate, and remaining effort is re-estimated as understanding improves, so an early gap above the line is the normal shape of learning rather than evidence of a team falling behind. The chart is worth reading for its slope, not its position on any one day.<span class="credit">Chart: PabloStraub, CC0, via Wikimedia Commons</span></figcaption>
+</figure>`,
       Advanced: `<p>Probabilistic forecasting replaces the estimate with measured history. Take the last thirty completed items, look at how long each took, and read the distribution. The eighty-fifth percentile is a commitment you can defend with a number rather than a feeling.</p>
 <table>
 <tr><th>Approach</th><th>Input</th><th>Output</th></tr>
